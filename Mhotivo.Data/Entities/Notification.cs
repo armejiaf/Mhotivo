@@ -9,12 +9,15 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string EventName { get; set; }
-        public string From { get; set; }
-        public virtual string To { get; set; }
-        public virtual string WithCopyTo { get; set; }
-        public virtual string WithHiddenCopyTo { get; set; }
-        public string Subject { get; set; }
+        public string NotificationName { get; set; }
+        public User NotificationCreator { get; set; }
+        public NotificationType NotificationTypeId { get; set; }
+
+       // public  Student Sudent { get; set; }
+        //public virtual string WithCopyTo { get; set; }
+        //public virtual string WithHiddenCopyTo { get; set; }
+        //public string Subject { get; set; }
+
         public string Message { get; set; }
         public DateTime Created { get; set; }
     }
