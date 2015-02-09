@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +59,7 @@
     <Compile Include="Repositories\EnrollRepository.cs" />
     <Compile Include="Repositories\GradeRepository.cs" />
     <Compile Include="Repositories\MeisterRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\ParentRepository.cs" />
     <Compile Include="Repositories\PensumRepository.cs" />
     <Compile Include="Repositories\PeopleRepository.cs" />

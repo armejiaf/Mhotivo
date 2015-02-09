@@ -49,6 +49,7 @@
     <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IMeisterRepository.cs" />
+    <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />
