@@ -144,5 +144,23 @@ namespace Mhotivo.Controllers
                 return View("Index");
             }
         }
+
+
+        public bool SendEmailForGeneralNotifications(AcademicYear currentAcademicYear)
+        {
+            var currentYear = currentAcademicYear.Year;
+            var generalNotifications = db.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationTypeId.NotificationTypeId == 1);
+
+            foreach (var notification in generalNotifications)
+            {
+
+
+            }
+
+
+            return false;
+
+        }
+
     }
 }

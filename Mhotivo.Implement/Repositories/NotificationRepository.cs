@@ -66,6 +66,13 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
+        public IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear)
+        {
+            var currentYear = currentAcademicYear.Year;
+            var generalNotifications = _context.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationTypeId.NotificationTypeId==1);
+            return generalNotifications;
+        }
+
         public void Dispose()
         {
             _context.Dispose();

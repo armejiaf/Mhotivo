@@ -192,10 +192,6 @@
     <Compile Include="Migrations\201411210122159_RenameBD.Designer.cs">
       <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412151627072_RenameActived.cs" />
-    <Compile Include="Migrations\201412151627072_RenameActived.Designer.cs">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201502030229588_Test.cs" />
     <Compile Include="Migrations\201502030229588_Test.Designer.cs">
       <DependentUpon>201502030229588_Test.cs</DependentUpon>
@@ -203,6 +199,10 @@
     <Compile Include="Migrations\201502040255578_AcademicYearDetail.cs" />
     <Compile Include="Migrations\201502040255578_AcademicYearDetail.Designer.cs">
       <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502090819535_Notifications.cs" />
+    <Compile Include="Migrations\201502090819535_Notifications.Designer.cs">
+      <DependentUpon>201502090819535_Notifications.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -553,14 +553,14 @@
     <EmbeddedResource Include="Migrations\201411210122159_RenameBD.resx">
       <DependentUpon>201411210122159_RenameBD.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412151627072_RenameActived.resx">
-      <DependentUpon>201412151627072_RenameActived.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502030229588_Test.resx">
       <DependentUpon>201502030229588_Test.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201502040255578_AcademicYearDetail.resx">
       <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502090819535_Notifications.resx">
+      <DependentUpon>201502090819535_Notifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

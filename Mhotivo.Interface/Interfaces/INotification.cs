@@ -7,8 +7,6 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface INotification:IDisposable
     {
-
-
         Notification First(Expression<Func<Notification, bool>> query);
         Notification GetById(long id);
         Notification Create(Notification itemToCreate);
@@ -18,5 +16,8 @@ namespace Mhotivo.Interface.Interfaces
         Notification Update(Notification itemToUpdate);
         void Delete(Notification itemToDelete);
         void SaveChanges();
+
+        IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear);
+
     }
 }
