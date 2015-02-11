@@ -555,9 +555,6 @@
     <EmbeddedResource Include="Migrations\201502040255578_AcademicYearDetail.resx">
       <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502090819535_Notifications.resx">
-      <DependentUpon>201502090819535_Notifications.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
