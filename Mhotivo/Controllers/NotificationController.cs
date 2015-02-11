@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 //using Mhotivo.App_Data;
 using AutoMapper;
+using Mhotivo.Logic;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Mhotivo.Data.Entities;
@@ -18,9 +19,25 @@ namespace Mhotivo.Controllers
     {
         public MhotivoContext db = new MhotivoContext();
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly ISessionManagement _sessionManagement;
+        private readonly IUserRepository _userRepository;
 
-        public NotificationController()
+        private void LoadTypeNotification()
         {
+
+            var items = db.NotificationTypes.Select(c => new SelectListItem()
+            {
+                Text = c.TypeDescription,
+                Value = c.NotificationTypeId.ToString()
+            }).ToList();
+            var list = new SelectList(items, "Value", "Text");
+            ViewData["NotificationTypes"] = list;
+        }
+
+        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository)
+        {
+            _sessionManagement = sessionManagement;
+            _userRepository = userRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -32,6 +49,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var notifications = db.Notifications.Where(x => true);
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+            
             return View(notificationsModel);
         }
 
@@ -41,40 +59,31 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             var notification = new NotificationModel();
+            LoadTypeNotification();
     
             return View("Add", notification);
         }
 
         [HttpPost]
-        public ActionResult Add(NotificationModel eventNotification)
+        public ActionResult Add(NotificationModel eventNotification, int NotificationTypes)
         {
-            //if (ModelState.IsValid)
-            //{
-                //var template = new Notification
-                //               {
-                //                   EventName = eventNotification.EventName,
-                //                   From = eventNotification.From,
-                //                   To = eventNotification.To,
-                //                   WithCopyTo = eventNotification.WithCopyTo,
-                //                   WithHiddenCopyTo = eventNotification.WithHiddenCopyTo,
-                //                   Subject = eventNotification.Subject,
-                //                   Message = eventNotification.Message,
-                //                   Created = DateTime.Now
-                //               };
+            var template = Mapper.Map<Notification>(eventNotification);
+            template.Created = DateTime.Now;
 
-                var template = Mapper.Map<Notification>(eventNotification);
-                template.Created = DateTime.Now;
+            // Recuperamos la ciudad ==> Consulta a BBDD
+            var notificationTypes = db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId == NotificationTypes);
+            template.NotificationTypeId = notificationTypes;
 
-                db.Notifications.Add(template);
-                db.SaveChanges();
-                const string title = "Notificación Agregado";
-                var content = "El evento " + eventNotification.EventName + " ha sido agregado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            //}
-            //else
-            //{
-            //    _viewMessageLogic.SetNewMessage("", "Oooops we have encountered an error, please try again later...", ViewMessageType.ErrorMessage);
-            //}
+            //string userEmail = _sessionManagement.GetUserLoggedEmail();
+            //User creator = _userRepository.First(x => x.Email == userEmail);
+            //template.NotificationCreator = creator;
+
+            db.Notifications.Add(template);
+            db.SaveChanges();
+            const string title = "Notificación Agregado";
+            var content = "El evento " + eventNotification.NotificationName + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+
             return RedirectToAction("Index");
         }
 
@@ -98,6 +107,8 @@ namespace Mhotivo.Controllers
 
             var toEditModel = Mapper.Map<NotificationModel>(toEdit);
 
+            LoadTypeNotification();
+
             return View(toEditModel);
         }
 
@@ -105,12 +116,16 @@ namespace Mhotivo.Controllers
         // POST: /NotificationModel/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, Notification notification)
+        public ActionResult Edit(int id, Notification notification, int NotificationTypes)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    // Recuperamos la ciudad ==> Consulta a BBDD
+                    var notificationTypes = db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId == NotificationTypes);
+                    notification.NotificationTypeId = notificationTypes;
+
                     db.Entry(notification).State = EntityState.Modified;
                     db.SaveChanges();
                     _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.", ViewMessageType.SuccessMessage);

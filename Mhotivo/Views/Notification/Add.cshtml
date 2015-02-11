@@ -20,24 +20,20 @@
 @using (Html.BeginForm("Add", "Notification", FormMethod.Post, new { id = "Form", @class = "form-horizontal"}))
 {
     @Html.ValidationSummary(true)
-
     
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.EventName)
-            @Html.ValidationMessageFor(model => model.From)
-            @Html.ValidationMessageFor(model => model.To) 
-            @Html.ValidationMessageFor(model => model.Subject)
+            @Html.ValidationMessageFor(model => model.NotificationName)
             @Html.ValidationMessageFor(model => model.Message) 
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.EventName)
+                @Html.LabelFor(model => model.NotificationName)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.EventName)
+                @Html.EditorFor(model => model.NotificationName)
             </div>
-        </div>
+        </div>@*
         
     <div class="control-group">
         <label for="form-input-readonly" class="control-label">@Html.LabelFor(model => model.From)</label>
@@ -93,7 +89,18 @@
             <div class="controls">
                 @Html.EditorFor(model => model.Subject)
             </div>
+        </div>*@
+    
+    <div class="control-group">
+         <div class="control-label">
+             Tipo Notificacion
+         </div>
+        <div class="control-list">
+                    @Html.DropDownList("NotificationTypes", ViewData["NotificationTypes"] as SelectList)
         </div>
+    </div>
+         
+        
         <div id="htmlMessage">Write Your message Here! <br/>You can use tags to make your template more dynamic<br/>Tags Example: ${name}</div>
         
         @Html.HiddenFor(model => model.Message)
