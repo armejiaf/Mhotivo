@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,5 +22,7 @@ namespace Mhotivo.Data.Entities
 
         public string Message { get; set; }
         public DateTime Created { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
     }
 }
