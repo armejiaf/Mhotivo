@@ -200,10 +200,6 @@
     <Compile Include="Migrations\201502040255578_AcademicYearDetail.Designer.cs">
       <DependentUpon>201502040255578_AcademicYearDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201502090819535_Notifications.cs" />
-    <Compile Include="Migrations\201502090819535_Notifications.Designer.cs">
-      <DependentUpon>201502090819535_Notifications.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
