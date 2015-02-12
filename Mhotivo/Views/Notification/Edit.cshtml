@@ -17,28 +17,25 @@
 <script src="~/Scripts/summernote.min.js"></script>
 
 
-@using (Html.BeginForm("Edit", "Notification", FormMethod.Post, new { id = "Form", @class = "form-horizontal"}))
+@using (Html.BeginForm("Edit", "Notification", FormMethod.Post, new { id = "Form", @class = "form-horizontal" }))
 {
     @Html.ValidationSummary(true)
 
             @Html.HiddenFor(model => model.Id);
     
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.EventName)
-            @Html.ValidationMessageFor(model => model.From)
-            @Html.ValidationMessageFor(model => model.To) 
-            @Html.ValidationMessageFor(model => model.Subject)
+            @Html.ValidationMessageFor(model => model.NotificationName)
             @Html.ValidationMessageFor(model => model.Message) 
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.EventName)
+                @Html.LabelFor(model => model.NotificationName)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.EventName)
+                @Html.EditorFor(model => model.NotificationName)
             </div>
-        </div>
+        </div>@*
         
     <div class="control-group">
         <label class="control-label">@Html.LabelFor(model => model.From)</label>
@@ -87,14 +84,27 @@
     </div>
     
         
+    <div class="control-group">
+        <div class="control-label">
+            @Html.LabelFor(model => model.Subject)
+        </div>
+        <div class="controls">
+            @Html.EditorFor(model => model.Subject)
+        </div>
+    </div>*@
+    
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Subject)
+                    Tipo Notificacion
             </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Subject)
+            <div class="control-list">
+                        @Html.DropDownList("NotificationTypes", ViewData["NotificationTypes"] as SelectList)
             </div>
         </div>
+         
+         
+
+    
         <div id="htmlMessage">@Html.DisplayFor(model => model.Message)</div>
         
         @Html.HiddenFor(model => model.Message)
@@ -104,7 +114,7 @@
 
     <div class="modal-footer">
        
-       @Html.ActionLink("Cancelar","Index","Notification",null,new{@class="btn btn-small icon-remove"}) 
+       @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" }) 
        
        @* <button data-dismiss="modal" class="btn btn-small" id="Cancelar">
             <i class="icon-remove"></i>

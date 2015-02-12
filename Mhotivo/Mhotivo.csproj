@@ -168,6 +168,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeisterController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Models\MeisterModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\NotificationTypeModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\PensumModel.cs" />
     <Compile Include="Models\PeopleModel.cs" />
@@ -521,6 +523,9 @@
     <Content Include="Views\Pensum\Index.cshtml" />
     <Content Include="Views\Event\PrincipalIndex.cshtml" />
     <Content Include="Views\Event\Agenda.cshtml" />
+    <Content Include="Views\NotificationType\Index.cshtml" />
+    <Content Include="Views\NotificationType\Edit.cshtml" />
+    <Content Include="Views\NotificationType\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
