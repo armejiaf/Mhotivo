@@ -185,6 +185,10 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
+    <Compile Include="Migrations\201502162215487_20150216.cs" />
+    <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
+      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -530,6 +534,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
+      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
