@@ -34,14 +34,61 @@ namespace Mhotivo.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            
-            context.Roles.AddOrUpdate(new Role{Id = 1,Description = "Admin", Name = "Admin"});
-            context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Principal", Name = "Principal" });
+
+            context.Roles.AddOrUpdate(new Role {Id = 1, Description = "Admin", Name = "Admin"});
+            context.Roles.AddOrUpdate(new Role {Id = 2, Description = "Principal", Name = "Principal"});
             context.SaveChanges();
-            context.Users.AddOrUpdate(new User {Id = 1,DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Role = context.Roles.First(), Status = true });
-            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Role = context.Roles.Find(2), Status = true });
-            
+            context.Users.AddOrUpdate(new User
+            {
+                Id = 1,
+                DisplayName = "Alex Fernandez",
+                Email = "olorenzo@outlook.com",
+                Password = "123",
+                Role = context.Roles.First(),
+                Status = true
+            });
+            context.Users.AddOrUpdate(new User
+            {
+                Id = 2,
+                DisplayName = "Franklin Castellanos",
+                Email = "castellarfrank@hotmail.com",
+                Password = "siniestro",
+                Role = context.Roles.First(),
+                Status = true
+            });
+            context.Users.AddOrUpdate(new User
+            {
+                Id = 3,
+                DisplayName = "La directora",
+                Email = "holis@holis.com",
+                Password = "holis",
+                Role = context.Roles.Find(2),
+                Status = true
+            });
+
+
+            context.NotificationTypes.AddOrUpdate(new NotificationType
+            {
+                NotificationTypeId = 1,
+                TypeDescription = "General"
+            });
+            context.NotificationTypes.AddOrUpdate(new NotificationType
+            {
+                NotificationTypeId = 2,
+                TypeDescription = "Area"
+            });
+            context.NotificationTypes.AddOrUpdate(new NotificationType
+            {
+                NotificationTypeId = 3,
+                TypeDescription = "Grado"
+            });
+            context.NotificationTypes.AddOrUpdate(new NotificationType
+            {
+                NotificationTypeId = 4,
+                TypeDescription = "Personal"
+            });
+
+            context.SaveChanges();
         }
     }
 }

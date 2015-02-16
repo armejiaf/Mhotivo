@@ -23,7 +23,7 @@ namespace Mhotivo.Controllers
         }
 
         //
-        // GET: /NotificationType/
+        // GET: /NotificationTypeSelectList/
 
         public ActionResult Index()
         {
@@ -37,7 +37,7 @@ namespace Mhotivo.Controllers
         }
         
         //
-        // GET: /NotificationType/Create
+        // GET: /NotificationTypeSelectList/Create
 
         public ActionResult Add()
         {
@@ -46,7 +46,7 @@ namespace Mhotivo.Controllers
 
 
         //
-        // POST: /NotificationType/Create
+        // POST: /NotificationTypeSelectList/Create
 
         [HttpPost]
         public ActionResult Add(NotificationType notificationType)
@@ -73,7 +73,7 @@ namespace Mhotivo.Controllers
         }
 
         //
-        // GET: /NotificationType/Edit/5
+        // GET: /NotificationTypeSelectList/Edit/5
 
         public ActionResult Edit(int id)
         {
@@ -83,7 +83,7 @@ namespace Mhotivo.Controllers
         }
 
         //
-        // POST: /NotificationType/Edit/5
+        // POST: /NotificationTypeSelectList/Edit/5
 
         [HttpPost]
         public ActionResult Edit(NotificationType notificationTypes)
@@ -99,7 +99,7 @@ namespace Mhotivo.Controllers
 
 
         //
-        // GET: /NotificationType/Delete/5
+        // GET: /NotificationTypeSelectList/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
         {

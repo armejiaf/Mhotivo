@@ -21,112 +21,75 @@
 {
     @Html.ValidationSummary(true)
 
-            @Html.HiddenFor(model => model.Id);
-    
-        <p class="text-error">
-            @Html.ValidationMessageFor(model => model.NotificationName)
-            @Html.ValidationMessageFor(model => model.Message) 
-        </p>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.NotificationName)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.NotificationName)
-            </div>
-        </div>@*
-        
-    <div class="control-group">
-        <label class="control-label">@Html.LabelFor(model => model.From)</label>
+    @Html.HiddenFor(model => model.Id)
+    ;
 
-        <div class="controls">
-            <table style="border: transparent">
-                <tr>
-                    <td>
-                         @Html.EditorFor(model => model.From)
-                    </td>
-                    <td>
-                        &nbsp; &nbsp;<input type="checkbox" name="useMyAccount" id="useMyAccount" checked="checked" >            
-                    </td>
-                    <td>
-                        <label> Usar mi cuenta!</label>                
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.To)
-        </div>
-        <div class="controls">
-            @Html.EditorFor(model => model.To)
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.WithCopyTo)
-        </div>
-        <div class="controls">
-            @Html.EditorFor(model => model.WithCopyTo)
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.WithHiddenCopyTo)
-        </div>
-        <div class="controls">
-            @Html.EditorFor(model => model.WithHiddenCopyTo)
-        </div>
-    </div>
-    
-        
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.Subject)
-        </div>
-        <div class="controls">
-            @Html.EditorFor(model => model.Subject)
-        </div>
-    </div>*@
-    
-        <div class="control-group">
-            <div class="control-label">
-                    Tipo Notificacion
-            </div>
-            <div class="control-list">
-                        @Html.DropDownList("NotificationTypes", ViewData["NotificationTypes"] as SelectList)
-            </div>
-        </div>
-         
-         
+    <p class="text-error">
+        @Html.ValidationMessageFor(model => model.NotificationName)
+        @Html.ValidationMessageFor(model => model.Message) 
+    </p>
 
+    <div class="control-group">
+        <div class="control-label">
+            @Html.LabelFor(model => model.NotificationName)
+        </div>
+        <div class="controls">
+            @Html.EditorFor(model => model.NotificationName)
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="control-label">
+            @Html.LabelFor(model => model.NotificationTypeSelectList)
+        </div>
+        <div class="controls">
+             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione",new { id = "NotificationType"})
+        </div>
+    </div>
     
-        <div id="htmlMessage">@Html.DisplayFor(model => model.Message)</div>
-        
-        @Html.HiddenFor(model => model.Message)
-        @Html.HiddenFor(model => model.Created)
-        
-        <div class="space"></div>
+    <div class="control-group">
+        <div class="control-label">
+            @Html.Label("Dirigido a:")
+        </div>
+        <div class="controls">
+            @Html.DropDownListFor(model => model.IdGradeAreaUserGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new { id = "AddressedTo" })
+            @*<select id="AddressedTo" name="AddressedTo"></select>*@
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="control-label">
+            @Html.LabelFor(model => model.SendingEmail)
+        </div>
+        <div class="controls">
+            @Html.CheckBoxFor(model => model.SendingEmail)
+        </div>
+    </div>
+   
+    <div class="control-group">
+        <div class="control-label">
+            @Html.LabelFor(model => model.Message)
+        </div>
+        <div class="controls">
+            @Html.TextAreaFor(model => model.Message)
+        </div>
+    </div>
+    
+    @Html.HiddenFor(model => model.Message)
+    @Html.HiddenFor(model => model.Created)
+
+    <div class="space"></div>
 
     <div class="modal-footer">
        
-       @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" }) 
-       
-       @* <button data-dismiss="modal" class="btn btn-small" id="Cancelar">
-            <i class="icon-remove"></i>
-            Cancelar
-        </button>*@
-
+        @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" }) 
+   
         <button type="submit" class="btn btn-small btn-primary">
             <i class="icon-ok"></i>
             Editar
         </button>
     </div>
-    
+
 }
 
 <script type="text/javascript">
@@ -183,5 +146,21 @@
         $('#Message').val(sHTML);
         //alert("Handler for .submit() called. : <br/>" + $('#Message').val());
         //event.preventDefault();
+    });
+</script>
+
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/jscript">
+    $(function () {
+        $('#NotificationType').change(function () {
+            $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
+                var items = '<option>Seleccione</option>';
+                $.each(data, function (i, optionavailable) {
+                    items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
+                });
+                $('#AddressedTo').html(items);
+            });
+        });
     });
 </script>

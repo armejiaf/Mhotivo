@@ -62,7 +62,5 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        
-
     }
 }

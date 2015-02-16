@@ -95,6 +95,7 @@ namespace Mhotivo.App_Start
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
             kernel.Bind<AcademicYearLogic>().ToSelf().InRequestScope();
             kernel.Bind<INotificationTypeRepository>().To<NotificationTypeRepository>().InRequestScope();
+            kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
         }        
     }
 }

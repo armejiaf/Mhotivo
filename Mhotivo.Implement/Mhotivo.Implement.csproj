@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\AppoimentParticipant.cs" />
+    <Compile Include="Repositories\AreaRepository.cs" />
     <Compile Include="Repositories\BenefactorRepository.cs" />
     <Compile Include="Repositories\ClassActivityRepository.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
