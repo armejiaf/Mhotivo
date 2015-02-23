@@ -16,6 +16,7 @@ namespace Mhotivo.Data.Entities
         public NotificationType NotificationType { get; set; }
 
         public int IdGradeAreaUserGeneralSelected { get; set; }
+        public int StudentId { get; set; }
         public bool SendingEmail { get; set; }
 
         public User NotificationCreator { get; set; }

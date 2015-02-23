@@ -26,7 +26,7 @@
 
     <p class="text-error">
         @Html.ValidationMessageFor(model => model.NotificationName)
-        @Html.ValidationMessageFor(model => model.Message) 
+        @Html.ValidationMessageFor(model => model.Message)
     </p>
 
     <div class="control-group">
@@ -86,7 +86,7 @@
         </div>
     </div>*@
     
-    <div id="htmlMessage">@Html.DisplayFor(model => model.Message)</div>
+    <div id="htmlMessage">@Html.DisplayTextFor(model => model.Message)</div>
     
     @Html.HiddenFor(model => model.Message)
     @Html.HiddenFor(model => model.Created)
@@ -159,7 +159,7 @@
     $("#Form").submit(function (event) {
         var sHTML = $('#htmlMessage').code();
         $('#Message').val(sHTML);
-        //alert("Handler for .submit() called. : <br/>" + $('#Message').val());
+        // alert("Handler for .submit() called. : <br/>" + $('#Message').val());
         //event.preventDefault();
     });
 

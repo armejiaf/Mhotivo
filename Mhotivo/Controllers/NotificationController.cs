@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Web.Mvc;
 //using Mhotivo.App_Data;
 using System.Web.WebPages;
@@ -26,6 +27,7 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly INotificationTypeRepository _notificationTypeRepository;
+        private static string searchText = string.Empty;
         
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
@@ -42,10 +44,47 @@ namespace Mhotivo.Controllers
             var list = GetListOpcionTypeNotification(model.NotificationTypeId.ToString(CultureInfo.InvariantCulture));
             model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text",
                 model.IdGradeAreaUserGeneralSelected);
-            
-            var listStudent = new List<SelectListItem>();
-            listStudent.Add(new SelectListItem() {Value = "0", Text = "N/A"});
+
+            IEnumerable<SelectListItem> listStudent;
+            listStudent = LoadListStudent(model.NotificationTypeId == 4 ? model.IdGradeAreaUserGeneralSelected : 0);
             model.StudentOptionSelectList = new SelectList(listStudent, "Value", "Text", model.StudentId);
+        }
+
+        private IEnumerable<SelectListItem> LoadListStudent(int idGrade)
+        {
+            var list = new List<SelectListItem>();
+            if (idGrade != 0)
+            {
+                var grade = db.Grades.FirstOrDefault(g => g.Id == idGrade);
+                var academyYear =
+                    db.AcademicYears.Select(x => x).Include("Grade").FirstOrDefault(x => x.Grade.Id.Equals(grade.Id));
+
+                var query =
+                    from a in db.Enrolls
+                    join b in db.Students on a.Student.Id equals b.Id
+                    where a.AcademicYear.Id == academyYear.Id
+                    select new
+                    {
+                        Field1 = a.Student.FullName,
+                        Field2 = a.Student.Id
+                    };
+
+
+                if (query.Any())
+                {
+                    list = query.Select(c => new SelectListItem()
+                    {
+                        Text = c.Field1,
+                        Value = c.Field2.ToString()
+                    }).ToList();
+                }
+            }
+            if (list.Count <= 0)
+            {
+                list.Add(new SelectListItem() { Value = "0", Text = "N/A" });
+            }
+
+            return list;
         }
 
 
@@ -62,14 +101,48 @@ namespace Mhotivo.Controllers
 
         //
         // GET: /NotificationModel/
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var notifications = db.Notifications.Where(x => true).OrderByDescending(i=>i.Created);
+            var notifications =
+                db.Notifications.Where(x => true)
+                    .OrderByDescending(i => i.Created)
+                    .Take(10);
+
+            
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
             
             return View(notificationsModel);
+        }
+
+        //
+        // GET: /NotificationModel/
+        [HttpPost]
+        public ActionResult Index(FormCollection text)
+        {
+            searchText = text["Name"];
+            if (string.IsNullOrEmpty(searchText))
+            {
+                var notifications =
+                    db.Notifications.Where(x => true)
+                        .OrderByDescending(i => i.Created)
+                        .Take(10);
+
+
+                var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+
+                return View("Index", notificationsModel);
+            }
+            else
+            {
+                var notifications =
+                    db.Notifications.Where(x => x.NotificationName.Contains(searchText.Trim()))
+                        .OrderByDescending(i => i.Created).Take(10);
+                var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+
+                return View("Index", notificationsModel);
+            }
         }
 
         //
@@ -89,13 +162,13 @@ namespace Mhotivo.Controllers
             var notificationIdentity = Mapper.Map<Notification>(eventNotification);
             notificationIdentity.Created = DateTime.Now;
 
-            var notificationType = db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId ==eventNotification.NotificationTypeId);
+            var notificationType =
+                db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId == eventNotification.NotificationTypeId);
             notificationIdentity.NotificationType = notificationType;
 
-            if (notificationType != null && notificationType.NotificationTypeId == 4)
-            {
-                notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
-            }
+            notificationIdentity.StudentId = eventNotification.StudentId;
+            notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.IdGradeAreaUserGeneralSelected;
+
             //if (AddressedTo.IsEmpty() || AddressedTo == null)
             //    AddressedTo = "0";
 
@@ -118,32 +191,7 @@ namespace Mhotivo.Controllers
 
         public JsonResult ListStudent(string Id)
         {
-            int tango = Convert.ToInt32(Id);
-            var grade = db.Grades.FirstOrDefault(g => g.Id == tango);
-            var academyYear =
-                db.AcademicYears.Select(x => x).Include("Grade").FirstOrDefault(x => x.Grade.Id.Equals(grade.Id));
-    
-            var query =
-                from a in db.Enrolls
-                join b in db.Students on a.Student.Id equals b.Id
-                where a.AcademicYear.Id == academyYear.Id
-                select new
-                {
-                    Field1 = a.Student.FullName,
-                    Field2 = a.Student.Id
-                };
-
-            var list = query.Select(c => new SelectListItem()
-            {
-                Text = c.Field1,
-                Value = c.Field2.ToString()
-            }).ToList();
-
-            if (list.Count <= 0)
-            {
-                list.Add(new SelectListItem() { Value = "0", Text = "No hay Alumnos" });
-            }
-
+            var list = LoadListStudent(Convert.ToInt32(Id));
             return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
         }
 
@@ -198,16 +246,9 @@ namespace Mhotivo.Controllers
                 if (toEdit.NotificationType != null)
                     toEditModel.NotificationTypeId = toEdit.NotificationType.NotificationTypeId;
 
-                if (toEdit.NotificationType != null && toEdit.NotificationType.NotificationTypeId == 4)
-                {
-                    toEditModel.IdGradeAreaUserGeneralSelected = 0;
-                    toEditModel.StudentId = toEdit.IdGradeAreaUserGeneralSelected;
-                }
-                else
-                {
-                    toEditModel.IdGradeAreaUserGeneralSelected = toEdit.IdGradeAreaUserGeneralSelected;   
-                }
-                
+                toEditModel.IdGradeAreaUserGeneralSelected = toEdit.IdGradeAreaUserGeneralSelected;
+
+                toEditModel.StudentId = toEdit.StudentId;
             }
             LoadTypeNotification(ref toEditModel);
 
@@ -232,7 +273,8 @@ namespace Mhotivo.Controllers
                     toEdit.NotificationName = eventNotification.NotificationName;
                     toEdit.Message = eventNotification.Message;
 
-                    toEdit.IdGradeAreaUserGeneralSelected = toEdit.NotificationType.NotificationTypeId == 4 ? eventNotification.StudentId : eventNotification.IdGradeAreaUserGeneralSelected;
+                    toEdit.IdGradeAreaUserGeneralSelected = eventNotification.IdGradeAreaUserGeneralSelected;
+                    toEdit.StudentId = eventNotification.StudentId;
                 }
 
                 _notificationRepository.Update(toEdit);
