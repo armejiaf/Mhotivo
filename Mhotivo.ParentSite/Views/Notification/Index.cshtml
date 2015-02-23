@@ -10,24 +10,23 @@
  @foreach (var item in Model)
  {
      <div style="margin-left: 100px; margin-right: 100px" >
-         <div >
-             <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+         <div class="nicdark_textevidence" >
+             <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius nicdark_shadow">
              <div class="nicdark_size_big">
                  <p class="white">
                      <i class="icon-calendar-1 nicdark_marginright10"></i>@item.Created.ToShortDateString() <span class="nicdark_margin010">·</span> 
                      <i class="icon-user-1 nicdark_marginright10"></i>ADMIN <span class="nicdark_margin010">·</span>                         
                  </p>
              </div>
-             <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
+             <i class="icon-info-outline nicdark_iconbg right medium grey"></i>
          </div>
          <br/>
          <div class="nicdark_space20"></div>
          <h2 class="subtitle greydark nicdark_marginleft10">@item.NotificationName</h2>
          <div class="nicdark_space20"></div>
-     
-         <p class="nicdark_marginleft10" style="font-size: 16px">
-             @item.Message
-         </p>
+             <div class="nicdark_marginleft10 " style="font-size: 16px">
+                 @Html.Raw(@item.Message);
+             </div>
          </div>
      </div>
      
