@@ -43,7 +43,7 @@
             @Html.LabelFor(model => model.NotificationTypeSelectList)
         </div>
         <div class="controls">
-             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione",new { id = "NotificationType"})
+             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new { id = "NotificationType" })
         </div>
     </div>
     
@@ -64,7 +64,7 @@
         <div class="controls">
             @Html.CheckBoxFor(model => model.SendingEmail)
         </div>
-    </div>
+    </div>@*
    
     <div class="control-group">
         <div class="control-label">
@@ -73,10 +73,14 @@
         <div class="controls">
             @Html.TextAreaFor(model => model.Message)
         </div>
-    </div>
+    </div>*@
+    
+    <div id="htmlMessage">@Html.DisplayFor(model => model.Message)</div>
     
     @Html.HiddenFor(model => model.Message)
     @Html.HiddenFor(model => model.Created)
+        
+    <div class="space"></div>
 
     <div class="space"></div>
 
@@ -147,10 +151,20 @@
         //alert("Handler for .submit() called. : <br/>" + $('#Message').val());
         //event.preventDefault();
     });
+
+    $('#NotificationType').change(function () {
+        $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
+            var items = '<option>Seleccione</option>';
+            $.each(data, function (i, optionavailable) {
+                items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
+            });
+            $('#AddressedTo').html(items);
+        });
+    });
 </script>
 
 
-@Scripts.Render("~/bundles/jquery")
+@*@Scripts.Render("~/bundles/jquery")
 <script type="text/jscript">
     $(function () {
         $('#NotificationType').change(function () {
@@ -163,4 +177,4 @@
             });
         });
     });
-</script>
+</script>*@

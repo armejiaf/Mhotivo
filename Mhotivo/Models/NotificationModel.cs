@@ -19,22 +19,25 @@ namespace Mhotivo.Models
         public string NotificationName { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        [Display(Name = "Mensaje")]
+        //[Display(Name = "Mensaje")]
+        [AllowHtml]
         public string Message { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         [Display(Name = "Tipo de Notificacion")]
         public SelectList NotificationTypeSelectList { get; set; }
 
+        [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
         [Display(Name = "Tipo de Notificacion")]
         public SelectList NotificationTypeOpionSelectList { get; set; }
         
         [Display(Name = "Enviar Notificacion por correo?")]
         public bool SendingEmail { get; set; }
 
-
+        [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
         public int IdGradeAreaUserGeneralSelected { get; set; }//id de grado,area,user seleccionado
-        
+
+        [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         public int NotificationTypeId { get; set; } // For the the selected Product
         
         public DateTime Created { get; set; }

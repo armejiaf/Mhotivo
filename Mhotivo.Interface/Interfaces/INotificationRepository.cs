@@ -17,7 +17,7 @@ namespace Mhotivo.Interface.Interfaces
         void Delete(Notification itemToDelete);
         void SaveChanges();
 
-        IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear);
+        IQueryable<Notification> GetGeneralNotifications(int currentAcademicYear);
 
     }
 }

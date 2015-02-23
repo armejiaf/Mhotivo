@@ -24,6 +24,7 @@ namespace Mhotivo.Controllers
         private readonly ISessionManagement _sessionManagement;
         private readonly IUserRepository _userRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly INotificationTypeRepository _notificationTypeRepository;
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
 
@@ -40,6 +41,9 @@ namespace Mhotivo.Controllers
             var list = new List<SelectListItem>().ToList();
             switch (model.NotificationTypeId.ToString(CultureInfo.InvariantCulture))
             {
+                case "1":
+                    list.Add(new SelectListItem() { Value = "0", Text = "N/A" });
+                    break;
                 case "2":
                     list = db.Areas.Select(c => new SelectListItem()
                     {
@@ -66,11 +70,12 @@ namespace Mhotivo.Controllers
             model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text", model.IdGradeAreaUserGeneralSelected);
         }
 
-        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository)
+        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository,INotificationTypeRepository notificationTypeRepository) 
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
             _notificationRepository = notificationRepository;
+            _notificationTypeRepository = notificationTypeRepository;
             //_gradeRepository = gradeRepository;
             //_areaReporsitory = areaReporsitory;
             _viewMessageLogic = new ViewMessageLogic(this);
@@ -127,6 +132,9 @@ namespace Mhotivo.Controllers
             var list = new List<SelectListItem>();
             switch (Id)
             {
+                case "1":
+                    list.Add(new SelectListItem(){Value = "0",Text = "N/A"});
+                    break;
                 case "2":
                     list = db.Areas.Select(c => new SelectListItem()
                     {
@@ -172,9 +180,12 @@ namespace Mhotivo.Controllers
             //var toEdit = db.Notifications.FirstOrDefault(x => x.Id.Equals(id));
             var toEditModel = Mapper.Map<NotificationModel>(toEdit);
             if (toEdit != null)
+            {
                 if (toEdit.NotificationType != null)
                     toEditModel.NotificationTypeId = toEdit.NotificationType.NotificationTypeId;
 
+                toEditModel.IdGradeAreaUserGeneralSelected = toEdit.IdGradeAreaUserGeneralSelected;
+            }
             LoadTypeNotification(ref toEditModel);
 
             return View(toEditModel);
@@ -188,11 +199,20 @@ namespace Mhotivo.Controllers
         {
             try
             {
-                var notificationIdentity = Mapper.Map<Notification>(eventNotification);
-                
-                db.Entry(notificationIdentity.NotificationType).State = EntityState.Modified;
-                db.Entry(notificationIdentity).State = EntityState.Modified;
-                db.SaveChanges();
+                var toEdit = _notificationRepository.Query(x => x).Include("NotificationType").FirstOrDefault(x => x.Id.Equals(id));
+
+                var notificationType = _notificationTypeRepository.First(c => c.NotificationTypeId == eventNotification.NotificationTypeId);
+
+                if (toEdit != null)
+                {
+                    toEdit.NotificationType = notificationType;
+                    toEdit.NotificationName = eventNotification.NotificationName;
+                    toEdit.Message = eventNotification.Message;
+                    toEdit.IdGradeAreaUserGeneralSelected = eventNotification.IdGradeAreaUserGeneralSelected;
+                }
+
+                _notificationRepository.Update(toEdit);
+                _notificationRepository.SaveChanges();
                 _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.",
                     ViewMessageType.SuccessMessage);
                 //}

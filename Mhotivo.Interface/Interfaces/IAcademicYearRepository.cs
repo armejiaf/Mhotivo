@@ -14,7 +14,7 @@ namespace Mhotivo.Interface.Interfaces
         IQueryable<AcademicYear> Filter(Expression<Func<AcademicYear, bool>> expression);
         AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse, bool updateGrade, bool updateTeacher);
         AcademicYear Delete(long id);
-        AcademicYear GetCurrentAcademicYear();
+        int GetCurrentAcademicYear();
         void SaveChanges();
     }
 }

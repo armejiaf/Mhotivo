@@ -24,6 +24,7 @@
     <p class="text-error">
         @Html.ValidationMessageFor(model => model.NotificationName)
         @Html.ValidationMessageFor(model => model.Message) 
+        @Html.ValidationMessageFor(model => model.NotificationTypeId) 
     </p>
 
     <div class="control-group">
@@ -40,23 +41,23 @@
             @Html.LabelFor(model => model.NotificationTypeSelectList)
         </div>
         <div class="controls">
-            @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione",new { id = "NotificationType"})
+            @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new {id = "NotificationType"})
             @*@Html.DropDownList("NotificationType", Model.NotificationTypeSelectList, "Seleccione", new { id = "NotificationType" })*@
         </div>
     </div>
 
-    
+
     <div class="control-group">
         <div class="control-label">
             @Html.Label("Dirigido a:")
         </div>
         <div class="controls">
-            @Html.DropDownListFor(model => model.IdGradeAreaUserGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione",new { id = "AddressedTo"})
+            @Html.DropDownListFor(model => model.IdGradeAreaUserGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new {id = "AddressedTo"})
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
     </div>
-    
-    
+
+
         @*<p>
         <input type="submit" value="Create" id="SubmitId" />
     </p>*@
@@ -70,16 +71,21 @@
         </div>
     </div>
 
+    <div id="htmlMessage">Write Your message Here! <br/>You can use tags to make your template more dynamic<br/>Tags Example: ${name}</div>
 
-    //<div id="htmlMessage">Write Your message Here! <br/>You can use tags to make your template more dynamic<br/>Tags Example: ${name}</div>
-    <div class="control-group">
+    @Html.HiddenFor(model => model.Message)
+
+    <div class="space"></div>
+
+
+    @*<div class="control-group">
         <div class="control-label">
             @Html.LabelFor(model => model.Message)
         </div>
         <div class="controls">
             @Html.TextAreaFor(model => model.Message)
         </div>
-    </div>
+    </div>*@
 
     <div class="space"></div>
 
@@ -131,7 +137,6 @@
             }
         });
         
-
         $('#htmlMessage').summernote();
     });
 
@@ -155,11 +160,20 @@
         //event.preventDefault();
     });
 
+    $('#NotificationType').change(function () {
+        $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
+            var items = '<option>Seleccione</option>';
+            $.each(data, function (i, optionavailable) {
+                items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
+            });
+            $('#AddressedTo').html(items);
+        });
+    });
 
 </script>
 
 
-@Scripts.Render("~/bundles/jquery")
+@*@Scripts.Render("~/bundles/jquery")
 <script type="text/jscript">
     $(function () {
         $('#NotificationType').change(function () {
@@ -172,5 +186,5 @@
             });
         });
     });
-</script>
+</script>*@
 
