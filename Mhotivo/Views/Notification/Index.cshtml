@@ -31,7 +31,8 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model) {
+            @foreach (var item in Model)
+            {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
@@ -39,15 +40,18 @@ else
                         <a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"  ><i class="icon-edit bigger-120"></i></a>
                         
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                        @using (Html.BeginForm("Delete", "Notification", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
-                            new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
+                        @using (Html.BeginForm("Delete", "Notification", new {id = Html.DisplayFor(modelItem => item.Id)}, FormMethod.Post,
+                            new {id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none"}))
+                        {
+                        }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                                value="¿Realmente desea eliminar la notificación: @Html.DisplayFor(modelItem => item.NotificationName) - creada: @Html.DisplayFor(modelItem => item.Created)?" />
                     </td>
                 </tr>
             }
         </tbody>
-    </table>    
+    </table>
+    
 }
 
 <!-- Modal -->

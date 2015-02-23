@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
@@ -25,6 +26,7 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly INotificationTypeRepository _notificationTypeRepository;
+        
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
 
@@ -37,38 +39,15 @@ namespace Mhotivo.Controllers
             }).ToList();
             model.NotificationTypeSelectList = new SelectList(items, "Value", "Text", model.NotificationTypeId);
 
-
-            var list = new List<SelectListItem>().ToList();
-            switch (model.NotificationTypeId.ToString(CultureInfo.InvariantCulture))
-            {
-                case "1":
-                    list.Add(new SelectListItem() { Value = "0", Text = "N/A" });
-                    break;
-                case "2":
-                    list = db.Areas.Select(c => new SelectListItem()
-                    {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    }).ToList();
-                    break;
-                case "3":
-                    list = db.Grades.Select(c => new SelectListItem()
-                    {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    }).ToList();
-                    break;
-                case "4":
-                    list = db.Users.Select(c => new SelectListItem()
-                    {
-                        Text = c.DisplayName,
-                        Value = c.Id.ToString()
-                    }).ToList();
-                    break;
-            }
-
-            model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text", model.IdGradeAreaUserGeneralSelected);
+            var list = GetListOpcionTypeNotification(model.NotificationTypeId.ToString(CultureInfo.InvariantCulture));
+            model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text",
+                model.IdGradeAreaUserGeneralSelected);
+            
+            var listStudent = new List<SelectListItem>();
+            listStudent.Add(new SelectListItem() {Value = "0", Text = "N/A"});
+            model.StudentOptionSelectList = new SelectList(listStudent, "Value", "Text", model.StudentId);
         }
+
 
         public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository,INotificationTypeRepository notificationTypeRepository) 
         {
@@ -87,7 +66,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var notifications = db.Notifications.Where(x => true);
+            var notifications = db.Notifications.Where(x => true).OrderByDescending(i=>i.Created);
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
             
             return View(notificationsModel);
@@ -113,6 +92,10 @@ namespace Mhotivo.Controllers
             var notificationType = db.NotificationTypes.FirstOrDefault(c => c.NotificationTypeId ==eventNotification.NotificationTypeId);
             notificationIdentity.NotificationType = notificationType;
 
+            if (notificationType != null && notificationType.NotificationTypeId == 4)
+            {
+                notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
+            }
             //if (AddressedTo.IsEmpty() || AddressedTo == null)
             //    AddressedTo = "0";
 
@@ -129,11 +112,48 @@ namespace Mhotivo.Controllers
 
         public JsonResult OptiontList(string Id)
         {
-            var list = new List<SelectListItem>();
-            switch (Id)
+            var list = GetListOpcionTypeNotification(Id);
+            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ListStudent(string Id)
+        {
+            int tango = Convert.ToInt32(Id);
+            var grade = db.Grades.FirstOrDefault(g => g.Id == tango);
+            var academyYear =
+                db.AcademicYears.Select(x => x).Include("Grade").FirstOrDefault(x => x.Grade.Id.Equals(grade.Id));
+    
+            var query =
+                from a in db.Enrolls
+                join b in db.Students on a.Student.Id equals b.Id
+                where a.AcademicYear.Id == academyYear.Id
+                select new
+                {
+                    Field1 = a.Student.FullName,
+                    Field2 = a.Student.Id
+                };
+
+            var list = query.Select(c => new SelectListItem()
+            {
+                Text = c.Field1,
+                Value = c.Field2.ToString()
+            }).ToList();
+
+            if (list.Count <= 0)
+            {
+                list.Add(new SelectListItem() { Value = "0", Text = "No hay Alumnos" });
+            }
+
+            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
+        }
+
+        private IEnumerable GetListOpcionTypeNotification(string id)
+        {
+            var list=new List<SelectListItem>();
+            switch (id)
             {
                 case "1":
-                    list.Add(new SelectListItem(){Value = "0",Text = "N/A"});
+                    list.Add(new SelectListItem() { Value = "0", Text = "N/A" });
                     break;
                 case "2":
                     list = db.Areas.Select(c => new SelectListItem()
@@ -143,21 +163,15 @@ namespace Mhotivo.Controllers
                     }).ToList();
                     break;
                 case "3":
+                case "4":
                     list = db.Grades.Select(c => new SelectListItem()
                     {
                         Text = c.Name,
                         Value = c.Id.ToString()
                     }).ToList();
                     break;
-                case "4":
-                    list = db.Users.Select(c => new SelectListItem()
-                    {
-                        Text = c.DisplayName,
-                        Value = c.Id.ToString()
-                    }).ToList();
-                    break;
             }
-            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
+            return list;
         }
 
         public JsonResult GetGroupsAndEmails(string filter)
@@ -184,7 +198,16 @@ namespace Mhotivo.Controllers
                 if (toEdit.NotificationType != null)
                     toEditModel.NotificationTypeId = toEdit.NotificationType.NotificationTypeId;
 
-                toEditModel.IdGradeAreaUserGeneralSelected = toEdit.IdGradeAreaUserGeneralSelected;
+                if (toEdit.NotificationType != null && toEdit.NotificationType.NotificationTypeId == 4)
+                {
+                    toEditModel.IdGradeAreaUserGeneralSelected = 0;
+                    toEditModel.StudentId = toEdit.IdGradeAreaUserGeneralSelected;
+                }
+                else
+                {
+                    toEditModel.IdGradeAreaUserGeneralSelected = toEdit.IdGradeAreaUserGeneralSelected;   
+                }
+                
             }
             LoadTypeNotification(ref toEditModel);
 
@@ -208,7 +231,8 @@ namespace Mhotivo.Controllers
                     toEdit.NotificationType = notificationType;
                     toEdit.NotificationName = eventNotification.NotificationName;
                     toEdit.Message = eventNotification.Message;
-                    toEdit.IdGradeAreaUserGeneralSelected = eventNotification.IdGradeAreaUserGeneralSelected;
+
+                    toEdit.IdGradeAreaUserGeneralSelected = toEdit.NotificationType.NotificationTypeId == 4 ? eventNotification.StudentId : eventNotification.IdGradeAreaUserGeneralSelected;
                 }
 
                 _notificationRepository.Update(toEdit);

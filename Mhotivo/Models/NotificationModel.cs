@@ -42,6 +42,11 @@ namespace Mhotivo.Models
         
         public DateTime Created { get; set; }
 
+        [Required(ErrorMessage = "Debe Ingresar Estudiante")]
+        [Display(Name = "Estudiante")]
+        public SelectList StudentOptionSelectList { get; set; }
 
+        [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
+        public int StudentId { get; set; }//id de grado,area,user seleccionado
     }
 }
