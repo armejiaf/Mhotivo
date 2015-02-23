@@ -56,6 +56,17 @@
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
     </div>
+    
+      <div class="control-group">
+        <div class="control-label">
+            @Html.Label("Dirigido a:")
+        </div>
+        <div class="controls">
+            @Html.DropDownListFor(model => model.StudentId, Model.StudentOptionSelectList, "Seleccione Estudent", new {id = "StudentTo"})
+            @*<select id="AddressedTo" name="AddressedTo"></select>*@
+        </div>
+    </div>
+
 
     <div class="control-group">
         <div class="control-label">
@@ -160,6 +171,18 @@
             });
             $('#AddressedTo').html(items);
         });
+    });
+
+    $('#AddressedTo').change(function () {
+        if ($('#NotificationType').val() == 4) {
+            $.getJSON('/Notification/ListStudent/' + $('#AddressedTo').val(), function (data) {
+                var items = '<option>Seleccione</option>';
+                $.each(data, function (i, optionavailable) {
+                    items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
+                });
+                $('#StudentTo').html(items);
+            });
+        }
     });
 </script>
 
