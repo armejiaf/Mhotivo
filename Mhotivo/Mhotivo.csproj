@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502231821572_ModificationNotification.cs" />
+    <Compile Include="Migrations\201502231821572_ModificationNotification.Designer.cs">
+      <DependentUpon>201502231821572_ModificationNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -538,6 +542,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502231821572_ModificationNotification.resx">
+      <DependentUpon>201502231821572_ModificationNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
