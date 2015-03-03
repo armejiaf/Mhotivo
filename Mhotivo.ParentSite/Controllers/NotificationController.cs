@@ -29,6 +29,7 @@ namespace Mhotivo.ParentSite.Controllers
                 var notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear);
 
                 var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+                notificationsModel=notificationsModel.OrderByDescending(x => x.Created);
 
                 return View(notificationsModel);
             }

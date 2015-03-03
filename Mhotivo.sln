@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo", "Mhotivo\Mhotivo.csproj", "{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Tests", "Mhotivo.Tests\Mhotivo.Tests.csproj", "{BA54C688-A29C-4C8D-AD9F-8BBC53639734}"
