@@ -314,6 +314,39 @@ namespace Mhotivo.Controllers
             }
         }
 
+        //[HttpPost]
+        //public ActionResult Approve(int id)
+        //{
+        //    try
+        //    {
+        //        var toApprove= _notificationRepository.GetById(id);
+        //        if (toApprove != null)
+        //        {
+        //            toApprove.Approved = true;
+        //            _notificationRepository.Update(toApprove);
+        //            _notificationRepository.SaveChanges();
+
+        //            _viewMessageLogic.SetNewMessage("Notificación Aprobada", "La notificación fue aprobada exitosamente.",
+        //            ViewMessageType.SuccessMessage);
+        //        }
+                
+        //    }
+        //    catch
+        //    {
+        //        _viewMessageLogic.SetNewMessage("Error en aprobacion",
+        //            "La notificación no pudo ser aprobada correctamente, por favor intente nuevamente.",
+        //            ViewMessageType.ErrorMessage);
+        //    }
+        //    IQueryable<Group> g = db.Groups.Select(x => x);
+        //    return RedirectToAction("Index", g);
+        //}
+
+
+        //public bool UserCanApprove()
+        //{
+        //    //var loggedUser = 
+        //    return true;
+        //}
 
         public bool SendEmailForGeneralNotifications(AcademicYear currentAcademicYear)
         {

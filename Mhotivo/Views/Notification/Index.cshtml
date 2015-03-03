@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Mhotivo.Models.NotificationModel>
+﻿@using Mhotivo.Controllers
+@model IEnumerable<Mhotivo.Models.NotificationModel>
 
 @{
     ViewBag.Title = "Notificaciones";
@@ -66,6 +67,12 @@ else
 }
 
 <a href="/Notification/Add/"><span class="btn btn-small btn-primary active">Agregar Notificación</span></a>
+
+@*@if (@)
+{
+    <a href="/Notification/Approve/"><span class="btn btn-small btn-primary active">Aprobar Notificaciones</span></a>
+}*@
+    
 <br/>
 <br/>
 
