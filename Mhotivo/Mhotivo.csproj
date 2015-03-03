@@ -182,17 +182,10 @@
     </Compile>
     <Compile Include="Logic\AcademicYearLogic.cs" />
     <Compile Include="Logic\ISessionManagement.cs" />
+    <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201502162215487_20150216.cs" />
-    <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
-      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502231821572_ModificationNotification.cs" />
-    <Compile Include="Migrations\201502231821572_ModificationNotification.Designer.cs">
-      <DependentUpon>201502231821572_ModificationNotification.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -518,6 +511,7 @@
     <Content Include="Views\NotificationType\Index.cshtml" />
     <Content Include="Views\NotificationType\Edit.cshtml" />
     <Content Include="Views\NotificationType\Add.cshtml" />
+    <Content Include="Views\Notification\Approve.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -538,14 +532,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
-      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502231821572_ModificationNotification.resx">
-      <DependentUpon>201502231821572_ModificationNotification.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
