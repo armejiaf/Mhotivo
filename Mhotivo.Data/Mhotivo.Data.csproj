@@ -72,6 +72,7 @@
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Meister.cs" />
     <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\NotificationComments.cs" />
     <Compile Include="Entities\NotificationType.cs" />
     <Compile Include="Entities\Parent.cs" />
     <Compile Include="Entities\Pensum.cs" />

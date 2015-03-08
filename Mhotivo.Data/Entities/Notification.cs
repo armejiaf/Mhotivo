@@ -24,5 +24,6 @@ namespace Mhotivo.Data.Entities
         public DateTime Created { get; set; }
         
         public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<NotificationComments> NotificationComments { get; set; }
     }
 }

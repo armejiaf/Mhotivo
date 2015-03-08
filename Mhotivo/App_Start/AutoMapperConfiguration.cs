@@ -23,6 +23,7 @@ namespace Mhotivo
 
             Mapper.CreateMap<NotificationType, NotificationTypeModel>();
             Mapper.CreateMap<NotificationTypeModel, NotificationType>();
+            
         }
     }
 }

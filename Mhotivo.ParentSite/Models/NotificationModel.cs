@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Providers.Entities;
+using User = System.Web.Providers.Entities.User;
 
 namespace Mhotivo.ParentSite.Models
 {
@@ -10,10 +10,13 @@ namespace Mhotivo.ParentSite.Models
     {
         public long Id { get; set; }
         public string NotificationName { get; set; }
-        public User NotificationCreator { get; set; }
+        public string NotificationCreator { get; set; }
         //public NotificationType NotificationTypeId { get; set; }
 
         public string Message { get; set; }
         public DateTime Created { get; set; }
+        public int CommentsAmount { get; set; }
+        
+        
     }
 }

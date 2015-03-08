@@ -5,6 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script type="text/javascript">
+    function AddComment(notificationId) {
+       
+        var textBox = document.getElementById("notificationId");
+        textBox.value = notificationId;
+
+        //$('#AddComment').modal('toggle');
+        //$('#AddComment').modal('show');
+        //$('#AddComment').modal('hide');
+    }
+
+</script>
+
 <div class="nicdark_space50"></div>
 
  @foreach (var item in Model)
@@ -12,24 +25,59 @@
      <div style="margin-left: 100px; margin-right: 100px" >
          <div class="nicdark_textevidence" >
              <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius nicdark_shadow">
-             <div class="nicdark_size_big">
-                 <p class="white">
-                     <i class="icon-calendar-1 nicdark_marginright10"></i>@item.Created.ToShortDateString() <span class="nicdark_margin010">·</span> 
-                     <i class="icon-user-1 nicdark_marginright10"></i>ADMIN <span class="nicdark_margin010">·</span>                         
-                 </p>
+                 <div class="nicdark_size_big">
+                     <p class="white">
+                         <i class="icon-calendar-1 nicdark_marginright10"></i> @item.Created.ToShortDateString() <span class="nicdark_margin010">·</span> 
+                         <i class="icon-user-1 nicdark_marginright10"></i> ADMIN <span class="nicdark_margin010">·</span> 
+                         
+                         <i class="icon-chat nicdark_marginright10"></i>
+                         @Html.ActionLink(" "+item.CommentsAmount+"  COMENTARIO(S)","Index","NotificationComments",new {@notificationId=item.Id},new {@class="white"})
+                         <span class="nicdark_margin010">·</span>                    
+                     </p>
+                 </div>
+                 <i class="icon-info-outline nicdark_iconbg right medium grey"></i>
              </div>
-             <i class="icon-info-outline nicdark_iconbg right medium grey"></i>
-         </div>
-         <br/>
-         <div class="nicdark_space20"></div>
-         <h2 class="subtitle greydark nicdark_marginleft10">@item.NotificationName</h2>
-         <div class="nicdark_space20"></div>
-             <div class="nicdark_marginleft10 " style="font-size: 16px">
-                 @Html.Raw(@item.Message);
+             <br/>
+             <div class="nicdark_bg_grey nicdark_radius nicdark_shadow grey small subtitle">
+                 <div class="nicdark_space20"></div>
+                 <h2 class="subtitle greydark nicdark_marginleft10">@item.NotificationName</h2>
+                 <div class="nicdark_space20"></div>
+                 <div class="nicdark_marginleft10" style="font-size: 16px">
+                     @Html.Raw(@item.Message)
+                 </div>
+                 <br/>
+                 <br/>
+                 <div class="nicdark_space10 "></div>
              </div>
-         </div>
-     </div>
-     
-     <div class="nicdark_space50"></div>
-    
+             <a onclick="AddComment(@item.Id)" href="#AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
+             
+             <div class="nicdark_space50"></div>
+            
+         </div>  
+       </div>
  }
+
+<div id="AddComment" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250">
+     <div class="nicdark_textevidence nicdark_bg_green nicdark_radius_top">
+    <div style="margin: 15px">
+        <h4 class="white">Agregar Comentario</h4>
+    </div>
+    </div>
+    <div class="nicdark_margin40">
+        @using (@Html.BeginForm("AddCommentToNotification", "Notification", FormMethod.Post))
+        {
+            <textarea rows="3" class="nicdark_bg_grey2 nicdark_radius nicdark_shadow greydark responsive" placeholder="COMENTARIO" id="commentText" name="commentText" style="max-height: 80px; max-width: 315px; min-width: 30px; min-height: 30px; width: 315px; height: 80px"></textarea>
+            
+            <div class="nicdark_space20"></div>
+            <input type="submit" class="nicdark_btn nicdark_bg_red small nicdark_shadow nicdark_radius white right" value="Enviar"/>
+            <div class="nicdark_space50"></div>
+            
+            <input type="text" class="mfp-hide" id="notificationId" name="notificationId" value=""/>
+        }
+    </div>
+    
+
+</div>
+
+ 
+

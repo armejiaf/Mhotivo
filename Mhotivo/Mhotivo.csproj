@@ -546,6 +546,9 @@
     <EmbeddedResource Include="Migrations\201502231821572_ModificationNotification.resx">
       <DependentUpon>201502231821572_ModificationNotification.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502280608071_CreationOfNotificationCommentsEntity.resx">
+      <DependentUpon>201502280608071_CreationOfNotificationCommentsEntity.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
