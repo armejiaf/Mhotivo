@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Web.Mvc;
 //using Mhotivo.App_Data;
@@ -28,7 +29,7 @@ namespace Mhotivo.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly INotificationTypeRepository _notificationTypeRepository;
         private static string searchText = string.Empty;
-        
+
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
 
@@ -70,14 +71,19 @@ namespace Mhotivo.Controllers
                     };
 
 
-                if (query.Any())
+                try
                 {
-                    list = query.Select(c => new SelectListItem()
+                    if (query.Any())
                     {
-                        Text = c.Field1,
-                        Value = c.Field2.ToString()
-                    }).ToList();
+                        list = query.Select(c => new SelectListItem()
+                        {
+                            Text = c.Field1,
+                            Value = c.Field2.ToString()
+                        }).ToList();
+                    }
                 }
+                catch (TargetException ex)
+                { }
             }
             if (list.Count <= 0)
             {
@@ -88,7 +94,7 @@ namespace Mhotivo.Controllers
         }
 
 
-        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository,INotificationTypeRepository notificationTypeRepository) 
+        public NotificationController(ISessionManagement sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
@@ -110,9 +116,9 @@ namespace Mhotivo.Controllers
                     .OrderByDescending(i => i.Created)
                     .Take(10);
 
-            
+
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
-            
+
             return View(notificationsModel);
         }
 
@@ -152,7 +158,7 @@ namespace Mhotivo.Controllers
         {
             var notification = new NotificationModel();
             LoadTypeNotification(ref notification);
-    
+
             return View("Add", notification);
         }
 
@@ -168,6 +174,17 @@ namespace Mhotivo.Controllers
 
             notificationIdentity.StudentId = eventNotification.StudentId;
             notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.IdGradeAreaUserGeneralSelected;
+            notificationIdentity.Users = new List<User>();
+
+            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.NotificationTypeId == 4)
+            {
+                AddUsersToPersonalNotification(notificationIdentity);
+            }
+
+            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.NotificationTypeId == 3)
+            {
+                AddUsersToGradeNotification(notificationIdentity);
+            }
 
             //if (AddressedTo.IsEmpty() || AddressedTo == null)
             //    AddressedTo = "0";
@@ -181,6 +198,77 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
             return RedirectToAction("Index");
+        }
+
+        private void AddUsersToGradeNotification(Notification notificationIdentity)
+        {
+            var students = db.Enrolls.Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
+                && x.AcademicYear.Year.Year == DateTime.Now.Year).Select
+                (x => x.Student).ToList();
+
+            if (students.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var student in students)
+            {
+                long notificationParentId = db.Students.Where(x => x.Id == student.Id
+                                                            && x.Tutor1 != null).Select(x => x.Tutor1.Id).FirstOrDefault();
+                if (notificationParentId != 0)
+                {
+                    User parents = db.Users.FirstOrDefault(x => x.Id == (int)notificationParentId);
+                    if (parents != null)
+                    {
+                        notificationIdentity.Users.Add(parents);
+                    }
+
+                }
+
+                notificationParentId = db.Students.Where(x => x.Id == student.Id
+                                                                && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
+                                                                (x => x.Tutor1.Id).FirstOrDefault();
+
+                if (notificationParentId != 0)
+                {
+                    User parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId);
+                    if (parents != null)
+                    {
+                        notificationIdentity.Users.Add(parents);
+                    }
+                }
+            }
+
+
+        }
+
+        private void AddUsersToPersonalNotification(Notification notificationIdentity)
+        {
+            long notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
+                                                            && x.Tutor1 != null).Select(x => x.Tutor1.Id).FirstOrDefault();
+            if (notificationParentId != 0)
+            {
+                User parents = db.Users.FirstOrDefault(x => x.Id == (int)notificationParentId);
+                if (parents != null)
+                {
+                    notificationIdentity.Users.Add(parents);
+                }
+
+            }
+
+            notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
+                                                            && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
+                                                            (x => x.Tutor1.Id).FirstOrDefault();
+
+            if (notificationParentId != 0)
+            {
+                User parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId);
+                if (parents != null)
+                {
+                    notificationIdentity.Users.Add(parents);
+                }
+            }
+
         }
 
         public JsonResult OptiontList(string Id)
@@ -197,7 +285,7 @@ namespace Mhotivo.Controllers
 
         private IEnumerable GetListOpcionTypeNotification(string id)
         {
-            var list=new List<SelectListItem>();
+            var list = new List<SelectListItem>();
             switch (id)
             {
                 case "1":
@@ -314,6 +402,39 @@ namespace Mhotivo.Controllers
             }
         }
 
+        //[HttpPost]
+        //public ActionResult Approve(int id)
+        //{
+        //    try
+        //    {
+        //        var toApprove= _notificationRepository.GetById(id);
+        //        if (toApprove != null)
+        //        {
+        //            toApprove.Approved = true;
+        //            _notificationRepository.Update(toApprove);
+        //            _notificationRepository.SaveChanges();
+
+        //            _viewMessageLogic.SetNewMessage("Notificación Aprobada", "La notificación fue aprobada exitosamente.",
+        //            ViewMessageType.SuccessMessage);
+        //        }
+
+        //    }
+        //    catch
+        //    {
+        //        _viewMessageLogic.SetNewMessage("Error en aprobacion",
+        //            "La notificación no pudo ser aprobada correctamente, por favor intente nuevamente.",
+        //            ViewMessageType.ErrorMessage);
+        //    }
+        //    IQueryable<Group> g = db.Groups.Select(x => x);
+        //    return RedirectToAction("Index", g);
+        //}
+
+
+        //public bool UserCanApprove()
+        //{
+        //    //var loggedUser = 
+        //    return true;
+        //}
 
         public bool SendEmailForGeneralNotifications(AcademicYear currentAcademicYear)
         {

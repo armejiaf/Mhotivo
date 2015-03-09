@@ -69,10 +69,43 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Notification> GetGeneralNotifications(int currentAcademicYear)
         {   
             var generalNotifications = _context.Notifications.Where(
-                    n => n.Created.Year==currentAcademicYear && n.NotificationType.NotificationTypeId == 1 && n.Approved==true);
+                    n => n.Created.Year==currentAcademicYear && n.NotificationType.NotificationTypeId == 1 && n.Approved);
 
             return generalNotifications;
         }
+
+        public IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id)
+        {
+            var gradeNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                     x.NotificationType.NotificationTypeId == 3 &&
+                     x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+
+            return gradeNotifications;
+        }
+
+        public IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
+        {
+
+            var personalNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                    x.NotificationType.NotificationTypeId == 4 &&
+                    x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+
+            return personalNotifications;
+        }
+
+        public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)
+        {
+
+            var areaNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                    x.NotificationType.NotificationTypeId == 2 &&
+                    x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+
+            return areaNotifications;
+        }
+
 
         public void Dispose()
         {
