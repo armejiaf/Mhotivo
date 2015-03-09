@@ -12,25 +12,29 @@ namespace Mhotivo.ParentSite.Controllers
     public class NotificationCommentsController : Controller
     {
         private readonly INotificationRepository _notificationRepository;
-
+           
             public NotificationCommentsController(INotificationRepository notificationRepository)
             {
                 _notificationRepository = notificationRepository;
+                
             }
         //
         // GET: /NotificationComments/
         [HttpGet]
         public ActionResult Index(int notificationId)
         {
+            
             var selectedNotification = _notificationRepository.GetById(notificationId);
-
+            
             var selectedNotificationModel = Mapper.Map<NotificationModel>(selectedNotification); 
 
             var commentsList = selectedNotification.NotificationComments.ToList();
-            var commentsModelList = commentsList.Select(comment => new NotificationCommentsModel
+            List<NotificationCommentsModel> commentsModelList;
+
+            commentsModelList = commentsList.Select(comment => new NotificationCommentsModel
             {
-                CommentText = comment.CommentText, CreationDate = comment.CreationDate //,
-                //Parent = comment.Parent.FullName
+                CommentText = comment.CommentText, CreationDate = comment.CreationDate,
+                Parent = selectedNotification.NotificationComments.Where(x=>x.Id==comment.Id).FirstOrDefault().Parent.FullName
             }).ToList();
 
             selectedNotificationModel.CommentsAmount = commentsList.Count;

@@ -1,49 +1,45 @@
-﻿@model IEnumerable<Mhotivo.Models.DisplayBenefactorModel>
-
+﻿@model IEnumerable<Mhotivo.Data.Entities.Benefactor>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
-
 <h2>Beneficiarios Registrados</h2>
-
-<a class="toAdd" data-toggle="modal" role="button" data-id="Benefactor/Add" ><span class="btn btn-small btn-primary active">Agregar Beneficiarios</span></a>
-
-@if(!Model.Any())
+<a class="toAdd" data-toggle="modal" role="button" data-id="Benefactor/Add"><span class="btn btn-small btn-primary active">Agregar Beneficiarios</span></a>
+@if (!Model.Any())
 {
     <div class="well well-large">
-		<h4 class="blue">Tabla Vacia</h4>
-		No hay registros a mostrar.
-	</div>
+        <h4 class="blue">Tabla Vacia</h4>
+        No hay registros a mostrar.
+    </div>
 }
 else
 {
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
-	    <thead>
-		    <tr>
-				<th>@Html.DisplayNameFor(model => model.UrlPicture)</th>
-				<th>@Html.DisplayNameFor(model => model.FullName)</th>
-				<th>@Html.DisplayNameFor(model => model.IdNumber)</th>
-				<th>@Html.DisplayNameFor(model => model.Capacity)</th>
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Photo)</th>
+                <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                <th>@Html.DisplayNameFor(model => model.IdNumber)</th>
+                <th>@Html.DisplayNameFor(model => model.Capacity)</th>
                 <th></th>
-		    </tr>
-	    </thead>
+            </tr>
+        </thead>
         <tbody>
-        
-            @foreach (var item in Model) {
+
+            @foreach (var item in Model)
+            {
                 <tr>
                     <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
                         <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
-							<img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
-							<div class="text">
-							</div>
-						</a>
+                            <img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
+                            <div class="text">
+                            </div>
+                        </a>
                     </td>
-				    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
-				    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
-				    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Capacity)</td>
+                    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
+                    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
+                    <td data-id="Benefactor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Capacity)</td>
                     <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Benefactor/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
@@ -55,13 +51,11 @@ else
                 </tr>
             }
         </tbody>
-    </table>   
-    
-}
+    </table>
 
+}
 <!-- Modal -->
 <div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
     <div id="body" class="modal-body">
-        
     </div>
 </div>

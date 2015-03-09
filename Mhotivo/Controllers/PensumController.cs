@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
-using Mhotivo.App_Data.Repositories;
+using AutoMapper;
+using Mhotivo.Data.Entities;
+using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
-using Microsoft.Ajax.Utilities;
 
 namespace Mhotivo.Controllers
 {
@@ -33,8 +31,16 @@ namespace Mhotivo.Controllers
                 ViewBag.MessageTitle = message.Title;
                 ViewBag.MessageContent = message.Content;
             }
-
-            return View(_pensumRepository.GetAllPesums());
+            var temp = this._pensumRepository.GetAllPesums();
+            Mapper.CreateMap<DisplayPensumModel, Pensum>().ReverseMap();
+            var listapensumDisplaysModel = temp.Select(Mapper.Map<Pensum, DisplayPensumModel>).ToList();
+            var list = temp.Select(item => item.Course != null ? new DisplayPensumModel
+            {
+                Id = item.Id,
+                Course = item.Course.Name,
+                Grade = item.Grade.Name
+            } : null).ToList();
+            return View(list);
         }
 
 

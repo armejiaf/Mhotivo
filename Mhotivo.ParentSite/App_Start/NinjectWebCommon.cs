@@ -68,6 +68,7 @@ namespace Mhotivo.ParentSite.App_Start
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
+            kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
         }        
     }
 }

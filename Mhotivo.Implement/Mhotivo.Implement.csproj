@@ -40,6 +40,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Context\MhotivoContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AcademicYearDetailRepository.cs" />
+    <Compile Include="Repositories\AcademicYearDetailsRepository.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\AppoimentParticipant.cs" />
     <Compile Include="Repositories\AreaRepository.cs" />
@@ -59,15 +62,21 @@
     <Compile Include="Repositories\DiaryEventRepository.cs" />
     <Compile Include="Repositories\EnrollRepository.cs" />
     <Compile Include="Repositories\GradeRepository.cs" />
+    <Compile Include="Repositories\HomeworkRepository.cs" />
+    <Compile Include="Repositories\ImportDataRepository.cs" />
     <Compile Include="Repositories\MeisterRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\NotificationRepositoryRepository.cs" />
     <Compile Include="Repositories\NotificationTypeRepository.cs" />
     <Compile Include="Repositories\ParentRepository.cs" />
     <Compile Include="Repositories\PensumRepository.cs" />
     <Compile Include="Repositories\PeopleRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\SecurityRepository.cs" />
+    <Compile Include="Repositories\SessionManagementRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Security.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

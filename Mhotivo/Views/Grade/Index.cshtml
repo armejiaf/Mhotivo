@@ -10,13 +10,13 @@
 
 <h2>Grados Registrados </h2>
 
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Grade/Add/"><span class="btn btn-small btn-primary active">Agregar Grado</span></a>
+<a class="toEdit" data-target="#EditModal" data-toggle="modal" id="/Grade/Add/" role="button"><span class="btn btn-small btn-primary active">Agregar Grado</span></a>
 
 @if(!Model.Any())
 {
     <div class="well well-large">
 		<h4 class="blue">Tabla Vacía</h4>
-		No hay ninguna cuenta de usuario a mostrar.
+		No hay ningun grado a mostrar.
 	</div>
 }
 else
@@ -42,7 +42,7 @@ else
                         @using (Html.BeginForm("Delete", "Grade", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar al Alumno @Html.DisplayFor(modelItem => item.Name)?" />
+                               value="¿Realmente desea eliminar @Html.DisplayFor(modelItem => item.Name) grado?" />
                     </td>
                 </tr>
             }

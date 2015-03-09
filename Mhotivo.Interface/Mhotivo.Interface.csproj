@@ -39,23 +39,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAcademicYearDetailRepository.cs" />
+    <Compile Include="Interfaces\IAcademicYearDetailsRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
     <Compile Include="Interfaces\IAppointmentParticipants.cs" />
     <Compile Include="Interfaces\IAreaReporsitory.cs" />
+    <Compile Include="Interfaces\IAreaRepository.cs" />
     <Compile Include="Interfaces\IBenefactorRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
     <Compile Include="Interfaces\ICourseRepository.cs" />
     <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
+    <Compile Include="Interfaces\IHomeworkRepository.cs" />
+    <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\IMeisterRepository.cs" />
+    <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\INotificationRepository.cs" />
     <Compile Include="Interfaces\INotificationTypeRepository.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />
     <Compile Include="Interfaces\IRoleRepository.cs" />
+    <Compile Include="Interfaces\ISecurityRepository.cs" />
+    <Compile Include="Interfaces\ISessionManagementRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

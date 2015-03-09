@@ -16,7 +16,7 @@ namespace Mhotivo.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "Mhotivo.Implement.Context.MhotivoContext";
         }
 
@@ -44,7 +44,6 @@ namespace Mhotivo.Migrations
                 DisplayName = "Alex Fernandez",
                 Email = "olorenzo@outlook.com",
                 Password = "123",
-                Role = context.Roles.First(),
                 Status = true
             });
             context.Users.AddOrUpdate(new User
@@ -53,7 +52,6 @@ namespace Mhotivo.Migrations
                 DisplayName = "Franklin Castellanos",
                 Email = "castellarfrank@hotmail.com",
                 Password = "siniestro",
-                Role = context.Roles.First(),
                 Status = true
             });
             context.Users.AddOrUpdate(new User
@@ -62,7 +60,6 @@ namespace Mhotivo.Migrations
                 DisplayName = "La directora",
                 Email = "holis@holis.com",
                 Password = "holis",
-                Role = context.Roles.Find(2),
                 Status = true
             });
 

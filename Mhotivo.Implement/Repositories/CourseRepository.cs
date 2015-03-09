@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.ComponentModel;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -14,22 +12,79 @@ namespace Mhotivo.Implement.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly MhotivoContext _context;
+        private readonly IAreaRepository _areaRepository;
 
-        public CourseRepository(MhotivoContext ctx)
+        public CourseRepository(MhotivoContext ctx, IAreaRepository areaRepository)
         {
             _context = ctx;
-           
+            _areaRepository = areaRepository;
         }
 
-        public void SaveChanges()
+        public IEnumerable<Course> GetAllCourse()
         {
-            _context.SaveChanges();
+            return Query(c => c).ToList().Select(c => new Course
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Area = new Area
+                {
+                    Id = c.Area.Id,
+                    Name = c.Area.Name
+                }
+            });
         }
 
+
+        public IEnumerable<Area> GetAllAreas()
+        {
+            return _context.Areas.Select(a => a).ToList().Select(a => new Area
+            {
+                Id = a.Id,
+                Name = a.Name
+            });
+        }
         public Course First(Expression<Func<Course, Course>> query)
         {
             var courses = _context.Courses.Select(query);
             return courses.Count() != 0 ? courses.First() : null;
+        }
+
+        public Course GenerateCourseFromRegisterModel(Course courseRegisterModel)
+        {
+            return new Course
+            {
+                Id = courseRegisterModel.Id,
+                Name = courseRegisterModel.Name,
+                Area = courseRegisterModel.Area
+            };
+        }
+
+        public Course GetCourseEditModelById(long id)
+        {
+            var course = GetById(id);
+            return new Course
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Area = course.Area
+            };
+        }
+
+        public Course UpdateCourseFromCourseEditModel(Course courseEditModel, Course course)
+        {
+            course.Id = courseEditModel.Id;
+            course.Name = courseEditModel.Name;
+            course.Area = courseEditModel.Area;
+
+            return Update(course);
+        }
+
+        public Course Delete(long id)
+        {
+            var itemToDelete = GetById(id);
+            _context.Courses.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
         public Course GetById(long id)
@@ -51,21 +106,16 @@ namespace Mhotivo.Implement.Repositories
 
         }
 
-        public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
+        public IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<Area, TResult>> expression)
         {
-            return _context.Courses.Where(expression);
+            return _context.Areas.Select(expression);
         }
 
         public Course Update(Course itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
-        }
-
-        public void Delete(Course itemToDelete)
-        {
-            _context.Courses.Remove(itemToDelete);
         }
 
         public void Dispose()

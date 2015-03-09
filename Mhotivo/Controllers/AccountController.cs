@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic;
 using Mhotivo.Models;
 
@@ -7,9 +8,10 @@ namespace Mhotivo.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly ISessionManagement _sessionManagement;
+        //private readonly ISessionManagement _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagement;
 
-        public AccountController(ISessionManagement sessionManagement)
+        public AccountController(ISessionManagementRepository sessionManagement)
         {
             _sessionManagement = sessionManagement;
         }
