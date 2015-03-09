@@ -27,9 +27,13 @@ namespace Mhotivo.ParentSite.Controllers
             [HttpGet]
             public ActionResult Index()
             {
-                var currentAcademicYear = _academicYearRepository.GetCurrentAcademicYear();
+                var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
+                
                 var notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList();
-               
+                notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, 3).ToList()); 
+                notifications.AddRange(_notificationRepository.GetGradeNotifications(currentAcademicYear, 2).ToList());
+                notifications.AddRange(_notificationRepository.GetPersonalNotifications(currentAcademicYear, 1).ToList());
+                
                 var notificationsModel = new List<NotificationModel>();
 
                 foreach (var notification in notifications)

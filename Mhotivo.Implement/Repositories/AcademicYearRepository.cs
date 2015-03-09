@@ -150,7 +150,7 @@ namespace Mhotivo.Implement.Repositories
 
         public AcademicYear GetCurrentAcademicYear()
         {
-            var currentYear = new DateTime().Year;
+            var currentYear = DateTime.Now.Year;
           var currentAcademicYeary = _context.AcademicYears.FirstOrDefault(ay => ay.Year.Year.Equals(currentYear));
             return currentAcademicYeary ?? new AcademicYear();
         }

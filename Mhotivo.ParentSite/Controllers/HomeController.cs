@@ -10,8 +10,13 @@ namespace Mhotivo.ParentSite.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Index","Notification");
-            //return View();
+            return View();
+            
         }
+
+            public ActionResult Redirect()
+            {
+                return RedirectToAction("Index", "Notification");  
+            }
     }
 }
