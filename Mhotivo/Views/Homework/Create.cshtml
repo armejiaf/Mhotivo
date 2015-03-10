@@ -1,0 +1,121 @@
+﻿@model Mhotivo.Models.CreateHomeworkModel
+           
+
+
+    @{
+    ViewBag.Title = "Nueva Tarea";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ 
+    }
+    @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <link href="~/Content/summernote.css" rel="stylesheet" />
+    <link href="~/Content/summernote-bs3.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote.min.js"></script>
+
+    <div id="body" class="modal-body" style="max-height: 500px;">
+        @using (Html.BeginForm("Create", "Homework", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>Nueva Tarea</legend>
+
+                <p class="text-error">
+                    @Html.ValidationMessageFor(model => model.Title)
+                    @Html.ValidationMessageFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Points)
+                </p>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.Title)
+                    </div>
+                    <div class="controls">
+                        @Html.EditorFor(model => model.Title)
+                    </div>
+                </div>
+            
+           
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.Points)
+                    </div>
+                    <div class="controls">
+                        @Html.EditorFor(model => model.Points)
+
+                    </div>
+                </div> 
+
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.course)
+                    </div>
+                    <div class="controls">
+                        @Html.DropDownList("course")
+                    </div>
+                </div>
+
+                <div class="control-label">
+                    @Html.LabelFor(model => model.DeliverDate)
+                </div>
+                <div class="control-group">
+                    <div class="control-group" style="float: left; margin-left: 20px">
+                        <div class="row-fluid input-append">
+                            @Html.TextBoxFor(model => model.DeliverDate, new {@class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = false})
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                            <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.DeliverDate)</span>
+                            <p class="text-error">@Html.ValidationMessageFor(model => model.DeliverDate)</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.Description)
+                    </div>
+                    <div class="controls">
+                        <div id="htmlMessage"></div>
+                            @Html.HiddenFor(model => model.Description)
+                        <div class="space"></div>
+                    </div>
+                </div>
+
+            
+
+            <div class="space"></div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-small">
+                        <i class="icon-remove"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-small btn-primary">
+                        <i class="icon-ok"></i>
+                        Crear
+                    </button>
+                </div>
+            </fieldset>
+
+
+    }
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#htmlMessage').summernote();
+        });
+
+
+        $("#Form").submit(function (event) {
+            var sHTML = $('#htmlMessage').code();
+            $('#Description').val(sHTML);
+
+        });
+
+    </script>

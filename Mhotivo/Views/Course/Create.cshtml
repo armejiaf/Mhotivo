@@ -1,0 +1,59 @@
+﻿﻿@model Mhotivo.Models.CourseRegisterModel
+
+@{
+    ViewBag.Title = "Nueva Materia";
+    Layout = "";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm("Add", "Course", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Agregar Materia</legend>
+
+            <p class="text-error">
+                @Html.ValidationMessageFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.AreaId)
+            </p>
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span class="InputLabel">@Html.DisplayNameFor(model => model.AreaId)</span>
+                    <p class="text-error">@Html.ValidationMessageFor(model => model.AreaId)</p>
+                </div>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.AreaId, new SelectList(ViewBag.AreaId, "Value", "Text"), "  -- Area --")
+                </div>
+            </div>
+            
+            <div class="space"></div>
+
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-small">
+                    <i class="icon-remove"></i>
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-small btn-primary">
+                    <i class="icon-ok"></i>
+                    Crear
+                </button>
+            </div>
+        </fieldset>
+    }
+
+</div>
