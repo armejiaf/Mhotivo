@@ -132,12 +132,23 @@ namespace Mhotivo.Controllers
                     Field1 = a.Student.FullName,
                     Field2 = a.Student.Id
                 };
-
-            var list = query.Select(c => new SelectListItem()
+            var list = new List<SelectListItem>();
+            try
             {
-                Text = c.Field1,
-                Value = c.Field2.ToString()
-            }).ToList();
+                if (query.Any())
+                {
+                    list = query.Select(c => new SelectListItem()
+                    {
+                        Text = c.Field1,
+                        Value = c.Field2.ToString()
+                    }).ToList();
+
+                }
+            }
+            catch(Exception ee)
+            {
+
+            }
 
             if (list.Count <= 0)
             {
