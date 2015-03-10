@@ -15,11 +15,13 @@ namespace Mhotivo.ParentSite.Controllers
         {
             private readonly INotificationRepository _notificationRepository;
             private readonly IAcademicYearRepository _academicYearRepository;
+            public readonly IPeopleRepository _peopleRepository;
 
-            public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository)
+            public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,IPeopleRepository peopleRepository)
             {
                 _notificationRepository = notificationRepository;
                 _academicYearRepository = academicYearRepository;
+                _peopleRepository = peopleRepository;
             }
 
             //
@@ -28,11 +30,13 @@ namespace Mhotivo.ParentSite.Controllers
             public ActionResult Index()
             {
                 var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
-                
-                var notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList();
-                notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, 3).ToList()); 
-                notifications.AddRange(_notificationRepository.GetGradeNotifications(currentAcademicYear, 2).ToList());
-                notifications.AddRange(_notificationRepository.GetPersonalNotifications(currentAcademicYear, 1).ToList());
+                var studentGradeId = 2;
+                var studentId = 1;
+
+                var notifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, studentId).OrderByDescending(x => x.Created).ToList();
+                notifications.AddRange(_notificationRepository.GetGradeNotifications(currentAcademicYear, studentGradeId).OrderByDescending(x => x.Created).ToList());
+                notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, 3).OrderByDescending(x => x.Created).ToList());
+                notifications.AddRange(_notificationRepository.GetGeneralNotifications(currentAcademicYear).OrderByDescending(x => x.Created).ToList());
                 
                 var notificationsModel = new List<NotificationModel>();
 
@@ -46,7 +50,7 @@ namespace Mhotivo.ParentSite.Controllers
                     notificationsModel.Add(noti);
                 }
 
-                notificationsModel=notificationsModel.OrderByDescending(x => x.Created).ToList();
+                notificationsModel = notificationsModel.Take(5).ToList();
 
                 return View(notificationsModel);
             }
@@ -54,11 +58,13 @@ namespace Mhotivo.ParentSite.Controllers
             public ActionResult AddCommentToNotification(int notificationId,string commentText)
             {
                 var selectedNotification = _notificationRepository.GetById(notificationId);
-                
+                var parentLogged = _peopleRepository.GetById(4);
+
                 selectedNotification.NotificationComments.Add(new NotificationComments
                 {
                     CommentText = commentText,
-                    CreationDate = DateTime.Now
+                    CreationDate = DateTime.Now,
+                    Parent=parentLogged
                 });
 
                 _notificationRepository.SaveChanges();
