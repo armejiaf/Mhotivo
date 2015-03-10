@@ -186,6 +186,11 @@ namespace Mhotivo.Controllers
                 AddUsersToGradeNotification(notificationIdentity);
             }
 
+            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.NotificationTypeId == 2)
+            {
+                AddUsersToLevelNotification(notificationIdentity);
+            }
+
             //if (AddressedTo.IsEmpty() || AddressedTo == null)
             //    AddressedTo = "0";
 
@@ -200,41 +205,93 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        private void AddUsersToGradeNotification(Notification notificationIdentity)
+        private void AddUsersToLevelNotification(Notification notificationIdentity)
         {
-            var students = db.Enrolls.Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
-                && x.AcademicYear.Year.Year == DateTime.Now.Year).Select
-                (x => x.Student).ToList();
+            var grades = new List<int>();
+            if (notificationIdentity.IdGradeAreaUserGeneralSelected == 1)
+            {
+                grades = db.Grades.Where(x => x.EducationLevel == "Kinder").Select(x => x.Id).ToList();
+            }
+            else if (notificationIdentity.IdGradeAreaUserGeneralSelected == 2)
+            {
+                grades = db.Grades.Where(x => x.EducationLevel == "Primaria").Select(x => x.Id).ToList();
+            }
+            else if (notificationIdentity.IdGradeAreaUserGeneralSelected == 3)
+            {
+                grades = db.Grades.Where(x => x.EducationLevel == "Secundaria").Select(x => x.Id).ToList();
+            }
 
-            if (students.Count == 0)
+            if (!grades.Any())
             {
                 return;
             }
 
-            foreach (var student in students)
+            foreach (var id in grades)
             {
-                long notificationParentId = db.Students.Where(x => x.Id == student.Id
-                                                            && x.Tutor1 != null).Select(x => x.Tutor1.Id).FirstOrDefault();
-                if (notificationParentId != 0)
-                {
-                    User parents = db.Users.FirstOrDefault(x => x.Id == (int)notificationParentId);
-                    if (parents != null)
-                    {
-                        notificationIdentity.Users.Add(parents);
-                    }
+                int id1 = id;
+                var studentList = db.Enrolls.Where(x => x.AcademicYear.Grade.Id == id1
+                                                        && x.AcademicYear.Year.Year == DateTime.Now.Year)
+                                                        .Select(x => x.Student).ToList();
 
+                if (!studentList.Any())
+                {
+                    continue;
                 }
 
-                notificationParentId = db.Students.Where(x => x.Id == student.Id
-                                                                && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
-                                                                (x => x.Tutor1.Id).FirstOrDefault();
-
-                if (notificationParentId != 0)
+                foreach (var student in studentList)
                 {
-                    User parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId);
-                    if (parents != null)
+                    var notificationParentId = db.Students.Where(x => x.Id == student.Id
+                                                                        && x.Tutor1 != null)
+                                                                        .Select(x => x.Tutor1)
+                                                                        .FirstOrDefault();
+
+                    if (notificationParentId != null)
                     {
-                        notificationIdentity.Users.Add(parents);
+                        var parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.UserId.Id);
+                        if (parents != null)
+                        {
+                            notificationIdentity.Users.Add(parents);
+                        }
+
+                    }
+
+                    notificationParentId = db.Students.Where(x => x.Id == student.Id
+                                                                && x.Tutor2 != null && x.Tutor2 != x.Tutor1)
+                                                                .Select(x => x.Tutor2).FirstOrDefault();
+
+                    if (notificationParentId != null)
+                    {
+                        User parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.UserId.Id);
+                        if (parents != null)
+                        {
+                            notificationIdentity.Users.Add(parents);
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+
+        private void AddUsersToGradeNotification(Notification notificationIdentity)
+        {
+            var estudiantes =
+                db.Enrolls.Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
+                                      && x.AcademicYear.Year.Year == DateTime.Now.Year
+                                      && x.Student.Tutor1 != null).Select(s => s.Student).ToList();
+
+            foreach (var estudiante in estudiantes)
+            {
+                var parents = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor1.UserId.Id);
+                if (parents != null)
+                {
+                    notificationIdentity.Users.Add(parents);
+
+                    var parents2 = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor2.UserId.Id);
+                    if (parents2 != null && parents2.Id != parents.Id)
+                    {
+                        notificationIdentity.Users.Add(parents2);
                     }
                 }
             }
@@ -244,11 +301,12 @@ namespace Mhotivo.Controllers
 
         private void AddUsersToPersonalNotification(Notification notificationIdentity)
         {
-            long notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
-                                                            && x.Tutor1 != null).Select(x => x.Tutor1.Id).FirstOrDefault();
-            if (notificationParentId != 0)
+            var notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
+                                                            && x.Tutor1 != null).Select(x => x.Tutor1).FirstOrDefault();
+            if (notificationParentId != null)
             {
-                User parents = db.Users.FirstOrDefault(x => x.Id == (int)notificationParentId);
+                var parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.UserId.Id);
+
                 if (parents != null)
                 {
                     notificationIdentity.Users.Add(parents);
@@ -258,11 +316,12 @@ namespace Mhotivo.Controllers
 
             notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
                                                             && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
-                                                            (x => x.Tutor1.Id).FirstOrDefault();
+                                                            (x => x.Tutor1).FirstOrDefault();
 
-            if (notificationParentId != 0)
+            if (notificationParentId != null)
             {
-                User parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId);
+                var parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.UserId.Id);
+
                 if (parents != null)
                 {
                     notificationIdentity.Users.Add(parents);

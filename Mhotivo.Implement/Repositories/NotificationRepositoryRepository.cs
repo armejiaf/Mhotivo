@@ -78,8 +78,8 @@ namespace Mhotivo.Implement.Repositories
         {
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                     x.NotificationType.NotificationTypeId == 3 &&
-                     x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                    x.NotificationType.NotificationTypeId == 3 &&
+                    x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
 
             return gradeNotifications;
         }
