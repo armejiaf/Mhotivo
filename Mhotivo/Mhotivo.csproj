@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.cs" />
+    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.Designer.cs">
+      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
@@ -538,6 +542,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503102148123_GrradeSaveNotification.resx">
+      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
