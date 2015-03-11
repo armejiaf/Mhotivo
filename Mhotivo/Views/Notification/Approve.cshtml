@@ -33,13 +33,13 @@ else
                     <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
                     <td>
-                        <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
+                        <a class="toAutorizar" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-ok-sign bigger-120"></i></a>
                         @using (Html.BeginForm("Approve", "Notification", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" }))
                         {
                         }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea aprobar esta notificación?" />
+                               value="¿Realmente desea aprobar esta notificación:@Html.DisplayFor(modelItem => item.NotificationName) ?" />
                     </td>
                 </tr>
             }

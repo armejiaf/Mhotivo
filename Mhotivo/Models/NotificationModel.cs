@@ -23,6 +23,10 @@ namespace Mhotivo.Models
         [AllowHtml]
         public string Message { get; set; }
 
+        [Editable(false)]
+        [Display(Name = "Approved")]
+        public bool Approved { get; set; }
+
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         [Display(Name = "Tipo de Notificacion")]
         public SelectList NotificationTypeSelectList { get; set; }

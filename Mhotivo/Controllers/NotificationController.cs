@@ -512,31 +512,49 @@ namespace Mhotivo.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult Approve(int id)
-        //{
-        //    try
-        //    {
-        //        var toApprove= _notificationRepository.GetById(id);
-        //        if (toApprove != null)
-        //        {
-        //            toApprove.Approved = true;
-        //            _notificationRepository.Update(toApprove);
-        //            _notificationRepository.SaveChanges();
 
-        //            _viewMessageLogic.SetNewMessage("Notificación Aprobada", "La notificación fue aprobada exitosamente.",
-        //            ViewMessageType.SuccessMessage);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        _viewMessageLogic.SetNewMessage("Error en aprobacion",
-        //            "La notificación no pudo ser aprobada correctamente, por favor intente nuevamente.",
-        //            ViewMessageType.ErrorMessage);
-        //    }
-        //    IQueryable<Group> g = db.Groups.Select(x => x);
-        //    return RedirectToAction("Index", g);
-        //}
+        //
+        // GET: /NotificationModel/
+        [AllowAnonymous]
+        public ActionResult Approve()
+        {
+            _viewMessageLogic.SetViewMessageIfExist();
+            var notifications =
+                db.Notifications.Where(x => x.Approved==false)
+                    .OrderByDescending(i => i.Created)
+                    .Take(10);
+
+            var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+
+            return View("Approve", notificationsModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult Approve(int id)
+        {
+            try
+            {
+                var toApprove = _notificationRepository.GetById(id);
+                if (toApprove != null)
+                {
+                    toApprove.Approved = true;
+                    _notificationRepository.Update(toApprove);
+                    _notificationRepository.SaveChanges();
+
+                    _viewMessageLogic.SetNewMessage("Notificación Aprobada", "La notificación fue aprobada exitosamente.",
+                    ViewMessageType.SuccessMessage);
+                }
+            }
+            catch
+            {
+                _viewMessageLogic.SetNewMessage("Error en aprobacion",
+                    "La notificación no pudo ser aprobada correctamente, por favor intente nuevamente.",
+                    ViewMessageType.ErrorMessage);
+            }
+            IQueryable<Group> g = db.Groups.Select(x => x);
+            return RedirectToAction("Approve");
+        }
 
 
         //public bool UserCanApprove()

@@ -39,6 +39,7 @@ else
             <tr>
                 <th>@Html.DisplayNameFor(model => model.NotificationName)</th>
                 <th>@Html.DisplayNameFor(model => model.Created)</th>
+                <th>@Html.DisplayNameFor(model => model.Approved)</th>
                 <th></th>
             </tr>
         </thead>
@@ -48,6 +49,7 @@ else
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Approved)</td>
                     <td>
                         <a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"  ><i class="icon-edit bigger-120"></i></a>
                         

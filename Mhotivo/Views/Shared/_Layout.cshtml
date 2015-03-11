@@ -254,6 +254,30 @@
     	            );
     	        }); //End of delete
 
+    	        //start Delete
+    	        $("a.toAutorizar").on("click", function () {
+    	            var uri = $(this).attr("id");
+    	            var idMessage = "input[id*='" + uri + "_Message']";
+    	            var idForm = "#Form_" + uri;
+    	            var message = $(idMessage).val();
+    	            bootbox.dialog(message,
+    	                [
+    	                    {
+    	                        "label": "Cancelar",
+    	                        "class": "btn-small"
+    	                    },
+    	                    {
+    	                        "label": "Autorizar",
+    	                        "class": "btn-small btn-danger",
+    	                        "callback": function () {
+    	                            $(idForm).submit();
+    	                        }
+    	                    }
+    	                ]
+    	            );
+    	        }); //End of delete
+
+
     	        //start Question
     	        $("a.toQuestion").on("click", function () {
     	            var uri = $(this).attr("id");
