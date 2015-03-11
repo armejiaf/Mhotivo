@@ -1,3 +1,4 @@
+using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
@@ -70,6 +71,8 @@ namespace Mhotivo.ParentSite.App_Start
             kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
             kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InSingletonScope();
+            kernel.Bind<IRoleRepository>().To<RoleRepository>().InSingletonScope();
+            kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
         }        
     }
 }

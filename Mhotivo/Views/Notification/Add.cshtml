@@ -25,7 +25,7 @@
         @Html.ValidationMessageFor(model => model.NotificationName)
         @Html.ValidationMessageFor(model => model.Message) 
         @Html.ValidationMessageFor(model => model.NotificationTypeId) 
-        @Html.ValidationMessageFor(model => model.IdGradeAreaUserGeneralSelected)
+        @Html.ValidationMessageFor(model => model.IdIsGradeAreaGeneralSelected)
         @Html.ValidationMessageFor(model => model.StudentId) 
     </p>
 
@@ -54,12 +54,12 @@
             @Html.Label("Dirigido a:")
         </div>
         <div class="controls">
-            @Html.DropDownListFor(model => model.IdGradeAreaUserGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new {id = "AddressedTo"})
+            @Html.DropDownListFor(model => model.IdIsGradeAreaGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new {id = "AddressedTo"})
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
     </div>
     
-    <div class="control-group">
+    <div class="control-group" id="OcultarList">
         <div class="control-label">
             @Html.Label("Dirigido a:")
         </div>
@@ -120,6 +120,8 @@
     $('#From').attr("disabled", true);
     $(document).ready(function () {
 
+        $('#OcultarList').css("display","none");
+
         $('#To').tagsinput({
             type: "POST",
             typeahead: {
@@ -173,6 +175,13 @@
     });
 
     $('#NotificationType').change(function () {
+
+        if (this.value == 4) {
+            $('#OcultarList').css("display", "block");
+        } else {
+            $('#OcultarList').css("display", "none");
+        }
+
         $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
             var items = '<option>Seleccione</option>';
             $.each(data, function (i, optionavailable) {

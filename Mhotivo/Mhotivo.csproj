@@ -191,6 +191,18 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
+    <Compile Include="Migrations\201502162215487_20150216.cs" />
+    <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
+      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.cs" />
+    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.Designer.cs">
+      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503110041479_Allen20150310.cs" />
+    <Compile Include="Migrations\201503110041479_Allen20150310.Designer.cs">
+      <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -557,6 +569,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
+      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503102148123_GrradeSaveNotification.resx">
+      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503110041479_Allen20150310.resx">
+      <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

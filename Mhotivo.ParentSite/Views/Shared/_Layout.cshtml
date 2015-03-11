@@ -529,6 +529,7 @@
         </div>
     </div>
     
+    @model Mhotivo.ParentSite.Models.ParentLoginModel
     <div id="loginForm" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250" style="max-width: 300px" >
      <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
     <div style="margin: 15px">
@@ -536,18 +537,20 @@
     </div>
     </div>
     <div class="nicdark_margin20 ">
-        @using (@Html.BeginForm("Redirect", "Home", FormMethod.Post))
+        @using (@Html.BeginForm("Login", "Home", FormMethod.Post))
         {
             <p class="greydark2 nicdark_marginleft20 ">Correo Electrónico</p>
             <input type="email" class="nicdark_marginleft20" id="email" name="email"/>
             <div class="nicdark_space20"></div>
             
             <p class="greydark2 nicdark_marginleft20">Contraseña</p>
-            <input type="password" class="nicdark_marginleft20" id="pass" name="pass"/>
+            <input type="password" class="nicdark_marginleft20" id="pass" name="Password" />
             <div class="nicdark_space30"></div>
             
             <input type="submit" class="nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white right nicdark_marginright20" value=" Iniciar "/>
             <div class="nicdark_space50"></div>
+                
+            @Html.ValidationSummary(true)
         }
     </div>
     
