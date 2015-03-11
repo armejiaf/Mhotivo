@@ -194,6 +194,7 @@
     </Compile>
     <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\ParentLoginModel.cs" />
     <Compile Include="Models\PeopleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
