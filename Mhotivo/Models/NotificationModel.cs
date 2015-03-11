@@ -31,11 +31,14 @@ namespace Mhotivo.Models
         [Display(Name = "Tipo de Notificacion")]
         public SelectList NotificationTypeOpionSelectList { get; set; }
         
+        [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
+        public int GradeIdifNotificationTypePersonal { get; set; } //si el NotificationTypeOpionSelectList es Grado que guarde que grado
+        
         [Display(Name = "Enviar Notificacion por correo?")]
         public bool SendingEmail { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
-        public int IdGradeAreaUserGeneralSelected { get; set; }//id de grado,area,user seleccionado
+        public int IdIsGradeAreaGeneralSelected { get; set; }//id de grado,area,user seleccionado
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         public int NotificationTypeId { get; set; } // For the the selected Product
