@@ -194,6 +194,7 @@
     </Compile>
     <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\ParentLoginModel.cs" />
     <Compile Include="Models\PeopleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -293,6 +294,8 @@
     <Content Include="Content\img\woocommerce\small\img4.jpg" />
     <Content Include="Content\js\main\excanvas.js" />
     <Content Include="Content\js\main\jquery-ui.js" />
+    <Content Include="Content\js\main\jquery.jscroll.js" />
+    <Content Include="Content\js\main\jquery.jscroll.min.js" />
     <Content Include="Content\js\main\jquery.min.js" />
     <Content Include="Content\js\plugins\countdown\jquery.countdown.js" />
     <Content Include="Content\js\plugins\countto\jquery.countTo.js" />

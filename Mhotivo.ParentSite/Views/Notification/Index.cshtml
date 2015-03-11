@@ -12,13 +12,16 @@
         textBox.value = notificationId;    
     }
 
+    $('#lazyLoad').jscroll();
+
 </script>
 
 <div class="nicdark_space50"></div>
-
+<div id="lazyLoad">
  @foreach (var item in Model)
  {
-     <div style="margin-left: 100px; margin-right: 100px" >
+     
+    <div style="margin-left: 100px; margin-right: 100px" >
          <div class="nicdark_textevidence" >
              <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius nicdark_shadow">
                  <div class="nicdark_size_big">
@@ -52,6 +55,7 @@
          </div>  
        </div>
  }
+   </div>
 
 <div id="AddComment" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250">
      <div class="nicdark_textevidence nicdark_bg_green nicdark_radius_top">
