@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Mhotivo.Models.Course>
+﻿@model IEnumerable<Mhotivo.Models.DisplayCourseModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,15 +7,16 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-<h2>Course</h2>
+<h2>Materias Registradas</h2>
 
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Course/Add/"><span class="btn btn-small btn-primary active">Agregar Usuario</span></a>
+<a class="toEdit" data-target="#EditModal" data-toggle="modal" id="/Course/Add/" role="button"><span class="btn btn-small btn-primary active">Agregar Materia</span></a>
+
 
 @if (!Model.Any())
 {
     <div class="well well-large">
         <h4 class="blue">Tabla Vacía</h4>
-        No hay ninguna cuenta de usuario a mostrar.
+        No hay ninguna materia a mostrar.
     </div>
 }
 else
@@ -23,10 +24,10 @@ else
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
         <thead>
             <tr>
-												
                 <th>@Html.DisplayNameFor(model => model.Name)</th>
                 <th>@Html.DisplayNameFor(model => model.Area)</th>
                 <th></th>
+                
             </tr>
         </thead>
         <tbody>
@@ -35,13 +36,13 @@ else
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>@Html.DisplayFor(modelItem => item.Area.Name)</td>
                     <td>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Course/Edit/@Html.DisplayFor(modelItem => item.Id)"  ><i class="icon-edit bigger-120"></i></a>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Course/Edit/@Html.DisplayFor(modelItem => item.Id)" ><i class="icon-edit bigger-120"></i></a>
                         
                          <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Course", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar el curso @Html.DisplayFor(modelItem => item.Name) - @Html.DisplayFor(modelItem => item.Area.Name)?" />
+                               value="¿Realmente desea eliminar la materia @Html.DisplayFor(modelItem => item.Name) - @Html.DisplayFor(modelItem => item.Area.Name)?" />
                     </td>
                 </tr>
             }
@@ -49,6 +50,7 @@ else
     </table>
     
     <!-- Modal -->
+    
     <div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
         <div id="body" class="modal-body">
         

@@ -156,7 +156,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
+    <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
@@ -166,10 +168,13 @@
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeworkController.cs" />
+    <Compile Include="Controllers\ImportDataController.cs" />
     <Compile Include="Controllers\MeisterController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
+    <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SendNotifications.cs" />
@@ -182,9 +187,11 @@
     </Compile>
     <Compile Include="Logic\AcademicYearLogic.cs" />
     <Compile Include="Logic\ISessionManagement.cs" />
+    <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
+<<<<<<< HEAD
     <Compile Include="Migrations\201502162215487_20150216.cs" />
     <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
@@ -193,18 +200,25 @@
     <Compile Include="Migrations\201503102148123_GrradeSaveNotification.Designer.cs">
       <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
     </Compile>
+=======
+>>>>>>> 8e4c474a5c9120e422da2fc24f55d34280d1b644
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
     <Compile Include="Models\BenefactorModel.cs" />
+    <Compile Include="Models\ClassActivityGradingModel.cs" />
     <Compile Include="Models\ClassActivityModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\DiaryEventModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\EventCreateModel.cs" />
     <Compile Include="Models\GradeModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\HomeworkModel.cs" />
+    <Compile Include="Models\ImportDataModel.cs" />
     <Compile Include="Models\MeisterModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
@@ -518,6 +532,22 @@
     <Content Include="Views\NotificationType\Index.cshtml" />
     <Content Include="Views\NotificationType\Edit.cshtml" />
     <Content Include="Views\NotificationType\Add.cshtml" />
+    <Content Include="Views\Notification\Approve.cshtml" />
+    <Content Include="Views\AcademicYear\Create.cshtml" />
+    <Content Include="Views\AcademicYear\Edit.cshtml" />
+    <Content Include="Views\AcademicYear\Index.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Create.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Edit.cshtml" />
+    <Content Include="Views\AcademicYearDetails\Index.cshtml" />
+    <Content Include="Views\Area\Create.cshtml" />
+    <Content Include="Views\Area\Edit.cshtml" />
+    <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\Course\Create.cshtml" />
+    <Content Include="Views\Homework\Create.cshtml" />
+    <Content Include="Views\Homework\Details.cshtml" />
+    <Content Include="Views\Homework\Edit.cshtml" />
+    <Content Include="Views\Homework\Index.cshtml" />
+    <Content Include="Views\ImportData\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -539,6 +569,7 @@
   <ItemGroup>
     <Folder Include="Filters\" />
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
       <DependentUpon>201502162215487_20150216.cs</DependentUpon>
@@ -547,6 +578,8 @@
       <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+=======
+>>>>>>> 8e4c474a5c9120e422da2fc24f55d34280d1b644
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

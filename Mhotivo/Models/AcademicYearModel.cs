@@ -1,50 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
-    public class AcademicYearViewData
+    public class DisplayAcademicYearModel
     {
+        public ICollection<AcademicYear> AcademicYears { get; set; }
         public int Id { get; set; }
 
-        [Display(Name = "Grade")]
+        [Display(Name = "Grado")]
         public string Grade { get; set; }
 
-        [Display(Name = "Course")]
-        public string Course { get; set; }
-
-        [Display(Name = "Year")]
+        [Display(Name = "Año")]
         public int Year { get; set; }
 
-        [Display(Name = "Section")]
-        public char Section { get; set; }
+        [Display(Name = "Sección")]
+        public string Section { get; set; }
 
-        [Display(Name = "Teacher")]
-        public string Meister { get; set; }
+        [Display(Name = "Nivel")]
+        public string EducationLevel { get; set; }
 
-        [Display(Name = "Teacher Start Date")]
-        public string StartDate { get; set; }
+        [Display(Name = "Aprobado")]
+        public bool Approved { get; set; }
 
-        [Display(Name = "Teacher End Date")]
-        public string EndDate { get; set; }
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
 
-        [Display(Name = "Schedule")]
-        public string Schedule { get; set; }
+    }
 
-        [Display(Name = "Classroom")]
-        public string Room { get; set; }
+    public class AcademicYearRegisterModel
+    {
+        [Required(ErrorMessage = "Debe Ingresar un Grado")]
+        [Display(Name = "Grado")]
+        public Grade Grade { get; set; }
 
-        [Display(Name = "Approved")]
-        public String Approved { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar Año")]
+        [Display(Name = "Año")]
+        public int Year { get; set; }
 
-        [Display(Name = "Students Limit")]
-        public int Limit { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar una Sección")]
+        [Display(Name = "Sección")]
+        public string Section { get; set; }
+
+        [Required(ErrorMessage = "Debe Asignar un Nivel Educativo")]
+        [Display(Name = "Sección")]
+        public string EducationLevel { get; set; }
+
+        [Display(Name = "Aprobado")]
+        public string Approved { get; set; }
+
+        [Display(Name = "Activo")]
+        public string IsActive { get; set; }
+
+    }
+
+    public class AcademicYearEditModel
+    {
+        
+        public ICollection<AcademicYear> AcademicYears { get; set; }
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar un Grado")]
+        [Display(Name = "Grado")]
+        public Grade Grade { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Año")]
+        [Display(Name = "Año")]
+        public int Year { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar una Sección")]
+        [Display(Name = "Sección")]
+        public string Section { get; set; }
+
+        [Required(ErrorMessage = "Debe Asignar un Nivel Educativo")]
+        [Display(Name = "Nivel")]
+        public string EducationLevel { get; set; }
+
+        [Display(Name = "Aprobado")]
+        public string Approved { get; set; }
+
+        [Display(Name = "Activo")]
+        public string IsActive { get; set; }
     }
 
     public class AcademicYearViewManagement
     {
-        public IEnumerable<AcademicYearViewData> Elements { get; set; }
+        public IEnumerable<DisplayAcademicYearModel> Elements { get; set; }
 
         public bool CanGenerate { get; set; }
 

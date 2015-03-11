@@ -15,6 +15,14 @@ namespace Mhotivo.ParentSite
         {
             Mapper.CreateMap<Notification, NotificationModel>();
             Mapper.CreateMap<NotificationModel, Notification>();
+
+            Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
+            Mapper.CreateMap<NotificationCommentsModel, NotificationComments>();
+
+            Mapper.CreateMap<People, PeopleModel>();
+            Mapper.CreateMap<PeopleModel, People>();
+
+            //Mapper.AssertConfigurationIsValid();
         }
     }
 }

@@ -1,0 +1,85 @@
+﻿@model Mhotivo.Models.DisplayHomeworkModel
+
+@{
+    ViewBag.Title = "Nueva Tarea";
+    Layout = "";
+
+}
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm("Edit", "Homework", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {@Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Editar Tarea</legend>
+
+            @Html.HiddenFor(model => model.Id)
+            <p class="text-error">
+                @Html.ValidationMessageFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Points)
+            </p>
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Title)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Title)
+                </div>
+            </div>
+
+       
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Points)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Points)
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.DeliverDate)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.DeliverDate)
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.AcademicYearDetail.Course.Id)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("CourseId")
+                </div>
+            </div>
+      
+
+            <div class="space"></div>
+
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-small">
+                    <i class="icon-remove"></i>
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn btn-small btn-primary">
+                    <i class="icon-ok"></i>
+                    Actualizar
+                </button>
+            </div>
+        </fieldset>
+    }
+
+</div>
+

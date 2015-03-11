@@ -1,0 +1,62 @@
+﻿@using Mhotivo.Models
+@model IEnumerable<Mhotivo.Models.DisplayHomeworkModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+<h2>Tareas Creadas</h2>
+<a class="toAdd" data-toggle="modal" role="button" data-id="Homework/Create"><span class="btn btn-small btn-primary active">Agregar Tareas</span></a>
+@if (!Model.Any())
+{
+    <div class="well well-large">
+        <h4 class="blue">Tabla Vacia</h4>
+        No hay registros a mostrar.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered table-hover" id="sample-table-1">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.DeliverDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Points)</th>
+                <th>Materia</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (DisplayHomeworkModel item in Model)
+            {
+                <tr>
+
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.Raw(@item.Description)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.DeliverDate)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Points)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Course.Name)</td>
+                    <td>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
+                        @using (Html.BeginForm("Delete", "Homework", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                            new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display:none" }))
+                        {
+                        }
+                        <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
+                               value="¿Realmente desea eliminar el registro de @Html.DisplayFor(modelItem => item.Title)?" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<!-- Modal -->
+<div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
+    <div id="body" class="modal-body">
+    </div>
+</div>

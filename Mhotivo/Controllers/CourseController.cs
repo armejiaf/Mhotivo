@@ -1,119 +1,170 @@
-﻿using System.Data.Entity;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
+using AutoMapper;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using AutoMapper;
 
 namespace Mhotivo.Controllers
 {
     public class CourseController : Controller
     {
+        #region private members
+
         private readonly ICourseRepository _courseRepository;
+        private readonly IAreaRepository _areaRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public CourseController(ICourseRepository courseRepository)
+        public CourseController(ICourseRepository courseRepository, 
+                                IAreaRepository areaRepository)
         {
+            if (courseRepository == null) throw new ArgumentNullException("courseRepository");
+            if (areaRepository == null) throw new ArgumentNullException("areaRepository");
+
             _courseRepository = courseRepository;
+            _areaRepository = areaRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
-        // GET: /Course/
+        #endregion
 
+        #region public methods
+
+        /// <summary>
+        /// GET: /Course/
+        /// </summary>
+        /// <returns />
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            IQueryable<Course> v = _courseRepository.Query(x => x).Include("Area");
+            var listCourses = _courseRepository.GetAllCourse();
+            
+            Mapper.CreateMap<DisplayCourseModel, Course>().ReverseMap();
+            
+            var list = listCourses.Select(item => item.Area != null ? new DisplayCourseModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Area = item.Area
+            } : null).ToList();
 
-            return View(v);
+            return View(list);
         }
 
-        //
-        // GET: /Course/Create
-
+        /// <summary>
+        /// GET: /Course/Create
+        /// </summary>
+        /// <returns />
+        [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            ViewBag.AreaId = new SelectList(_areaRepository.Query(a => a), "Id", "Name", 0);
+
+            return View("Create");
         }
 
-        //
-        // POST: /Course/Create
-
+        /// <summary>
+        /// POST: /Course/Create
+        /// </summary>
+        /// <param name="modelCourse"></param>
+        /// <returns />
         [HttpPost]
-        public ActionResult Add(Course group)
+        public ActionResult Add(CourseRegisterModel modelCourse)
         {
-            try
+            string title;
+            string content;
+
+            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
+            var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
+            courseModel.Area = _areaRepository.GetById(modelCourse.AreaId);
+
+            var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
+
+            var existCourse =
+                _courseRepository.GetAllCourse()
+                    .FirstOrDefault(c => c.Name.Equals(modelCourse.Name));
+
+            if (existCourse != null)
             {
-                if (ModelState.IsValid)
-                {
-                    _courseRepository.Create(group);
-                    _courseRepository.SaveChanges();
-                    _viewMessageLogic.SetNewMessage("Agregado", "El grupo fue agregado exitosamente.", ViewMessageType.SuccessMessage);
-                }
-                else
-                {
-                    _viewMessageLogic.SetNewMessage("Validación de Información", "La información no es válida.", ViewMessageType.InformationMessage);
-                }
+                title = "Materia";
+                content = "La materia " + existCourse.Name + " ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error", "Algo salió mal, por favor intente de nuevo.", ViewMessageType.ErrorMessage);
-            }
-            IQueryable<Course> groups = _courseRepository.Query(x => x);
-            return RedirectToAction("Index", groups);
+            var newCourse = _courseRepository.Create(myCourse);
+            
+            title = "Materia Agregada";
+            content = "La materia " + newCourse.Name + " ha sido agregada exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            
+            return RedirectToAction("Index");
         }
 
-        //
-        // GET: /Course/Edit/5
+        /// <summary>
+        /// POST: /Course/Delete
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
+        [HttpPost]
+        public ActionResult Delete(long id)
+        {
+            var course = _courseRepository.Delete(id);
 
+            const string title = "Materia Eliminada";
+            var content = course.Name + " ha sido eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+            return RedirectToAction("Index");
+        }
+        
+        /// <summary>
+        /// GET: /Course/Edit
+        /// </summary>
+        /// <param name="id" />
+        /// <returns />
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            Course c = _courseRepository.GetById(id);
+            var course = _courseRepository.GetCourseEditModelById(id);
+            Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
 
-            return View(c);
+            var editCourse = new CourseEditModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Area = course.Area
+            };
+
+            ViewBag.AreaId = new SelectList(_areaRepository.Query(a => a), "Id", "Name",
+               editCourse.Area);
+
+            return View("Edit", editCourse);
         }
 
-        //
-        // POST: /Course/Edit/5
-
+        /// <summary>
+        /// POST: /Course/Edit/5
+        /// </summary>
+        /// <param name="modelCourse" />
+        /// <returns />
         [HttpPost]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(CourseEditModel modelCourse)
         {
-            Course role = _courseRepository.Update(course);
-            const string title = "Curso Actualizado";
-            var content = "El curso " + role.Name + " ha sido modificado exitosamente.";
+            var course = _courseRepository.GetById(modelCourse.Id);
+            Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
+
+            var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
+            _courseRepository.UpdateCourseFromCourseEditModel(courseModel, course);
+
+            const string title = "Materia Actualizada";
+            var content = course.Name + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
 
             return RedirectToAction("Index");
         }
 
-        //
-        // POST: /Course/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                Course group = _courseRepository.GetById(id);
-                _courseRepository.Delete(group);
-                _courseRepository.SaveChanges();
-                _viewMessageLogic.SetNewMessage("Eliminado", "Eliminado exitosamente.", ViewMessageType.SuccessMessage);
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                _viewMessageLogic.SetNewMessage("Error en eliminación", "El grupo no pudo ser eliminado correctamente, por favor intente nuevamente.", ViewMessageType.ErrorMessage);
-                return View("Index");
-            }
-        }
+        #endregion
     }
 }

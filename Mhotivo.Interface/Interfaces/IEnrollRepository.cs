@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
@@ -16,5 +17,6 @@ namespace Mhotivo.Interface.Interfaces
         Enroll Update(Enroll itemToUpdate, bool academicYear, bool student);
         Enroll Delete(long id);
         void SaveChanges();
+        IEnumerable<Enroll> GetAllsEnrolls(); 
     }
 }

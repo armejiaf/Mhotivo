@@ -1,0 +1,80 @@
+﻿@model Mhotivo.Models.ImportDataModel
+@{
+    ViewBag.Title = "Importar Datos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/jquery.maskedinput.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@section AddToHead{
+    <style type="text/css">
+        span.InputLabel {
+            width: 567px;
+            height: 15px;
+            font-size: 10px;
+            margin: 0 0 10px 0;
+            vertical-align: text-top;
+            font-weight: bold;
+        }
+    </style>
+}
+
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+@using (Html.BeginForm("Index", "ImportData", FormMethod.Post, new {
+                                                                     id = "Form"
+                                                                     ,@class = "form-horizontal"
+                                                                     ,@Style = "margin:0;"
+                                                                     ,enctype = "multipart/form-data"
+                                                                     ,method = "post"
+                                                                    }
+                      )
+       )
+{
+    @Html.ValidationSummary(true)
+    <h2>Importar Datos</h2>
+    
+    <div style="float: left; width: 250px;">
+        <input type="file" name="UpladFile" id="UpladFile" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.UpladFile)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.UpladFile)</p>
+    </div>
+    <br style="clear: left;" />
+    <div id="Year" style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.Year)
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Year)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Year)</p>
+    </div>
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;">
+        @Html.DropDownListFor(model => model.GradeImport, new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.GradeImport)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.GradeImport)</p>
+    </div>
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.Section)
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Section)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Section)</p>
+    </div>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+<p>
+    <a href="../" data-dismiss="modal" class="btn btn-small">
+        <i class="icon-remove"></i>
+        Cancel
+    </a>
+
+    <button type="submit" class="btn btn-small btn-primary">
+        <i class="icon-ok"></i>
+        Import
+    </button>
+</p>
+    
+}

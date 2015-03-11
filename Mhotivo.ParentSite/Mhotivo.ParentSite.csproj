@@ -186,12 +186,15 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
+    <Compile Include="Controllers\NotificationCommentsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\PeopleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -432,9 +435,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
+    <Content Include="Views\Shared\NotificationComments_layout.cshtml" />
+    <Content Include="Views\NotificationComments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

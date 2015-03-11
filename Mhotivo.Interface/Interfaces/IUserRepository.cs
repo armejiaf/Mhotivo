@@ -10,10 +10,10 @@ namespace Mhotivo.Interface.Interfaces
     {
         User First(Expression<Func<User, bool>> query);
         User GetById(long id);
-        User Create(User itemToCreate);
+        User Create(User itemToCreate, Role rol);
         IQueryable<User> Query(Expression<Func<User, User>> expression);
         IQueryable<User> Filter(Expression<Func<User, bool>> expression);
-        User Update(User itemToUpdate, bool updateRole);
+        User Update(User itemToUpdate, bool updateRole, Role rol);
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();

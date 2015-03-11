@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Repositories;
+
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
-using Mhotivo.Data.Entities;
-
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Mhotivo.Controllers
 {
@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
             return View(_classActivityRepository.Query(x => x).ToList()
                 .Select(x => new DisplayClassActivityModel
                              {
-                                 AcademicYear = Convert.ToString(x.AcademicYear.Year.Year),
+                                 AcademicYear = Convert.ToString(x.AcademicYear.Year),
                                  DisplayName = x.Name,
                                  Type = x.Type,
                                  Description = x.Description,
@@ -136,6 +136,5 @@ namespace Mhotivo.Controllers
 
             return RedirectToAction("Index");
         }
-    
     }
 }

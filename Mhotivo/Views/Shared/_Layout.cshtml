@@ -1,4 +1,6 @@
 ﻿@using System.Activities.Statements
+@using Mhotivo
+@using Mhotivo.Implement
 @using Mhotivo.Logic
 @using Microsoft.Ajax.Utilities
 <!DOCTYPE html>
@@ -61,7 +63,8 @@
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<span class="user-info">
 								    <small>Welcome,</small>
-                                    @Html.Action("GetUserLoggedName", "Home")
+								    @Security.GetUserLoggedName()
+                                    @*@Html.Action("GetUserLoggedName", "Home")*@
 								</span>
 
 								<i class="icon-caret-down"></i>

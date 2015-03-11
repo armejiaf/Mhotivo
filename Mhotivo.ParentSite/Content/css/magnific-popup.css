@@ -381,7 +381,7 @@ img.mfp-img {
 .mfp-fade.mfp-wrap.mfp-removing .mfp-content { opacity: 0; }
 
 /* Styles for dialog window */
-#nicdark_window { text-align: left; max-width: 400px; margin: 40px auto; position: relative; }
+.nicdark_window { text-align: left; max-width: 400px; margin: 40px auto; position: relative; }
 /*** Fade-zoom animation for first dialog */
 /* start state */
 .my-mfp-zoom-in .zoom-anim-dialog { opacity: 0; -webkit-transition: all 0.2s ease-in-out; -moz-transition: all 0.2s ease-in-out; -o-transition: all 0.2s ease-in-out;  transition: all 0.2s ease-in-out;  -webkit-transform: scale(0.8); -moz-transform: scale(0.8); -ms-transform: scale(0.8); -o-transform: scale(0.8); transform: scale(0.8); }

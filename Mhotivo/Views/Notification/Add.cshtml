@@ -125,8 +125,8 @@
         $('#To').tagsinput({
             type: "POST",
             typeahead: {
-                source: function(query) {
-                    return $.getJSON('/NotificationModel/GetGroupsAndEmails/',{ filter: query });
+                source: function (query) {
+                    return $.getJSON('/NotificationModel/GetGroupsAndEmails/', { filter: query });
                 }
             }
         });
@@ -150,7 +150,7 @@
                 }
             }
         });
-        
+
         $('#htmlMessage').summernote();
     });
 
@@ -220,4 +220,6 @@
         });
     });
 </script>*@
+
+
 

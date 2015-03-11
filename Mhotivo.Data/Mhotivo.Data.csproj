@@ -70,8 +70,10 @@
     <Compile Include="Entities\AppointmentParticipants.cs" />
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Group.cs" />
+    <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\Meister.cs" />
     <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\NotificationComments.cs" />
     <Compile Include="Entities\NotificationType.cs" />
     <Compile Include="Entities\Parent.cs" />
     <Compile Include="Entities\Pensum.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserRol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

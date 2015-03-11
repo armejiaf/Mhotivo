@@ -20,13 +20,14 @@ namespace Mhotivo.Controllers
     public class EventController : Controller
     {
         private readonly IAppointmentDiaryRepository _appointmentDiaryRepository;
-        private readonly ISessionManagement _sessionManagement;
+        //private readonly ISessionManagement _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagement;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         public MhotivoContext db = new MhotivoContext();
 
         public EventController(IAppointmentDiaryRepository appointmentDiaryRepository,
-            ISessionManagement sessionManagement, IUserRepository userRepository)
+            ISessionManagementRepository sessionManagement, IUserRepository userRepository)
         {
             _appointmentDiaryRepository = appointmentDiaryRepository;
             _sessionManagement = sessionManagement;
