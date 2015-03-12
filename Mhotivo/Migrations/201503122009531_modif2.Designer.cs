@@ -7,18 +7,18 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class GrradeSaveNotification : IMigrationMetadata
+    public sealed partial class modif2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(GrradeSaveNotification));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(modif2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201503102148123_GrradeSaveNotification"; }
+            get { return "201503122009531_modif2"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

@@ -191,21 +191,17 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201502162215487_20150216.cs" />
-    <Compile Include="Migrations\201502162215487_20150216.Designer.cs">
-      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    <Compile Include="Migrations\201503121953142_modifi.cs" />
+    <Compile Include="Migrations\201503121953142_modifi.Designer.cs">
+      <DependentUpon>201503121953142_modifi.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.cs" />
-    <Compile Include="Migrations\201503102148123_GrradeSaveNotification.Designer.cs">
-      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
+    <Compile Include="Migrations\201503122009531_modif2.cs" />
+    <Compile Include="Migrations\201503122009531_modif2.Designer.cs">
+      <DependentUpon>201503122009531_modif2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201503110041479_Allen20150310.cs" />
-    <Compile Include="Migrations\201503110041479_Allen20150310.Designer.cs">
-      <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201503120508169_ok.cs" />
-    <Compile Include="Migrations\201503120508169_ok.Designer.cs">
-      <DependentUpon>201503120508169_ok.cs</DependentUpon>
+    <Compile Include="Migrations\201503122034073_25ds.cs" />
+    <Compile Include="Migrations\201503122034073_25ds.Designer.cs">
+      <DependentUpon>201503122034073_25ds.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -575,17 +571,14 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201502162215487_20150216.resx">
-      <DependentUpon>201502162215487_20150216.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503121953142_modifi.resx">
+      <DependentUpon>201503121953142_modifi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503102148123_GrradeSaveNotification.resx">
-      <DependentUpon>201503102148123_GrradeSaveNotification.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503122009531_modif2.resx">
+      <DependentUpon>201503122009531_modif2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503110041479_Allen20150310.resx">
-      <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503120508169_ok.resx">
-      <DependentUpon>201503120508169_ok.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503122034073_25ds.resx">
+      <DependentUpon>201503122034073_25ds.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

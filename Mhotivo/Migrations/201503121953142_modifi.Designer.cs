@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class Allen20150310 : IMigrationMetadata
+    public sealed partial class modifi : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Allen20150310));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(modifi));
         
         string IMigrationMetadata.Id
         {
-            get { return "201503110041479_Allen20150310"; }
+            get { return "201503121953142_modifi"; }
         }
         
         string IMigrationMetadata.Source
