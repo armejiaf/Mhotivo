@@ -15,13 +15,18 @@ namespace Mhotivo.ParentSite.Controllers
         {
             private readonly INotificationRepository _notificationRepository;
             private readonly IAcademicYearRepository _academicYearRepository;
-            public readonly IPeopleRepository _peopleRepository;
+            private readonly IParentRepository _parentRepository;
+            private readonly ISessionManagementRepository _sessionManagementRepository;
+            private Parent _loggedParent;
 
-            public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,IPeopleRepository peopleRepository)
+            public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,
+                IParentRepository parentRepository, ISessionManagementRepository sessionManagementRepository)
             {
                 _notificationRepository = notificationRepository;
                 _academicYearRepository = academicYearRepository;
-                _peopleRepository = peopleRepository;
+                _parentRepository = parentRepository;
+                _sessionManagementRepository = sessionManagementRepository;
+                
             }
 
             //
@@ -30,12 +35,14 @@ namespace Mhotivo.ParentSite.Controllers
             public ActionResult Index()
             {
                 var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
-                var studentGradeId = 2;
-                var studentId = 1;
-
-                var notifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, studentId).OrderByDescending(x => x.Created).ToList();
-                notifications.AddRange(_notificationRepository.GetGradeNotifications(currentAcademicYear, studentGradeId).OrderByDescending(x => x.Created).ToList());
-                notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, 3).OrderByDescending(x => x.Created).ToList());
+                var loggedUserEmail = Session["Email"].ToString();
+                //var loggedUserEmail = _sessionManagementRepository.GetUserLoggedEmail();
+                _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+                var userId = _loggedParent.UserId.Id;
+               
+                var notifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).OrderByDescending(x => x.Created).ToList();
+                notifications.AddRange(_notificationRepository.GetGradeNotifications(currentAcademicYear, userId).OrderByDescending(x => x.Created).ToList());
+                notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, userId).OrderByDescending(x => x.Created).ToList());
                 notifications.AddRange(_notificationRepository.GetGeneralNotifications(currentAcademicYear).OrderByDescending(x => x.Created).ToList());
                 
                 var notificationsModel = new List<NotificationModel>();
@@ -57,14 +64,16 @@ namespace Mhotivo.ParentSite.Controllers
 
             public ActionResult AddCommentToNotification(int notificationId,string commentText)
             {
+                var loggedUserEmail = Session["Email"].ToString();
+                //var loggedUserEmail = _sessionManagementRepository.GetUserLoggedEmail();
+                _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
                 var selectedNotification = _notificationRepository.GetById(notificationId);
-                var parentLogged = _peopleRepository.GetById(4);
-
+                
                 selectedNotification.NotificationComments.Add(new NotificationComments
                 {
                     CommentText = commentText,
                     CreationDate = DateTime.Now,
-                    Parent=parentLogged
+                    Parent=_loggedParent
                 });
 
                 _notificationRepository.SaveChanges();

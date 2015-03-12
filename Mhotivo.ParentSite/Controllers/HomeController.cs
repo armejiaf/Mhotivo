@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
 using System.Web.Security;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
@@ -12,68 +13,46 @@ namespace Mhotivo.ParentSite.Controllers
     public class HomeController : Controller
     {
         private readonly ISessionManagementRepository _sessionManagementRepository;
-        private readonly IRoleRepository _roleRepository;
-        private readonly IPeopleRepository _peopleRepository;
-        private IUserRepository _userRepository;
+        private readonly IParentRepository _parentRepository;
 
-        public HomeController(ISessionManagementRepository sessionManagementRepository,IRoleRepository roleRepository, IPeopleRepository peopleRepository,IUserRepository userRepository)
+        public HomeController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository)
         {
             _sessionManagementRepository = sessionManagementRepository;
-            _roleRepository = roleRepository;
-            _peopleRepository = peopleRepository;
-            _userRepository = userRepository;
+          
+            _parentRepository = parentRepository;
         }
 
         public ActionResult Index()
         {
             return View();
+        }
+
             
-        }
-
-        public ActionResult Redirect()
-        {
-            return RedirectToAction("Index", "Notification");  
-        }
-
         // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return Redirect(returnUrl);
-        }
-
 
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(ParentLoginModel model, string returnUrl)
+        public ActionResult LogIn(string email,string password)
         {
-            if (_sessionManagementRepository.LogIn(model.Email, model.Password))
+            if (_sessionManagementRepository.LogIn(email, password))
             {
-                var userLooged = _userRepository.Filter(usr => usr.Email.Equals(model.Email)).FirstOrDefault();
+                var parent = _parentRepository.Filter(y => y.User.Email == email);
 
-                var people = _peopleRepository.Filter(p => p.User.Id== userLooged.Id).FirstOrDefault();
-
-                if (people!= null && people.Discriminator == "Parent")
+                if (parent.Any())
                 {
-                    return RedirectToAction("Index", "Notification");  
+                    Session["Email"] = email;
+                    return RedirectToAction("Index", "Notification");
                 }
-                ModelState.AddModelError("Forbbiden", "El usuario no es un padre");
-                return Login(returnUrl);
-
+                
+                    ModelState.AddModelError("Forbbiden", "El usuario no es un padre");
+                    return Index();
+                
             }
-            ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
-            return Redirect(); //RedirectToAction("Login", "Home");
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
+            
+                ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
+                return Index();    
+            
         }
 
     }

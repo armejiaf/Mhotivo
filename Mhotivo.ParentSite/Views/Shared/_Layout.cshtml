@@ -529,7 +529,6 @@
         </div>
     </div>
     
-    @model Mhotivo.ParentSite.Models.ParentLoginModel
     <div id="loginForm" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250" style="max-width: 300px" >
      <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
     <div style="margin: 15px">
@@ -537,7 +536,7 @@
     </div>
     </div>
     <div class="nicdark_margin20 ">
-        @using (@Html.BeginForm("Login", "Home", FormMethod.Post))
+        @using (@Html.BeginForm("LogIn", "Home", FormMethod.Post))
         {
             <p class="greydark2 nicdark_marginleft20 ">Correo Electrónico</p>
             <input type="email" class="nicdark_marginleft20" id="email" name="email"/>
