@@ -21,7 +21,7 @@ namespace Mhotivo.Data.Entities
         public int StudentId { get; set; }
         public bool SendingEmail { get; set; }
 
-        public User NotificationCreator { get; set; }
+        public virtual User NotificationCreator { get; set; }
         public string Message { get; set; }
         public DateTime Created { get; set; }
 

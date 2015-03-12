@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -86,6 +87,22 @@ namespace Mhotivo.Implement.Repositories
                 Room = x.Room,
                 Schedule = x.Schedule,
                 Teacher = x.Teacher
+            });
+        }
+
+
+        public IEnumerable<AcademicYear> GetAllAcademicYear(long mesiterId)
+        {
+            IQueryable<AcademicYearDetail> academicYearDetail = _context.AcademicYearDetails.Include(x => x.AcademicYear).Include(c=>c.Teacher).Where(x => x.Teacher.Id==mesiterId); ;
+
+            return academicYearDetail.ToList().Select(x => new AcademicYear
+            {
+                Id = x.AcademicYear.Id,
+                Approved = x.AcademicYear.Approved,
+                Grade = x.AcademicYear.Grade,
+                IsActive = x.AcademicYear.IsActive,
+                Section = x.AcademicYear.Section,
+                Year = x.AcademicYear.Year
             });
         }
 

@@ -203,6 +203,10 @@
     <Compile Include="Migrations\201503110041479_Allen20150310.Designer.cs">
       <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503120508169_ok.cs" />
+    <Compile Include="Migrations\201503120508169_ok.Designer.cs">
+      <DependentUpon>201503120508169_ok.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
@@ -579,6 +583,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503110041479_Allen20150310.resx">
       <DependentUpon>201503110041479_Allen20150310.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503120508169_ok.resx">
+      <DependentUpon>201503120508169_ok.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -37,5 +37,8 @@ namespace Mhotivo.Interface.Interfaces
         void SaveChanges();
 
         AcademicYearDetail GenerateAcademicYearDetailFromRegisterModel(AcademicYearDetail academicYearDetailRegisterModel);
+
+
+        IEnumerable<AcademicYear> GetAllAcademicYear(long academicYearId);
     }
 }

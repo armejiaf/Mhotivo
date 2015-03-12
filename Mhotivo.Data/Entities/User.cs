@@ -15,9 +15,6 @@ namespace Mhotivo.Data.Entities
         public string Password { get; set; }
         public bool Status { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
-
-        public virtual ICollection<Notification> Notifications { get; set; }
-
         public virtual ICollection<Parent> Parents { get; set; }
     }
 }

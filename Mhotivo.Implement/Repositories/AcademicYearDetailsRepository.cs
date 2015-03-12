@@ -140,5 +140,21 @@ namespace Mhotivo.Implement.Repositories
         {
             _context.Dispose();
         }
+
+
+        public IEnumerable<AcademicYear> GetAllAcademicYear()
+        {
+            IQueryable<AcademicYearDetail> academicYearDetail = _context.AcademicYearDetails.Include(x => x.AcademicYear).Where(x => !false); ;
+
+            return academicYearDetail.ToList().Select(x => new AcademicYear
+            {
+                Id = x.AcademicYear.Id,
+                Approved = x.AcademicYear.Approved,
+                Grade = x.AcademicYear.Grade,
+                IsActive = x.AcademicYear.IsActive,
+                Section = x.AcademicYear.Section,
+                Year = x.AcademicYear.Year
+            });
+        }
     }
 }
