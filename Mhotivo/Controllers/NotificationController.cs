@@ -205,6 +205,8 @@ namespace Mhotivo.Controllers
             if (AddressedTo.IsEmpty() || AddressedTo == null)
                 AddressedTo = "0";
 
+            notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(AddressedTo);
+
             notificationIdentity.Users = new List<User>();
 
             if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.NotificationTypeId == 4)
@@ -224,9 +226,6 @@ namespace Mhotivo.Controllers
 
             //if (AddressedTo.IsEmpty() || AddressedTo == null)
             //    AddressedTo = "0";
-
-
-            notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(AddressedTo);
 
             db.Notifications.Add(notificationIdentity);
             db.SaveChanges();
@@ -333,7 +332,7 @@ namespace Mhotivo.Controllers
 
         private void AddUsersToPersonalNotification(Notification notificationIdentity)
         {
-            var notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
+            var notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
                                                             && x.Tutor1 != null).Select(x => x.Tutor1).FirstOrDefault();
             if (notificationParentId != null)
             {
@@ -346,7 +345,7 @@ namespace Mhotivo.Controllers
 
             }
 
-            notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.StudentId
+            notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
                                                             && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
                                                             (x => x.Tutor1).FirstOrDefault();
 
@@ -453,7 +452,11 @@ namespace Mhotivo.Controllers
             {
                 var toEdit = _notificationRepository.Query(x => x).Include("NotificationType").FirstOrDefault(x => x.Id.Equals(id));
 
+                var notificationBeforeEdit = _notificationRepository.GetById(toEdit.Id);
+
                 var notificationType = _notificationTypeRepository.First(c => c.NotificationTypeId == eventNotification.NotificationTypeId);
+
+                var receiverChanged = false;
 
                 if (toEdit != null)
                 {
@@ -473,7 +476,49 @@ namespace Mhotivo.Controllers
                         toEdit.IdGradeAreaUserGeneralSelected = eventNotification.IdIsGradeAreaGeneralSelected;
                         toEdit.GradeIdifNotificationTypePersonal = 0;
                     }
-                   }
+                }
+
+                if (toEdit.NotificationType.NotificationTypeId == notificationBeforeEdit.NotificationType.NotificationTypeId)
+                {
+                    if (toEdit.NotificationType.NotificationTypeId == 4 && toEdit.StudentId == notificationBeforeEdit.StudentId)
+                    {
+                        receiverChanged = false;
+
+                    }
+                    else if (toEdit.NotificationType.NotificationTypeId != 4 && toEdit.IdGradeAreaUserGeneralSelected == notificationBeforeEdit.IdGradeAreaUserGeneralSelected)
+                    {
+                        receiverChanged = false;
+                    }
+                    else
+                    {
+                        receiverChanged = true;
+                    }
+
+                }
+                else
+                {
+                    receiverChanged = true;
+                }
+
+                if (receiverChanged) 
+                {
+                    toEdit.Users = new List<User>();
+
+                    if (toEdit.NotificationType != null && toEdit.NotificationType.NotificationTypeId == 4)
+                    {
+                        AddUsersToPersonalNotification(toEdit);
+                    }
+
+                    if (toEdit.NotificationType != null && toEdit.NotificationType.NotificationTypeId == 3)
+                    {
+                        AddUsersToGradeNotification(toEdit);
+                    }
+
+                    if (toEdit.NotificationType != null && toEdit.NotificationType.NotificationTypeId == 2)
+                    {
+                        AddUsersToLevelNotification(toEdit);
+                    }
+                }
 
                 _notificationRepository.Update(toEdit);
                 _notificationRepository.SaveChanges();
