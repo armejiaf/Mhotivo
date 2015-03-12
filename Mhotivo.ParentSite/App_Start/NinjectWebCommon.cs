@@ -73,6 +73,8 @@ namespace Mhotivo.ParentSite.App_Start
             kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InSingletonScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InSingletonScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
+            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InSingletonScope();
+            kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
         }        
     }
 }
