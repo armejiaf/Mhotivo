@@ -529,13 +529,13 @@
         </div>
     </div>
     
-    <div id="loginForm" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250" style="max-width: 300px" >
+    <div id="loginForm" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window nicdark_height250" style="max-width: 273px" >
      <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
     <div style="margin: 15px">
         <h4 class="white">Iniciar Sesión</h4>
     </div>
     </div>
-    <div class="nicdark_margin20 ">
+    <div class="nicdark_margin20">
         @using (@Html.BeginForm("LogIn", "Home", FormMethod.Post))
         {
             <p class="greydark2 nicdark_marginleft20 ">Correo Electrónico</p>
@@ -547,8 +547,8 @@
             <div class="nicdark_space30"></div>
             
             <input type="submit" class="nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white right nicdark_marginright20" value=" Iniciar "/>
-            <div class="nicdark_space50"></div>
-                
+            <br/>
+            <br/>    
             @Html.ValidationSummary(true)
         }
     </div>

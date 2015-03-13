@@ -287,6 +287,7 @@
     <Content Include="Content\img\team\img7.jpg" />
     <Content Include="Content\img\team\img8.jpg" />
     <Content Include="Content\img\team\img9.jpg" />
+    <Content Include="Content\img\team\user-icon.png" />
     <Content Include="Content\img\videos\video1.mp4" />
     <Content Include="Content\img\woocommerce\small\img1.jpg" />
     <Content Include="Content\img\woocommerce\small\img2.jpg" />

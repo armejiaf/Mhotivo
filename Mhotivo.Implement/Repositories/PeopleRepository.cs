@@ -168,7 +168,7 @@ namespace Mhotivo.Implement.Repositories
 
         public People GetPeopleUser(long userId)
         {
-            var peoples = _context.Peoples.Include(x => x.User).Where(x => x.User.Id == userId);
+            var peoples = _context.Peoples.Where(x => x.User.Id == userId);
             return peoples.Count() != 0 ? peoples.First() : null;
         }
 

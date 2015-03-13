@@ -34,7 +34,8 @@ namespace Mhotivo.ParentSite.Controllers
             commentsModelList = commentsList.Select(comment => new NotificationCommentsModel
             {
                 CommentText = comment.CommentText, CreationDate = comment.CreationDate,
-                Parent = selectedNotification.NotificationComments.Where(x=>x.Id==comment.Id).FirstOrDefault().Parent.FullName
+                Parent = selectedNotification.NotificationComments.Where(x=>x.Id==comment.Id).FirstOrDefault().Parent.FullName,
+                ParentPhotoUrl = selectedNotification.NotificationComments.Where(x => x.Id == comment.Id).FirstOrDefault().Parent.UrlPicture
             }).ToList();
 
             selectedNotificationModel.CommentsAmount = commentsList.Count;

@@ -9,5 +9,6 @@ namespace Mhotivo.ParentSite.Models
                 public string CommentText { get; set; }
                 public DateTime CreationDate { get; set; }
                 public string Parent { get; set; }
+                public string ParentPhotoUrl { get; set; }
             }
     }
