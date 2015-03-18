@@ -59,8 +59,8 @@ namespace Mhotivo.ParentSite.Controllers
                     var noti = Mapper.Map<NotificationModel>(notification);
 
                     noti.CommentsAmount = notification.NotificationComments.Count;
-                    //noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
-                    noti.NotificationCreator = "Random person";
+                    noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
+                    //noti.NotificationCreator = "Random person";
                     personalNotificationsModel.Add(noti);
                 }
 
@@ -69,8 +69,8 @@ namespace Mhotivo.ParentSite.Controllers
                     var noti = Mapper.Map<NotificationModel>(notification);
                     
                     noti.CommentsAmount = notification.NotificationComments.Count;
-                    //noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
-                    noti.NotificationCreator = "Random person";
+                    noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
+                    //noti.NotificationCreator = "Random person";
                     notificationsModel.Add(noti);
                 }
 
