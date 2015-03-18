@@ -21,6 +21,6 @@ namespace Mhotivo.Interface.Interfaces
         People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people);
         void SaveChanges();
         IEnumerable<People> GetAllPeople();
-        People GetPeopleUser(long userId);
+        IEnumerable<People> GetAllPeopleByUserId(long userId);
     }
 }

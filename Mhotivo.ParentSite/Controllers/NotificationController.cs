@@ -12,6 +12,7 @@ using Mhotivo.ParentSite.Models;
 
 namespace Mhotivo.ParentSite.Controllers
 {
+    [Authorize]
     public class NotificationController : Controller
         {
             private readonly INotificationRepository _notificationRepository;
@@ -36,12 +37,13 @@ namespace Mhotivo.ParentSite.Controllers
             [HttpGet]
             public ActionResult Index()
             {
-                Security.SetSecurityRepository(_securityRepository);
+                //Security.SetSecurityRepository(_securityRepository);
 
                 var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
-                var loggedUserEmail = Session["Email"].ToString();
-                //var loggedUserEmail = Security.GetUserLoggedEmail();
+                var loggedUserEmail = Security.GetUserLoggedEmail();
+
                 _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+                
                 var userId = _loggedParent.UserId.Id;
                
                 var personalNotifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).ToList();

@@ -149,27 +149,12 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<People> GetAllPeople()
         {
-            return Query(x => x).ToList().Select(x => new People
-            {
-                Address = x.Address,
-                //BirthDay = x.BirthDate,
-                BirthDate = x.BirthDate,
-                Id = x.Id,
-                //Sexo = Utilities.GenderToString(x.Gender),
-                Gender = x.Gender,
-                City = x.City,
-                Nationality = x.Nationality,
-                State = x.State,
-                UrlPicture = x.UrlPicture,
-                FullName = x.FullName
-            });
+            return Query(x => x).ToList();
         }
 
-
-        public People GetPeopleUser(long userId)
+        public IEnumerable<People> GetAllPeopleByUserId(long userId)
         {
-            var peoples = _context.Peoples.Where(x => x.User.Id == userId);
-            return peoples.Count() != 0 ? peoples.First() : null;
+            return Filter(x => x.User.Id == userId).ToList();
         }
 
         public void Dispose()

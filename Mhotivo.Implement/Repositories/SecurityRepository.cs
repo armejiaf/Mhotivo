@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
@@ -59,8 +56,7 @@ namespace Mhotivo.Implement.Repositories
 
         public ICollection<People> GetUserLoggedPeoples(int idUser)
         {
-            var peopleTemp = _peopleRepository.GetAllPeople().Where(x => x.User.Id == idUser).ToList();
-
+            var peopleTemp = _peopleRepository.GetAllPeopleByUserId(idUser).ToList();
             return peopleTemp;
         }
 

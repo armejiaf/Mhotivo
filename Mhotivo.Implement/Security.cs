@@ -12,7 +12,8 @@ namespace Mhotivo.Implement
 
         public static void SetSecurityRepository(ISecurityRepository securityRepository)
         {
-            _securityRepository = securityRepository;
+            if (_securityRepository==null)
+                _securityRepository = securityRepository;
         }
 
         public static ICollection<Role> GetLoggedUserRoles()
@@ -58,8 +59,10 @@ namespace Mhotivo.Implement
                     return new Collection<People>();
 
             var id = int.Parse(HttpContext.Current.User.Identity.Name);
+            if(val==null)
+                return new Collection<People>();
 
-            return _securityRepository.GetUserLoggedPeoples(id);
+            return _securityRepository.GetUserLoggedPeoples((int)val);
         }
 
         public static string GetUserLoggedName()
@@ -88,10 +91,11 @@ namespace Mhotivo.Implement
                 if ((int)val == 0)
                     return "";
 
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
+            //var id = int.Parse(HttpContext.Current.User.Identity.Name);
+            if (val == null)
+                return "";
 
-
-            return _securityRepository.GetUserLoggedEmail(id);
+            return _securityRepository.GetUserLoggedEmail((int)val);
         }
     }
 }

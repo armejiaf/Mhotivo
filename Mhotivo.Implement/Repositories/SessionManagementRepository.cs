@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using Mhotivo.Data.Entities;
@@ -29,14 +26,14 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        public bool LogIn(string userEmail, string password, bool remember = false)
+        public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
             var user = ValidateUser(userEmail, password);
             if (user == null) return false;
 
             UpdateSessionFromUser(user);
 
-            FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
 
             return true;
         }
@@ -98,8 +95,12 @@ namespace Mhotivo.Implement.Repositories
             if (val != null)
                 if ((int)val > 0) return;
 
-            var id = int.Parse(HttpContext.Current.User.Identity.Name);
-            var user = _userRepository.GetById(id);
+            //var id = int.Parse(HttpContext.Current.User.Identity.Name);
+
+            if (val == null)
+                return;
+
+            var user = _userRepository.GetById((int)val);
             UpdateSessionFromUser(user);
         }
     }

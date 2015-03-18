@@ -48,7 +48,6 @@ namespace Mhotivo.Models
         public int NotificationTypeId { get; set; } // For the the selected Product
         
         public DateTime Created { get; set; }
-        public int UserCreatorId { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Estudiante")]
         [Display(Name = "Estudiante")]

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Mhotivo.Implement
+<!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
@@ -214,11 +215,16 @@
                 <div class="grid grid_6 right">
                     <div class="nicdark_focus right">
                         <h6 class="white">
-                            <i class="icon-globe-alt-outline"></i>&nbsp;&nbsp;<a class="white nicdark_mpopup_window" href="#nicdark_window">LANGUAGES</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="grey">·</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i class="icon-plus-outline"></i>&nbsp;&nbsp;<a class="white nicdark_mpopup_ajax" href="form-register.html">REGISTER</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="grey">·</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i class="icon-lock-1"></i>&nbsp;&nbsp;<a class="white nicdark_mpopup_ajax" href="form-login.html">LOG IN</a>
+                              @if (HttpContext.Current.Session["loggedUserName"] != null)
+                              {
+                                            <i class="icon-user-1"></i>
+                                            <span> BIENVENIDO(A) @HttpContext.Current.Session["loggedUserName"].ToString().ToUpper() </span>
+                                  //Security.GetUserLoggedName().ToUpper();
+                                            <span class="grey">·</span>
+                                            <i class="icon-lock-1"></i>@*
+                                            <a class="white">  CERRAR SESIÓN</a>*@
+                                            @Html.ActionLink(" CERRAR SESIÓN", "LogOut", "Account", null, new { @class = "white" });
+                              }
                         </h6>
                     </div>
                 </div>
@@ -452,7 +458,7 @@
                             <div class="nicdark_textevidence nicdark_width_percentage25 nicdark_bg_blue nicdark_shadow nicdark_radius_left">
                                 <div class="nicdark_textevidence">
                                     <div class="nicdark_margin30">
-                                        <h2 class="white subtitle">@Html.ActionLink("NOTIFICACIONES", "Index", "Notification", new { area = "" }, new {@class="white", @style="position: relative; z-index: 1;"})</h2>
+                                        <h2 class="white subtitle">@Html.ActionLink("NOTIFICACIONES", "Index", "Notification", new { area = "" }, new { @class = "white", @style = "position: relative; z-index: 1;" })</h2>
                                     </div>
                                     <i class="nicdark_zoom icon-pencil-2 nicdark_iconbg left extrabig blue nicdark_displaynone_ipadland nicdark_displaynone_ipadpotr"></i>
                                 </div>
@@ -460,7 +466,7 @@
                             <div class="nicdark_textevidence nicdark_width_percentage25 nicdark_bg_yellow nicdark_shadow">
                                 <div class="nicdark_textevidence">
                                     <div class="nicdark_margin30">
-                                        <h2 class="white subtitle"><a class="white">@Html.ActionLink("TAREAS","Index","Homework",new {area =""}, new{@class ="white"})</a></h2>
+                                        <h2 class="white subtitle"><a class="white">@Html.ActionLink("TAREAS", "Index", "Homework", new { area = "" }, new { @class = "white" })</a></h2>
                                     </div>
                                     <i class="nicdark_zoom icon-money-1 nicdark_iconbg left extrabig yellow nicdark_displaynone_ipadland nicdark_displaynone_ipadpotr"></i>
                                 </div>
