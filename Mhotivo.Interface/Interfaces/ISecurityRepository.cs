@@ -9,13 +9,18 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface ISecurityRepository
     {
-        ICollection<Role> GetUserLoggedRoles(int idUser);
+        ICollection<Role> GetUserLoggedRoles();
 
-        ICollection<Group> GetUserLoggedGroups(int idUser);
-        ICollection<People> GetUserLoggedPeoples(int idUser);
+        ICollection<Group> GetUserLoggedGroups();
+        ICollection<People> GetUserLoggedPeoples();
 
-        string GetUserLoggedName(int idUser);
+        User GetUserLogged();
 
-        string GetUserLoggedEmail(int idUser);
+        string GetUserLoggedName();
+
+        string GetUserLoggedEmail();
+
+
+
     }
 }
