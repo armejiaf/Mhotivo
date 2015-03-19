@@ -82,7 +82,7 @@ namespace Mhotivo.ParentSite.Controllers
 
             public ActionResult AddCommentToNotification(int notificationId,string commentText)
             {
-                var loggedUserEmail = Session["Email"].ToString();
+                var loggedUserEmail = System.Web.HttpContext.Current.Session["loggedUserEmail"].ToString();//Session["Email"].ToString();
                 //var loggedUserEmail = _sessionManagementRepository.GetUserLoggedEmail();
                 _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
                 var selectedNotification = _notificationRepository.GetById(notificationId);
