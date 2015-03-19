@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using Mhotivo.Data.Entities;
@@ -95,12 +98,8 @@ namespace Mhotivo.Implement.Repositories
             if (val != null)
                 if ((int)val > 0) return;
 
-            //var id = int.Parse(HttpContext.Current.User.Identity.Name);
-
-            if (val == null)
-                return;
-
-            var user = _userRepository.GetById((int)val);
+            var id = int.Parse(HttpContext.Current.User.Identity.Name);
+            var user = _userRepository.GetById(id);
             UpdateSessionFromUser(user);
         }
     }

@@ -12,11 +12,13 @@
         textBox.value = notificationId;    
     }
 
-    $('#lazyLoad').jscroll();
+    jQuery(document).ready(function() {
+        $('.jscroll').jscroll();
+    });
 
 </script>
 
-<div id="lazyLoad">
+<div>
     @if (Model.Item1.Count > 0)
     {
         <div class="nicdark_space50"></div>
@@ -66,7 +68,8 @@
         <div class="nicdark_space50"></div>
         <h2 style="margin-left: 100px; margin-right: 100px" class="nicdark_textevidence" >Notificaciones Generales</h2>
         <div class="nicdark_space20"></div>
-        foreach (var item in Model.Item2)
+       <div class="jscroll">
+        @foreach (var item in Model.Item2)
         {
              <div style="margin-left: 100px; margin-right: 100px" >
                  <div class="nicdark_textevidence" >
@@ -101,7 +104,8 @@
             
                  </div>  
              </div>
-        }
+            }
+            </div>
     }
 </div>
 

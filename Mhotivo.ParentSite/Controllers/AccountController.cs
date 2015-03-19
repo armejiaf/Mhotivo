@@ -34,7 +34,6 @@ namespace Mhotivo.ParentSite.Controllers
             [AllowAnonymous]
             public ActionResult LogIn(ParentLoginModel model, string returnUrl)
             {
-                Security.SetSecurityRepository(_securityRepository);
                 //System.Web.HttpContext.Current.Response.SuppressFormsAuthenticationRedirect = true;
                 
                 var parent = _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault();

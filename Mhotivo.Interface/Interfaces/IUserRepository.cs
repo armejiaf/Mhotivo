@@ -17,5 +17,8 @@ namespace Mhotivo.Interface.Interfaces
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
+
+        ICollection<Role> GetUserRoles(int idUser);
+
     }
 }

@@ -40,7 +40,7 @@ namespace Mhotivo.ParentSite.Controllers
                 //Security.SetSecurityRepository(_securityRepository);
 
                 var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
-                var loggedUserEmail = Security.GetUserLoggedEmail();
+                var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
 
                 _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
                 
@@ -59,8 +59,8 @@ namespace Mhotivo.ParentSite.Controllers
                     var noti = Mapper.Map<NotificationModel>(notification);
 
                     noti.CommentsAmount = notification.NotificationComments.Count;
-                    noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
-                    //noti.NotificationCreator = "Random person";
+                    //noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
+                    noti.NotificationCreator = "Random person";
                     personalNotificationsModel.Add(noti);
                 }
 
@@ -69,12 +69,12 @@ namespace Mhotivo.ParentSite.Controllers
                     var noti = Mapper.Map<NotificationModel>(notification);
                     
                     noti.CommentsAmount = notification.NotificationComments.Count;
-                    noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
-                    //noti.NotificationCreator = "Random person";
+                    //noti.NotificationCreator = notification.NotificationCreator.DisplayName;                    
+                    noti.NotificationCreator = "Random person";
                     notificationsModel.Add(noti);
                 }
 
-                personalNotifications = personalNotifications.OrderByDescending(x => x.Created).ToList();
+                personalNotificationsModel = personalNotificationsModel.OrderByDescending(x => x.Created).ToList();
                 notificationsModel = notificationsModel.OrderByDescending(x => x.Created).ToList();
 
                 return View(new Tuple<List<NotificationModel>, List<NotificationModel>>(personalNotificationsModel, notificationsModel));
