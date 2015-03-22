@@ -46,7 +46,7 @@ namespace Mhotivo.Controllers
             
             var user = Mapper.Map<UserEditModel>(thisUser);
 
-            var roles = _securityRepository.GetUserLoggedRoles(thisUser.Id);
+            var roles = _userRepository.GetUserRoles(thisUser.Id);
 
             ViewBag.RoleId = new SelectList(_roleRepository.Query(x => x), "Id", "Name", roles.First().Id);
 
@@ -61,7 +61,7 @@ namespace Mhotivo.Controllers
             var myUser = Mapper.Map<User>(modelUser);
 
             var rol = _roleRepository.GetById(modelUser.RoleId);
-            var rolesUser = _securityRepository.GetUserLoggedRoles(modelUser.Id);
+            var rolesUser = _userRepository.GetUserRoles(myUser.Id);
 
             if (rolesUser.Any() && rolesUser.First().Id != modelUser.RoleId)
             {
