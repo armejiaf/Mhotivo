@@ -253,7 +253,11 @@ namespace Mhotivo.Controllers
                 _userRepository.GetAllUsers()
                     .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
 
-            if (user != null) notificationIdentity.UserCreatorId = user.Id;
+            if (user != null)
+            {
+                notificationIdentity.UserCreatorId = user.Id;
+                notificationIdentity.UserCreatorName = user.DisplayName;
+            }
 
             db.Notifications.Add(notificationIdentity);
             db.SaveChanges();
