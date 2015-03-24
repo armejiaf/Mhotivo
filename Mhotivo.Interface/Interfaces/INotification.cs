@@ -5,7 +5,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface INotification:IDisposable
+    public interface INotification
     {
         Notification First(Expression<Func<Notification, bool>> query);
         Notification GetById(long id);

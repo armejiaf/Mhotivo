@@ -37,8 +37,6 @@ namespace Mhotivo.ParentSite.Controllers
             [HttpGet]
             public ActionResult Index()
             {
-                //Security.SetSecurityRepository(_securityRepository);
-
                 var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString());
                 var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
 
@@ -47,6 +45,7 @@ namespace Mhotivo.ParentSite.Controllers
                 var userId = _loggedParent.UserId.Id;
                
                 var personalNotifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).ToList();
+
                 var notifications=_notificationRepository.GetGradeNotifications(currentAcademicYear, userId).ToList();
                 notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, userId).ToList());
                 notifications.AddRange(_notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList());
