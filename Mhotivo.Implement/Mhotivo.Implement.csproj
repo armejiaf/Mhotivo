@@ -76,7 +76,6 @@
     <Compile Include="Repositories\SessionManagementRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Security.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
