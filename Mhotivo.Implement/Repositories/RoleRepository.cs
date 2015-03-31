@@ -72,9 +72,5 @@ namespace Mhotivo.Implement.Repositories
             _context.Roles.Remove(itemToDelete);
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

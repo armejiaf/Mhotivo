@@ -98,6 +98,8 @@ namespace Mhotivo.App_Start
             kernel.Bind<AcademicYearLogic>().ToSelf().InRequestScope();
             kernel.Bind<INotificationTypeRepository>().To<NotificationTypeRepository>().InRequestScope();
             kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
+            kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
+            kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
         }        
     }
 }

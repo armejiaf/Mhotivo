@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IPeopleRepository : IDisposable
+    public interface IPeopleRepository 
     {
         People First(Expression<Func<People, People>> query);
         People GetById(long id);

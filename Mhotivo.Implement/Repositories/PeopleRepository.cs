@@ -157,9 +157,6 @@ namespace Mhotivo.Implement.Repositories
             return Filter(x => x.User.Id == userId).ToList();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+        
     }
 }

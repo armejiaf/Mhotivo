@@ -73,9 +73,5 @@ namespace Mhotivo.Implement.Repositories
             return generalNotifications;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

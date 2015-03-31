@@ -122,7 +122,7 @@ namespace Mhotivo.Implement.Repositories
 
             var val = HttpContext.Current.Session[_userIdIdentifier];
 
-            if (val != null) return true;
+            //if (val != null) return true;
 
             var myUser = _userRepository.GetById(idUser);
             HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;

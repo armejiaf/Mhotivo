@@ -193,6 +193,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeworkDateModel.cs" />
+    <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\ParentLoginModel.cs" />
@@ -462,6 +464,10 @@
     <ProjectReference Include="..\Mhotivo.Interface\Mhotivo.Interface.csproj">
       <Project>{aec3ffc7-bca3-4b90-8e44-dea10e8f89e8}</Project>
       <Name>Mhotivo.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mhotivo\Mhotivo.csproj">
+      <Project>{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}</Project>
+      <Name>Mhotivo</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

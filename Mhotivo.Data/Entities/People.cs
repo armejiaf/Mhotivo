@@ -37,8 +37,6 @@ namespace Mhotivo.Data.Entities
 
         public bool Gender { get; set; }
 
-        public string Discriminator { get; set; }
-
         public bool Disable { get; set; }
         public User User { get; set; }
         public virtual ICollection<ContactInformation> Contacts { get; set; }

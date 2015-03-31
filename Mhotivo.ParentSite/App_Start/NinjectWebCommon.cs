@@ -75,6 +75,13 @@ namespace Mhotivo.ParentSite.App_Start
             kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
             kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InSingletonScope();
             kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
+            kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+            kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
+            kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
+            kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
+            kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearDetailRepository>().To<AcademicYearDetailRepository>().InRequestScope();
+            kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
         }        
     }
 }

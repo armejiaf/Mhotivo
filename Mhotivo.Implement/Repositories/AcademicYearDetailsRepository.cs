@@ -136,10 +136,6 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
 
 
         public IEnumerable<AcademicYear> GetAllAcademicYear()

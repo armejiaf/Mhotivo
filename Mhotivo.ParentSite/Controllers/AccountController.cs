@@ -14,7 +14,7 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly ISecurityRepository _securityRepository;
         private readonly IParentRepository _parentRepository;
-
+       
         public AccountController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository)
         {
             _sessionManagementRepository = sessionManagementRepository;
@@ -29,7 +29,7 @@ namespace Mhotivo.ParentSite.Controllers
         {
             return View();
         }
-
+        
             [HttpPost]
             [AllowAnonymous]
             public ActionResult LogIn(ParentLoginModel model, string returnUrl)
@@ -39,7 +39,7 @@ namespace Mhotivo.ParentSite.Controllers
                 var parent = _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault();
 
                 if (parent != null)
-                {
+                {  
                     if (_sessionManagementRepository.LogIn(model.Email, model.Password))
                     {
                         return RedirectToAction("Index", "Notification");
@@ -69,6 +69,8 @@ namespace Mhotivo.ParentSite.Controllers
                 }
                 return RedirectToAction("Index", "Home");
             }
+
+
 
     }
 }

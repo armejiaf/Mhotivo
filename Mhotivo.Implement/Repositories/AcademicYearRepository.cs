@@ -211,10 +211,6 @@ namespace Mhotivo.Implement.Repositories
             return academicYears.Any() ? academicYears.First() : null;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
 
         public AcademicYear Update(AcademicYear itemToUpdate)
         {

@@ -8,7 +8,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IAcademicYearDetailsRepository : IDisposable
+    public interface IAcademicYearDetailsRepository 
     {
         AcademicYearDetail First(Expression<Func<AcademicYearDetail, AcademicYearDetail>> query);
         AcademicYearDetail GetById(int id);

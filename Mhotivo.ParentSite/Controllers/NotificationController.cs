@@ -42,7 +42,7 @@ namespace Mhotivo.ParentSite.Controllers
 
                 _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
                 
-                var userId = _loggedParent.UserId.Id;
+                var userId = _securityRepository.GetUserLogged().Id;
                
                 var personalNotifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).ToList();
 

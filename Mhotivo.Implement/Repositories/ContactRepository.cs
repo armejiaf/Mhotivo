@@ -71,9 +71,5 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

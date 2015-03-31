@@ -5,23 +5,30 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.Implement;
 
 namespace Mhotivo.Controllers
 {
     public class HomeworkController : Controller
     {
         private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ISecurityRepository _securityRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        public long MeisterId = -1;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository,ICourseRepository courseRepository
+            IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository,
+            ISecurityRepository securityRepository, IUserRepository userRepository
             )
         {
             _homeworkRepository = homeworkRepository;
@@ -30,19 +37,45 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
+            _sessionManagementRepository = sessionManagementRepository;
+            _securityRepository = securityRepository;
+            _userRepository = userRepository;
         }
 
         public ActionResult Index()
         {
-            _viewMessageLogic.SetViewMessageIfExist();
 
-            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks();
+            /*var email = _sessionManagementRepository.GetUserLoggedEmail();
+            var IdUser = _userRepository.First(x => x.Email.Equals(email));
+            var IdPeople = _meisterRepository.First(x =>IdUser);*/
+
+            _viewMessageLogic.SetViewMessageIfExist();
+            MeisterId = GetMeisterId();
+            var allAcademicYearsDetails = GetAllAcademicYearsDetail(MeisterId);
+            var academicY = new List<long>();
+            for (int a = 0; a < allAcademicYearsDetails.Count(); a++)
+            {
+                academicY.Add(allAcademicYearsDetails.ElementAt(a).Id);
+            }
+            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => academicY.Contains(x.AcademicYearDetail.Id));
 
             Mapper.CreateMap<DisplayHomeworkModel, Homework>().ReverseMap();
             IEnumerable<DisplayHomeworkModel> allHomeworkDisplaysModel =
                 allHomeworks.Select(Mapper.Map<Homework, DisplayHomeworkModel>).ToList();
 
             return View(allHomeworkDisplaysModel);
+        }
+
+        private long GetMeisterId()
+        {
+            var people = _securityRepository.GetUserLoggedPeoples();
+            long id = 0;
+            foreach (var p in people)
+            {
+                if (p is Meister)
+                    id = p.Id;
+            }
+            return id;
         }
 
         //
@@ -58,10 +91,24 @@ namespace Mhotivo.Controllers
 
         public ActionResult Create()
         {
-            var query = _courseRepository.Query(x => x);
+            MeisterId = GetMeisterId();
+            var allAcademicYearsByMeister = GetAllAcademicYearsDetail(MeisterId);
+            var courseIds = new List<long>();
+            for (int a = 0; a < allAcademicYearsByMeister.Count(); a++)
+            {
+                courseIds.Add(allAcademicYearsByMeister.ElementAt(a).Course.Id);
+            }
+            var query = _courseRepository.Query(x => x).Where(x => courseIds.Contains(x.Id));
             ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
+        }
+
+        private IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetail(long id)
+        {
+            IEnumerable<AcademicYearDetail> allAcademicYearsDetail =
+                _academicYearDetailRepository.GetAllAcademicYearDetails().Where(x => x.Teacher.Id.Equals(id));
+            return allAcademicYearsDetail;
         }
 
         [HttpPost]

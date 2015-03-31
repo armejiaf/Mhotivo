@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IAreaRepository: IDisposable
+    public interface IAreaRepository
     {
         Area First(Expression<Func<Area, Area>> query);
         Area GetById(long id);

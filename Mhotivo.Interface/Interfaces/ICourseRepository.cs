@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface ICourseRepository :  IDisposable
+    public interface ICourseRepository
     {
         Course Create(Course itemToCreate);
 

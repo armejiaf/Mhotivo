@@ -118,9 +118,5 @@ namespace Mhotivo.Implement.Repositories
             return itemToUpdate;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

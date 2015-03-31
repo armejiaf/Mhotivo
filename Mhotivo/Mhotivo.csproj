@@ -191,17 +191,13 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201503121953142_modifi.cs" />
-    <Compile Include="Migrations\201503121953142_modifi.Designer.cs">
-      <DependentUpon>201503121953142_modifi.cs</DependentUpon>
+    <Compile Include="Migrations\201503310222266_trs.cs" />
+    <Compile Include="Migrations\201503310222266_trs.Designer.cs">
+      <DependentUpon>201503310222266_trs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201503122009531_modif2.cs" />
-    <Compile Include="Migrations\201503122009531_modif2.Designer.cs">
-      <DependentUpon>201503122009531_modif2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201503122034073_25ds.cs" />
-    <Compile Include="Migrations\201503122034073_25ds.Designer.cs">
-      <DependentUpon>201503122034073_25ds.cs</DependentUpon>
+    <Compile Include="Migrations\201503310232072_tsas.cs" />
+    <Compile Include="Migrations\201503310232072_tsas.Designer.cs">
+      <DependentUpon>201503310232072_tsas.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -571,14 +567,11 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201503121953142_modifi.resx">
-      <DependentUpon>201503121953142_modifi.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503310222266_trs.resx">
+      <DependentUpon>201503310222266_trs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503122009531_modif2.resx">
-      <DependentUpon>201503122009531_modif2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503122034073_25ds.resx">
-      <DependentUpon>201503122034073_25ds.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503310232072_tsas.resx">
+      <DependentUpon>201503310232072_tsas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

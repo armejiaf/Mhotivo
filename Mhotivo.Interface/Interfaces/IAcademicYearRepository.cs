@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IAcademicYearRepository : IDisposable
+    public interface IAcademicYearRepository 
     {
         AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query);
 
