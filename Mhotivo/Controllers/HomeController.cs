@@ -56,8 +56,6 @@ namespace Mhotivo.Controllers
         [ChildActionOnly]
         public ActionResult GetUserLoggedName()
         {
-            var people = _securityRepository.GetUserLoggedPeoples();
-            //var userName = _sessionManagement.GetUserLoggedName();
             var userName = _securityRepository.GetUserLoggedName();
             return Content(userName);
         }

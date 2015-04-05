@@ -85,16 +85,13 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        
         public IEnumerable<Student> GetAllStudents()
         {
-            return Query(x => x).ToList().Select(x => new Student
+            return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student
             {
                 Id = x.Id,
-
                 IdNumber = x.IdNumber,
                 UrlPicture = x.UrlPicture,
-
                 FullName = x.FullName,
                 BirthDate = x.BirthDate,
                 Nationality = x.Nationality,
@@ -108,11 +105,11 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = x.AccountNumber,
                 Biography = x.Biography,
                 Tutor1 = x.Tutor1,
-                Tutor2 = x.Tutor2//,
-                //Disable = x.Disable
+                Tutor2 = x.Tutor2,
+                Disable = x.Disable
             });
         }
-        
+
         public Student GetStudentDisplayModelById(long id)
         {
             var student = GetById(id);

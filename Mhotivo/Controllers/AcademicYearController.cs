@@ -1,4 +1,3 @@
-
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +7,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-
-﻿using AutoMapper;
-using Mhotivo.Data;
-using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
-
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Logic;
-using Mhotivo.Models;
-using System;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.WebPages;
-
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -41,11 +24,29 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-
             _viewMessageLogic.SetViewMessageIfExist();
             var allAcademicYears = _academicYearRepository.GetAllAcademicYears();
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "year_desc" : "";
+            ViewBag.GradeSortParm = sortOrder == "Grade" ? "grade_desc" : "Grade";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var year = Convert.ToInt32(searchString);
+                allAcademicYears = _academicYearRepository.Filter(x => x.Year.Year.Equals(year)).ToList();
+            }
             var academicYears = allAcademicYears.Select(academicYear => new DisplayAcademicYearModel
             {
                 Id = academicYear.Id,
@@ -56,45 +57,28 @@ namespace Mhotivo.Controllers
                 EducationLevel = academicYear.Grade.EducationLevel,
                 Grade = academicYear.Grade.Name
             }).ToList();
-            
-            return View(academicYears);
 
-            //var elements = new AcademicYearViewManagement
-            //               {
-            //                   Elements =
-            //                       _academicYearRepository.Filter(x => x.IsActive)
-            //                       .ToList()
-            //                       .Select(x => new AcademicYearViewData
-            //                                    {
-            //                                        Approved = x.Approved ? "Active" : "Inactive",
-            //                                        Course = x.Course.Name,
-            //                                        Grade = x.Grade.Name,
-            //                                        Id = x.Id,
-            //                                        EndDate =
-            //                                            (x.TeacherEndDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherEndDate.Value.ToShortDateString()),
-            //                                        Limit = x.StudentsLimit,
-            //                                        Meister =
-            //                                            x.Teacher == null ? "Sin Maestro Asignado" : x.Teacher.FullName,
-            //                                        Room = x.Room.IsEmpty() ? "Sin Aula Asignada" : x.Room,
-            //                                        Schedule =
-            //                                            x.Schedule == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.Schedule.Value.ToShortTimeString(),
-            //                                        Section = x.Section,
-            //                                        StartDate =
-            //                                            x.TeacherStartDate == null
-            //                                                ? "Sin Maestro Asignado"
-            //                                                : x.TeacherStartDate.Value.ToShortDateString(),
-            //                                        Year = x.Year.Year
-            //                                    }),
-            //                   CurrentYear = DateTime.Now.Year,
-            //                   CanGenerate = true
-            //               };
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "year_desc":
+                    academicYears = academicYears.OrderByDescending(s => s.Year).ToList();
+                    break;
+                case "Grade":
+                    academicYears = academicYears.OrderBy(s => s.Grade).ToList();
+                    break;
+                case "grade_desc":
+                    academicYears = academicYears.OrderByDescending(s => s.Grade).ToList();
+                    break;
+                default:  // Name ascending 
+                    academicYears = academicYears.OrderBy(s => s.Year).ToList();
+                    break;
+            }
 
-            //return View(elements);
-            return ViewBag();//TODO: Esto no va.
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(academicYears.ToPagedList(pageNumber,pageSize));
         }
 
         [HttpGet]
@@ -159,7 +143,6 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
 
             return View("Create");

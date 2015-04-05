@@ -1,11 +1,13 @@
-﻿using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
-using Mhotivo.Interface.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using Mhotivo.Interface;
+using Mhotivo.Interface.Interfaces;
+using Mhotivo.Data;
+using Mhotivo.Data.Entities;
+using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -18,7 +20,6 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-
         public MhotivoContext GeContext()
         {
             return _context;
@@ -26,38 +27,39 @@ namespace Mhotivo.Implement.Repositories
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {
-            IQueryable<Parent> parent = _context.Parents.Select(query);
+            var parent = _context.Parents.Select(query);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetById(long id)
         {
-            IQueryable<Parent> parent = _context.Parents.Where(x => x.Id == id && !false);
+            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetByIdNumber(string idNumber)
         {
-            var parent = _context.Parents.Where(x => x.IdNumber == idNumber);
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent Create(Parent itemToCreate)
         {
-            Parent parent = _context.Parents.Add(itemToCreate);
+            itemToCreate.Disable = false;
+            var parent = _context.Parents.Add(itemToCreate);
             _context.SaveChanges();
             return parent;
         }
 
         public IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression)
         {
-            IQueryable<Parent> myParents = _context.Parents.Select(expression);
+            var myParents = _context.Parents.Select(expression);
             return myParents;
         }
 
         public IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression)
         {
-            IQueryable<Parent> myParents = _context.Parents.Where(expression);
+            var myParents = _context.Parents.Where(expression);
             return myParents;
         }
 
@@ -69,14 +71,15 @@ namespace Mhotivo.Implement.Repositories
 
         public Parent Delete(long id)
         {
-            Parent itemToDelete = GetById(id);
+            var itemToDelete = GetById(id);
+            itemToDelete.Disable = true;
             _context.SaveChanges();
             return itemToDelete;
         }
 
         public IEnumerable<Parent> GetAllParents()
         {
-            return Query(x => x).Where(x => !false).ToList().Select(x => new Parent
+            return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Parent
             {
                 Id = x.Id,
                 IdNumber = x.IdNumber,
@@ -93,12 +96,13 @@ namespace Mhotivo.Implement.Repositories
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
+                Photo = x.Photo
             });
         }
 
         public Parent GetParentDisplayModelById(long id)
         {
-            Parent parent = GetById(id);
+            var parent = GetById(id);
             return new Parent
             {
                 Id = parent.Id,
@@ -116,6 +120,7 @@ namespace Mhotivo.Implement.Repositories
                 //Gender = Utilities.GenderToString(parent.Gender),
                 Gender = parent.Gender,
                 Contacts = parent.Contacts,
+                Photo = parent.Photo
             };
         }
 
@@ -133,6 +138,7 @@ namespace Mhotivo.Implement.Repositories
             parent.State = parentEditModel.State;
             parent.City = parentEditModel.City;
             parent.Address = parentEditModel.Address;
+            parent.Photo = parentEditModel.Photo;
             return Update(parent);
         }
 
@@ -152,12 +158,13 @@ namespace Mhotivo.Implement.Repositories
                 Country = parentRegisterModel.Country,
                 City = parentRegisterModel.City,
                 Address = parentRegisterModel.Address,
+                Photo = parentRegisterModel.Photo,
             };
         }
 
         public Parent GetParentEditModelById(long id)
         {
-            Parent parent = GetById(id);
+            var parent = GetById(id);
             return new Parent
             {
                 FirstName = parent.FirstName,
@@ -173,6 +180,7 @@ namespace Mhotivo.Implement.Repositories
                 City = parent.City,
                 Address = parent.Address,
                 Id = parent.Id,
+                Photo = parent.Photo,
             };
         }
 
@@ -183,7 +191,7 @@ namespace Mhotivo.Implement.Repositories
 
         public bool ExistIdNumber(string idNumber)
         {
-            IQueryable<Parent> parentWithIdNumber = _context.Parents.Where(x => x.IdNumber.Equals(idNumber));
+            var parentWithIdNumber = _context.Parents.Where(x => x.IdNumber.Equals(idNumber));
             if (parentWithIdNumber.Any())
                 return true;
 

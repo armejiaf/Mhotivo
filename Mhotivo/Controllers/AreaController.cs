@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Data.Entities;
@@ -8,6 +9,7 @@ using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
 using Mhotivo.Encryption;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -23,15 +25,45 @@ namespace Mhotivo.Controllers
             this._areaReposity = areaReposity;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             this._viewMessageLogic.SetViewMessageIfExist();
 
-            var listaArea = this._areaReposity.GetAllAreas();
+            var listaArea = _areaReposity.GetAllAreas();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listaArea = _areaReposity.Filter(x => x.Name.Contains(searchString)).ToList();
+            }
+
             Mapper.CreateMap<DisplayAreaModel, Area>().ReverseMap();
-            //var listaAreas = listaArea.Select(Mapper.Map<DisplayAreaModel>);
             var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<Area, DisplayAreaModel>).ToList();
-            return View(listaAreaDisplaysModel);
+
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    listaAreaDisplaysModel = listaAreaDisplaysModel.OrderByDescending(s => s.Name).ToList();
+                    break;
+                default:  // Name ascending 
+                    listaAreaDisplaysModel = listaAreaDisplaysModel.OrderBy(s => s.Name).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(listaAreaDisplaysModel.ToPagedList(pageNumber, pageSize));
 
             
         }

@@ -137,7 +137,7 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
             DisplayBenefactorModel modelBenefactor = Mapper.Map<Benefactor, DisplayBenefactorModel>(benefactor);
 
-            return View("Details", benefactor);
+            return View("Details", modelBenefactor);
         }
 
         [HttpGet]

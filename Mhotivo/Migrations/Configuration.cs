@@ -86,6 +86,43 @@ namespace Mhotivo.Migrations
             //});
 
             //context.SaveChanges();
+
+            context.Roles.AddOrUpdate(new Role { Id = 1, Description = "Admin", Name = "Admin" });
+            context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Principal", Name = "Principal" });
+            context.Roles.AddOrUpdate(new Role { Id = 3, Description = "Padres", Name = "Padres" });
+            context.SaveChanges();
+            
+            context.Users.AddOrUpdate(new User { Id = 1, DisplayName = "Alex Fernandez", Email = "olorenzo@outlook.com", Password = "123", Status = true });
+            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Franklin Castellanos", Email = "castellarfrank@hotmail.com", Password = "siniestro", Status = true });
+            context.Users.AddOrUpdate(new User { Id = 3, DisplayName = "La directora", Email = "holis@holis.com", Password = "holis", Status = true });
+            context.SaveChanges();
+
+            var rol1 = context.Roles.First();
+            var rol2 = context.Roles.Find(2);
+
+            var user1 = context.Users.First();
+            var user2 = context.Users.Find(2);
+            var user3 = context.Users.Find(3);
+
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 1, Role = rol2, User = user1 });
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 1, Role = rol2, User = user2 });
+            context.UserRoles.AddOrUpdate(new UserRol { Id = 1, Role = rol1, User = user3 });
+            context.SaveChanges();
+
+            context.Areas.AddOrUpdate(new Area{Id = 1, Name = "Sociales"});
+            context.SaveChanges();
+            context.Grades.AddOrUpdate(new Grade{Id = 1, EducationLevel = "Primaria", Name = "Primero"});
+            context.SaveChanges();
+
+            var area = context.Areas.First();
+            context.Courses.AddOrUpdate(new Course { Id = 1, Area = area, Name = "Estudios Sociales" });
+            context.SaveChanges();
+
+            var grade1 = context.Grades.First();
+            context.AcademicYears.AddOrUpdate(new AcademicYear { Id = 1, Year = DateTime.Now, Approved = true, Grade = grade1, IsActive = true, Section = "A"});
+            context.SaveChanges();
+
+
         }
     }
 }

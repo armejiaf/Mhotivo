@@ -36,6 +36,12 @@ namespace Mhotivo.Implement.Repositories
             return _context.Grades.Select(expression);
         }
 
+        public IQueryable<Grade> Filter(Expression<Func<Grade, bool>> expression)
+        {
+            var myGrades = _context.Grades.Where(expression);
+            return myGrades;
+        }
+
         public Grade Update(Grade itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;

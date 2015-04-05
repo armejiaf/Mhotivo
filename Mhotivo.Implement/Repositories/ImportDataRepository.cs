@@ -24,7 +24,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository)
+        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -82,7 +82,7 @@ namespace Mhotivo.Implement.Repositories
                 listParents.Add(newParent);
             }
 
-            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository);
+            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository, userRepository, roleRepository);
         }
 
         public DataSet GetDataSetFromExcelFile(string path)
@@ -104,7 +104,7 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository)
+        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             var allParents = parentRepository.GetAllParents();
             var allStudents = studentRepository.GetAllStudents();
@@ -123,7 +123,16 @@ namespace Mhotivo.Implement.Repositories
             {
                 var temp = allParents.Where(x => x.IdNumber == pare.IdNumber);
                 if (!temp.Any())
+                {
+                    var newUser = new User();
+                    newUser.DisplayName = pare.FirstName;
+                    newUser.Email = (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
+                    newUser.Password = "123456";
+                    newUser.Status = true;
+                    newUser = userRepository.Create(newUser, roleRepository.GetById(3));
+                    pare.User = newUser;
                     parentRepository.Create(pare);
+                }
                 else
                     pare.Id = temp.First().Id;
             }
@@ -132,7 +141,10 @@ namespace Mhotivo.Implement.Repositories
             {
                 var temp = allStudents.Where(x => x.IdNumber == stu.IdNumber);
                 if (!temp.Any())
-                    studentRepository.Create(stu);
+                {
+                    stu.User = stu.Tutor1.User;
+                    studentRepository.Create(stu);   
+                }
                 else
                     stu.Id = temp.First().Id;
 
@@ -149,7 +161,6 @@ namespace Mhotivo.Implement.Repositories
                     
                     enrollRepository.Create(te);
                 }
-
             }
         }
     }

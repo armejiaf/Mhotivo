@@ -68,6 +68,12 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -182,6 +188,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Encryption\IEncryption.cs" />
     <Compile Include="Encryption\MD5CryptoService.cs" />
+    <Compile Include="FiltersUtilities\Filters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -191,13 +198,9 @@
     <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201503310222266_trs.cs" />
-    <Compile Include="Migrations\201503310222266_trs.Designer.cs">
-      <DependentUpon>201503310222266_trs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201503310232072_tsas.cs" />
-    <Compile Include="Migrations\201503310232072_tsas.Designer.cs">
-      <DependentUpon>201503310232072_tsas.cs</DependentUpon>
+    <Compile Include="Migrations\201504050338139_Init.cs" />
+    <Compile Include="Migrations\201504050338139_Init.Designer.cs">
+      <DependentUpon>201504050338139_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -235,6 +238,7 @@
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\summernote-bs3.css" />
     <Content Include="Content\summernote.css" />
     <Content Include="Content\themes\ace\ace-ie.min.css">
@@ -567,11 +571,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201503310222266_trs.resx">
-      <DependentUpon>201503310222266_trs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503310232072_tsas.resx">
-      <DependentUpon>201503310232072_tsas.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504050338139_Init.resx">
+      <DependentUpon>201504050338139_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

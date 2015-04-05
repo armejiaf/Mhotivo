@@ -1,5 +1,9 @@
 ﻿﻿@using Microsoft.Ajax.Utilities
-@model IEnumerable<Mhotivo.Models.DisplayGradeModel>
+@*model IEnumerable<Mhotivo.Models.DisplayGradeModel>*@
+@using System.Web.Mvc.Html
+@model PagedList.IPagedList<Mhotivo.Models.DisplayGradeModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -21,12 +25,21 @@
 }
 else
 {
+    
+    using (Html.BeginForm("Index", "Grade", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        <p>
+            Buscar por Grado: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Buscar" />
+        </p>
+    }
+    
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
 	    <thead>
 		    <tr>
 												
-			    <th>@Html.DisplayNameFor(model => model.Name)</th>
-		        <th>@Html.DisplayNameFor(model => model.EducationLevel)</th>
+                <th>@Html.ActionLink("Grado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+		        <th>@Html.DisplayNameFor(model => model.First().EducationLevel)</th>
                 <th></th>
 		    </tr>
 	    </thead>
@@ -47,7 +60,13 @@ else
                 </tr>
             }
         </tbody>
-    </table>   
+    </table>  
+    
+    <p>
+        Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </p>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter})); 
     
 }
 

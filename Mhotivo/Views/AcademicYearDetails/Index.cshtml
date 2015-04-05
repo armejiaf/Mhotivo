@@ -1,4 +1,8 @@
-﻿@model IEnumerable<Mhotivo.Models.DisplayAcademicYearDetailsModel>
+﻿@*model IEnumerable<Mhotivo.Models.DisplayAcademicYearDetailsModel>*@
+@using System.Web.Mvc.Html
+@model PagedList.IPagedList<Mhotivo.Models.DisplayAcademicYearDetailsModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -20,15 +24,23 @@
 }
 else
 {
+    using (Html.BeginForm("Index", "AcademicYearDetails", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        <p>
+            Buscar por Maestro: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Buscar" />
+        </p>
+    }
+
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.TeacherStartDate)</th>
-                <th>@Html.DisplayNameFor(model => model.TeacherEndDate)</th>
-                <th>@Html.DisplayNameFor(model => model.Schedule)</th>
-                <th>@Html.DisplayNameFor(model => model.Room)</th>
-                <th>@Html.DisplayNameFor(model => model.Course)</th>
-                <th>@Html.DisplayNameFor(model => model.Teacher)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TeacherStartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TeacherEndDate)</th>
+                <th>@Html.ActionLink("Horario", "Index", new { sortOrder = ViewBag.ScheduleSortParm }) </th>
+                <th>@Html.DisplayNameFor(model => model.First().Room)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Course)</th>
+                <th>@Html.ActionLink("Maestro", "Index", new { sortOrder = ViewBag.TeacherSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th></th>
             </tr>
         </thead>
@@ -55,7 +67,12 @@ else
             }
         </tbody>
     </table>
-
+    <p>
+        Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </p>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}));
+    
 }
 
 <!-- Modal -->

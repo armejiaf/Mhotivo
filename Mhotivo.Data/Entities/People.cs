@@ -33,7 +33,7 @@ namespace Mhotivo.Data.Entities
 
         public string UrlPicture { get; set; }
 
-        //public Byte[] Photo { get; set; }
+        public Byte[] Photo { get; set; }
 
         public bool Gender { get; set; }
 

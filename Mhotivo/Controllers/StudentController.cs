@@ -8,6 +8,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -27,21 +28,57 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
+            var allStudents = _studentRepository.GetAllStudents();
 
 
+           
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            //if (page == null) throw new ArgumentNullException("page");
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
 
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
-           // var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
+            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
-            var listaStudiantes = _studentRepository.GetAllStudents();
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "Date":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.StartDate).ToList();
+                    break;
+                case "date_desc":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.StartDate).ToList();
+                    break;
+                default:  // Name ascending 
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
 
-            var listaEstudiantesModel = listaStudiantes.Select(Mapper.Map<DisplayStudentModel>);
-
-
-            return View(listaEstudiantesModel);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(allStudentDisplaysModel.ToPagedList(pageNumber, pageSize));
+            //return View(allStudentDisplaysModel);
         }
 
         [HttpGet]

@@ -122,14 +122,13 @@ namespace Mhotivo.Implement.Repositories
 
             var val = HttpContext.Current.Session[_userIdIdentifier];
 
-            //if (val != null) return true;
+            if (val != null) return true;
 
             var myUser = _userRepository.GetById(idUser);
             HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;
             HttpContext.Current.Session[_userNameIdentifier] = myUser.DisplayName;
             HttpContext.Current.Session[_userEmailIdentifier] = myUser.Email;
-            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.First().Name;
-            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.Name;
+            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(idUser).First().Name;
             return true;
         }
 

@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IPensumRepository 
+    public interface IPensumRepository : IDisposable
     {
         Pensum First(Expression<Func<Pensum, Pensum>> query);
         Pensum GetById(long id);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
@@ -10,6 +11,7 @@ using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
 using Mhotivo.Encryption;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -28,15 +30,54 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-
             var listaUsuarios = _userRepository.GetAllUsers();
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.EmailSortParm = sortOrder == "Email" ? "email_desc" : "Email";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listaUsuarios = _userRepository.Filter(x => x.DisplayName.Contains(searchString) || x.Email.Contains(searchString)).ToList();
+            }
 
             var listaUsuariosModel = listaUsuarios.Select(Mapper.Map<DisplayUserModel>);
 
-            return View(listaUsuariosModel);
+
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    listaUsuariosModel = listaUsuariosModel.OrderByDescending(s => s.DisplayName).ToList();
+                    break;
+                case "Email":
+                    listaUsuariosModel = listaUsuariosModel.OrderBy(s => s.Email).ToList();
+                    break;
+                case "email_desc":
+                    listaUsuariosModel = listaUsuariosModel.OrderByDescending(s => s.Email).ToList();
+                    break;
+                default:  // Name ascending 
+                    listaUsuariosModel = listaUsuariosModel.OrderBy(s => s.DisplayName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(listaUsuariosModel.ToPagedList(pageNumber, pageSize));
+            //return View(listaUsuariosModel);
         }
 
         [HttpGet]

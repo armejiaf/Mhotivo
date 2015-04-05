@@ -116,6 +116,5 @@ namespace Mhotivo.Implement.Repositories
 
             return userroles;
         }
-
     }
 }

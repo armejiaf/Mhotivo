@@ -6,6 +6,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -36,10 +37,28 @@ namespace Mhotivo.Controllers
         /// GET: /Course/
         /// </summary>
         /// <returns />
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var listCourses = _courseRepository.GetAllCourse();
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "course_desc" : "";
+            ViewBag.AreaSortParm = sortOrder == "Area" ? "area_desc" : "Area";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                listCourses = _courseRepository.Filter(x => x.Name.Contains(searchString)).ToList();
+            }
             
             Mapper.CreateMap<DisplayCourseModel, Course>().ReverseMap();
             
@@ -50,7 +69,27 @@ namespace Mhotivo.Controllers
                 Area = item.Area
             } : null).ToList();
 
-            return View(list);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "course_desc":
+                    list = list.OrderByDescending(s => s.Name).ToList();
+                    break;
+                case "Area":
+                    list = list.OrderBy(s => s.Area.Name).ToList();
+                    break;
+                case "area_desc":
+                    list = list.OrderByDescending(s => s.Area.Name).ToList();
+                    break;
+                default:  // Name ascending 
+                    list = list.OrderBy(s => s.Name).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(list.ToPagedList(pageNumber,pageSize));
         }
 
         /// <summary>

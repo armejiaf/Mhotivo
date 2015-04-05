@@ -9,6 +9,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Microsoft.Ajax.Utilities;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -31,10 +32,28 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var allAcademicYears = _academicYearDetailsRepository.GetAllAcademicYearsDetails(id);
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "teacher_desc" : "";
+            ViewBag.ScheduleSortParm = sortOrder == "Schedule" ? "schedule_desc" : "Schedule";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allAcademicYears = _academicYearDetailsRepository.Filter(x => x.Teacher.FullName.Contains(searchString)).ToList();
+            }
             var academicYearsDetails = allAcademicYears.Select(academicYearD =>  academicYearD.Schedule != null ? (academicYearD.TeacherEndDate != null ? (academicYearD.TeacherStartDate != null ? new DisplayAcademicYearDetailsModel
             {
                 Id = academicYearD.Id,
@@ -48,7 +67,27 @@ namespace Mhotivo.Controllers
 
             ViewBag.IdAcademicYear = id;
 
-            return View(academicYearsDetails);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "teacher_desc":
+                    academicYearsDetails = academicYearsDetails.OrderByDescending(s => s.Teacher).ToList();
+                    break;
+                case "Schedule":
+                    academicYearsDetails = academicYearsDetails.OrderBy(s => s.Schedule).ToList();
+                    break;
+                case "schedule_desc":
+                    academicYearsDetails = academicYearsDetails.OrderByDescending(s => s.Schedule).ToList();
+                    break;
+                default:  // Name ascending 
+                    academicYearsDetails = academicYearsDetails.OrderBy(s => s.Teacher).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(academicYearsDetails.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]

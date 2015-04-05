@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IUserRepository 
+    public interface IUserRepository
     {
         User First(Expression<Func<User, bool>> query);
         User GetById(long id);

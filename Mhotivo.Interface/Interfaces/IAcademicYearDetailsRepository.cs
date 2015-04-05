@@ -8,7 +8,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IAcademicYearDetailsRepository 
+    public interface IAcademicYearDetailsRepository
     {
         AcademicYearDetail First(Expression<Func<AcademicYearDetail, AcademicYearDetail>> query);
         AcademicYearDetail GetById(int id);
@@ -18,7 +18,6 @@ namespace Mhotivo.Interface.Interfaces
         IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(int id);
         AcademicYearDetail Update(AcademicYearDetail itemToUpdate);
         AcademicYearDetail Delete(int id);
-        IEnumerable<AcademicYear> GetAllAcademicYear();
         void SaveChanges();
     }
 }

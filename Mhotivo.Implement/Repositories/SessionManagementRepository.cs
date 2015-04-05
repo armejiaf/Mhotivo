@@ -45,8 +45,7 @@ namespace Mhotivo.Implement.Repositories
         {
             HttpContext.Current.Session[_userEmailIdentifier] = user.Email;
             HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
-            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.First().Name;
-            //HttpContext.Current.Session[_userRoleIdentifier] = user.Role.Name;
+            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(user.Id).First().Name;
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
         }
 

@@ -6,6 +6,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -30,15 +31,47 @@ namespace Mhotivo.Controllers
         /// GET: /Grade/
         /// </summary>
         /// <returns />
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var grades = _gradeRepository.GetAllGrade();
 
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
+            }
+
             Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
             var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
 
-            return View(displayGradeModels);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    displayGradeModels = displayGradeModels.OrderByDescending(s => s.Name).ToList();
+                    break;
+                    break;
+                default:  // Name ascending 
+                    displayGradeModels = displayGradeModels.OrderBy(s => s.Name).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(displayGradeModels.ToPagedList(pageNumber, pageSize));
         }
 
         /// <summary>

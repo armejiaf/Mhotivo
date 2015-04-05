@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface ICourseRepository
+    public interface ICourseRepository :  IDisposable
     {
         Course Create(Course itemToCreate);
 
@@ -15,6 +15,8 @@ namespace Mhotivo.Interface.Interfaces
         IEnumerable<Course> GetAllCourse();
 
         IEnumerable<Area> GetAllAreas();
+
+        IQueryable<Course> Filter(Expression<Func<Course, bool>> expression);
 
         Course GetById(long id);
 
