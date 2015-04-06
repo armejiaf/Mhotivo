@@ -1,5 +1,5 @@
 ﻿@using System.Text
-@model IEnumerable<Mhotivo.Models.NotificationModel>
+@model Tuple<List<Mhotivo.ParentSite.Models.NotificationModel>, List<Mhotivo.ParentSite.Models.NotificationModel>> 
 
 @{
     ViewBag.Title = "Notificaciones";
@@ -9,15 +9,14 @@
 
 <script type="text/javascript">
     function AddComment(notificationId) {
-       
+
         var textBox = document.getElementById("notificationId");
-        textBox.value = notificationId;    
+        textBox.value = notificationId;
     }
 
     jQuery(document).ready(function() {
         $('.jscroll').jscroll();
     });
-
 </script>
 
 <div>

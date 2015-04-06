@@ -41,7 +41,8 @@ else
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Points)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Course.Name)</td>
                     <td>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        
+                        <a href="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Homework", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display:none" }))

@@ -29,6 +29,9 @@ namespace Mhotivo
 
             Mapper.CreateMap<DisplayBenefactorModel, Benefactor>();
             Mapper.CreateMap<Benefactor, DisplayBenefactorModel>();
+
+            Mapper.CreateMap<CreateHomeworkModel, Homework>();
+            Mapper.CreateMap<Homework, CreateHomeworkModel>();
             
         }
     }

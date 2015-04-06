@@ -133,7 +133,7 @@ namespace Mhotivo.Controllers
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
 
-            var homework = Mapper.Map<DisplayHomeworkModel>(thisHomework);
+            var homework = Mapper.Map<CreateHomeworkModel>(thisHomework);
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
 
             return View("Edit", homework);
