@@ -1,6 +1,6 @@
 ﻿@model Mhotivo.Models.DisplayBenefactorModel
 @{
-    ViewBag.Title = "Editar Padres y Tutores";
+    ViewBag.Title = "Editar Benefactor";
     Layout = "";
 }
 <script src="~/Scripts/jquery-1.7.1.min.js"></script>
@@ -20,7 +20,6 @@
                 @Html.ValidationMessageFor(model => model.IdNumber)
                 @Html.ValidationMessageFor(model => model.BirthDate)
                 @Html.ValidationMessageFor(model => model.City)
-                @Html.ValidationMessageFor(model => model.FilePicture)
                 @Html.ValidationMessageFor(model => model.FirstName)
                 @Html.ValidationMessageFor(model => model.LastName)
                 @Html.ValidationMessageFor(model => model.Gender)
@@ -29,14 +28,8 @@
                 @Html.ValidationMessageFor(model => model.State)
                 @Html.ValidationMessageFor(model => model.Capacity)
             </p>
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.FilePicture)
-                </div>
-                <div class="controls">
-                    <input type="file" name="FilePicture" id="FilePicture" />
-                </div>
-            </div>
+            
+            
             <div class="control-group">
                 <div class="control-label">
                     @Html.LabelFor(model => model.IdNumber)

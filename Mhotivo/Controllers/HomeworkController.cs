@@ -78,13 +78,7 @@ namespace Mhotivo.Controllers
             return id;
         }
 
-        //
-        // GET: /Homework/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+       
 
         //
         // GET: /Homework/Create

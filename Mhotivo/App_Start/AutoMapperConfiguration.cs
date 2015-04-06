@@ -26,6 +26,9 @@ namespace Mhotivo
 
             Mapper.CreateMap<DisplayRolModel, Role>();
             Mapper.CreateMap<Role, DisplayRolModel>();
+
+            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>();
+            Mapper.CreateMap<Benefactor, DisplayBenefactorModel>();
             
         }
     }

@@ -97,7 +97,7 @@
         <br style="clear: left;" />
         <br style="clear: left;" />
         <div style="float: left; width: 250px;">
-            @Html.DropDownListFor(model => model.StrGender, new SelectList(new[] { "Masculino", "Femenino" }))
+            @Html.DropDownListFor(model => model.Gender, new SelectList(new[] { "Masculino", "Femenino" }, new[] { true, false }))
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Gender)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Gender)</p>
         </div>

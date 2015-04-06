@@ -52,11 +52,13 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            return View("Edit", _benefactorRepository.GetBenefactorEditModelById(id));
+            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
+            DisplayBenefactorModel displayBenefactor = Mapper.Map<Benefactor, DisplayBenefactorModel>(_benefactorRepository.GetBenefactorEditModelById(id));
+            return View("Edit", displayBenefactor);
         }
 
         [HttpPost]
-        public ActionResult Edit(BenefactorEditModel modelBenefactor)
+        public ActionResult Edit(DisplayBenefactorModel modelBenefactor)
         {
             if (modelBenefactor.Capacity < modelBenefactor.StudentsCount)
             {
@@ -70,8 +72,8 @@ namespace Mhotivo.Controllers
             {
                 Benefactor myBenefactor = _benefactorRepository.GetById(modelBenefactor.Id);
 
-                Mapper.CreateMap<Benefactor, BenefactorEditModel>().ReverseMap();
-                Benefactor editBenefactor = Mapper.Map<BenefactorEditModel, Benefactor>(modelBenefactor);
+                Mapper.CreateMap<Benefactor, DisplayBenefactorModel>().ReverseMap();
+                Benefactor editBenefactor = Mapper.Map<DisplayBenefactorModel, Benefactor>(modelBenefactor);
 
                 _benefactorRepository.UpdateBenefactorFromBenefactorEditModel(editBenefactor, myBenefactor);
 
@@ -88,8 +90,8 @@ namespace Mhotivo.Controllers
         {
             Benefactor benefactor = _benefactorRepository.Delete(id);
 
-            const string title = "Padre o Tutor Eliminado";
-            string content = "El Padre o Tutor " + benefactor.FullName + " ha sido eliminado exitosamente.";
+            const string title = "Benefactor Eliminado";
+            string content = "El benefactor " + benefactor.FullName + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
             return RedirectToAction("Index");
