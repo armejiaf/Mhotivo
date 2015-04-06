@@ -465,10 +465,6 @@
       <Project>{aec3ffc7-bca3-4b90-8e44-dea10e8f89e8}</Project>
       <Name>Mhotivo.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mhotivo\Mhotivo.csproj">
-      <Project>{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}</Project>
-      <Name>Mhotivo</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
