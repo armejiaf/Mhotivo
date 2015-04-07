@@ -141,9 +141,15 @@ namespace Mhotivo.Models
         [Display(Name = "Padre o Tutor")]
         public Parent Tutor1 { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Madre o Segundo Tutor")]
         [Display(Name = "Madre o Segundo Tutor")]
         public Parent Tutor2 { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
+        [Display(Name = "Padre o Tutor")]
+        public long FirstParent { get; set; }
+
+        [Display(Name = "Madre o Segundo Tutor")]
+        public long SecondParent { get; set; }
     }
 
     public class StudentBenefactorEditModel
@@ -225,7 +231,6 @@ namespace Mhotivo.Models
         [Display(Name = "Padre o Tutor")]
         public long FirstParent { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Madre o Segundo Tutor")]
         [Display(Name = "Madre o Segundo Tutor")]
         public long SecondParent { get; set; }
     }

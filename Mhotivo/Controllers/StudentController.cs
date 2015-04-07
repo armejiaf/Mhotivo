@@ -104,10 +104,14 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<StudentEditModel, Student>().ReverseMap();
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
 
+            studentModel.FirstParent = student.Tutor1.Id;
+            if (student.Tutor2 != null)
+                studentModel.SecondParent = student.Tutor2.Id;
+
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor1.Id);
 
-            if(studentModel.Tutor2 == null)
+            if (studentModel.Tutor2 == null)
                 studentModel.Tutor2 = new Parent();
 
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
@@ -121,8 +125,17 @@ namespace Mhotivo.Controllers
         {
             Student myStudent = _studentRepository.GetById(modelStudent.Id);
 
+            if (modelStudent.Tutor1 == null)
+                modelStudent.Tutor1 = myStudent.Tutor1;
+
+            if (modelStudent.Tutor2 == null)
+                modelStudent.Tutor2 = myStudent.Tutor2;
+
             Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
             var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
+
+            studentModel.User = _parentRepository.GetById(modelStudent.Tutor1.Id).User;
+
             _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
 
             const string title = "Estudiante Actualizado";
@@ -173,7 +186,10 @@ namespace Mhotivo.Controllers
             studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
             studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
             var myStudent = _studentRepository.GenerateStudentFromRegisterModel(studentModel);
+
+            myStudent.User = studentModel.Tutor1.User;
             var student = _studentRepository.Create(myStudent);
+
             const string title = "Estudiante Agregado";
             var content = "El estudiante " + myStudent.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

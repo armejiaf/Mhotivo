@@ -18,13 +18,20 @@ namespace Mhotivo.Controllers
     {
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly IParentRepository _parentRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ParentController(IParentRepository parentRepository,
-            IContactInformationRepository contactInformationRepository)
+            IContactInformationRepository contactInformationRepository,
+            IUserRepository userRepository,
+            IRoleRepository roleRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -104,7 +111,7 @@ namespace Mhotivo.Controllers
             var parent = _parentRepository.GetParentEditModelById(id);
             Mapper.CreateMap<ParentEditModel, Parent>().ReverseMap();
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender);
+            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender).Substring(0, 1);
 
             //if (parentModel.FilePicture == null)
             //    parentModel.FilePicture = new byte[long.MaxValue];
@@ -216,7 +223,15 @@ namespace Mhotivo.Controllers
                 return RedirectToAction("Index");
             }
 
-            Parent parent = _parentRepository.Create(myParent);
+            var newUser = new User();
+            newUser.DisplayName = myParent.FirstName;
+            newUser.Email = (myParent.FirstName.Trim().Replace(" ", "") + "_" + myParent.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
+            newUser.Password = "123456";
+            newUser.Status = true;
+            newUser = _userRepository.Create(newUser, _roleRepository.GetById(3));
+            myParent.User = newUser;
+
+            var parent = _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
             var content = "El Padre o Tutor " + myParent.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

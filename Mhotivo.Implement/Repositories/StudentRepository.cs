@@ -106,7 +106,8 @@ namespace Mhotivo.Implement.Repositories
                 Biography = x.Biography,
                 Tutor1 = x.Tutor1,
                 Tutor2 = x.Tutor2,
-                Disable = x.Disable
+                Disable = x.Disable,
+                User = x.User
             });
         }
 
@@ -134,7 +135,8 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = student.AccountNumber,
                 Biography = student.Biography,
                 Tutor1 = student.Tutor1,
-                Tutor2 = student.Tutor2
+                Tutor2 = student.Tutor2,
+                User = student.User
             };
         }
 
@@ -157,6 +159,7 @@ namespace Mhotivo.Implement.Repositories
             student.AccountNumber = studentEditModel.AccountNumber;
             student.Tutor1 = studentEditModel.Tutor1;
             student.Tutor2 = studentEditModel.Tutor2;
+            student.User = studentEditModel.User;
             return Update(student);
         }
 
@@ -182,6 +185,7 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = studentRegisterModel.AccountNumber,
                 Tutor1 = studentRegisterModel.Tutor1,
                 Tutor2 = studentRegisterModel.Tutor2,
+                User = studentRegisterModel.User
             };
         }
 
@@ -208,7 +212,8 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = student.AccountNumber,
                 BloodType = student.BloodType,
                 Tutor1 = student.Tutor1,
-                Tutor2 = student.Tutor2
+                Tutor2 = student.Tutor2,
+                User = student.User
             };
         }
     }
