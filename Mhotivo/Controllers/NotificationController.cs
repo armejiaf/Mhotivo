@@ -255,6 +255,12 @@ namespace Mhotivo.Controllers
                 notificationIdentity.UserCreatorName = user.DisplayName;
             }
 
+            notificationIdentity.Approved = true;
+            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.NotificationTypeId == Personal)
+            {
+                notificationIdentity.Approved = false;
+            }
+
             db.Notifications.Add(notificationIdentity);
             db.SaveChanges();
             const string title = "Notificación Agregado";
