@@ -193,14 +193,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\AcademicYearLogic.cs" />
-    <Compile Include="Logic\ISessionManagement.cs" />
     <Compile Include="Logic\SendEmail.cs" />
-    <Compile Include="Logic\SessionLayer.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201504061518369_ini.cs" />
-    <Compile Include="Migrations\201504061518369_ini.Designer.cs">
-      <DependentUpon>201504061518369_ini.cs</DependentUpon>
+    <Compile Include="Migrations\201504071933486_Init.cs" />
+    <Compile Include="Migrations\201504071933486_Init.Designer.cs">
+      <DependentUpon>201504071933486_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -571,8 +569,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504061518369_ini.resx">
-      <DependentUpon>201504061518369_ini.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504071933486_Init.resx">
+      <DependentUpon>201504071933486_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

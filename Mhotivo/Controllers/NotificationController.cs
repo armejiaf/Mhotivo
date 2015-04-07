@@ -22,10 +22,6 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Controllers
 {
-
-
-    
-
     public class NotificationController : Controller
     {
         const int General = 1;

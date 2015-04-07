@@ -114,9 +114,11 @@ namespace Mhotivo.Models
 
         public string UrlPicture { get; set; }
 
+        public bool Gender { get; set; }
+
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string StrGender { get; set; }
     }
 
     public class BenefactorRegisterModel
@@ -169,10 +171,10 @@ namespace Mhotivo.Models
         [Display(Name = "Dirección")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Sexo")]
-        [Display(Name = "Sexo")]
         public bool Gender { get; set; }
 
+        [Required(ErrorMessage = "Debe Ingresar Sexo")]
+        [Display(Name = "Sexo")]
         public string StrGender { get; set; }
     }
 }

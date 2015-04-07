@@ -52,17 +52,20 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
-            DisplayBenefactorModel displayBenefactor = Mapper.Map<Benefactor, DisplayBenefactorModel>(_benefactorRepository.GetBenefactorEditModelById(id));
-            return View("Edit", displayBenefactor);
+            Mapper.CreateMap<BenefactorEditModel, Benefactor>().ReverseMap();
+            var editBenefactor = Mapper.Map<Benefactor, BenefactorEditModel>(_benefactorRepository.GetBenefactorEditModelById(id));
+
+            editBenefactor.StrGender = Implement.Utilities.GenderToString(editBenefactor.Gender).Substring(0, 1);
+
+            return View("Edit", editBenefactor);
         }
 
         [HttpPost]
-        public ActionResult Edit(DisplayBenefactorModel modelBenefactor)
+        public ActionResult Edit(BenefactorEditModel modelBenefactor)
         {
             if (modelBenefactor.Capacity < modelBenefactor.StudentsCount)
             {
-                string title = "Beneficiario No Puede Tener Menos de " + modelBenefactor.StudentsCount;
+                var title = "Beneficiario No Puede Tener Menos de " + modelBenefactor.StudentsCount;
                 const string content = "Elimine algunos estudiantes antes de continuar.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
 
@@ -70,10 +73,11 @@ namespace Mhotivo.Controllers
             }
             else
             {
-                Benefactor myBenefactor = _benefactorRepository.GetById(modelBenefactor.Id);
+                var myBenefactor = _benefactorRepository.GetById(modelBenefactor.Id);
+                modelBenefactor.Gender = Implement.Utilities.IsMasculino(modelBenefactor.StrGender);
 
-                Mapper.CreateMap<Benefactor, DisplayBenefactorModel>().ReverseMap();
-                Benefactor editBenefactor = Mapper.Map<DisplayBenefactorModel, Benefactor>(modelBenefactor);
+                Mapper.CreateMap<Benefactor, BenefactorEditModel>().ReverseMap();
+                var editBenefactor = Mapper.Map<BenefactorEditModel, Benefactor>(modelBenefactor);
 
                 _benefactorRepository.UpdateBenefactorFromBenefactorEditModel(editBenefactor, myBenefactor);
 
@@ -119,9 +123,9 @@ namespace Mhotivo.Controllers
         {
             modelBenefactor.Gender = Implement.Utilities.IsMasculino(modelBenefactor.StrGender);
             Mapper.CreateMap<Benefactor, BenefactorRegisterModel>().ReverseMap();
-            Benefactor regBenefactor = Mapper.Map<BenefactorRegisterModel, Benefactor>(modelBenefactor);
+            var regBenefactor = Mapper.Map<BenefactorRegisterModel, Benefactor>(modelBenefactor);
 
-            Benefactor myBenefactor = _benefactorRepository.GenerateBenefactorFromRegisterModel(regBenefactor);
+            var myBenefactor = _benefactorRepository.GenerateBenefactorFromRegisterModel(regBenefactor);
             myBenefactor.Capacity = modelBenefactor.Capacity;
             _benefactorRepository.Create(myBenefactor);
             const string title = "Benefactor Agregado";
