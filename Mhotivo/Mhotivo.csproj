@@ -196,9 +196,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201504080239328_migra.cs" />
-    <Compile Include="Migrations\201504080239328_migra.Designer.cs">
-      <DependentUpon>201504080239328_migra.cs</DependentUpon>
+    <Compile Include="Migrations\201504080704080_Initial.cs" />
+    <Compile Include="Migrations\201504080704080_Initial.Designer.cs">
+      <DependentUpon>201504080704080_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -569,8 +569,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504080239328_migra.resx">
-      <DependentUpon>201504080239328_migra.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504080704080_Initial.resx">
+      <DependentUpon>201504080704080_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
