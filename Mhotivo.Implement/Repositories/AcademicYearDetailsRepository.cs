@@ -18,10 +18,10 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public AcademicYearDetail FindByCourse(long id)
+        public AcademicYearDetail FindByCourse(long id, long meisterId)
         {
             IQueryable<AcademicYearDetail> academicYearDetail =
-                _context.AcademicYearDetails.Where(x => x.Course.Id == id && !false);
+                _context.AcademicYearDetails.Where(x => x.Course.Id == id && x.Teacher.Id==meisterId &&!false);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 

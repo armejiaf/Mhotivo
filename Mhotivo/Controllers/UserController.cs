@@ -98,7 +98,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(UserEditModel modelUser)
         {
             bool updateRole = false;
-
+            User myUsers = _userRepository.GetById(modelUser.Id);
             var myUser = Mapper.Map<User>(modelUser);
 
             var rol = _roleRepository.GetById(modelUser.RoleId);
@@ -109,7 +109,7 @@ namespace Mhotivo.Controllers
                 updateRole = true;
             }
 
-            User user = _userRepository.Update(myUser, updateRole, rol);
+            User user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers, updateRole, rol);
 
             const string title = "Usuario Actualizado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email +

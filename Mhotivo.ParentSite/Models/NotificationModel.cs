@@ -19,8 +19,8 @@ namespace Mhotivo.ParentSite.Models
         public string Message { get; set; }
         public DateTime Created { get; set; }
         public int CommentsAmount { get; set; }
-        
-        
+
+
     }
 
     public class NotificationModel2 /*TODO: Separate model from entity */
@@ -57,7 +57,7 @@ namespace Mhotivo.ParentSite.Models
         public bool SendingEmail { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
-        public int IdIsGradeAreaGeneralSelected { get; set; }//id de grado,area,user seleccionado
+        public string IdIsGradeAreaGeneralSelected { get; set; }//id de grado,area,user seleccionado
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         public int NotificationTypeId { get; set; } // For the the selected Product

@@ -70,7 +70,7 @@ namespace Mhotivo.Implement.Repositories
                     _context.UserRoles.Add(userRol);
                 }
             }
-            _context.SaveChanges();
+            SaveChanges();
             return itemToUpdate;   
         }
 
@@ -115,6 +115,18 @@ namespace Mhotivo.Implement.Repositories
                     .ToList();
 
             return userroles;
+        }
+
+        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol)
+        {
+            user.Id = userModel.Id;
+            user.DisplayName = userModel.DisplayName;
+            user.Email = userModel.Email;
+            user.Notifications = userModel.Notifications;
+            user.Parents = userModel.Parents;
+            user.Status = userModel.Status;
+
+            return Update(user,updateRole,rol);
         }
     }
 }

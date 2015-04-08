@@ -43,7 +43,7 @@
             @Html.LabelFor(model => model.NotificationTypeSelectList)
         </div>
         <div class="controls">
-             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new { id = "NotificationType" })
+             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new {id = "NotificationType"})
         </div>
     </div>
     
@@ -57,7 +57,7 @@
         </div>
     </div>
     
-      <div class="control-group">
+     <div class="control-group" id="OcultarList">
         <div class="control-label">
             @Html.Label("Dirigido a:")
         </div>
@@ -66,6 +66,7 @@
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
     </div>
+
 
 
     <div class="control-group">
@@ -164,6 +165,13 @@
     });
 
     $('#NotificationType').change(function () {
+
+        if (this.value == 4) {
+            $('#OcultarList').css("display", "block");
+        } else {
+            $('#OcultarList').css("display", "none");
+        }
+
         $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
             var items = '<option>Seleccione</option>';
             $.each(data, function (i, optionavailable) {

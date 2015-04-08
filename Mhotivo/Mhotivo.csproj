@@ -196,9 +196,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201504080704080_Initial.cs" />
-    <Compile Include="Migrations\201504080704080_Initial.Designer.cs">
-      <DependentUpon>201504080704080_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201504081400488_migra.cs" />
+    <Compile Include="Migrations\201504081400488_migra.Designer.cs">
+      <DependentUpon>201504081400488_migra.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -477,7 +477,6 @@
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\DetailsEdit.cshtml" />
@@ -501,7 +500,6 @@
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\Add.cshtml" />
     <Content Include="Views\Group\Edit.cshtml" />
-    <Content Include="Views\Notification\Edit.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Course\Add.cshtml" />
@@ -547,6 +545,8 @@
     <Content Include="Views\Homework\Edit.cshtml" />
     <Content Include="Views\Homework\Index.cshtml" />
     <Content Include="Views\ImportData\Index.cshtml" />
+    <Content Include="Views\Notification\Edit.cshtml" />
+    <Content Include="Views\Notification\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
@@ -569,8 +569,8 @@
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504080704080_Initial.resx">
-      <DependentUpon>201504080704080_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504081400488_migra.resx">
+      <DependentUpon>201504081400488_migra.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

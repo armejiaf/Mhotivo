@@ -10,7 +10,8 @@
 @*RolName:
 @rolName*@
 
-@if (rolName == "Admin" || rolName == "Principal"){
+@if (rolName == "Admin" || rolName == "Principal")
+{
     <ul class="nav nav-list">
         <li>
             <a href="/User">
@@ -75,7 +76,7 @@
                 <span class="menu-text"> Areas </span>
             </a>
         </li>
-      
+
 
         <li>
             <a href="/AcademicYear/Index">
@@ -90,12 +91,12 @@
             </a>
         </li>
 
-        <li>
+        @*<li>
             <a href="/Event">
                 <i class=" icon-calendar "></i>
                 <span class="menu-text"> Eventos </span>
             </a>
-        </li>
+        </li>*@
 
         <li>
             <a href="/Grade">
@@ -118,6 +119,23 @@
             </a>
         </li>
 
+       @* <li>
+            <a href="/Homework">
+                <i class=" icon-circle "></i>
+                <span class="menu-text"> Tareas </span>
+            </a>
+        </li>*@
+    </ul>
+}
+else
+{
+    <ul class="nav nav-list">
+        <li>
+            <a href="/Notification">
+                <i class="icon-bell-alt"></i>
+                <span class="menu-text"> Notificaciones </span>
+            </a>
+        </li>
         <li>
             <a href="/Homework">
                 <i class=" icon-circle "></i>
@@ -126,3 +144,4 @@
         </li>
     </ul>
 }
+

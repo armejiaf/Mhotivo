@@ -92,7 +92,7 @@ namespace Mhotivo.Controllers
             {
                 courseIds.Add(allAcademicYearsByMeister.ElementAt(a).Course.Id);
             }
-            var query = _courseRepository.Query(x => x).Where(x => courseIds.Contains(x.Id));
+            var query = _courseRepository.Query(x => x).Where(x => courseIds.Contains(x.Id) );
             ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
@@ -114,7 +114,7 @@ namespace Mhotivo.Controllers
                 Description = modelHomework.Description,
                 DeliverDate = DateTime.Parse(modelHomework.DeliverDate),
                 Points = modelHomework.Points,
-                AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.course).Id)
+                AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.course).Id,GetMeisterId())
 
             };
 
