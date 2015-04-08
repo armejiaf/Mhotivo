@@ -129,7 +129,7 @@ namespace Mhotivo.Implement.Repositories
                     newUser.Email = (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
                     newUser.Password = "123456";
                     newUser.Status = true;
-                    newUser = userRepository.Create(newUser, roleRepository.GetById(3));
+                    newUser = userRepository.Create(newUser, roleRepository.GetById(2));
                     pare.User = newUser;
                     parentRepository.Create(pare);
                 }
