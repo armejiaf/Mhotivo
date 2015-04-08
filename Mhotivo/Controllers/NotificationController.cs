@@ -35,13 +35,32 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMeisterRepository _meisterRepository;
         private readonly IPeopleRepository _peopleRepository;
-        private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly IParentRepository _parentRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IAcademicYearDetailsRepository _academicYearDetailRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly INotificationTypeRepository _notificationTypeRepository;
         private static string searchText = string.Empty;
         
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
+
+        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository,IPeopleRepository peopleRepository,IMeisterRepository meisterRepository,
+            IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository)
+        {
+            _sessionManagement = sessionManagement;
+            _userRepository = userRepository;
+            _notificationRepository = notificationRepository;
+            _notificationTypeRepository = notificationTypeRepository;
+            _peopleRepository = peopleRepository;
+            _meisterRepository = meisterRepository;
+            _academicYearDetailRepository = academicYearDetailRepository;
+            //_gradeRepository = gradeRepository;
+            //_areaReporsitory = areaReporsitory;
+            _parentRepository = parentRepository;
+            _studentRepository = studentRepository;
+            _viewMessageLogic = new ViewMessageLogic(this);
+        }
 
         private void LoadTypeNotification(ref NotificationModel model)
         {
@@ -121,19 +140,7 @@ namespace Mhotivo.Controllers
         }
 
 
-        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository,IPeopleRepository peopleRepository,IMeisterRepository meisterRepository,IAcademicYearDetailRepository academicYearDetailRepository)
-        {
-            _sessionManagement = sessionManagement;
-            _userRepository = userRepository;
-            _notificationRepository = notificationRepository;
-            _notificationTypeRepository = notificationTypeRepository;
-            _peopleRepository = peopleRepository;
-            _meisterRepository = meisterRepository;
-            _academicYearDetailRepository = academicYearDetailRepository;
-            //_gradeRepository = gradeRepository;
-            //_areaReporsitory = areaReporsitory;
-            _viewMessageLogic = new ViewMessageLogic(this);
-        }
+        
 
         //
         // GET: /NotificationModel/
@@ -333,30 +340,30 @@ namespace Mhotivo.Controllers
                         }
                     }
                 }
-
             }
-
-
         }
 
         private void AddUsersToGradeNotification(Notification notificationIdentity)
         {
            var estudiantes =
                 db.Enrolls.Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
-                                      && x.AcademicYear.Year.Year == DateTime.Now.Year
-                                      && x.Student.Tutor1 != null).Select(s => s.Student).ToList();
+                                      && x.AcademicYear.Year.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
 
             foreach (var estudiante in estudiantes)
             {
-                var parents = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor1.UserId.Id);
-                if (parents != null)
+                if (estudiante.Tutor1.User != null)
                 {
-                    notificationIdentity.Users.Add(parents);
 
-                    var parents2 = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor2.UserId.Id);
-                    if (parents2 != null && parents2.Id != parents.Id)
+                    var parents = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor1.User.Id);
+                    if (parents != null)
                     {
-                        notificationIdentity.Users.Add(parents2);
+                        notificationIdentity.Users.Add(parents);
+
+                        var parents2 = db.Users.FirstOrDefault(x => x.Id == estudiante.Tutor2.User.Id);
+                        if (parents2 != null && parents2.Id != parents.Id)
+                        {
+                            notificationIdentity.Users.Add(parents2);
+                        }
                     }
                 }
             }
@@ -366,18 +373,22 @@ namespace Mhotivo.Controllers
 
         private void AddUsersToPersonalNotification(Notification notificationIdentity)
         {
-            //var notificationParentId = db.Students.Include(c=>c.User).Where(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
+            //var notificationParentId = db.Students.Include(c => c.User).Where(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
             //                                                && x.Tutor1 != null).Select(x => x.Tutor1).FirstOrDefault();
-            //if (notificationParentId != null)
-            //{
-            //    var parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.UserId.Id);
+            var notificationParentId =
+                _studentRepository.Filter(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected).Select(x => x.Tutor1).FirstOrDefault();
 
-            //    if (parents != null)
-            //    {
-            //        notificationIdentity.Users.Add(parents);
-            //    }
+            if (notificationParentId != null)
+            {
+                var parents = _parentRepository.GetById(notificationParentId.Id).User;
+                //var parents = db.Users.FirstOrDefault(x => x.Id == notificationParentId.User.Id);
 
-            //}
+                if (parents != null)
+                {
+                    notificationIdentity.Users.Add(parents);
+                }
+
+            }
 
             //notificationParentId = db.Students.Where(x => x.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
             //                                                && x.Tutor2 != null && x.Tutor2 != x.Tutor1).Select
@@ -394,7 +405,6 @@ namespace Mhotivo.Controllers
             //}
 
         }
-
         public JsonResult OptiontList(string Id)
         {
             var list = GetListOpcionTypeNotification(Id);

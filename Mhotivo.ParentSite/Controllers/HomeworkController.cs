@@ -18,7 +18,7 @@ namespace Mhotivo.ParentSite.Controllers
     public class HomeworkController : Controller
     {
         // GET: /Homework/
-        private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly IAcademicYearDetailsRepository _academicYearDetailRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
@@ -31,7 +31,7 @@ namespace Mhotivo.ParentSite.Controllers
         public static List<long> StudentsId;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
+            IAcademicYearDetailsRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
             IEnrollRepository enrollsRepository, ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository
             )

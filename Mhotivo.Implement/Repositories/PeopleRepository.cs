@@ -49,7 +49,7 @@ namespace Mhotivo.Implement.Repositories
             return _context.Peoples.Where(expression);
             
         }
-
+            
         public People Update(People itemToUpdate)
         {
             _context.SaveChanges();

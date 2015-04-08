@@ -70,17 +70,17 @@ namespace Mhotivo.ParentSite.App_Start
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
-            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InSingletonScope();
-            kernel.Bind<IRoleRepository>().To<RoleRepository>().InSingletonScope();
-            kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
-            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InSingletonScope();
+            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
+            kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
+            kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
+            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
             kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
             kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearDetailRepository>().To<AcademicYearDetailRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
         }        
     }

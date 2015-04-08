@@ -78,7 +78,7 @@ namespace Mhotivo.App_Start
             kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
 
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearDetailRepository>().To<AcademicYearDetailRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
             kernel.Bind<IBenefactorRepository>().To<BenefactorRepository>().InRequestScope();
             kernel.Bind<IClassActivityRepository>().To<ClassActivityRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();

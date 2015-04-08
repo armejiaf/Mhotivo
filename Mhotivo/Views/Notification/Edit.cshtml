@@ -86,7 +86,7 @@
         </div>
     </div>*@
     
-    <div id="htmlMessage">@Html.DisplayTextFor(model => model.Message)</div>
+    <div id="htmlMessage">@Html.Raw(Model.Message)</div>
     
     @Html.HiddenFor(model => model.Message)
     @Html.HiddenFor(model => model.Created)

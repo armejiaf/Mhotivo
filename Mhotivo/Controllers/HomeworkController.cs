@@ -14,7 +14,7 @@ namespace Mhotivo.Controllers
 {
     public class HomeworkController : Controller
     {
-        private readonly IAcademicYearDetailRepository _academicYearDetailRepository;
+        private readonly IAcademicYearDetailsRepository _academicYearDetailRepository;
         private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
@@ -26,7 +26,7 @@ namespace Mhotivo.Controllers
         public long MeisterId = -1;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
+            IAcademicYearDetailsRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository,
             ISecurityRepository securityRepository, IUserRepository userRepository
             )

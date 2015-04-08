@@ -19,5 +19,8 @@ namespace Mhotivo.Interface.Interfaces
         AcademicYearDetail Update(AcademicYearDetail itemToUpdate);
         AcademicYearDetail Delete(int id);
         void SaveChanges();
+        IEnumerable<AcademicYearDetail> GetAllAcademicYearDetails();
+        AcademicYearDetail FindByCourse(long id);
+        IEnumerable<AcademicYear> GetAllAcademicYear(long mesiterId);
     }
 }
