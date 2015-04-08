@@ -26,7 +26,8 @@ namespace Mhotivo.ParentSite.Controllers
             
             var selectedNotification = _notificationRepository.GetById(notificationId);
             
-            var selectedNotificationModel = Mapper.Map<NotificationModel>(selectedNotification); 
+            var selectedNotificationModel = Mapper.Map<NotificationModel>(selectedNotification);
+            selectedNotificationModel.NotificationCreator = selectedNotification.UserCreatorName; 
 
             var commentsList = selectedNotification.NotificationComments.ToList();
             List<NotificationCommentsModel> commentsModelList;
