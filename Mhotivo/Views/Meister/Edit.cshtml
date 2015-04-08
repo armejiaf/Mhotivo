@@ -1,17 +1,24 @@
 ﻿@model Mhotivo.Models.MeisterEditModel
 @{
     ViewBag.Title = "Editar Maestro";
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Edit", "meister", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Edit", "meister", FormMethod.Post, new {
+                                                                        id = "Form"
+                                                                        ,@class = "form-horizontal"
+                                                                        ,@Style = "margin:0;"
+                                                                        ,enctype = "multipart/form-data"
+                                                                        ,method = "post"
+                                                                   }))
     {@Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Editar Padre o Tutor</legend>
+            <legend>Editar Maestro</legend>
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Address)
@@ -26,13 +33,17 @@
                 @Html.ValidationMessageFor(model => model.Country)
                 @Html.ValidationMessageFor(model => model.State)
             </p>
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.UrlPicture)
-                </div>
-                <div class="controls">
-                    <input type="file" name="FilePicture" id="FilePicture" />
-                </div>
+            
+            <div id="Photo">
+                @{
+                    var imgSrc = "";
+                    if (Model.Photo != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.Photo);
+                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                    }
+                }
+                <img height="150" width="150" src="@imgSrc" />
             </div>
 
             <div class="controls">
@@ -91,10 +102,10 @@
             </div>
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Gender)
+                    @Html.LabelFor(model => model.StrGender)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem { Value = "Masculino", Text = "Masculino" }, new SelectListItem { Value = "Femenino", Text = "Femenino" } })
+                    @Html.DropDownList("StrGender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
                 </div>
             </div>
             <div class="control-group">
@@ -137,6 +148,17 @@
                     @Html.EditorFor(model => model.Country)
                 </div>
             </div>
+            
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Photo)
+                </div>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.UpladPhoto, new { type = "file" })<br />
+                    @Html.ValidationMessageFor(model => model.UpladPhoto)
+                </div>
+            </div>
+
             <div class="space"></div>
             <div class="modal-footer">
                 <button data-dismiss="modal" class="btn btn-small">

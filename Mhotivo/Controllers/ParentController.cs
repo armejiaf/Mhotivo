@@ -161,6 +161,8 @@ namespace Mhotivo.Controllers
 
                     if (fileBytes != null)
                         parentModel.Photo = fileBytes;
+                    else
+                        parentModel.Photo = myParent.Photo;
                     
                     _parentRepository.UpdateParentFromParentEditModel(parentModel, myParent);
 

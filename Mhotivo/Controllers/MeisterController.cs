@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Interface.Interfaces;
@@ -55,23 +58,71 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<MeisterEditModel, Meister>().ReverseMap();
             var meisterModel = Mapper.Map<Meister, MeisterEditModel>(meister);
 
+            meisterModel.StrGender = Implement.Utilities.GenderToString(meister.Gender).Substring(0, 1);
+
             return View("Edit", meisterModel);
         }
 
         [HttpPost]
         public ActionResult Edit(MeisterEditModel modelMeister)
         {
-            Meister myMeister = _meisterRepository.GetById(modelMeister.Id);
-            Mapper.CreateMap<Meister, MeisterEditModel>().ReverseMap();
-            var meisterModel = Mapper.Map<MeisterEditModel, Meister>(modelMeister);
 
-            _meisterRepository.UpdateMeisterFromMeisterEditModel(meisterModel, myMeister);
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
 
-            const string title = "Maestro Actualizado";
-            var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            if (modelMeister.UpladPhoto != null && modelMeister.UpladPhoto.ContentLength > 0)
+            {
+                if (!validImageTypes.Contains(modelMeister.UpladPhoto.ContentType))
+                {
+                    ModelState.AddModelError("UpladPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                }
+            }
 
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    byte[] fileBytes = null;
+                    if (modelMeister.UpladPhoto != null)
+                    {
+                        using (var binaryReader = new BinaryReader(modelMeister.UpladPhoto.InputStream))
+                        {
+                            fileBytes = binaryReader.ReadBytes(modelMeister.UpladPhoto.ContentLength);
+                        }
+                    }
+
+                    var myMeister = _meisterRepository.GetById(modelMeister.Id);
+                    Mapper.CreateMap<Meister, MeisterEditModel>().ReverseMap();
+                    var meisterModel = Mapper.Map<MeisterEditModel, Meister>(modelMeister);
+                    meisterModel.Gender = Implement.Utilities.IsMasculino(modelMeister.StrGender);
+
+                    meisterModel.Photo = null;
+
+                    if (fileBytes != null)
+                        meisterModel.Photo = fileBytes;
+                    else
+                        meisterModel.Photo = myMeister.Photo;
+
+                    _meisterRepository.UpdateMeisterFromMeisterEditModel(meisterModel, myMeister);
+
+                    const string title = "Maestro Actualizado";
+                    var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";
+                    _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+                    return RedirectToAction("Index");
+
+                }
+                catch
+                {
+                    return View(modelMeister);
+                }
+            }
+            return View(modelMeister);
         }
 
         [HttpPost]

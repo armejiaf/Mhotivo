@@ -65,6 +65,9 @@ namespace Mhotivo.Models
 
         [Display(Name = "Segundo Tutor o Madre")]
         public Parent Tutor2 { get; set; }
+
+        [Display(Name = "Foto Perfil")]
+        public byte[] Photo { get; set; }
     }
 
     public class StudentEditModel
@@ -87,7 +90,7 @@ namespace Mhotivo.Models
         [Display(Name = "Apellidos")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
+        
         [Display(Name = "Fecha de Nacimiento")]
         public string BirthDate { get; set; }
 
@@ -107,7 +110,7 @@ namespace Mhotivo.Models
         [Display(Name = "País")]
         public string Country { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Dirección")]
+        
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
         public string Address { get; set; }
@@ -115,11 +118,16 @@ namespace Mhotivo.Models
         [Display(Name = "Foto Perfil")]
         public HttpPostedFileBase FilePicture { get; set; }
 
+        [Display(Name = "Foto Perfil")]
+        public byte[] Photo { get; set; }
+
         public string UrlPicture { get; set; }
+
+        public bool Gender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
+        public string StrGender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]
@@ -144,7 +152,7 @@ namespace Mhotivo.Models
         [Display(Name = "Madre o Segundo Tutor")]
         public Parent Tutor2 { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
+        
         [Display(Name = "Padre o Tutor")]
         public long FirstParent { get; set; }
 
