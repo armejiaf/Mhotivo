@@ -36,6 +36,9 @@ namespace Mhotivo.Implement.Repositories
         public User Create(User itemToCreate, Role rol)
         {
             var userRolNew = new UserRol { User = itemToCreate, Role = rol };
+
+            _context.Roles.Attach(userRolNew.Role);
+
             var user = _context.Users.Add(itemToCreate);
 
             var userRol = _context.UserRoles.Add(userRolNew);
