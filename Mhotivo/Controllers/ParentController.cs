@@ -230,7 +230,7 @@ namespace Mhotivo.Controllers
             newUser.Email = (myParent.FirstName.Trim().Replace(" ", "") + "_" + myParent.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
             newUser.Password = "123456";
             newUser.Status = true;
-            newUser = _userRepository.Create(newUser, _roleRepository.GetById(3));
+            newUser = _userRepository.Create(newUser, _roleRepository.GetById(2));
             myParent.User = newUser;
 
             var parent = _parentRepository.Create(myParent);

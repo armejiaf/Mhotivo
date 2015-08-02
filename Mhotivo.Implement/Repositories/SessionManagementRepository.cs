@@ -18,6 +18,7 @@ namespace Mhotivo.Implement.Repositories
         private readonly string _userRoleIdentifier;
         private readonly string _userEmailIdentifier;
         private readonly string _userIdIdentifier;
+        private readonly string _notAllowed;
 
         public SessionManagementRepository(IUserRepository userRepository)
         {
@@ -26,6 +27,7 @@ namespace Mhotivo.Implement.Repositories
             _userEmailIdentifier = "loggedUserEmail";
             _userRoleIdentifier = "loggedUserRole";
             _userIdIdentifier = "loggedUserId";
+            _notAllowed = "Padres";
         }
 
 
@@ -33,7 +35,9 @@ namespace Mhotivo.Implement.Repositories
         {
             var user = ValidateUser(userEmail, password);
             if (user == null) return false;
-
+            var firstOrDefault = _userRepository.GetUserRoles(user.Id).FirstOrDefault();
+            if (firstOrDefault != null && firstOrDefault.Name.Equals(_notAllowed))
+                return false;
             UpdateSessionFromUser(user);
 
             if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
