@@ -1,9 +1,4 @@
-using System.Collections.ObjectModel;
-using Mhotivo.Models;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
-using Mhotivo.Implement.Repositories;
-using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Migrations
 {
@@ -12,20 +7,28 @@ namespace Mhotivo.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MhotivoContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Mhotivo.Implement.Context.MhotivoContext";
         }
 
-        protected override void Seed(MhotivoContext context)
+        protected override void Seed(Mhotivo.Implement.Context.MhotivoContext context)
         {
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
+
             context.Roles.AddOrUpdate(new Role { Id = 1, Description = "Admin", Name = "Admin" });
             context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Padres", Name = "Padres" });
             context.Roles.AddOrUpdate(new Role { Id = 3, Description = "Maestro", Name = "Maestro" });
@@ -48,7 +51,7 @@ namespace Mhotivo.Migrations
             var maestroDefault = context.Meisters.FirstOrDefault(x => x.FirstName == "Default");
             if (maestroDefault == null)
             {
-                context.Meisters.AddOrUpdate(new Meister { Id = 1, IdNumber = "0000000000000", FirstName = "Default", LastName = "Default", FullName = "Default Default", Disable = false, Gender = true, User = user2 });
+                context.Meisters.AddOrUpdate(new Teacher { Id = 1, IdNumber = "0000000000000", FirstName = "Default", LastName = "Default", FullName = "Default Default", Disable = false, Gender = true, User = user2 });
                 context.SaveChanges();
             }
 
@@ -57,8 +60,6 @@ namespace Mhotivo.Migrations
             context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 3, TypeDescription = "Grado" });
             context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 4, TypeDescription = "Personal" });
             context.SaveChanges();
-
-
         }
     }
 }

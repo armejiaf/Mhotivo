@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.MeisterRegisterModel
+﻿@model Mhotivo.Models.TeacherRegisterModel
 @{
     ViewBag.Title = "Agregar Maestro";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,13 +19,13 @@
     </style>
 }
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
-@using (Html.BeginForm("Add", "meister", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+@using (Html.BeginForm("Add", "teacher", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
     @Html.ValidationSummary(true)
     <h2>Agregar Maestro</h2>
 
     <p>
-        <a href="../Meister/Index" data-dismiss="modal" class="btn btn-small">
+        <a href="../Teacher/Index" data-dismiss="modal" class="btn btn-small">
             <i class="icon-remove"></i>
             Cancel
         </a>
@@ -70,8 +70,20 @@
         </div>
         <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.LastName)
-            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
+            <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.LastName)</p>
+        </div>
+
+        <div id="Email" style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.Email)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Email)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Email)</p>
+        </div>
+
+        <div style="float: left; width: 250px;">
+            @Html.EditorFor(model => model.Password)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Password)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Password)</p>
         </div>
         <br style="clear: left;" />
         <br style="clear: left;" />
@@ -111,7 +123,7 @@
         <br style="clear: left;" />
     </div>
 
-    <div id="MeisterInformation" style="width: 500px;">
+    <div id="TeacherInformation" style="width: 500px;">
         <h3>Información del Maestro</h3>
         <div style="float: left; width: 250px;">
             @Html.TextBoxFor(model => model.StartDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
@@ -139,7 +151,7 @@
     </div>
 
     <p>
-        <a href="../Meister/Index" data-dismiss="modal" class="btn btn-small">
+        <a href="../Teacher/Index" data-dismiss="modal" class="btn btn-small">
             <i class="icon-remove"></i>
             Cancel
         </a>

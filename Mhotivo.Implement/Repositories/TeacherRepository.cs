@@ -10,52 +10,55 @@ using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Implement.Repositories
 {
-    public class MeisterRepository : IMeisterRepository
+    public class TeacherRepository : ITeacherRepository
     {
         private readonly MhotivoContext _context;
 
-        public MeisterRepository(MhotivoContext ctx)
+        public TeacherRepository(MhotivoContext ctx)
         {
             _context = ctx;
         }
 
-        public Meister First(Expression<Func<Meister, Meister>> query)
+        public Teacher First(Expression<Func<Teacher, Teacher>> query)
         {
             var meisters = _context.Meisters.Select(query);
             return meisters.Count() != 0 ? meisters.First() : null;
         }
 
-        public Meister GetById(long id)
+        public Teacher GetById(long id)
         {
             var meisters = _context.Meisters.Where(x => x.Id == id);
             return meisters.Count() != 0 ? meisters.First() : null;
         }
 
-        public Meister Create(Meister itemToCreate)
+        public Teacher Create(Teacher itemToCreate)
         {
+            _context.Users.Attach(itemToCreate.User);
+
             var meister = _context.Meisters.Add(itemToCreate);
+            
             _context.SaveChanges();
             return meister;
         }
 
-        public IQueryable<Meister> Query(Expression<Func<Meister, Meister>> expression)
+        public IQueryable<Teacher> Query(Expression<Func<Teacher, Teacher>> expression)
         {
             return _context.Meisters.Select(expression);
         }
 
-        public IQueryable<Meister> Filter(Expression<Func<Meister, bool>> expression)
+        public IQueryable<Teacher> Filter(Expression<Func<Teacher, bool>> expression)
         {
             return _context.Meisters.Where(expression);
 
         }
 
-        public Meister Update(Meister itemToUpdate)
+        public Teacher Update(Teacher itemToUpdate)
         {
             _context.SaveChanges();
             return itemToUpdate;
         }
 
-        public Meister Delete(long id)
+        public Teacher Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.Meisters.Remove(itemToDelete);
@@ -63,9 +66,9 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public IEnumerable<Meister> GetAllMeisters()
+        public IEnumerable<Teacher> GetAllTeachers()
         {
-            return Query(x => x).ToList().Select(x => new Meister
+            return Query(x => x).ToList().Select(x => new Teacher
                 {
                     Id = x.Id,
                     IdNumber = x.IdNumber,
@@ -89,10 +92,10 @@ namespace Mhotivo.Implement.Repositories
                 });
         }
 
-        public Meister GetMeisterDisplayModelById(long id)
+        public Teacher GetTeacherDisplayModelById(long id)
         {
             var meister = GetById(id);
-            return new Meister
+            return new Teacher
             {
                 Id = meister.Id,
                 IdNumber = meister.IdNumber,
@@ -115,7 +118,7 @@ namespace Mhotivo.Implement.Repositories
             };
         }
 
-        public Meister UpdateMeisterFromMeisterEditModel(Meister meisterEditModel, Meister meister)
+        public Teacher UpdateTeacherFromMeisterEditModel(Teacher meisterEditModel, Teacher meister)
         {
             meister.FirstName = meisterEditModel.FirstName;
             meister.LastName = meisterEditModel.LastName;
@@ -136,9 +139,9 @@ namespace Mhotivo.Implement.Repositories
             return Update(meister);
         }
 
-        public Meister GenerateMeisterFromRegisterModel(Meister meisterRegisterModel)
+        public Teacher GenerateTeacherFromRegisterModel(Teacher meisterRegisterModel)
         {
-            return new Meister
+            return new Teacher
             {
                 FirstName = meisterRegisterModel.FirstName,
                 LastName = meisterRegisterModel.LastName,
@@ -158,10 +161,10 @@ namespace Mhotivo.Implement.Repositories
             };
         }
 
-        public Meister GetMeisterEditModelById(long id)
+        public Teacher GetTeacherEditModelById(long id)
         {
             var meister = GetById(id);
-            return new Meister
+            return new Teacher
             {
                 FirstName = meister.FirstName,
                 LastName = meister.LastName,

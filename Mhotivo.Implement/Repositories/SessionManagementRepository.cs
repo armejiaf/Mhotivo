@@ -35,9 +35,12 @@ namespace Mhotivo.Implement.Repositories
         {
             var user = ValidateUser(userEmail, password);
             if (user == null) return false;
+
             var firstOrDefault = _userRepository.GetUserRoles(user.Id).FirstOrDefault();
-            if (firstOrDefault != null && firstOrDefault.Name.Equals(_notAllowed))
-                return false;
+
+           // if (firstOrDefault != null && firstOrDefault.Name.Equals(_notAllowed))
+             //   return false;
+
             UpdateSessionFromUser(user);
 
             if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
@@ -88,7 +91,6 @@ namespace Mhotivo.Implement.Repositories
         private User ValidateUser(string userName, string password)
         {
             var myUsers = _userRepository.Filter(x => x.Email.Equals(userName) && x.Password.Equals(password) && x.Status);
-
             return (myUsers != null && myUsers.Any() ? myUsers.First() : null);
         }
 

@@ -1,5 +1,5 @@
 ﻿@using System.Linq
-@model IEnumerable<Mhotivo.Data.Entities.Meister>
+@model IEnumerable<Mhotivo.Data.Entities.Teacher>
 
 @{
     ViewBag.Title = "Index";
@@ -10,7 +10,7 @@
 
 <h2>Maestros Registrados</h2>
 
-<a class="toAdd" data-toggle="modal" role="button" data-id="Meister/Add" ><span class="btn btn-small btn-primary active">Agregar Maestro</span></a>
+<a class="toAdd" data-toggle="modal" role="button" data-id="Teacher/Add" ><span class="btn btn-small btn-primary active">Agregar Maestro</span></a>
 
 @if(!Model.Any())
 {
@@ -38,7 +38,7 @@ else
         
             @foreach (var item in Model) {
                 <tr>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
                         <div id="Photo">
                             @Html.ValidationSummary(true)
                             @{
@@ -57,24 +57,24 @@ else
 
 
 
-                    @*<td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
+                    @*<td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
                         <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
                             <img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
                             <div class="text">
                             </div>
                         </a>
                     </td>*@
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.FullName)</td>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.IdNumber)</td>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Address)</td>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.City)</td>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.State)</td>
-                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Country)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.FullName)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.IdNumber)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.City)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.State)</td>
+                    <td data-id="Teacher/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Country)</td>
                     <td>
-                        <a href="~/Meister/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
-                        @*<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>*@
+                        <a href="~/Teacher/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        @*<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Teacher/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>*@
                         @*<a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>*@
-                        @using (Html.BeginForm("Delete", "Meister", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                        @using (Html.BeginForm("Delete", "Teacher", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                                value="¿Realmente desea eliminar el registro de @Html.DisplayFor(modelItem => item.FullName)?" />

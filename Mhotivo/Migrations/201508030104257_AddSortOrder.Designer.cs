@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class CreationOfNotificationCommentsEntity : IMigrationMetadata
+    public sealed partial class AddSortOrder : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CreationOfNotificationCommentsEntity));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddSortOrder));
         
         string IMigrationMetadata.Id
         {
-            get { return "201502280608071_CreationOfNotificationCommentsEntity"; }
+            get { return "201508030104257_AddSortOrder"; }
         }
         
         string IMigrationMetadata.Source

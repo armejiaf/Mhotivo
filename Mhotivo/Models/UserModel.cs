@@ -13,11 +13,13 @@ namespace Mhotivo.Models
         [Display(Name = "Nombre")]
         public string DisplayName { get; set; }
 
-        [Display(Name = "Estado")]
+        [Display(Name = "Activo")]
         public string Status { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
         public Role Role { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class LocalPasswordModel

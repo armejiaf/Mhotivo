@@ -46,9 +46,13 @@ namespace Mhotivo.Implement.Repositories
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
+
             _context.Users.Attach(itemToCreate.User);
+
             var parent = _context.Parents.Add(itemToCreate);
+
             _context.SaveChanges();
+
             return parent;
         }
 
@@ -92,12 +96,12 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                //Gender = Utilities.GenderToString(x.Gender),
                 Gender = x.Gender,
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Photo = x.Photo
+                Photo = x.Photo,
+                User = x.User
             });
         }
 

@@ -87,7 +87,7 @@ namespace Mhotivo.App_Start
             kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
             kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
-            kernel.Bind<IMeisterRepository>().To<MeisterRepository>().InRequestScope();
+            kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
             kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
 {
-    public class DisplayMeisterModel
+    public class DisplayTeacherModel
     {
         public long Id { get; set; }
 
@@ -58,7 +58,7 @@ namespace Mhotivo.Models
         public string Biography { get; set; }
     }
 
-    public class MeisterEditModel
+    public class TeacherEditModel
     {
         public long Id { get; set; }
 
@@ -128,7 +128,7 @@ namespace Mhotivo.Models
 
     }
 
-    public class MeisterRegisterModel
+    public class TeacherRegisterModel
     {
         public string FullName { get; set; }
 
@@ -179,6 +179,15 @@ namespace Mhotivo.Models
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
         public string Address { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Correo Electronico")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Una Contraseña")]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]

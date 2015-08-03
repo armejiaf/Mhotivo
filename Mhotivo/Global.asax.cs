@@ -9,7 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 //using Mhotivo.App_Data;
 using Mhotivo.Implement.Context;
-using Mhotivo.Migrations;
+//using Mhotivo.Migrations;
 
 namespace Mhotivo
 {
@@ -22,7 +22,7 @@ namespace Mhotivo
         {
             AreaRegistration.RegisterAllAreas();
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MhotivoContext>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Configuration>());
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -56,7 +56,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]
         [Display(Name = "Maestro")]
-        public Meister Teacher { get; set; }
+        public Teacher Teacher { get; set; }
 
         [Display(Name = "Id Año Academico")]
         public int AcademicYearId { get; set; }
@@ -90,6 +90,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]
         [Display(Name = "Maestro/a")]
-        public Meister Teacher { get; set; }
+        public Teacher Teacher { get; set; }
     }
 }

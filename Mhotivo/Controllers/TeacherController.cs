@@ -13,17 +13,21 @@ using AutoMapper;
 
 namespace Mhotivo.Controllers
 {
-    public class MeisterController : Controller
+    public class TeacherController : Controller
     {
         private readonly IContactInformationRepository _contactInformationRepository;
-        private readonly IMeisterRepository _meisterRepository;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public MeisterController(IMeisterRepository meisterRepository,
-            IContactInformationRepository contactInformationRepository)
+        public TeacherController(ITeacherRepository meisterRepository,
+            IContactInformationRepository contactInformationRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
-            _meisterRepository = meisterRepository;
+            _teacherRepository = meisterRepository;
             _contactInformationRepository = contactInformationRepository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -31,7 +35,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_meisterRepository.GetAllMeisters());
+            return View(_teacherRepository.GetAllTeachers());
         }
 
         [HttpGet]
@@ -54,9 +58,9 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             //MeisterEditModel meister = _meisterRepository.GetMeisterEditModelById(id);
-            var meister = _meisterRepository.GetMeisterEditModelById(id);
-            Mapper.CreateMap<MeisterEditModel, Meister>().ReverseMap();
-            var meisterModel = Mapper.Map<Meister, MeisterEditModel>(meister);
+            var meister = _teacherRepository.GetTeacherEditModelById(id);
+            Mapper.CreateMap<TeacherEditModel, Teacher>().ReverseMap();
+            var meisterModel = Mapper.Map<Teacher, TeacherEditModel>(meister);
 
             meisterModel.StrGender = Implement.Utilities.GenderToString(meister.Gender).Substring(0, 1);
 
@@ -64,7 +68,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(MeisterEditModel modelMeister)
+        public ActionResult Edit(TeacherEditModel modelMeister)
         {
 
             var validImageTypes = new string[]
@@ -96,9 +100,9 @@ namespace Mhotivo.Controllers
                         }
                     }
 
-                    var myMeister = _meisterRepository.GetById(modelMeister.Id);
-                    Mapper.CreateMap<Meister, MeisterEditModel>().ReverseMap();
-                    var meisterModel = Mapper.Map<MeisterEditModel, Meister>(modelMeister);
+                    var myMeister = _teacherRepository.GetById(modelMeister.Id);
+                    Mapper.CreateMap<Teacher, TeacherEditModel>().ReverseMap();
+                    var meisterModel = Mapper.Map<TeacherEditModel, Teacher>(modelMeister);
                     meisterModel.Gender = Implement.Utilities.IsMasculino(modelMeister.StrGender);
 
                     meisterModel.Photo = null;
@@ -108,7 +112,7 @@ namespace Mhotivo.Controllers
                     else
                         meisterModel.Photo = myMeister.Photo;
 
-                    _meisterRepository.UpdateMeisterFromMeisterEditModel(meisterModel, myMeister);
+                    _teacherRepository.UpdateTeacherFromMeisterEditModel(meisterModel, myMeister);
 
                     const string title = "Maestro Actualizado";
                     var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";
@@ -128,7 +132,7 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Delete(long id)
         {
-            Meister meister = _meisterRepository.Delete(id);
+            Teacher meister = _teacherRepository.Delete(id);
 
             const string title = "Maestro Eliminado";
             var content = "El maestro " + meister.FullName + " ha sido eliminado exitosamente.";
@@ -155,16 +159,30 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(MeisterRegisterModel modelMeister)
+        public ActionResult Add(TeacherRegisterModel modelTeacher)
         {
-            Mapper.CreateMap<Meister, MeisterRegisterModel>().ReverseMap();
-            var meisterModel = Mapper.Map<MeisterRegisterModel, Meister>(modelMeister);
+            Mapper.CreateMap<Teacher, TeacherRegisterModel>().ReverseMap();
+            var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
 
-            var myMeister = _meisterRepository.GenerateMeisterFromRegisterModel(meisterModel);
+            var myTeacher = _teacherRepository.GenerateTeacherFromRegisterModel(teacherModel);
 
-            _meisterRepository.Create(myMeister);
+            var newUser = new User
+            {
+                DisplayName = modelTeacher.FirstName,
+                Email = modelTeacher.Email,
+                Password = modelTeacher.Password,
+                Status = true
+            };
+
+            newUser = _userRepository.Create(newUser, _roleRepository.GetById(3));
+
+            myTeacher.User = newUser;
+
+            _teacherRepository.Create(myTeacher);
+
+            
             const string title = "Maestro Agregado";
-            var content = "El maestro " + myMeister.FullName + "ha sido agregado exitosamente.";
+            var content = "El maestro " + myTeacher.FullName + "ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
 
             return RedirectToAction("Index");
@@ -173,10 +191,10 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Details(long id)
         {
-            var meister = _meisterRepository.GetMeisterDisplayModelById(id);
+            var meister = _teacherRepository.GetTeacherDisplayModelById(id);
 
-            Mapper.CreateMap<DisplayMeisterModel, Meister>().ReverseMap();
-            var meisterModel = Mapper.Map<Meister, DisplayMeisterModel>(meister);
+            Mapper.CreateMap<DisplayTeacherModel, Teacher>().ReverseMap();
+            var meisterModel = Mapper.Map<Teacher, DisplayTeacherModel>(meister);
 
             return View("Details", meisterModel);
         }
@@ -184,23 +202,23 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult DetailsEdit(long id)
         {
-            var meister = _meisterRepository.GetMeisterEditModelById(id);
+            var meister = _teacherRepository.GetTeacherEditModelById(id);
 
-            Mapper.CreateMap<MeisterEditModel, Meister>().ReverseMap();
-            var meisterModel = Mapper.Map<Meister, MeisterEditModel>(meister);
+            Mapper.CreateMap<TeacherEditModel, Teacher>().ReverseMap();
+            var meisterModel = Mapper.Map<Teacher, TeacherEditModel>(meister);
 
             return View("DetailsEdit", meisterModel);
         }
 
         [HttpPost]
-        public ActionResult DetailsEdit(MeisterEditModel modelMeister)
+        public ActionResult DetailsEdit(TeacherEditModel modelMeister)
         {
-            var myMeister = _meisterRepository.GetById(modelMeister.Id);
+            var myMeister = _teacherRepository.GetById(modelMeister.Id);
 
-            Mapper.CreateMap<Meister, MeisterEditModel>().ReverseMap();
-            var meisterModel = Mapper.Map<MeisterEditModel, Meister>(modelMeister);
+            Mapper.CreateMap<Teacher, TeacherEditModel>().ReverseMap();
+            var meisterModel = Mapper.Map<TeacherEditModel, Teacher>(modelMeister);
 
-            _meisterRepository.UpdateMeisterFromMeisterEditModel(meisterModel, myMeister);
+            _teacherRepository.UpdateTeacherFromMeisterEditModel(meisterModel, myMeister);
 
             const string title = "Maestro Actualizado";
             var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";

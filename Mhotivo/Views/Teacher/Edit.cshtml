@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.MeisterEditModel
+﻿@model Mhotivo.Models.TeacherEditModel
 @{
     ViewBag.Title = "Editar Maestro";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,7 +8,7 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Edit", "meister", FormMethod.Post, new {
+    @using (Html.BeginForm("Edit", "Teacher", FormMethod.Post, new {
                                                                         id = "Form"
                                                                         ,@class = "form-horizontal"
                                                                         ,@Style = "margin:0;"

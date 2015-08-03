@@ -78,9 +78,8 @@ namespace Mhotivo.Implement.Repositories
         {
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 3 &&
-                      x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
-
+                    x.NotificationType.NotificationTypeId == 3 && 
+                        x.Approved );
             return gradeNotifications;
         }
 
@@ -100,8 +99,7 @@ namespace Mhotivo.Implement.Repositories
 
             var areaNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 2 &&
-                       x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                    x.NotificationType.NotificationTypeId == 2 && x.Approved);
 
             return areaNotifications;
         }

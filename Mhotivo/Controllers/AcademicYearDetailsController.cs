@@ -17,12 +17,12 @@ namespace Mhotivo.Controllers
     {
         private readonly IAcademicYearDetailsRepository _academicYearDetailsRepository;
         private readonly ICourseRepository _courseRepository;
-        private readonly IMeisterRepository _meisterRepository;
+        private readonly ITeacherRepository _meisterRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicYearRepository _academicYearRepository;
 
         public AcademicYearDetailsController(IAcademicYearDetailsRepository academicYearDetailsRepository,
-            ICourseRepository courseRepository, IMeisterRepository meisterRepository,
+            ICourseRepository courseRepository, ITeacherRepository meisterRepository,
             IAcademicYearRepository academicYearRepository)
         {
             _academicYearDetailsRepository = academicYearDetailsRepository;

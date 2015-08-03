@@ -14,7 +14,7 @@ namespace Mhotivo.Data.Entities
         public virtual Course Course { get; set; }
         
         
-        public virtual Meister Teacher { get; set; }
+        public virtual Teacher Teacher { get; set; }
         public DateTime? TeacherStartDate { get; set; }
         public DateTime? TeacherEndDate { get; set; }
         public DateTime? Schedule { get; set; }

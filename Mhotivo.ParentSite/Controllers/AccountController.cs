@@ -36,7 +36,7 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 //System.Web.HttpContext.Current.Response.SuppressFormsAuthenticationRedirect = true;
                 
-                var parent = _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault();
+               var parent = _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault();
 
                 if (parent != null)
                 {  

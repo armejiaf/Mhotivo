@@ -71,7 +71,7 @@
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Homework.cs" />
-    <Compile Include="Entities\Meister.cs" />
+    <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationComments.cs" />
     <Compile Include="Entities\NotificationType.cs" />

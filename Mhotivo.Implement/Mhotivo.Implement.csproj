@@ -64,7 +64,7 @@
     <Compile Include="Repositories\GradeRepository.cs" />
     <Compile Include="Repositories\HomeworkRepository.cs" />
     <Compile Include="Repositories\ImportDataRepository.cs" />
-    <Compile Include="Repositories\MeisterRepository.cs" />
+    <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\NotificationRepositoryRepository.cs" />
     <Compile Include="Repositories\NotificationTypeRepository.cs" />

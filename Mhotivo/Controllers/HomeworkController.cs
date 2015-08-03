@@ -72,7 +72,7 @@ namespace Mhotivo.Controllers
             long id = 0;
             foreach (var p in people)
             {
-                if (p is Meister)
+                if (p is Teacher)
                     id = p.Id;
             }
             return id;

@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
         private readonly ISessionManagementRepository _sessionManagement;
         private readonly IGradeRepository _gradeRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IMeisterRepository _meisterRepository;
+        private readonly ITeacherRepository _meisterRepository;
         private readonly IPeopleRepository _peopleRepository;
         private readonly IParentRepository _parentRepository;
         private readonly IStudentRepository _studentRepository;
@@ -49,7 +49,7 @@ namespace Mhotivo.Controllers
         //private readonly IGradeRepository _gradeRepository;
         //private readonly IAreaReporsitory _areaReporsitory;
 
-        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, IMeisterRepository meisterRepository,
+        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository meisterRepository,
             IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository, IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository)
         {
             _sessionManagement = sessionManagement;
@@ -452,7 +452,7 @@ namespace Mhotivo.Controllers
                     if (user != null)
                     {
 
-                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).Where(x => x is Meister).FirstOrDefault();
+                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).Where(x => x is Teacher).FirstOrDefault();
                         if (people != null)
                         {
                             var meiser = _meisterRepository.GetById(people.Id);

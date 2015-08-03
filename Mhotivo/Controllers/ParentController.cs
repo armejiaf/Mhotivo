@@ -227,8 +227,8 @@ namespace Mhotivo.Controllers
 
             var newUser = new User();
             newUser.DisplayName = myParent.FirstName;
-            newUser.Email = (myParent.FirstName.Trim().Replace(" ", "") + "_" + myParent.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
-            newUser.Password = "123456";
+            newUser.Email = modelParent.Email;
+            newUser.Password = modelParent.Password;
             newUser.Status = true;
             newUser = _userRepository.Create(newUser, _roleRepository.GetById(2));
             myParent.User = newUser;

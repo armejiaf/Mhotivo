@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
 {
-    public class Meister : People
+    public class Teacher : People
     {
         public string Biography { get; set; }
         public string StartDate { get; set; }

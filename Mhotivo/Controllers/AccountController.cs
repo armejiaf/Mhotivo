@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic;
 using Mhotivo.Models;
@@ -10,10 +11,12 @@ namespace Mhotivo.Controllers
     {
         //private readonly ISessionManagement _sessionManagement;
         private readonly ISessionManagementRepository _sessionManagement;
+        private readonly IParentRepository _parentRepository;
 
-        public AccountController(ISessionManagementRepository sessionManagement)
+        public AccountController(ISessionManagementRepository sessionManagement, IParentRepository parentRepository)
         {
             _sessionManagement = sessionManagement;
+            _parentRepository = parentRepository;
         }
 
         // GET: /Account/Login
@@ -31,11 +34,19 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            var parent = _parentRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
 
-
-            if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+            if (parent == null)
             {
-                return RedirectToLocal(returnUrl);
+                if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+                {
+                    return RedirectToLocal(returnUrl);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Padres no son admitidos en esta pagina");
+                return View(model);
             }
 
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
