@@ -1,9 +1,4 @@
 ﻿using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
-
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -31,7 +26,6 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-
             return View(_classActivityRepository.Query(x => x).ToList()
                 .Select(x => new DisplayClassActivityModel
                              {
@@ -57,15 +51,9 @@ namespace Mhotivo.Controllers
                                     Value = thisClassActivity.Value,
                                     Id = thisClassActivity.Id
                                 };
-
-            var listTypes = new List<string>();
-            listTypes.Add("Exam");
-            listTypes.Add("Quiz");
-            listTypes.Add("Homework");
-            listTypes.Add("Classwork");
+            var listTypes = new List<string> {"Exam", "Quiz", "Homework", "Classwork"};
             ViewBag.Type = new SelectList(listTypes);
             ViewBag.AcademicYearId = new SelectList(_academicYearRepository.Query(x => x), "Id", "Year.Year");
-
             return View("Edit", classActivity);
         }
 
@@ -78,14 +66,11 @@ namespace Mhotivo.Controllers
             myClassActivity.Description = modelClassActivity.Description;
             myClassActivity.Value = modelClassActivity.Value;
             myClassActivity.AcademicYear = _academicYearRepository.GetById(modelClassActivity.AcademicYearId);
-
             ClassActivity classactivity = _classActivityRepository.Update(myClassActivity);
             _classActivityRepository.SaveChanges();
-
             const string title = "Actividad Actualizada";
             var content = "La actividad --" + classactivity.Name + "-- ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
@@ -94,22 +79,16 @@ namespace Mhotivo.Controllers
         {
             ClassActivity classactivity = _classActivityRepository.Delete(_classActivityRepository.GetById(id));
             _classActivityRepository.SaveChanges();
-
             const string title = "Actividad Eliminada";
             var content = "La activdad --" + classactivity.Name + "-- ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Add()
         {
-            var listTypes = new List<string>();
-            listTypes.Add("Exam");
-            listTypes.Add("Quiz");
-            listTypes.Add("Homework");
-            listTypes.Add("Classwork");
+            var listTypes = new List<string> {"Exam", "Quiz", "Homework", "Classwork"};
             ViewBag.Type = new SelectList(listTypes);
             ViewBag.AcademicYearId = new SelectList(_academicYearRepository.Query(x => x), "Id", "Year.Year");
             return View("Create");
@@ -126,14 +105,11 @@ namespace Mhotivo.Controllers
                                       Value = modelClassActivity.Value,
                                       AcademicYear = _academicYearRepository.GetById(modelClassActivity.AcademicYearId)
                                   };
-
             ClassActivity classactivity = _classActivityRepository.Create(myClassActivity);
             _classActivityRepository.SaveChanges();
-
             const string title = "Actividad Agregada";
             var content = "La Actividad --" + classactivity.Name + "-- ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
             return RedirectToAction("Index");
         }
     }

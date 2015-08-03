@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Mhotivo.Data.Entities;
 
+//Unused. Delete?
 namespace Mhotivo.Models
 {
     public class AppointmentDiaryModel
@@ -14,7 +15,7 @@ namespace Mhotivo.Models
         public int StatusEnum { get; set; }
         [Required(ErrorMessage = "Debe Ingresar la duracion")]
         public int AppointmentLength { get; set; }
-        public  Mhotivo.Data.Entities.User Creator { get; set; }
+        public User Creator { get; set; }
         public bool IsAproveed { get; set; }
     }
 

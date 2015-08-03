@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-using Microsoft.Ajax.Utilities;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -36,11 +33,9 @@ namespace Mhotivo.Controllers
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var allAcademicYears = _academicYearDetailsRepository.GetAllAcademicYearsDetails(id);
-
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "teacher_desc" : "";
             ViewBag.ScheduleSortParm = sortOrder == "Schedule" ? "schedule_desc" : "Schedule";
-
             if (searchString != null)
             {
                 page = 1;
@@ -49,7 +44,6 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 allAcademicYears = _academicYearDetailsRepository.Filter(x => x.Teacher.FullName.Contains(searchString)).ToList();
@@ -64,9 +58,7 @@ namespace Mhotivo.Controllers
                 Course = academicYearD.Course.Name,
                 Teacher = academicYearD.Teacher.FullName
             } : null) : null) : null).ToList();
-
             ViewBag.IdAcademicYear = id;
-
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -83,10 +75,8 @@ namespace Mhotivo.Controllers
                     academicYearsDetails = academicYearsDetails.OrderBy(s => s.Teacher).ToList();
                     break;
             }
-
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
-
             return View(academicYearsDetails.ToPagedList(pageNumber, pageSize));
         }
 
@@ -104,10 +94,8 @@ namespace Mhotivo.Controllers
                 Course = academicYearDetails.Course,
                 Teacher = academicYearDetails.Teacher
             };
-
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", academicYearModel.Course.Id);
             ViewBag.MeisterId = new SelectList(_meisterRepository.Query(x => x), "Id", "FullName", academicYearModel.Teacher.Id);
-
             return View("Edit", academicYearModel);
         }
 
@@ -121,13 +109,10 @@ namespace Mhotivo.Controllers
             myAcademicYearDetails.Room = academicYearDetailsModel.Room;
             myAcademicYearDetails.Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id);
             myAcademicYearDetails.Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id);
-
             _academicYearDetailsRepository.Update(myAcademicYearDetails);
-
             const string title = "El Detalle del Año Académico Actualizado ";
             var content = "El detalle " + myAcademicYearDetails.Course.Name + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", myAcademicYearDetails.AcademicYear.Id));
         }
 
@@ -135,11 +120,9 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(int id)
         {
             var academicYearDetail = _academicYearDetailsRepository.Delete(id);
-
             const string title = "Detalle Académico Eliminado";
              var content = "El detalle de año académico " + academicYearDetail.Course.Name + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetail.AcademicYear.Id));
         }
 
@@ -148,9 +131,7 @@ namespace Mhotivo.Controllers
         {
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", 0);
             ViewBag.MeisterId = new SelectList(_meisterRepository.Query(x => x), "Id", "FullName", 0);
-
             ViewBag.IdAcademicYear = id;
-
             return View("Create");
         }
 
@@ -167,8 +148,7 @@ namespace Mhotivo.Controllers
                 Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id),
                 AcademicYear = _academicYearRepository.GetById(academicYearDetailsModel.AcademicYearId)
             };
-
-            var academicY = _academicYearDetailsRepository.Create(academicYearDetails);
+            _academicYearDetailsRepository.Create(academicYearDetails);
             const string title = "Detalles de Año Académico Agregado";
             const string content = "El detalle del año académico ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

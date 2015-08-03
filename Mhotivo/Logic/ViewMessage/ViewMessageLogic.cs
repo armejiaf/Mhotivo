@@ -13,13 +13,10 @@ namespace Mhotivo.Logic.ViewMessage
             _controller = controller;
         }
 
-
         public void SetViewMessageIfExist()
         {
             var message = (MessageModel)_controller.TempData[MessageIdentifier];
-
             if (message == null) return;
-
             _controller.ViewBag.MessageType = message.Type;
             _controller.ViewBag.MessageTitle = message.Title;
             _controller.ViewBag.MessageContent = message.Content;
@@ -27,7 +24,6 @@ namespace Mhotivo.Logic.ViewMessage
 
         public void SetNewMessage(string title, string content, string type)
         {
-
             _controller.TempData[MessageIdentifier] = new MessageModel
             {
                 Type = type,

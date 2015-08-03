@@ -3,9 +3,6 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
-
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
 using System.Web.Mvc;
 
 namespace Mhotivo.Controllers
@@ -45,7 +42,6 @@ namespace Mhotivo.Controllers
                 People = thisContactInformation.People,
                 Controller = "Benefactor"
             };
-
             return View("ContactEdit", contactInformation);
         }
 
@@ -54,9 +50,7 @@ namespace Mhotivo.Controllers
         {
             Mapper.CreateMap<BenefactorEditModel, Benefactor>().ReverseMap();
             var editBenefactor = Mapper.Map<Benefactor, BenefactorEditModel>(_benefactorRepository.GetBenefactorEditModelById(id));
-
             editBenefactor.StrGender = Implement.Utilities.GenderToString(editBenefactor.Gender).Substring(0, 1);
-
             return View("Edit", editBenefactor);
         }
 
@@ -68,23 +62,18 @@ namespace Mhotivo.Controllers
                 var title = "Beneficiario No Puede Tener Menos de " + modelBenefactor.StudentsCount;
                 const string content = "Elimine algunos estudiantes antes de continuar.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
                 return RedirectToAction("Index");
             }
             else
             {
                 var myBenefactor = _benefactorRepository.GetById(modelBenefactor.Id);
                 modelBenefactor.Gender = Implement.Utilities.IsMasculino(modelBenefactor.StrGender);
-
                 Mapper.CreateMap<Benefactor, BenefactorEditModel>().ReverseMap();
                 var editBenefactor = Mapper.Map<BenefactorEditModel, Benefactor>(modelBenefactor);
-
                 _benefactorRepository.UpdateBenefactorFromBenefactorEditModel(editBenefactor, myBenefactor);
-
                 const string title = "Beneficiario Actualizado";
                 string content = "El Beneficiario " + myBenefactor.FullName + " ha sido actualizado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
                 return RedirectToAction("Index");
             }
         }
@@ -93,11 +82,9 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             Benefactor benefactor = _benefactorRepository.Delete(id);
-
             const string title = "Benefactor Eliminado";
             string content = "El benefactor " + benefactor.FullName + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
@@ -124,14 +111,12 @@ namespace Mhotivo.Controllers
             modelBenefactor.Gender = Implement.Utilities.IsMasculino(modelBenefactor.StrGender);
             Mapper.CreateMap<Benefactor, BenefactorRegisterModel>().ReverseMap();
             var regBenefactor = Mapper.Map<BenefactorRegisterModel, Benefactor>(modelBenefactor);
-
             var myBenefactor = _benefactorRepository.GenerateBenefactorFromRegisterModel(regBenefactor);
             myBenefactor.Capacity = modelBenefactor.Capacity;
             _benefactorRepository.Create(myBenefactor);
             const string title = "Benefactor Agregado";
             string content = "El Benefactor " + myBenefactor.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
             return RedirectToAction("Index");
         }
 
@@ -139,10 +124,8 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             Benefactor benefactor = _benefactorRepository.GetBenefactorDisplayModelById(id);
-
             Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
             DisplayBenefactorModel modelBenefactor = Mapper.Map<Benefactor, DisplayBenefactorModel>(benefactor);
-
             return View("Details", modelBenefactor);
         }
 
@@ -150,10 +133,8 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(long id)
         {
             Benefactor benefactor = _benefactorRepository.GetBenefactorEditModelById(id);
-
             Mapper.CreateMap<BenefactorEditModel, Benefactor>().ReverseMap();
             BenefactorEditModel modelBenefactor = Mapper.Map<Benefactor, BenefactorEditModel>(benefactor);
-
             return View("DetailsEdit", modelBenefactor);
         }
 
@@ -165,22 +146,17 @@ namespace Mhotivo.Controllers
                 string title = "Beneficiario No Puede Tener Menos de " + modelBenefactor.StudentsCount;
                 const string content = "Elimine algunos estudiantes antes de continuar.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
                 return RedirectToAction("DetailsEdit/" + modelBenefactor.Id);
             }
             else
             {
                 Benefactor myBenefactor = _benefactorRepository.GetById(modelBenefactor.Id);
-
                 Mapper.CreateMap<Benefactor, BenefactorEditModel>().ReverseMap();
                 Benefactor editlBenefactor = Mapper.Map<BenefactorEditModel, Benefactor>(modelBenefactor);
-
                 _benefactorRepository.UpdateBenefactorFromBenefactorEditModel(editlBenefactor, myBenefactor);
-
                 const string title = "Beneficiario Actualizado";
                 string content = "El Beneficiario " + myBenefactor.FullName + " ha sido actualizado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
                 return RedirectToAction("Details/" + modelBenefactor.Id);
             }
         }
@@ -232,8 +208,8 @@ namespace Mhotivo.Controllers
             {
                 Student myStudent = _studentRepository.GetById(modelStudent.OldId);
                 myStudent.Benefactor = null;
-                Student student = _studentRepository.Update(myStudent);
-                myStudent = _studentRepository.GetById(modelStudent.NewId);
+                _studentRepository.Update(myStudent);
+                _studentRepository.GetById(modelStudent.NewId);
             }
             else if (modelStudent.OldId != modelStudent.NewId)
             {
@@ -241,10 +217,10 @@ namespace Mhotivo.Controllers
                 if (myStudent.Benefactor == null || myStudent.Benefactor.Id != modelStudent.Id)
                 {
                     myStudent.Benefactor = _benefactorRepository.GetById(modelStudent.Id);
-                    Student student = _studentRepository.Update(myStudent);
+                    _studentRepository.Update(myStudent);
                     myStudent = _studentRepository.GetById(modelStudent.OldId);
                     myStudent.Benefactor = null;
-                    student = _studentRepository.Update(myStudent);
+                    _studentRepository.Update(myStudent);
                 }
             }
             return RedirectToAction("Details/" + modelStudent.Id);
@@ -257,11 +233,9 @@ namespace Mhotivo.Controllers
             long ID = myStudent.Benefactor.Id;
             myStudent.Benefactor = null;
             _studentRepository.Update(myStudent);
-
             const string title = "Estudiante Eliminado";
             string content = "El estudiante " + myStudent.FullName + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Details/" + ID);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Mhotivo.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
@@ -110,7 +109,6 @@ namespace Mhotivo.Models
         [Display(Name = "País")]
         public string Country { get; set; }
 
-        
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
         public string Address { get; set; }
@@ -152,7 +150,6 @@ namespace Mhotivo.Models
         [Display(Name = "Madre o Segundo Tutor")]
         public Parent Tutor2 { get; set; }
 
-        
         [Display(Name = "Padre o Tutor")]
         public long FirstParent { get; set; }
 

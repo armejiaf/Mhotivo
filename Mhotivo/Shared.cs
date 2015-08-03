@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.ComponentModel;
 
 namespace Mhotivo
 {
-
-
     // resource: html-color-codes  http://html-color-codes.info/
     // left part stores color, right part stores className for html rendering
     public enum AppointmentStatus
@@ -51,7 +48,6 @@ namespace Mhotivo
         {
             Type type = typeof(T);
             var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
-
             if (name == null)
             {
                 return string.Empty;
@@ -61,5 +57,4 @@ namespace Mhotivo
             return customAttribute.Length > 0 ? ((DescriptionAttribute)customAttribute[0]).Description : name;
         }
     }
-
 }

@@ -1,6 +1,5 @@
 ﻿using System.Web;
 using Mhotivo.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -125,7 +124,6 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Upload)]
         public HttpPostedFileBase UpladPhoto { get; set; }
-
     }
 
     public class TeacherRegisterModel
@@ -196,6 +194,5 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
-
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
@@ -19,7 +16,6 @@ namespace Mhotivo.Models
         public string NotificationName { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        //[Display(Name = "Mensaje")]
         [AllowHtml]
         public string Message { get; set; }
 

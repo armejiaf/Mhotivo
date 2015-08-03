@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Mhotivo.Data.Entities;
+
 namespace Mhotivo.Models
 {
     public class DisplayAreaModel
     {
-        //[Key]
-        ///[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Código del área")]
         public int Id { get; set; }
 
@@ -24,7 +21,8 @@ namespace Mhotivo.Models
         [Display(Name = "Nombre")]
         public string DisplayName { get; set; }
 
-     }
+    }
+
     public class AreaEditModel
     {
         public int Id { get; set; }

@@ -1,8 +1,5 @@
 ﻿using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -24,16 +21,15 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_peopleRepository.GetAllPeople());
+            return View(_peopleRepository.GetAllPeople()); //Compilation Magic!
         }
 
         [HttpGet]
-        public ActionResult Edit(long Id)
+        public ActionResult Edit(long id)
         {
-            var people = _peopleRepository.GetPeopleEditModelById(Id);
+            var people = _peopleRepository.GetPeopleEditModelById(id);
             Mapper.CreateMap<PeopleEditModel, People>().ReverseMap();
             var peopleModel = Mapper.Map<People, PeopleEditModel>(people);
-
             return View("Edit", peopleModel);
         }
 
@@ -41,16 +37,12 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(PeopleEditModel peopleModel)
         {
             var people = _peopleRepository.GetById(peopleModel.Id);
-
             Mapper.CreateMap<People, PeopleEditModel>().ReverseMap();
             var peopleEdit = Mapper.Map<PeopleEditModel, People>(peopleModel);
-
             _peopleRepository.UpdatePeopleFromPeopleEditModel(peopleEdit, people);
-
             const string title = "Persona Actualizada";
             var content = "La persona " + people.FullName + " - " + people.Id + " ha sido actualizada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
     }

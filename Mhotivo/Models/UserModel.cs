@@ -37,7 +37,7 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar la nueva contraseña")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
+        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 

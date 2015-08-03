@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Mhotivo.Data.Entities;
 
@@ -27,7 +26,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Activo")]
         public bool IsActive { get; set; }
-
     }
 
     public class AcademicYearRegisterModel
@@ -53,12 +51,10 @@ namespace Mhotivo.Models
 
         [Display(Name = "Activo")]
         public string IsActive { get; set; }
-
     }
 
     public class AcademicYearEditModel
     {
-        
         public ICollection<AcademicYear> AcademicYears { get; set; }
         public int Id { get; set; }
 

@@ -1,20 +1,12 @@
-//using Mhotivo.App_Data;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Implement.Context;
-
-
 using Mhotivo.Logic;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Mhotivo.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Mhotivo.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Mhotivo.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Mhotivo.NinjectWebCommon), "Stop")]
 
-namespace Mhotivo.App_Start
+namespace Mhotivo
 {
     using System;
     using System.Web;
@@ -26,24 +18,18 @@ namespace Mhotivo.App_Start
 
     public static class NinjectWebCommon 
     {
-        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+        private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
-        /// <summary>
-        /// Starts the application
-        /// </summary>
         public static void Start() 
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+            Bootstrapper.Initialize(CreateKernel);
         }
         
-        /// <summary>
-        /// Stops the application.
-        /// </summary>
         public static void Stop()
         {
-            bootstrapper.ShutDown();
+            Bootstrapper.ShutDown();
         }
         
         /// <summary>
@@ -57,7 +43,6 @@ namespace Mhotivo.App_Start
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-
                 RegisterServices(kernel);
                 return kernel;
             }
@@ -76,7 +61,6 @@ namespace Mhotivo.App_Start
         {
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
             kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
-
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
             kernel.Bind<IBenefactorRepository>().To<BenefactorRepository>().InRequestScope();

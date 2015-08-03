@@ -1,8 +1,6 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
@@ -29,7 +27,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Maestro/a")]
         public string Teacher { get; set; }
-
     }
 
     public class AcademicYearDetailsRegisterModel
@@ -60,7 +57,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Id Año Academico")]
         public int AcademicYearId { get; set; }
-
     }
 
     public class AcademicYearDetailsEditModel

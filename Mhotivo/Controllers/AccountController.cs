@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Logic;
 using Mhotivo.Models;
 
 namespace Mhotivo.Controllers
@@ -27,7 +26,6 @@ namespace Mhotivo.Controllers
             return View();
         }
 
-
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -35,7 +33,6 @@ namespace Mhotivo.Controllers
         public ActionResult Login(LoginModel model, string returnUrl)
         {
             var parent = _parentRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
-
             if (parent == null)
             {
                 if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
@@ -48,7 +45,6 @@ namespace Mhotivo.Controllers
                 ModelState.AddModelError("", "Padres no son admitidos en esta pagina");
                 return View(model);
             }
-
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
             return View(model);
@@ -58,7 +54,6 @@ namespace Mhotivo.Controllers
         public ActionResult Logout(string returnUrl)
         {
             _sessionManagement.LogOut();
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -69,12 +64,10 @@ namespace Mhotivo.Controllers
         public ActionResult Logout()
         {
             _sessionManagement.LogOut();
-
             return RedirectToAction("Index", "Home");
         }
 
         #region Aplicaciones auxiliares
-
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -83,7 +76,6 @@ namespace Mhotivo.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
         #endregion
     }
 }

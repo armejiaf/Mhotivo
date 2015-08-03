@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace Mhotivo.Models
@@ -139,6 +138,5 @@ namespace Mhotivo.Models
         public string FullName { get; set; }
 
         public string UrlPicture { get; set; }
-
     }
 }
