@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Entity;
 
+//TODO: POSSIBLY DEPRECATED. DELETE.
 namespace Mhotivo.Implement.Repositories
 {
     public class AcademicYearDetailRepository : IAcademicYearDetailRepository
@@ -27,21 +28,21 @@ namespace Mhotivo.Implement.Repositories
         public AcademicYearDetail FindByCourse(long id)
         {
             IQueryable<AcademicYearDetail> academicYearDetail =
-                _context.AcademicYearDetails.Where(x => x.Course.Id == id && !false);
+                _context.AcademicYearDetails.Where(x => x.Course.Id == id);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 
         public AcademicYearDetail GetById(long id)
         {
             IQueryable<AcademicYearDetail> academicYearDetail =
-                _context.AcademicYearDetails.Where(x => x.Id == id && !false);
+                _context.AcademicYearDetails.Where(x => x.Id == id);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 
         public AcademicYearDetail FindByAcademicYear(long id)
         {
             IQueryable<AcademicYearDetail> academicYearDetail =
-                _context.AcademicYearDetails.Where(x => x.AcademicYear.Id == id && !false);
+                _context.AcademicYearDetails.Where(x => x.AcademicYear.Id == id);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
 
@@ -93,8 +94,7 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<AcademicYear> GetAllAcademicYear(long mesiterId)
         {
-            IQueryable<AcademicYearDetail> academicYearDetail = _context.AcademicYearDetails.Include(x => x.AcademicYear).Include(c=>c.Teacher).Where(x => x.Teacher.Id==mesiterId); ;
-
+            IQueryable<AcademicYearDetail> academicYearDetail = _context.AcademicYearDetails.Include(x => x.AcademicYear).Include(c=>c.Teacher).Where(x => x.Teacher.Id==mesiterId);
             return academicYearDetail.ToList().Select(x => new AcademicYear
             {
                 Id = x.AcademicYear.Id,
@@ -134,9 +134,7 @@ namespace Mhotivo.Implement.Repositories
             };
         }
 
-        public AcademicYearDetail UpdateAcademicYearDetailFromHomeworkEditModel(
-            AcademicYearDetail academicYearDetailEditModel,
-            AcademicYearDetail homework)
+        public AcademicYearDetail UpdateAcademicYearDetailFromHomeworkEditModel(AcademicYearDetail academicYearDetailEditModel, AcademicYearDetail homework)
         {
             homework.Id = homework.Id;
             homework.Course = homework.Course;
@@ -144,7 +142,6 @@ namespace Mhotivo.Implement.Repositories
             homework.Room = homework.Room;
             homework.Schedule = homework.Schedule;
             homework.Teacher = homework.Teacher;
-
             return Update(homework);
         }
 
@@ -153,8 +150,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public AcademicYearDetail GenerateAcademicYearDetailFromRegisterModel(
-            AcademicYearDetail academicYearDetailRegisterModel)
+        public AcademicYearDetail GenerateAcademicYearDetailFromRegisterModel(AcademicYearDetail academicYearDetailRegisterModel)
         {
             return new AcademicYearDetail
             {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
 
+//POSSIBLY DEPRECATED
 namespace Mhotivo.Interface.Interfaces
 {
     public interface INotification
@@ -16,8 +17,6 @@ namespace Mhotivo.Interface.Interfaces
         Notification Update(Notification itemToUpdate);
         void Delete(Notification itemToDelete);
         void SaveChanges();
-
         IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear);
-
     }
 }

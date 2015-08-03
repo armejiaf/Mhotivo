@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -52,7 +50,6 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<TResult> Query<TResult>(Expression<Func<Role, TResult>> expression)
         {
             return _context.Roles.Select(expression);
-
         }
 
         public IQueryable<Role> Filter(Expression<Func<Role, bool>> expression)

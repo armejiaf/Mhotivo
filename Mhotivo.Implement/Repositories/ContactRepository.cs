@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
@@ -48,7 +45,6 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<TResult> Query<TResult>(Expression<Func<ContactInformation, TResult>> expression)
         {
             return _context.ContactInformations.Select(expression);
-
         }
 
         public IQueryable<ContactInformation> Filter(Expression<Func<ContactInformation, bool>> expression)
@@ -70,6 +66,5 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return itemToDelete;
         }
-
     }
 }

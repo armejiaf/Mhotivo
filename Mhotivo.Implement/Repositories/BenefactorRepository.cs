@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -79,7 +77,6 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                //Gender = Utilities.GenderToString(x.Gender),
                 Gender = x.Gender,
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
@@ -105,11 +102,9 @@ namespace Mhotivo.Implement.Repositories
                 City = benefactor.City,
                 State = benefactor.State,
                 Country = benefactor.Country,
-                //Gender = Utilities.GenderToString(benefactor.Gender),
                 Gender = benefactor.Gender,
                 Contacts = benefactor.Contacts,
                 Capacity = benefactor.Capacity,
-                //StudentsCount = benefactor.Students.Count,
                 Students = benefactor.Students
             };
         }
@@ -122,7 +117,6 @@ namespace Mhotivo.Implement.Repositories
             benefactorModel.Country = editModel.Country;
             benefactorModel.IdNumber = editModel.IdNumber;
             benefactorModel.BirthDate = editModel.BirthDate;
-            //benefactorModel.Gender = Utilities.IsMasculino(editModel.Gender);
             benefactorModel.Gender = editModel.Gender;
             benefactorModel.Nationality = editModel.Nationality;
             benefactorModel.State = editModel.State;
@@ -141,14 +135,12 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (benefactorRegisterModel.FirstName + " " + benefactorRegisterModel.LastName).Trim(),
                 IdNumber = benefactorRegisterModel.IdNumber,
                 BirthDate = benefactorRegisterModel.BirthDate,
-                //Gender = Utilities.IsMasculino(benefactorRegisterModel.Gender),
                 Gender = benefactorRegisterModel.Gender,
                 Nationality = benefactorRegisterModel.Nationality,
                 State = benefactorRegisterModel.State,
                 Country = benefactorRegisterModel.Country,
                 City = benefactorRegisterModel.City,
                 Address = benefactorRegisterModel.Address,
-                //Capacity = int.Parse(benefactorRegisterModel.Capacity)
                 Capacity = benefactorRegisterModel.Capacity
             };
         }
@@ -163,7 +155,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (benefactor.FirstName + " " + benefactor.LastName).Trim(),
                 IdNumber = benefactor.IdNumber,
                 BirthDate = benefactor.BirthDate,
-                //Gender = Utilities.GenderToString(benefactor.Gender),
                 Gender = benefactor.Gender,
                 Nationality = benefactor.Nationality,
                 Country = benefactor.Country,
@@ -171,7 +162,6 @@ namespace Mhotivo.Implement.Repositories
                 City = benefactor.City,
                 Address = benefactor.Address,
                 Id = benefactor.Id,
-                //StudentsCount = benefactor.Students.Count
                 Students = benefactor.Students,
                 Capacity = benefactor.Capacity
             };

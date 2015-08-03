@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -85,6 +83,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
+        //Lots of seemingly repeated code.
         public IEnumerable<Student> GetAllStudents()
         {
             return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using System.Data.Entity;
@@ -47,7 +45,6 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<People> Filter(Expression<Func<People, bool>> expression)
         {
             return _context.Peoples.Where(expression);
-            
         }
             
         public People Update(People itemToUpdate)
@@ -83,11 +80,12 @@ namespace Mhotivo.Implement.Repositories
                 Address = people.Address,
                 City = people.City,
                 State = people.State,
-                Gender = people.Gender, //Utilities.GenderToString(people.Gender),
+                Gender = people.Gender
             };
         }
 
-        public People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people)
+        //TODO: Possibly implement automapper. Too many of these.
+        public People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people) 
         {
             people.FirstName = peopleEditModel.FirstName;
             people.LastName = peopleEditModel.LastName;
@@ -95,7 +93,7 @@ namespace Mhotivo.Implement.Repositories
             people.Country = peopleEditModel.Country;
             people.IdNumber = peopleEditModel.IdNumber;
             people.BirthDate = peopleEditModel.BirthDate;
-            people.Gender = peopleEditModel.Gender; //Utilities.IsMasculino(peopleEditModel.Sexo);
+            people.Gender = peopleEditModel.Gender;
             people.Nationality = peopleEditModel.Nationality;
             people.State = peopleEditModel.State;
             people.City = peopleEditModel.City;
@@ -112,12 +110,12 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (peopleRegisterModel.FirstName + " " + peopleRegisterModel.LastName).Trim(),
                 IdNumber = peopleRegisterModel.IdNumber,
                 BirthDate = peopleRegisterModel.BirthDate,
-                Gender = peopleRegisterModel.Gender, //Utilities.IsMasculino(peopleRegisterModel.Sexo),
+                Gender = peopleRegisterModel.Gender,
                 Nationality = peopleRegisterModel.Nationality,
                 State = peopleRegisterModel.State,
                 Country = peopleRegisterModel.Country,
                 City = peopleRegisterModel.City,
-                Address = peopleRegisterModel.Address,
+                Address = peopleRegisterModel.Address
             };
         }
 
@@ -131,14 +129,13 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (people.FirstName + " " + people.LastName).Trim(),
                 IdNumber = people.IdNumber,
                 BirthDate = people.BirthDate,
-                //Sexo = Utilities.GenderToString(people.Gender),
                 Gender = people.Gender, 
                 Nationality = people.Nationality,
                 Country = people.Country,
                 State = people.State,
                 City = people.City,
                 Address = people.Address,
-                Id = people.Id,
+                Id = people.Id
             };
         }
 
@@ -156,7 +153,5 @@ namespace Mhotivo.Implement.Repositories
         {
             return Filter(x => x.User.Id == userId).ToList();
         }
-
-        
     }
 }

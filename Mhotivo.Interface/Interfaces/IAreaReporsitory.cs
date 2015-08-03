@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
@@ -19,6 +16,5 @@ namespace Mhotivo.Interface.Interfaces
         Area Update(Area itemToUpdate);
         void Delete(Area itemToDelete);
         void SaveChanges();
-
     }
 }

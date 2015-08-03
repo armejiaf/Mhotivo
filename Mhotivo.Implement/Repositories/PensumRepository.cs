@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using System.Data.Entity;
@@ -46,7 +44,6 @@ namespace Mhotivo.Implement.Repositories
                 {
                     Name = x.Grade.Name,
                     Id = x.Grade.Id
-
                 },
                 Id = x.Id
             });
@@ -67,17 +64,14 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Pensum> Filter(Expression<Func<Pensum, bool>> expression)
         {
             return _context.Pensums.Where(expression);
-            
         }
 
         public Pensum Update(Pensum itemToUpdate, bool updateCourse = true, bool updateGrade = true)
         {
             if (updateCourse)
                 _context.Entry(itemToUpdate.Course).State = EntityState.Modified;
-
             if (updateGrade)
                 _context.Entry(itemToUpdate.Grade).State = EntityState.Modified;
-
             _context.SaveChanges();
             return itemToUpdate;   
         }
@@ -87,19 +81,16 @@ namespace Mhotivo.Implement.Repositories
             var updateCourse = false;
             var updateGrade = false;
             var pensum = GetById(itemToUpdate.Id);
-
             if (pensum.Course.Id != itemToUpdate.Course.Id)
             {
                 pensum.Course = itemToUpdate.Course;
                 updateCourse = true;
             }
-
             if (pensum.Grade.Id != itemToUpdate.Grade.Id)
             {
                 pensum.Grade = itemToUpdate.Grade;
                 updateGrade = true;
             }
-
             return Update(pensum, updateCourse, updateGrade);
             
         }

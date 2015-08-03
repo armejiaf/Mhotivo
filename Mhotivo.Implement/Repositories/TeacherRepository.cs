@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -34,9 +32,7 @@ namespace Mhotivo.Implement.Repositories
         public Teacher Create(Teacher itemToCreate)
         {
             _context.Users.Attach(itemToCreate.User);
-
             var meister = _context.Meisters.Add(itemToCreate);
-            
             _context.SaveChanges();
             return meister;
         }
@@ -49,7 +45,6 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Teacher> Filter(Expression<Func<Teacher, bool>> expression)
         {
             return _context.Meisters.Where(expression);
-
         }
 
         public Teacher Update(Teacher itemToUpdate)
@@ -65,7 +60,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return itemToDelete;
         }
-
+        //Is all that truly necessary? Lots of repeated code.
         public IEnumerable<Teacher> GetAllTeachers()
         {
             return Query(x => x).ToList().Select(x => new Teacher
@@ -80,7 +75,6 @@ namespace Mhotivo.Implement.Repositories
                     City = x.City,
                     State = x.State,
                     Country = x.Country,
-                    //Sexo = Utilities.GenderToString(x.Gender),
                     Gender = x.Gender,
                     Contacts = x.Contacts,
                     FirstName = x.FirstName,
@@ -109,7 +103,6 @@ namespace Mhotivo.Implement.Repositories
                 City = meister.City,
                 State = meister.State,
                 Country = meister.Country,
-                //Sexo = Utilities.GenderToString(meister.Gender),
                 Gender = meister.Gender,
                 Contacts = meister.Contacts,
                 StartDate = meister.StartDate,
@@ -126,7 +119,6 @@ namespace Mhotivo.Implement.Repositories
             meister.Country = meisterEditModel.Country;
             meister.IdNumber = meisterEditModel.IdNumber;
             meister.BirthDate =meisterEditModel.BirthDate;
-            //meister.Gender = Utilities.IsMasculino(meisterEditModel.Gender);
             meister.Gender = meisterEditModel.Gender;
             meister.Nationality = meisterEditModel.Nationality;
             meister.State = meisterEditModel.State;
@@ -148,7 +140,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (meisterRegisterModel.FirstName + " " + meisterRegisterModel.LastName).Trim(),
                 IdNumber = meisterRegisterModel.IdNumber,
                 BirthDate = meisterRegisterModel.BirthDate,
-                //Gender = Utilities.IsMasculino(meisterRegisterModel.Gender),
                 Gender = meisterRegisterModel.Gender,
                 Nationality = meisterRegisterModel.Nationality,
                 State = meisterRegisterModel.State,
@@ -171,7 +162,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (meister.FirstName + " " + meister.LastName).Trim(),
                 IdNumber = meister.IdNumber,
                 BirthDate = meister.BirthDate,
-                //Gender = Utilities.GenderToString(meister.Gender),
                 Gender = meister.Gender,
                 Nationality = meister.Nationality,
                 Country = meister.Country,
@@ -190,6 +180,5 @@ namespace Mhotivo.Implement.Repositories
         {
             _context.SaveChanges();
         }
-
     }
 }
