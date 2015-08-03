@@ -189,7 +189,6 @@
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\NotificationCommentsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

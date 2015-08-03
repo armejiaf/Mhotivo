@@ -206,6 +206,7 @@
     <Compile Include="Models\ClassActivityModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\DiaryEventModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\EventCreateModel.cs" />
     <Compile Include="Models\GradeModel.cs" />

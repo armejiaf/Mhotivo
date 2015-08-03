@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using User = System.Web.Providers.Entities.User;
 
 namespace Mhotivo.ParentSite.Models
 {
@@ -14,13 +10,9 @@ namespace Mhotivo.ParentSite.Models
         public long Id { get; set; }
         public string NotificationName { get; set; }
         public string NotificationCreator { get; set; }
-        //public NotificationType NotificationTypeId { get; set; }
-
         public string Message { get; set; }
         public DateTime Created { get; set; }
         public int CommentsAmount { get; set; }
-
-
     }
 
     public class NotificationModel2 /*TODO: Separate model from entity */
@@ -34,7 +26,6 @@ namespace Mhotivo.ParentSite.Models
         public string NotificationName { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        //[Display(Name = "Mensaje")]
         [AllowHtml]
         public string Message { get; set; }
 
