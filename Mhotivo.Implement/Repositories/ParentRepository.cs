@@ -19,22 +19,34 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
+
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {
-            var parent = _context.Parents.Select(query);
+            var parent = _context.Parents.Select(query).Include(x => x.User);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetById(long id)
         {
-            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable);
+            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable).Include(x => x.User);
+            return parent.Count() != 0 ? parent.First() : null;
+        }
+
+        public Parent GetByIdNumber(string idNumber)
+        {
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable).Include(x => x.User);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
+            _context.Users.Attach(itemToCreate.User);
             var parent = _context.Parents.Add(itemToCreate);
             _context.SaveChanges();
             return parent;
@@ -42,13 +54,13 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression)
         {
-            var myParents = _context.Parents.Select(expression);
+            var myParents = _context.Parents.Select(expression).Include(x => x.User);
             return myParents;
         }
 
         public IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression)
         {
-            var myParents = _context.Parents.Where(expression);
+            var myParents = _context.Parents.Where(expression).Include(x => x.User);
             return myParents;
         }
 
@@ -128,6 +140,7 @@ namespace Mhotivo.Implement.Repositories
             parent.City = parentEditModel.City;
             parent.Address = parentEditModel.Address;
             parent.Photo = parentEditModel.Photo;
+            //parent.User = parentEditModel.User;
             return Update(parent);
         }
 
@@ -148,6 +161,7 @@ namespace Mhotivo.Implement.Repositories
                 City = parentRegisterModel.City,
                 Address = parentRegisterModel.Address,
                 Photo = parentRegisterModel.Photo,
+                User = parentRegisterModel.User
             };
         }
 
@@ -170,6 +184,7 @@ namespace Mhotivo.Implement.Repositories
                 Address = parent.Address,
                 Id = parent.Id,
                 Photo = parent.Photo,
+                User = parent.User
             };
         }
 

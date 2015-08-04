@@ -10,6 +10,7 @@ namespace Mhotivo.Interface.Interfaces
     {
         Student First(Expression<Func<Student, Student>> query);
         Student GetById(long id);
+        Student GetByIdNumber(string idNumber);
         Student Create(Student itemToCreate);
         IQueryable<Student> Query(Expression<Func<Student, Student>> expression);
         IQueryable<Student> Filter(Expression<Func<Student, bool>> expression);

@@ -13,14 +13,14 @@
 {@Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Editar Usuaaario</legend>
+        <legend>Editar Usuario</legend>
 
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.DisplayName)
-            @Html.ValidationMessageFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            @*@Html.ValidationMessageFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.ConfirmPassword)*@
             @Html.ValidationMessageFor(model => model.RoleId)
         </p>
 
@@ -42,7 +42,7 @@
             </div>
         </div>
            
-        <div class="control-group">
+        @*<div class="control-group">
             <div class="control-label">
                 @Html.LabelFor(model => model.Password)
             </div>
@@ -58,7 +58,7 @@
             <div class="controls">
                 @Html.EditorFor(model => model.ConfirmPassword)
             </div>
-        </div>
+        </div>*@
 
         <div class="control-group">
             <div class="control-label">

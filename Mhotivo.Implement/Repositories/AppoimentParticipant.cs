@@ -72,9 +72,5 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

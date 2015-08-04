@@ -75,14 +75,16 @@ namespace Mhotivo.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
-            kernel.Bind<ISessionManagement>().To<SessionLayer>().InRequestScope();    
+            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
 
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
             kernel.Bind<IBenefactorRepository>().To<BenefactorRepository>().InRequestScope();
             kernel.Bind<IClassActivityRepository>().To<ClassActivityRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<IAppointmentDiaryRepository>().To<AppointmentDiaryRepository>().InRequestScope();
+            kernel.Bind<INotificationRepository>().To<NotificationRepositoryRepository>().InRequestScope();
             kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
             kernel.Bind<IMeisterRepository>().To<MeisterRepository>().InRequestScope();
@@ -93,6 +95,11 @@ namespace Mhotivo.App_Start
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
             kernel.Bind<AcademicYearLogic>().ToSelf().InRequestScope();
+            kernel.Bind<INotificationTypeRepository>().To<NotificationTypeRepository>().InRequestScope();
+            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
+            kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
+            kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
+            kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
         }        
     }
 }

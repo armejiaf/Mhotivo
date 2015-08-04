@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Editar Estudiante";
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -13,7 +13,14 @@
 <script src="~/Scripts/jquery.maskedinput.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-@using (Html.BeginForm("Edit", "student", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
+@using (Html.BeginForm("Edit", "student", FormMethod.Post, new
+                                                                {
+                                                                    id = "Form"
+                                                                    ,@class = "form-horizontal"
+                                                                    ,@Style = "margin:0;"
+                                                                    ,enctype = "multipart/form-data"
+                                                                    ,method = "post"
+                                                                }))
 {@Html.ValidationSummary(true)
 
     <fieldset>
@@ -40,14 +47,19 @@
             @Html.ValidationMessageFor(model => model.Tutor2)
         </p>
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.FilePicture)
-            </div>
-            <div class="controls">
-                <input type="file" name="FilePicture" id="FilePicture"/>
-            </div>
+        <div id="Photo">
+            @{
+                var imgSrc = "";
+                if (Model.Photo != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Photo);
+                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                }
+            }
+            <img height="150" width="150" src="@imgSrc" />
         </div>
+
+
 
         <div class="control-group">
             <div class="control-label">
@@ -110,10 +122,10 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Gender)
+                @Html.LabelFor(model => model.StrGender)
             </div>
             <div class="controls">
-                @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem {Value="Masculino", Text="Masculino" }, new SelectListItem{Value="Femenino", Text="Femenino"}})
+                @Html.DropDownList("StrGender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
             </div>
         </div>
 
@@ -227,6 +239,16 @@
             </div>
             <div class="controls">
                 @Html.DropDownList("Tutor2Id", "--Padre o Tutor--")
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.Photo)
+            </div>
+            <div class="controls">
+                @Html.TextBoxFor(m => m.FilePicture, new { type = "file" })<br />
+                @Html.ValidationMessageFor(model => model.FilePicture)
             </div>
         </div>
 

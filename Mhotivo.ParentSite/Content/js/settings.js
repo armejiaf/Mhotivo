@@ -264,6 +264,26 @@
 		removalDelay: 300,
 		mainClass: 'my-mfp-zoom-in'
 	});
+    
+    //nicdark_mpopup_window_noclose
+	$('.nicdark_mpopup_window_noclose').magnificPopup({
+	    type: 'inline',
+
+	    fixedContentPos: false,
+	    fixedBgPos: true,
+
+	    overflowY: 'auto',
+
+	    closeBtnInside: false,
+	    preloader: false,
+
+	    midClick: true,
+	    removalDelay: 300,
+	    mainClass: 'my-mfp-zoom-in',
+	    
+        modal:true
+	});
+
 	//nicdark_mpopup_ajax
 	$('.nicdark_mpopup_ajax').magnificPopup({
 		type: 'ajax',

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Mhotivo.Models.NotificationModel>
+
+@{
+    ViewBag.Title = "Approve";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+<h2>Aprobar Notificaciones</h2>
+@if (!Model.Any())
+{
+    <div class="well well-large">
+        <h4 class="blue">Tabla Vacía</h4>
+        No hay ningun dato a mostrar.
+    </div>
+}
+else
+{
+
+    <table class="table table-striped table-bordered table-hover" id="sample-table-1">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.NotificationName)</th>
+                <th>@Html.DisplayNameFor(model => model.Created)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                    <td>
+                        <a class="toAutorizar" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-ok-sign bigger-120"></i></a>
+                        @using (Html.BeginForm("Approve", "Notification", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                            new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" }))
+                        {
+                        }
+                        <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
+                               value="¿Realmente desea aprobar esta notificación:@Html.DisplayFor(modelItem => item.NotificationName) ?" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+

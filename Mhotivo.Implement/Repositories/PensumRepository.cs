@@ -37,8 +37,17 @@ namespace Mhotivo.Implement.Repositories
         {
             return Query(x => x).ToList().Select(x => new Pensum
             {
-                Course = x.Course,
-                Grade = x.Grade,
+                Course = new Course
+                {
+                    Name = x.Course.Name,
+                    Id = x.Course.Id
+                },
+                Grade = new Grade
+                {
+                    Name = x.Grade.Name,
+                    Id = x.Grade.Id
+
+                },
                 Id = x.Id
             });
         }

@@ -14,4 +14,15 @@ namespace Mhotivo.Models
         [Display(Name = "Descripción")]
         public String Description { get; set; }
     }
+
+    public class DisplayRolModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Nombre")]
+        public String Name { get; set; }
+        [Display(Name = "Descripción")]
+        public String Description { get; set; }
+    }
+
 }

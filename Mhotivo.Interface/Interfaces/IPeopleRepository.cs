@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IPeopleRepository : IDisposable
+    public interface IPeopleRepository 
     {
         People First(Expression<Func<People, People>> query);
         People GetById(long id);
@@ -21,5 +21,6 @@ namespace Mhotivo.Interface.Interfaces
         People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people);
         void SaveChanges();
         IEnumerable<People> GetAllPeople();
+        IEnumerable<People> GetAllPeopleByUserId(long userId);
     }
 }

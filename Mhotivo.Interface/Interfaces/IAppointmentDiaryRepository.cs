@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IAppointmentDiaryRepository : IDisposable
+    public interface IAppointmentDiaryRepository :IDisposable
     {
         AppointmentDiary First(Expression<Func<AppointmentDiary, bool>> query);
         AppointmentDiary GetById(long id);

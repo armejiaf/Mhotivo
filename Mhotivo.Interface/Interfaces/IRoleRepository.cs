@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IRoleRepository :  IDisposable
+    public interface IRoleRepository
     {
         Role First(Expression<Func<Role, Role>> query);
         Role GetById(long id);

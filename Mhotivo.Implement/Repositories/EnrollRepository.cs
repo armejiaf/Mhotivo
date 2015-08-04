@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,6 +20,11 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
+        public MhotivoContext GeContext()
+        {
+            return _context;
+        }
+
         public Enroll First(Expression<Func<Enroll, Enroll>> query)
         {
             var enroll = _context.Enrolls.Select(query);
@@ -34,8 +40,6 @@ namespace Mhotivo.Implement.Repositories
         public Enroll Create(Enroll itemToCreate)
         {
             var enroll = _context.Enrolls.Add(itemToCreate);
-            _context.Entry(enroll.AcademicYear).State = EntityState.Modified;
-            _context.Entry(enroll.Student).State = EntityState.Modified;
             _context.SaveChanges();
             return enroll;
         }
@@ -97,6 +101,19 @@ namespace Mhotivo.Implement.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Enroll> GetAllsEnrolls()
+        {
+           
+            return Query(x => x).ToList().Select(x => new Enroll
+            {
+                Id = x.Id,
+               AcademicYear = x.AcademicYear,
+               Student = x.Student
+
+            });
+        
         }
 
         public void Detach(Enroll enroll)

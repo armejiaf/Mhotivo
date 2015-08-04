@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.ComponentModel;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
-using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
+using System.Text;
+using System.Threading.Tasks;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
+using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
@@ -72,9 +71,5 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

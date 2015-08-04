@@ -1,0 +1,69 @@
+﻿@model Tuple<Mhotivo.ParentSite.Models.NotificationModel, List<Mhotivo.ParentSite.Models.NotificationCommentsModel>>  
+
+
+@{
+    ViewBag.Title = "COMENTARIOS";
+    Layout = "~/Views/Shared/NotificationComments_layout.cshtml";
+}
+
+<div class="nicdark_space50"></div>
+
+<div style="margin-left: 100px; margin-right: 100px" >
+    <div class="nicdark_textevidence" >
+        <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius nicdark_shadow">
+            <div class="nicdark_size_big">
+                <p class="white">
+                    <i class="icon-calendar-1 nicdark_marginright10"></i> @Model.Item1.Created.ToShortDateString() <span class="nicdark_margin010">·</span> 
+                    <i class="icon-user-1 nicdark_marginright10"></i> ADMIN <span class="nicdark_margin010">·</span> 
+                         
+                    <i class="icon-chat nicdark_marginright10"></i> @Model.Item1.CommentsAmount COMENTARIO(S)<span class="nicdark_margin010">·</span>
+                </p>
+            </div>
+            <i class="icon-info-outline nicdark_iconbg right medium grey"></i>
+        </div>
+        <br/>
+        <div class="nicdark_bg_grey nicdark_radius nicdark_shadow grey small subtitle">
+            <div class="nicdark_space20"></div>
+            <h2 class="subtitle greydark nicdark_marginleft10">@Model.Item1.NotificationName</h2>
+            <div class="nicdark_space20"></div>
+            <div class="nicdark_marginleft10" style="font-size: 16px">
+                @Html.Raw(@Model.Item1.Message)
+            </div>
+            <br/>
+            <br/>   
+        </div>
+    </div>  
+
+</div>
+
+@foreach (var item in Model.Item2) 
+{
+    <div style="margin-left: 100px; margin-right: 100px" >
+        <div class="nicdark_textevidence " >
+            <div class="nicdark_border_grey ">
+                <!--comment-->
+                <div class="nicdark_archive1 nicdark_relative">
+                    <div class="nicdark_margin100 nicdark_relative">
+                        <img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src="~/Content/img/team/img2.jpg">
+                        <div class="nicdark_activity nicdark_marginleft60 nicdark_disable_marginleft_ipadpotr chzn-results-scroll-down">
+                            <div class="nicdark_space20"></div>
+                            <h4 class="subtitle greydark"> @item.Parent  </h4>
+                            <div class="nicdark_space20"></div>                       
+                        </div>
+                    </div>
+                    <p class="nicdark_marginleft10">@item.CommentText</p>
+                    <br/>
+                    <br/>
+                     <p class="right nicdark_marginright10">@item.CreationDate.ToShortDateString() a las @item.CreationDate.ToShortTimeString()</p>
+                </div>
+                <!--comment-->
+            </div>
+        </div>  
+    </div>
+}
+
+<div class="nicdark_space100"></div>
+
+
+
+

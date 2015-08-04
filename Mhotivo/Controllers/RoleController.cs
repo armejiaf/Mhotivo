@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Implement.Repositories;
@@ -21,13 +22,16 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
-        // GET: /Role/
 
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_roleRepository.GetAllRoles());
+
+            var listaRoles = _roleRepository.GetAllRoles();
+
+            var listaRolesModel = listaRoles.Select(Mapper.Map<DisplayRolModel>);
+
+            return View(listaRolesModel);
         }
 
         //
@@ -36,7 +40,7 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            Role r = _roleRepository.GetById(id);
+            var r = _roleRepository.GetById(id);
             var role = new RoleEditModel
                        {
                            Id = r.Id,
@@ -48,9 +52,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Role modelRole)
+        public ActionResult Edit(RoleEditModel modelRole)
         {
-            Role role = _roleRepository.Update(modelRole);
+            var rol = _roleRepository.GetById(modelRole.Id);
+
+            rol.Name = modelRole.Name;
+            rol.Description = modelRole.Description;
+
+            var role = _roleRepository.Update(rol);
             const string title = "Role Actualizado";
             var content = "El role " + role.Name + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

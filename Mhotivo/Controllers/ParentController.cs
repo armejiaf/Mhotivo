@@ -1,16 +1,16 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-
 //using Mhotivo.App_Data.Repositories;
 //using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Data.Entities;
-
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -18,22 +18,46 @@ namespace Mhotivo.Controllers
     {
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly IParentRepository _parentRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ParentController(IParentRepository parentRepository,
-            IContactInformationRepository contactInformationRepository)
+            IContactInformationRepository contactInformationRepository,
+            IUserRepository userRepository,
+            IRoleRepository roleRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
 
             var allParents = _parentRepository.GetAllParents();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.IdNumberSortParm = sortOrder == "IdNumber" ? "idNumber_desc" : "IdNumber";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
 
             Mapper.CreateMap<DisplayParentModel, Parent>().ReverseMap();
             var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, DisplayParentModel>).ToList();
@@ -42,7 +66,27 @@ namespace Mhotivo.Controllers
                 displayParentModel.StrGender = Implement.Utilities.GenderToString(displayParentModel.Gender);
             }
 
-            return View(allParentDisplaysModel);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "IdNumber":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.IdNumber).ToList();
+                    break;
+                case "idNumber_desc":
+                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+
+            return View(allParentDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
         
@@ -67,7 +111,7 @@ namespace Mhotivo.Controllers
             var parent = _parentRepository.GetParentEditModelById(id);
             Mapper.CreateMap<ParentEditModel, Parent>().ReverseMap();
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender);
+            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender).Substring(0, 1);
 
             //if (parentModel.FilePicture == null)
             //    parentModel.FilePicture = new byte[long.MaxValue];
@@ -117,6 +161,8 @@ namespace Mhotivo.Controllers
 
                     if (fileBytes != null)
                         parentModel.Photo = fileBytes;
+                    else
+                        parentModel.Photo = myParent.Photo;
                     
                     _parentRepository.UpdateParentFromParentEditModel(parentModel, myParent);
 
@@ -179,7 +225,15 @@ namespace Mhotivo.Controllers
                 return RedirectToAction("Index");
             }
 
-            Parent parent = _parentRepository.Create(myParent);
+            var newUser = new User();
+            newUser.DisplayName = myParent.FirstName;
+            newUser.Email = (myParent.FirstName.Trim().Replace(" ", "") + "_" + myParent.IdNumber.Trim().Substring(10) + "@mhotivo.hn").ToLower();
+            newUser.Password = "123456";
+            newUser.Status = true;
+            newUser = _userRepository.Create(newUser, _roleRepository.GetById(2));
+            myParent.User = newUser;
+
+            var parent = _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
             var content = "El Padre o Tutor " + myParent.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

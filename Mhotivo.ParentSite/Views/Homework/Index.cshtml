@@ -1,0 +1,256 @@
+﻿@using Mhotivo.Data.Entities
+@using Mhotivo.Implement.Repositories
+@using Mhotivo.Interface.Interfaces
+@using Mhotivo.ParentSite.Controllers
+@using Mhotivo.ParentSite.Models
+@using Microsoft.Ajax.Utilities
+@model IEnumerable<Mhotivo.ParentSite.Models.HomeworkModel>
+
+@functions {
+    public IEnumerable<HomeworkModel> Models { get; set; }
+}
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!--start section-->
+<section class="nicdark_section">
+
+    <!--start nicdark_container-->
+    <div class="nicdark_container nicdark_clearfix">
+
+        <div class="nicdark_space50"></div>
+
+
+
+        <!--sidebar-->
+        <div class="grid grid_4">
+
+
+            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
+                <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
+                    <h4 class="white nicdark_margin20">Hijos</h4>
+                    <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
+
+                </div>
+
+                @{
+                    IEnumerable<Student> allstudents = HomeworkController.GetAllStudents(HomeworkController.GetParentId());
+                }
+                <div class="nicdark_margin10">
+
+                    @if (@allstudents != null)
+                    {
+                        @Html.ActionLink("Todos", "index", new { param = Request.Params["param"], date = Request.Params["date"], student = "" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+
+                        foreach (var student in @allstudents.ToList())
+                        {
+                            @Html.ActionLink(student.FullName, "index", new { param = Request.Params["param"], date = Request.Params["date"], student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+
+                        }
+                    }
+                </div>
+
+                <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
+                    <h4 class="white nicdark_margin20">TAREAS</h4>
+                    <i class="icon-tags-1 nicdark_iconbg right medium orange"></i>
+                </div>
+                <div class="nicdark_margin10">
+
+
+
+
+                    @Html.ActionLink("Todas", "index", new { param = "", date = Request.Params["date"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+
+                    @foreach (var item in Model.GroupBy(lo => lo.AcademicYearDetail.Course).ToList())
+                    {
+                        @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id, date = Request.Params["date"], student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    }
+
+                </div>
+
+                <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
+                    <h4 class="white nicdark_margin20">Siguientes tareas</h4>
+                    <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
+
+                </div>
+
+                <br />
+                <div class="nicdark_margin10">
+                    @Html.ActionLink("Dia", "index", new { param = Request.Params["param"], date = "Dia", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    @Html.ActionLink("Semana", "index", new { param = Request.Params["param"], date = "Semana", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    @Html.ActionLink("Mes", "index", new { param = Request.Params["param"], date = "Mes", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                    @Html.ActionLink("Todas", "index", new { param = Request.Params["param"], date = "", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="nicdark_space20"></div>
+
+
+            <div class="nicdark_space20"></div>
+
+
+            <div class="nicdark_space20"></div>
+
+
+
+
+        </div>
+        <!--sidebar-->
+
+
+        <div class="grid grid_8">
+
+
+            @{
+                int var = Convert.ToInt32(Request.Params["param"]);
+                string date = Request.Params["date"];
+            }
+            @if (@var != 0)
+            {
+
+                Models = Model;
+                if (!@date.IsEmpty())
+                {
+                    Models = Model;
+                    if (@date.Equals("Dia"))
+                    {
+                        Models = Model.Where(x => x.DeliverDate <= DateTime.Now.AddDays(1));
+
+                    }
+                    else if (@date.Equals("Semana"))
+                    {
+                        Models = Model.Where(x => x.DeliverDate <= DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 7));
+                    }
+                    else if (@date.Equals("Mes"))
+                    {
+                        Models = Model.Where(x => x.DeliverDate.Month == DateTime.Now.Month);
+                    }
+                }
+
+
+                foreach (var item in Models.Where(x => x.AcademicYearDetail.Course.Id == @var))
+                {
+
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearDetail.AcademicYear.Id);
+
+                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                        <div class="nicdark_size_big">
+                            <p class="white">
+                                <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToShortDateString()</i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
+                                <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
+
+                        </div>
+                        <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
+                    </div>
+                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                        <div>
+                            @if (Convert.ToInt32(Request.Params["student"]) == 0)
+                            {
+                                for (int i = 0; i < studentsName.Count; i++)
+                                {
+                                    <i class="align-right nicdark_marginright10">  @studentsName.ElementAt(i)</i>
+                                }
+                            }
+                            else
+                            {
+                                <i class="align-right nicdark_marginright10">  @HomeworkController.GetStudenById(Convert.ToInt32(Request.Params["student"]))</i>
+                            }
+
+
+                        </div>
+                        <i class=" nicdark_iconbg right medium orange"></i>
+                    </div>
+
+                    <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
+                        <div class="nicdark_margin20 nicdark_relative">
+
+                            <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
+                                <h4 class="white center">@item.Title</h4>
+                                <div class="nicdark_space10"></div>
+                                <p class="white infobox-text">@Html.Raw(@item.Description)</p>
+
+                            </div>
+                        </div>
+                        <div class="nicdark_space10"></div>
+
+                    </div>
+
+                    <div class="nicdark_space10"></div>
+
+
+                }
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearDetail.AcademicYear.Id);
+                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                        <div class="nicdark_size_big">
+                            <p class="white">
+                                <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToShortDateString()</i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
+
+                                <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
+
+                        </div>
+                        <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
+                    </div>
+                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                        <div>
+                            @if (Convert.ToInt32(Request.Params["student"]) == 0)
+                            {
+                                for (int i = 0; i < studentsName.Count; i++)
+                                {
+                                    <i class="align-right nicdark_marginright10">  @studentsName.ElementAt(i)</i>
+                                }
+                            }
+                            else
+                            {
+                                <i class="align-right nicdark_marginright10">  @HomeworkController.GetStudenById(Convert.ToInt32(Request.Params["student"]))</i>
+                            }
+
+                        </div>
+                        <i class=" nicdark_iconbg right medium orange"></i>
+                    </div>
+
+                    <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
+                        <div class="nicdark_margin20 nicdark_relative">
+
+                            <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
+                                <h4 class="white center">@item.Title</h4>
+                                <div class="nicdark_space10"></div>
+                                <p class="white infobox-text">@Html.Raw(@item.Description)</p>
+
+                            </div>
+                        </div>
+                        <div class="nicdark_space10"></div>
+
+
+
+                    </div>
+
+                    <div class="nicdark_space10"></div>
+
+                }
+            }
+        </div>
+
+        <div class="nicdark_space50"></div>
+
+    </div>
+    <!--end nicdark_container-->
+
+</section>
+<!--end section-->

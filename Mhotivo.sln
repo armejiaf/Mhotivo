@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo", "Mhotivo\Mhotivo.csproj", "{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Tests", "Mhotivo.Tests\Mhotivo.Tests.csproj", "{BA54C688-A29C-4C8D-AD9F-8BBC53639734}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Data", "Mhotivo.Data\Mhotivo.Data.csproj", "{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.DBDeployer", "Mhotivo.DBDeployer\Mhotivo.DBDeployer.csproj", "{58046F23-8B19-41FA-88E2-D5BD2E506446}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Interface", "Mhotivo.Interface\Mhotivo.Interface.csproj", "{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}"
 EndProject
@@ -35,10 +33,6 @@ Global
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE5FAF4-D47A-4655-950F-8D8E1EAADFE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58046F23-8B19-41FA-88E2-D5BD2E506446}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC3FFC7-BCA3-4B90-8E44-DEA10E8F89E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
