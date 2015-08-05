@@ -559,7 +559,6 @@ namespace Mhotivo.Controllers
                     toApprove.Approved = true;
                     _notificationRepository.Update(toApprove);
                     _notificationRepository.SaveChanges();
-
                     _viewMessageLogic.SetNewMessage("Notificación Aprobada", "La notificación fue aprobada exitosamente.",
                     ViewMessageType.SuccessMessage);
                 }

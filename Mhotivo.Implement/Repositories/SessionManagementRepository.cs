@@ -24,7 +24,6 @@ namespace Mhotivo.Implement.Repositories
             _userIdIdentifier = "loggedUserId";
         }
 
-
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
             var user = ValidateUser(userEmail, password);
