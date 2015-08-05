@@ -43,40 +43,22 @@ namespace Mhotivo.ParentSite.Controllers
             _parentRepository = parentRepository;
         }
 
-        public ActionResult Index(string param, string student, string date)
+        public ActionResult Index(string student)
         {
             var students = GetAllStudents(GetParentId());
             StudentsId = GetAllStudentsId(students);
-            var enrolls = GetAllEnrolls(StudentsId).ToList();
-            if (!student.IsEmpty())
-                enrolls = enrolls.Where(x => x.Student.Id == Convert.ToInt32(student)).ToList();
-            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => x.DeliverDate.Date >= DateTime.Now);
+            var enrolls = new List<Enroll>();
+            enrolls.AddRange(GetAllEnrolls(StudentsId));
+            if (student != null)
+                enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
+            var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
-            var enumerable = allHomeworks as Homework[] ?? allHomeworks.ToArray();
-            IEnumerable<HomeworkModel> allHomeworksModel =
-                enumerable
-                    .Where(
-                        homework =>
-                            enrolls.Any(enroll => enroll.AcademicYear.Id == homework.AcademicYearDetail.AcademicYear.Id))
-                    .Select(Mapper.Map<Homework, HomeworkModel>)
-                    .ToList();
-            //Unused. Remove?
-            /*if (date != null)
+            var auxallHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
+            var allHomeworksModel = new List<HomeworkModel>();
+            foreach (var enroll in enrolls)
             {
-                if (date.Equals("Dia"))
-                {
-                    allHomeworks = enumerable.Where(x => x.DeliverDate <= DateTime.Now.AddDays(1));
-                }
-                else if (date.Equals("Semana"))
-                {
-                    DateTime compareDate = DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 7);
-                    allHomeworks = enumerable.Where(x => x.DeliverDate <= compareDate);
-                }
-                else if (date.Equals("Mes"))
-                {
-                    allHomeworks = enumerable.Where(x => x.DeliverDate.Month == DateTime.Now.Month);
-                }
-            }*/
+                allHomeworksModel.AddRange(auxallHomeWorksModel.FindAll(x => x.AcademicYearDetail.AcademicYear.Id == enroll.AcademicYear.Id));
+            }
             return View(allHomeworksModel);
         }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+//TODO: Seemingly deprecated. Delete?
 namespace Mhotivo.Models
 {
     public class EventCreateModel
