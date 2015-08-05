@@ -43,27 +43,21 @@ namespace Mhotivo.ParentSite.Controllers
             _parentRepository = parentRepository;
         }
 
-        public ActionResult Index(string student, string date)
+        public ActionResult Index(string param,string student, string date)
         {
             var students = GetAllStudents(GetParentId());
-            
             StudentsId = GetAllStudentsId(students);
-            
             var enrolls = new List<Enroll>();
-            
             enrolls.AddRange(GetAllEnrolls(StudentsId));
-            
             if (student != null)
                 enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
-           
-            var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
-
+           var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             switch (date)
             {
                 case "Dia":
                     allHomeworks =
                         allHomeworks.FindAll(
-                            x => x.DeliverDate == DateTime.Now.AddDays(1) || x.DeliverDate == DateTime.Today).ToList();
+                            x => x.DeliverDate == DateTime.Today.AddDays(1) || x.DeliverDate == DateTime.Today).ToList();
                     break;
                 case "Semana":
                     allHomeworks =
@@ -75,15 +69,17 @@ namespace Mhotivo.ParentSite.Controllers
                     break;
             }
 
-            
             var mappedHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
-            
             var allHomeworksModel = new List<HomeworkModel>();
-            
             foreach (var enroll in enrolls)
             {
                 allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicYearDetail.AcademicYear.Id == enroll.AcademicYear.Id));
             }
+
+            if (param != null)
+                allHomeworksModel =
+                    allHomeworksModel.FindAll(x => x.AcademicYearDetail.Course.Id == Convert.ToInt32(param));
+
             return View(allHomeworksModel);
         }
 

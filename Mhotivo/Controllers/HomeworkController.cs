@@ -5,6 +5,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -97,14 +98,19 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Create(CreateHomeworkModel modelHomework)
         {
+            DateTime modifiedDate;
+            DateTime.TryParseExact(modelHomework.DeliverDate, "dd-MM-yyyy", null,
+                DateTimeStyles.None, out modifiedDate);
+            
             var myHomework = new Homework
             {
                 Title = modelHomework.Title,
                 Description = modelHomework.Description,
-                DeliverDate = DateTime.Parse(modelHomework.DeliverDate),
+                DeliverDate = modifiedDate,
                 Points = modelHomework.Points,
                 AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.Course).Id,GetMeisterId())
             };
+
             _homeworkRepository.Create(myHomework);
             const string title = "Tarea agregada";
             string content = "La tarea " + myHomework.Title + " ha sido agregado exitosamente.";
