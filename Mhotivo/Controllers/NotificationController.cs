@@ -63,7 +63,7 @@ namespace Mhotivo.Controllers
             var items = _notificationTypeRepository.Query(c => c).Select(c => new SelectListItem
             {
                 Text = c.TypeDescription,
-                Value = c.NotificationTypeId.ToString(CultureInfo.InvariantCulture)
+                Value = c.NotificationTypeId.ToString()
             }).ToList();
             model.NotificationTypeSelectList = new SelectList(items, "Value", "Text", model.NotificationTypeId);
             if (model.NotificationTypeId == Personal)
@@ -108,7 +108,7 @@ namespace Mhotivo.Controllers
                         list = query.Select(c => new SelectListItem
                         {
                             Text = c.Field1,
-                            Value = c.Field2.ToString(CultureInfo.InvariantCulture)
+                            Value = c.Field2.ToString()
                         }).ToList();
                     }
                 }
@@ -380,7 +380,7 @@ namespace Mhotivo.Controllers
                                 list = _gradeRepository.GetAllGrade().Select(c => new SelectListItem
                                 {
                                     Text = c.Name,
-                                    Value = c.Id.ToString(CultureInfo.InvariantCulture)
+                                    Value = c.Id.ToString()
                                 }).ToList();
                                 break;
                             }
@@ -390,7 +390,7 @@ namespace Mhotivo.Controllers
                             list = _gradeRepository.GetAllGrade().Select(c => new SelectListItem
                             {
                                 Text = c.Name,
-                                Value = c.Id.ToString(CultureInfo.InvariantCulture)
+                                Value = c.Id.ToString()
                             }).ToList();
                             break;
                         }
@@ -401,7 +401,7 @@ namespace Mhotivo.Controllers
                                 select new SelectListItem
                                 {
                                     Text = c.Name,
-                                    Value = d.Id.ToString(CultureInfo.InvariantCulture)
+                                    Value = d.Id.ToString()
                                 };
                     list = query.ToList();
                     break;
