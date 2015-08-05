@@ -10,6 +10,7 @@ namespace Mhotivo.Interface.Interfaces
     {
         Parent First(Expression<Func<Parent, Parent>> query);
         Parent GetById(long id);
+        Parent GetByIdNumber(string idNumber);
         Parent Create(Parent itemToCreate);
         IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression);
         IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -29,13 +30,20 @@ namespace Mhotivo.Implement.Repositories
         public User GetById(long id)
         {
             var users = _context.Users.Where(x => x.Id == id);
-            return users.Count() != 0 ? users.Include(x => x.Role).First() : null;
+            return users.Count() != 0 ? users.First() : null;
         }
 
-        public User Create(User itemToCreate)
+        public User Create(User itemToCreate, Role rol)
         {
+            var userRolNew = new UserRol { User = itemToCreate, Role = rol };
+
+            _context.Roles.Attach(userRolNew.Role);
+
             var user = _context.Users.Add(itemToCreate);
-            _context.Entry(user.Role).State = EntityState.Modified;
+
+            var userRol = _context.UserRoles.Add(userRolNew);
+
+            //_context.Entry(user.Groups).State = EntityState.Modified;
             _context.SaveChanges();
             return user;
         }
@@ -43,21 +51,29 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<User> Query(Expression<Func<User, User>> expression)
         {
             var myUsers = _context.Users.Select(expression);
-            return myUsers.Count() != 0 ? myUsers.Include(x => x.Role) : myUsers;
+            return myUsers;
+            //return myUsers.Count() != 0 ? myUsers : myUsers;
             
         }
 
         public IQueryable<User> Filter(Expression<Func<User, bool>> expression)
         {
             var myUsers = _context.Users.Where(expression);
-            return myUsers.Count() != 0 ? myUsers.Include(x => x.Role) : myUsers;
+            return myUsers.Count() != 0 ? myUsers.Include(x => x.Groups) : myUsers;
         }
 
-        public User Update(User itemToUpdate, bool updateRole = true)
+        public User Update(User itemToUpdate, bool updateRole, Role rol)
         {
             if (updateRole)
-                _context.Entry(itemToUpdate.Role).State = EntityState.Modified;
-            _context.SaveChanges();
+            {
+                var rolesExist = _context.UserRoles.Where(x => x.User != null && x.Role != null & x.User.Id == itemToUpdate.Id);
+                if (!rolesExist.Any())
+                {
+                    var userRol = new UserRol { User = itemToUpdate, Role = rol };
+                    _context.UserRoles.Add(userRol);
+                }
+            }
+            SaveChanges();
             return itemToUpdate;   
         }
 
@@ -82,15 +98,38 @@ namespace Mhotivo.Implement.Repositories
                 Email = x.Email,
                 //Role = x.Role.Name,
                 //Status = x.Status ? "Activo" : "Inactivo",
-                Role = x.Role,
+                //Role = x.Role,
                 Status = x.Status,
                 Id = x.Id
             });
         }
 
-        public void Dispose()
+        public ICollection<Role> GetUserRoles(int idUser)
         {
-            _context.Dispose();
+            var lstRole = new Collection<Role>();
+            var userTemp = GetById(idUser);
+
+            if (userTemp == null)
+                return lstRole;
+
+            var userroles =
+                _context.UserRoles.Where(x => x.User != null && x.Role != null && x.User.Id == idUser)
+                    .Select(x => x.Role)
+                    .ToList();
+
+            return userroles;
+        }
+
+        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol)
+        {
+            user.Id = userModel.Id;
+            user.DisplayName = userModel.DisplayName;
+            user.Email = userModel.Email;
+            user.Notifications = userModel.Notifications;
+            user.Parents = userModel.Parents;
+            user.Status = userModel.Status;
+
+            return Update(user,updateRole,rol);
         }
     }
 }

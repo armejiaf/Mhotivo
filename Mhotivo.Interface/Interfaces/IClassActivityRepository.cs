@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IClassActivityRepository : IDisposable
+    public interface IClassActivityRepository
     {
         ClassActivity First(Expression<Func<ClassActivity, ClassActivity>> query);
         ClassActivity GetById(long id);

@@ -1,68 +1,147 @@
-﻿<ul class="nav nav-list">
-    <li>
-        <a href="/User">
-            <i class="icon-circle"></i>
-            <span class="menu-text"> Usuarios </span>
-        </a>
-    </li>
-    
-    
-    <li>
-        <a href="/Student">
-            <i class="icon-circle"></i>
-            <span class="menu-text"> Estudiantes </span>
-        </a>
-    </li>
+﻿@{
+    var valSession = HttpContext.Current.Session["loggedUserRole"];
+    var rolName = "";
+    if (valSession != null)
+    {
+        rolName = valSession.ToString();
+    }
+}
 
-    <li>
-        <a href="/Parent">
-            <i class="icon-circle"></i>
-            <span class="menu-text"> Padres/Tutores </span>
-        </a>
-    </li>
-    
-    <li>
-        <a href="/Benefactor">
-            <i class="icon-circle"></i>
-            <span class="menu-text"> Benefactor </span>
-        </a>
-    </li>
+@*RolName:
+@rolName*@
 
-    <li>
-		<a href="/Role">
-			<i class="icon-key"></i>
-			<span class="menu-text"> Roles de Usuario </span>
-		</a>
-	</li>
+@if (rolName == "Admin" || rolName == "Principal")
+{
+    <ul class="nav nav-list">
+        <li>
+            <a href="/User">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Usuarios </span>
+            </a>
+        </li>
 
-    <li>	
+        <li>
+            <a href="/Student">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Estudiantes </span>
+            </a>
+        </li>
 
-    <li>
-        <a href="/Notification">
-            <i class="icon-bell-alt"></i>
-            <span class="menu-text"> Notificaciones </span>
-        </a>
-    </li>
-    
-    <li>
-        <a href="/Group">
-            <i class="icon-group"></i>
-            <span class="menu-text"> Grupos </span>
-        </a>
-    </li>
-    
-    <li>
-        <a href="/AcademicYear/Management">
-            <i class="icon-circle"></i>
-            <span class="menu-text"> Administracion </span>
-        </a>
-    </li>
-    
-    <li>
-		<a href="/Event">
-			<i class=" icon-calendar "></i>
-			<span class="menu-text"> Eventos </span>
-		</a>
-	</li>
+        <li>
+            <a href="/Parent">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Padres/Tutores </span>
+            </a>
+        </li>
 
-</ul>
+        <li>
+            <a href="/Benefactor">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Benefactor </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Meister">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Maestros </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Role">
+                <i class="icon-key"></i>
+                <span class="menu-text"> Roles de Usuario </span>
+            </a>
+        </li>
+
+        <li>
+
+        <li>
+            <a href="/Notification">
+                <i class="icon-bell-alt"></i>
+                <span class="menu-text"> Notificaciones </span>
+            </a>
+        </li>
+        <li>
+            <a href="/Notification/Approve">
+                <i class="icon-bell-alt"></i>
+                <span class="menu-text"> Autorizar Notificaciones</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Area">
+                <i class="icon-bell-alt"></i>
+                <span class="menu-text"> Areas </span>
+            </a>
+        </li>
+
+
+        <li>
+            <a href="/AcademicYear/Index">
+                <i class="icon-circle"></i>
+                <span class="menu-text"> Administración </span>
+            </a>
+        </li>
+        <li>
+            <a href="/Pensum">
+                <i class=" icon-calendar "></i>
+                <span class="menu-text"> Pensum </span>
+            </a>
+        </li>
+
+        @*<li>
+            <a href="/Event">
+                <i class=" icon-calendar "></i>
+                <span class="menu-text"> Eventos </span>
+            </a>
+        </li>*@
+
+        <li>
+            <a href="/Grade">
+                <i class=" icon-circle "></i>
+                <span class="menu-text"> Grados </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Course">
+                <i class=" icon-circle "></i>
+                <span class="menu-text"> Cursos </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/ImportData">
+                <i class=" icon-calendar "></i>
+                <span class="menu-text"> Importar Datos </span>
+            </a>
+        </li>
+
+       @* <li>
+            <a href="/Homework">
+                <i class=" icon-circle "></i>
+                <span class="menu-text"> Tareas </span>
+            </a>
+        </li>*@
+    </ul>
+}
+else
+{
+    <ul class="nav nav-list">
+        <li>
+            <a href="/Notification">
+                <i class="icon-bell-alt"></i>
+                <span class="menu-text"> Notificaciones </span>
+            </a>
+        </li>
+        <li>
+            <a href="/Homework">
+                <i class=" icon-circle "></i>
+                <span class="menu-text"> Tareas </span>
+            </a>
+        </li>
+    </ul>
+}
+

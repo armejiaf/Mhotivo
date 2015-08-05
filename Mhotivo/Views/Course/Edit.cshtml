@@ -1,38 +1,50 @@
-﻿@model Mhotivo.Models.Course
+﻿@using System.Activities.Statements
+@model Mhotivo.Models.CourseEditModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Materia";
     Layout = "";
 }
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<div id="body" class="modal-body">
-@using (Html.BeginForm("Edit","Course",FormMethod.Post,new {id="Form"})) {
+<div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm("Edit", "Course", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Role</legend>
+        <legend>Editar Materia</legend>
 
         @Html.HiddenFor(model => model.Id)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
+        <p class="text-error">
             @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Area)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Area)
             @Html.ValidationMessageFor(model => model.Area)
+        </p>
+
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="controls">
+                @Html.EditorFor(model => model.Name)
+            </div>
         </div>
         
+        <div class="control-group">
+            <div class="control-label">
+                <span class="InputLabel">@Html.DisplayNameFor(model => model.Area)</span>
+                <p class="text-error">@Html.ValidationMessageFor(model => model.Area)</p>
+            </div>
+            <div class="controls">
+                @Html.DropDownListFor(model => model.Area, new SelectList(ViewBag.AreaId, "Value", "Text"), "  -- Area --")
+            </div>
+        </div>
+
+        <div class="space"></div>
+
         <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
@@ -41,10 +53,11 @@
 
             <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
-                Save
+                Actualizar
             </button>
         </div>
 
+
     </fieldset>
-}
+    }
 </div>

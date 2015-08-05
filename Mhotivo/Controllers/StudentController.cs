@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
@@ -8,6 +9,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -27,15 +29,54 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var allStudents = _studentRepository.GetAllStudents();
 
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            //if (page == null) throw new ArgumentNullException("page");
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+            }
+
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
 
-            return View(allStudentDisplaysModel);
+            ViewBag.CurrentFilter = searchString;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    break;
+                case "Date":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.StartDate).ToList();
+                    break;
+                case "date_desc":
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.StartDate).ToList();
+                    break;
+                default:  // Name ascending 
+                    allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    break;
+            }
+
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(allStudentDisplaysModel.ToPagedList(pageNumber, pageSize));
+            //return View(allStudentDisplaysModel);
         }
 
         [HttpGet]
@@ -61,10 +102,20 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<StudentEditModel, Student>().ReverseMap();
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
 
+            studentModel.FirstParent = student.Tutor1.Id;
+            if (student.Tutor2 != null)
+                studentModel.SecondParent = student.Tutor2.Id;
+
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor1.Id);
+
+            if (studentModel.Tutor2 == null)
+                studentModel.Tutor2 = new Parent();
+
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor2.Id);
+
+            studentModel.StrGender = Implement.Utilities.GenderToString(student.Gender).Substring(0, 1);
 
             return View("Edit", studentModel);
         }
@@ -72,17 +123,84 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Edit(StudentEditModel modelStudent)
         {
-            Student myStudent = _studentRepository.GetById(modelStudent.Id);
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
 
-            Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
-            var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
-            _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
+            if (modelStudent.FilePicture != null && modelStudent.FilePicture.ContentLength > 0)
+            {
+                if (!validImageTypes.Contains(modelStudent.FilePicture.ContentType))
+                {
+                    ModelState.AddModelError("FilePicture", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                }
+            }
 
-            const string title = "Estudiante Actualizado";
-            var content = "El estudiante " + myStudent.FullName + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            var myStudent = _studentRepository.GetById(modelStudent.Id);
+                try
+                {
+                    byte[] fileBytes = null;
+                    if (modelStudent.FilePicture != null)
+                    {
+                        using (var binaryReader = new BinaryReader(modelStudent.FilePicture.InputStream))
+                        {
+                            fileBytes = binaryReader.ReadBytes(modelStudent.FilePicture.ContentLength);
+                        }
+                    }
 
-            return RedirectToAction("Index");
+                    if (modelStudent.Tutor1 == null)
+                        modelStudent.Tutor1 = myStudent.Tutor1;
+
+                    if (modelStudent.Tutor2 == null)
+                        modelStudent.Tutor2 = myStudent.Tutor2;
+
+                    Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
+                    var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
+                    studentModel.Gender = Implement.Utilities.IsMasculino(modelStudent.StrGender);
+
+                    modelStudent.Photo = null;
+
+                    if (fileBytes != null)
+                        studentModel.Photo = fileBytes;
+                    else
+                        studentModel.Photo = myStudent.Photo;
+
+                    studentModel.User = _parentRepository.GetById(modelStudent.Tutor1.Id).User;
+
+                    myStudent = _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
+
+                    const string title = "Estudiante Actualizado";
+                    var content = "El estudiante " + myStudent.FullName + " ha sido actualizado exitosamente.";
+                    _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+
+                    return RedirectToAction("Index");
+
+                }
+                catch
+                {
+                    modelStudent.StrGender = Implement.Utilities.GenderToString(myStudent.Gender).Substring(0, 1);
+                    modelStudent.FirstParent = myStudent.Tutor1.Id;
+                    modelStudent.Tutor1 = myStudent.Tutor1;
+                    modelStudent.Tutor2 = myStudent.Tutor2;
+
+                    if (myStudent.Tutor2 != null)
+                        modelStudent.SecondParent = myStudent.Tutor2.Id;
+
+                    ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
+                        modelStudent.Tutor1.Id);
+
+                    if (modelStudent.Tutor2 == null)
+                        modelStudent.Tutor2 = new Parent();
+
+                    ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
+                        modelStudent.Tutor2.Id);
+
+                    return View(modelStudent);
+                }
+            return View(modelStudent);
         }
 
         [HttpPost]
@@ -126,7 +244,10 @@ namespace Mhotivo.Controllers
             studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
             studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
             var myStudent = _studentRepository.GenerateStudentFromRegisterModel(studentModel);
+
+            myStudent.User = studentModel.Tutor1.User;
             var student = _studentRepository.Create(myStudent);
+
             const string title = "Estudiante Agregado";
             var content = "El estudiante " + myStudent.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

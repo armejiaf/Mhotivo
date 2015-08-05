@@ -49,7 +49,7 @@ namespace Mhotivo.Implement.Repositories
             return _context.Peoples.Where(expression);
             
         }
-
+            
         public People Update(People itemToUpdate)
         {
             _context.SaveChanges();
@@ -149,25 +149,14 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<People> GetAllPeople()
         {
-            return Query(x => x).ToList().Select(x => new People
-            {
-                Address = x.Address,
-                //BirthDay = x.BirthDate,
-                BirthDate = x.BirthDate,
-                Id = x.Id,
-                //Sexo = Utilities.GenderToString(x.Gender),
-                Gender = x.Gender,
-                City = x.City,
-                Nationality = x.Nationality,
-                State = x.State,
-                UrlPicture = x.UrlPicture,
-                FullName = x.FullName
-            });
+            return Query(x => x).ToList();
         }
 
-        public void Dispose()
+        public IEnumerable<People> GetAllPeopleByUserId(long userId)
         {
-            _context.Dispose();
+            return Filter(x => x.User.Id == userId).ToList();
         }
+
+        
     }
 }

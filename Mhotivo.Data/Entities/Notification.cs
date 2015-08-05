@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,13 +11,24 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string EventName { get; set; }
-        public string From { get; set; }
-        public virtual string To { get; set; }
-        public virtual string WithCopyTo { get; set; }
-        public virtual string WithHiddenCopyTo { get; set; }
-        public string Subject { get; set; }
+
+        public string NotificationName { get; set; }
+        public NotificationType NotificationType { get; set; }
+
+        public int IdGradeAreaUserGeneralSelected { get; set; }
+
+        public int GradeIdifNotificationTypePersonal { get; set; }
+        public int StudentId { get; set; }
+        public bool SendingEmail { get; set; }
+        public User NotificationCreator { get; set; }
+        public int UserCreatorId { get; set; }
+        public string UserCreatorName { get; set; }
         public string Message { get; set; }
         public DateTime Created { get; set; }
+
+        public bool Approved { get; set; }
+        
+        public virtual ICollection<NotificationComments> NotificationComments { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

@@ -84,8 +84,8 @@ namespace Mhotivo.Implement.Repositories
                     LastName = x.LastName,
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
-                    Biography = x.Biography
-
+                    Biography = x.Biography,
+                    Photo = x.Photo
                 });
         }
 
@@ -132,6 +132,7 @@ namespace Mhotivo.Implement.Repositories
             meister.Biography = meisterEditModel.Biography;
             meister.StartDate = meisterEditModel.StartDate;
             meister.EndDate = meisterEditModel.EndDate;
+            meister.Photo = meisterEditModel.Photo;
             return Update(meister);
         }
 
@@ -177,7 +178,8 @@ namespace Mhotivo.Implement.Repositories
                 Id = meister.Id,
                 StartDate = meister.StartDate,
                 EndDate = meister.EndDate,
-                Biography = meister.Biography
+                Biography = meister.Biography,
+                Photo = meister.Photo
             };
         }
 
@@ -186,9 +188,5 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

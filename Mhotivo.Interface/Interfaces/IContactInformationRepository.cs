@@ -5,7 +5,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IContactInformationRepository : IDisposable
+    public interface IContactInformationRepository 
     {
         ContactInformation First(Expression<Func<ContactInformation, ContactInformation>> query);
         ContactInformation GetById(long id);

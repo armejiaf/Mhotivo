@@ -6,7 +6,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IMeisterRepository : IDisposable
+    public interface IMeisterRepository 
     {
         Meister First(Expression<Func<Meister, Meister>> query);
         Meister GetById(long id);

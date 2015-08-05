@@ -89,8 +89,8 @@ namespace Mhotivo.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            ViewBag.Id = new SelectList(_peopleRepository.Query(x => x), "Id", "FullName");
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "GradeId", "Name");
+            ViewBag.Id = new SelectList(_studentRepository.Query(x => x), "Id", "FullName");
+            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
             return View("Create");
         }
 

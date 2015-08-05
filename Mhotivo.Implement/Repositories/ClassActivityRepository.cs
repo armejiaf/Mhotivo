@@ -73,10 +73,6 @@ namespace Mhotivo.Implement.Repositories
             return active ? "Activo" : "Inactivo";
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
 
     }
 }

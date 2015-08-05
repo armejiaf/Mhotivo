@@ -1,165 +1,175 @@
 ﻿@model Mhotivo.Models.MeisterEditModel
-
 @{
     ViewBag.Title = "Editar Maestro";
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-@using (Html.BeginForm("Edit", "meister", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
-{@Html.ValidationSummary(true)
+    @using (Html.BeginForm("Edit", "meister", FormMethod.Post, new {
+                                                                        id = "Form"
+                                                                        ,@class = "form-horizontal"
+                                                                        ,@Style = "margin:0;"
+                                                                        ,enctype = "multipart/form-data"
+                                                                        ,method = "post"
+                                                                   }))
+    {@Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Editar Padre o Tutor</legend>
-
-        @Html.HiddenFor(model => model.Id)
-        <p class="text-error">
-            @Html.ValidationMessageFor(model => model.Address)
-            @Html.ValidationMessageFor(model => model.IdNumber)
-            @Html.ValidationMessageFor(model => model.BirthDate)
-            @Html.ValidationMessageFor(model => model.City)
-            @Html.ValidationMessageFor(model => model.UrlPicture)
-            @Html.ValidationMessageFor(model => model.FirstName)
-            @Html.ValidationMessageFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.Gender)
-            @Html.ValidationMessageFor(model => model.Nationality)
-            @Html.ValidationMessageFor(model => model.Country)
-            @Html.ValidationMessageFor(model => model.State)
-        </p>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.UrlPicture)
+        <fieldset>
+            <legend>Editar Maestro</legend>
+            @Html.HiddenFor(model => model.Id)
+            <p class="text-error">
+                @Html.ValidationMessageFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.IdNumber)
+                @Html.ValidationMessageFor(model => model.BirthDate)
+                @Html.ValidationMessageFor(model => model.City)
+                @Html.ValidationMessageFor(model => model.UrlPicture)
+                @Html.ValidationMessageFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.Gender)
+                @Html.ValidationMessageFor(model => model.Nationality)
+                @Html.ValidationMessageFor(model => model.Country)
+                @Html.ValidationMessageFor(model => model.State)
+            </p>
+            
+            <div id="Photo">
+                @{
+                    var imgSrc = "";
+                    if (Model.Photo != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.Photo);
+                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                    }
+                }
+                <img height="150" width="150" src="@imgSrc" />
             </div>
+
             <div class="controls">
-                <input type="file" name="FilePicture" id="FilePicture"/>
-            </div>
-        </div>
-        
-        <div class="controls">
-            @*@Html.EditorFor(model => model.IDNumber)*@
-                
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('.input-mask-idNumber').mask('9999-9999-99999');
-                });
-            </script>
-               
-            @Html.TextBoxFor(model => model.IdNumber, new { @class="input-large input-mask-idNumber"})
-                
-        </div>
+                @*@Html.EditorFor(model => model.IDNumber)*@
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.FirstName)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.FirstName)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.LastName)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.LastName)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.BirthDate)
-            </div>
-            <div class="controls">
-                
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        $('.date-picker').datepicker().on('changeDate', function () {
-                            $(this).datepicker('hide');
-                        });
+                        $('.input-mask-idNumber').mask('9999-9999-99999');
                     });
                 </script>
-                @Html.TextBoxFor(model => model.BirthDate, new {@class="date-picker",@data_date_format="dd-mm-yyyy", @readonly=true})
-                <span class="add-on">
-                    <i class="icon-calendar"></i>
-                </span>
 
             </div>
-        </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.IdNumber)
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Gender)
+                </div>
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.IdNumber, new { @class = "input-large input-mask-idNumber" })
+                </div>
             </div>
-            <div class="controls">
-                @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem {Value="Masculino", Text="Masculino" }, new SelectListItem{Value="Femenino", Text="Femenino"}})
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.FirstName)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.FirstName)
+                </div>
             </div>
-        </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.LastName)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.LastName)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.BirthDate)
+                </div>
+                <div class="controls">
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Nationality)
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('.date-picker').datepicker().on('changeDate', function () {
+                                $(this).datepicker('hide');
+                            });
+                        });
+                    </script>
+                    @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
+                    <span class="add-on">
+                        <i class="icon-calendar"></i>
+                    </span>
+                </div>
             </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Nationality)
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.StrGender)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("StrGender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
+                </div>
             </div>
-        </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Nationality)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Nationality)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Address)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Address)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.City)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.City)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.State)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.State)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Country)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Country)
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Photo)
+                </div>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.UpladPhoto, new { type = "file" })<br />
+                    @Html.ValidationMessageFor(model => model.UpladPhoto)
+                </div>
+            </div>
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Address)
+            <div class="space"></div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-small">
+                    <i class="icon-remove"></i>
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-small btn-primary">
+                    <i class="icon-ok"></i>
+                    Actualizar
+                </button>
             </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Address)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.City)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.City)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.State)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.State)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Country)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Country)
-            </div>
-        </div>
-
-        <div class="space"></div>
-
-        <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-small">
-                <i class="icon-remove"></i>
-                Cancel
-            </button>
-
-            <button type="submit" class="btn btn-small btn-primary">
-                <i class="icon-ok"></i>
-                Actualizar
-            </button>
-        </div>
-    </fieldset>
-}
-
+        </fieldset>
+    }
 </div>

@@ -172,7 +172,8 @@ namespace Mhotivo.Implement.Repositories
                 Address = benefactor.Address,
                 Id = benefactor.Id,
                 //StudentsCount = benefactor.Students.Count
-                Students = benefactor.Students
+                Students = benefactor.Students,
+                Capacity = benefactor.Capacity
             };
         }
 

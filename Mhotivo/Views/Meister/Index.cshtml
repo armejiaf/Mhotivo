@@ -1,5 +1,5 @@
 ﻿@using System.Linq
-@model System.Collections.Generic.IEnumerable<Mhotivo.Models.DisplayMeisterModel>
+@model IEnumerable<Mhotivo.Data.Entities.Meister>
 
 @{
     ViewBag.Title = "Index";
@@ -39,21 +39,41 @@ else
             @foreach (var item in Model) {
                 <tr>
                     <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
-                        <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
-							<img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
-							<div class="text">
-							</div>
-						</a>
+                        <div id="Photo">
+                            @Html.ValidationSummary(true)
+                            @{
+                                var imgSrc = "";
+                                if (item.Photo != null)
+                                {
+                                    var base64 = Convert.ToBase64String(item.Photo);
+                                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                                }
+                            }
+                            <img alt="150x150" height="150" width="150" src="@imgSrc" />
+                        </div>
+                        <div class="text">
+                        </div>
                     </td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Address)</td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.City)</td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.State)</td>
-				    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Country)</td>
+
+
+
+                    @*<td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
+                        <a href="~/@Html.DisplayNameFor(model => model.UrlPicture)" data-rel="colorbox">
+                            <img alt="150x150" src="~/@Html.DisplayNameFor(model => model.UrlPicture)" />
+                            <div class="text">
+                            </div>
+                        </a>
+                    </td>*@
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.FullName)</td>
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.IdNumber)</td>
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.City)</td>
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.State)</td>
+                    <td data-id="Meister/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Country)</td>
                     <td>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
-                        <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
+                        <a href="~/Meister/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        @*<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>*@
+                        @*<a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>*@
                         @using (Html.BeginForm("Delete", "Meister", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
