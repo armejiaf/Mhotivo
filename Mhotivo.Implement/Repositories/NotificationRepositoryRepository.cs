@@ -6,6 +6,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 
+//TODO: REFACTOR NAME IF THIS REPLACES NotificationRepository.
 namespace Mhotivo.Implement.Repositories
 {
     public class NotificationRepositoryRepository:INotificationRepository
@@ -70,7 +71,6 @@ namespace Mhotivo.Implement.Repositories
         {   
             var generalNotifications = _context.Notifications.Where(
                     n => n.Created.Year==currentAcademicYear && n.NotificationType.NotificationTypeId == 1 && n.Approved);
-
             return generalNotifications;
         }
 
@@ -78,15 +78,13 @@ namespace Mhotivo.Implement.Repositories
         {
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 3 &&
-                      x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
-
+                    x.NotificationType.NotificationTypeId == 3 && 
+                        x.Approved );
             return gradeNotifications;
         }
 
         public IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
         {
-
             var personalNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.NotificationTypeId == 4 &&
@@ -97,15 +95,11 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)
         {
-
             var areaNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 2 &&
-                       x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                    x.NotificationType.NotificationTypeId == 2 && x.Approved);
 
             return areaNotifications;
         }
-
-
     }
 }

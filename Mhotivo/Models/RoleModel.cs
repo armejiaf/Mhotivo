@@ -24,5 +24,4 @@ namespace Mhotivo.Models
         [Display(Name = "Descripción")]
         public String Description { get; set; }
     }
-
 }

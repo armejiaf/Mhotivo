@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -77,7 +75,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return itemToDelete;
         }
-
+        //TODO: AUTOMAPPER.
         public IEnumerable<Parent> GetAllParents()
         {
             return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Parent
@@ -92,12 +90,12 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                //Gender = Utilities.GenderToString(x.Gender),
                 Gender = x.Gender,
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Photo = x.Photo
+                Photo = x.Photo,
+                User = x.User
             });
         }
 
@@ -118,7 +116,6 @@ namespace Mhotivo.Implement.Repositories
                 City = parent.City,
                 State = parent.State,
                 Country = parent.Country,
-                //Gender = Utilities.GenderToString(parent.Gender),
                 Gender = parent.Gender,
                 Contacts = parent.Contacts,
                 Photo = parent.Photo
@@ -133,14 +130,12 @@ namespace Mhotivo.Implement.Repositories
             parent.Country = parentEditModel.Country;
             parent.IdNumber = parentEditModel.IdNumber;
             parent.BirthDate = parentEditModel.BirthDate;
-            //parent.Gender = Utilities.IsMasculino(parentEditModel.Gender);
             parent.Gender = parentEditModel.Gender;
             parent.Nationality = parentEditModel.Nationality;
             parent.State = parentEditModel.State;
             parent.City = parentEditModel.City;
             parent.Address = parentEditModel.Address;
             parent.Photo = parentEditModel.Photo;
-            //parent.User = parentEditModel.User;
             return Update(parent);
         }
 
@@ -153,7 +148,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parentRegisterModel.FirstName + " " + parentRegisterModel.LastName).Trim(),
                 IdNumber = parentRegisterModel.IdNumber,
                 BirthDate = parentRegisterModel.BirthDate,
-                //Gender = Utilities.IsMasculino(parentRegisterModel.Gender),
                 Gender = parentRegisterModel.Gender,
                 Nationality = parentRegisterModel.Nationality,
                 State = parentRegisterModel.State,
@@ -175,7 +169,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parent.FirstName + " " + parent.LastName).Trim(),
                 IdNumber = parent.IdNumber,
                 BirthDate = parent.BirthDate,
-                //Gender = Utilities.GenderToString(parent.Gender),
                 Gender = parent.Gender,
                 Nationality = parent.Nationality,
                 Country = parent.Country,
@@ -198,7 +191,6 @@ namespace Mhotivo.Implement.Repositories
             var parentWithIdNumber = _context.Parents.Where(x => x.IdNumber.Equals(idNumber));
             if (parentWithIdNumber.Any())
                 return true;
-
             return false;
         }
 

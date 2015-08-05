@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
 {
@@ -25,9 +24,6 @@ namespace Mhotivo.Models
         [Display(Name = "Seccion")]
 
         public string Section { get; set; }
-
-       
-
     }
 
     public class EnrollRegisterModel

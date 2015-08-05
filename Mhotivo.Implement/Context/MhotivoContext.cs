@@ -1,14 +1,11 @@
 ﻿using System.Data.Entity;
 using Mhotivo.Data.Entities;
 
-
 namespace Mhotivo.Implement.Context
 {
     public class MhotivoContext : DbContext
     {
-        public MhotivoContext() : base("DefaultConnection")
-        {
-        }
+        public MhotivoContext() : base("MhotivoContext") {}
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
@@ -22,7 +19,7 @@ namespace Mhotivo.Implement.Context
         public DbSet<Enroll> Enrolls { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<Meister> Meisters { get; set; }
+        public DbSet<Teacher> Meisters { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Pensum> Pensums { get; set; }

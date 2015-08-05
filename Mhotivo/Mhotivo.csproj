@@ -153,7 +153,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\IRepository.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -176,19 +175,16 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
-    <Compile Include="Controllers\MeisterController.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="Controllers\SendNotifications.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Encryption\IEncryption.cs" />
     <Compile Include="Encryption\MD5CryptoService.cs" />
-    <Compile Include="FiltersUtilities\Filters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,9 +192,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201504081400488_migra.cs" />
-    <Compile Include="Migrations\201504081400488_migra.Designer.cs">
-      <DependentUpon>201504081400488_migra.cs</DependentUpon>
+    <Compile Include="Migrations\201508030104257_AddSortOrder.cs" />
+    <Compile Include="Migrations\201508030104257_AddSortOrder.Designer.cs">
+      <DependentUpon>201508030104257_AddSortOrder.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -217,7 +213,7 @@
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
-    <Compile Include="Models\MeisterModel.cs" />
+    <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\NotificationTypeModel.cs" />
@@ -504,11 +500,11 @@
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Course\Add.cshtml" />
     <Content Include="Views\AcademicYear\Management.cshtml" />
-    <Content Include="Views\Meister\Index.cshtml" />
-    <Content Include="Views\Meister\Create.cshtml" />
-    <Content Include="Views\Meister\DetailsEdit.cshtml" />
-    <Content Include="Views\Meister\Details.cshtml" />
-    <Content Include="Views\Meister\Edit.cshtml" />
+    <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\Teacher\Create.cshtml" />
+    <Content Include="Views\Teacher\DetailsEdit.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
     <Content Include="Views\Enroll\Index.cshtml" />
     <Content Include="Views\Enroll\Create.cshtml" />
     <Content Include="Views\AcademicYear\SelectNewTeacher.cshtml" />
@@ -566,11 +562,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Filters\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201504081400488_migra.resx">
-      <DependentUpon>201504081400488_migra.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508030104257_AddSortOrder.resx">
+      <DependentUpon>201508030104257_AddSortOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

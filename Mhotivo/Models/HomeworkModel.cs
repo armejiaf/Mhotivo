@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using Mhotivo.Data.Entities;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
@@ -48,7 +47,7 @@ namespace Mhotivo.Models
         public float Points { get; set; }
 
         [Display(Name = "Materia")]
-        public int course { get; set; }
+        public int Course { get; set; }
     }
 
     public class EditHomeworkModel

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
-using Mhotivo.Encryption;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -19,7 +14,7 @@ namespace Mhotivo.Controllers
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ISecurityRepository _securityRepository;
+        private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public UserController(IUserRepository userRepository, IRoleRepository roleRepository, ISecurityRepository securityRepository)
@@ -34,11 +29,9 @@ namespace Mhotivo.Controllers
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var listaUsuarios = _userRepository.GetAllUsers();
-
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.EmailSortParm = sortOrder == "Email" ? "email_desc" : "Email";
-
             if (searchString != null)
             {
                 page = 1;
@@ -47,15 +40,11 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 listaUsuarios = _userRepository.Filter(x => x.DisplayName.Contains(searchString) || x.Email.Contains(searchString)).ToList();
             }
-
             var listaUsuariosModel = listaUsuarios.Select(Mapper.Map<DisplayUserModel>);
-
-
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -72,25 +61,18 @@ namespace Mhotivo.Controllers
                     listaUsuariosModel = listaUsuariosModel.OrderBy(s => s.DisplayName).ToList();
                     break;
             }
-
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
-
             return View(listaUsuariosModel.ToPagedList(pageNumber, pageSize));
-            //return View(listaUsuariosModel);
         }
 
         [HttpGet]
         public ActionResult Edit(long id)
         {
             User thisUser = _userRepository.GetById(id);
-            
             var user = Mapper.Map<UserEditModel>(thisUser);
-
             var roles = _userRepository.GetUserRoles(thisUser.Id);
-
             ViewBag.RoleId = new SelectList(_roleRepository.Query(x => x), "Id", "Name", roles.First().Id);
-
             return View("Edit", user);
         }
 
@@ -100,23 +82,17 @@ namespace Mhotivo.Controllers
             bool updateRole = false;
             User myUsers = _userRepository.GetById(modelUser.Id);
             var myUser = Mapper.Map<User>(modelUser);
-
             var rol = _roleRepository.GetById(modelUser.RoleId);
             var rolesUser = _userRepository.GetUserRoles(myUser.Id);
-
             if (rolesUser.Any() && rolesUser.First().Id != modelUser.RoleId)
             {
                 updateRole = true;
             }
-
             User user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers, updateRole, rol);
-
             const string title = "Usuario Actualizado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email +
                              " ha sido actualizado exitosamente.";
-
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
@@ -124,11 +100,9 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             User user = _userRepository.Delete(id);
-
             const string title = "Usuario Eliminado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
@@ -148,19 +122,12 @@ namespace Mhotivo.Controllers
                              DisplayName = modelUser.DisplaName,
                              Email = modelUser.UserName,
                              Password =modelUser.Password,
-                             //Password = Md5CryptoService.EncryptData(modelUser.Password),
-                             //Role = _roleRepository.GetById(modelUser.Id),
                              Status = modelUser.Status
                          };
-
-
-
             var user = _userRepository.Create(myUser, rol);
-
             const string title = "Usuario Agregado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
             return RedirectToAction("Index");
         }
     }

@@ -10,15 +10,11 @@ namespace Mhotivo.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public virtual AcademicYear AcademicYear { get; set; }
-        
         public virtual Course Course { get; set; }
-        
-        
-        public virtual Meister Teacher { get; set; }
+        public virtual Teacher Teacher { get; set; }
         public DateTime? TeacherStartDate { get; set; }
         public DateTime? TeacherEndDate { get; set; }
         public DateTime? Schedule { get; set; }
-        public String Room { get; set; }
-        
+        public string Room { get; set; }
     }
 }

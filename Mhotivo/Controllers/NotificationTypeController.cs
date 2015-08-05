@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -22,9 +19,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        //
         // GET: /NotificationTypeSelectList/
-
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -36,18 +31,13 @@ namespace Mhotivo.Controllers
             return View(notificationType);
         }
         
-        //
         // GET: /NotificationTypeSelectList/Create
-
         public ActionResult Add()
         {
             return View();
         }
 
-
-        //
         // POST: /NotificationTypeSelectList/Create
-
         [HttpPost]
         public ActionResult Add(NotificationType notificationType)
         {
@@ -72,19 +62,14 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index", notificationTypes);
         }
 
-        //
         // GET: /NotificationTypeSelectList/Edit/5
-
         public ActionResult Edit(int id)
         {
             NotificationType c = _notificationtypeReporRepository.GetById(id);
-
-            return View(c);
+            return View(c); //Compile magic!
         }
 
-        //
         // POST: /NotificationTypeSelectList/Edit/5
-
         [HttpPost]
         public ActionResult Edit(NotificationType notificationTypes)
         {
@@ -92,13 +77,9 @@ namespace Mhotivo.Controllers
             const string title = "Tipo Notificacion Actualizado";
             var content = "El Tipo Notificacion " + role.TypeDescription + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-
-
             return RedirectToAction("Index");
         }
 
-
-        //
         // GET: /NotificationTypeSelectList/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
@@ -109,7 +90,6 @@ namespace Mhotivo.Controllers
                 _notificationtypeReporRepository.Delete(group);
                 _notificationtypeReporRepository.SaveChanges();
                 _viewMessageLogic.SetNewMessage("Eliminado", "Eliminado exitosamente.", ViewMessageType.SuccessMessage);
-
                 return RedirectToAction("Index");
             }
             catch
@@ -120,7 +100,5 @@ namespace Mhotivo.Controllers
                 return View("Index");
             }
         }
-
-
     }
 }

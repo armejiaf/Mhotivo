@@ -4,9 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -36,14 +34,9 @@ namespace Mhotivo.Implement.Repositories
         public User Create(User itemToCreate, Role rol)
         {
             var userRolNew = new UserRol { User = itemToCreate, Role = rol };
-
             _context.Roles.Attach(userRolNew.Role);
-
             var user = _context.Users.Add(itemToCreate);
-
-            var userRol = _context.UserRoles.Add(userRolNew);
-
-            //_context.Entry(user.Groups).State = EntityState.Modified;
+            _context.UserRoles.Add(userRolNew);
             _context.SaveChanges();
             return user;
         }
@@ -52,8 +45,6 @@ namespace Mhotivo.Implement.Repositories
         {
             var myUsers = _context.Users.Select(expression);
             return myUsers;
-            //return myUsers.Count() != 0 ? myUsers : myUsers;
-            
         }
 
         public IQueryable<User> Filter(Expression<Func<User, bool>> expression)
@@ -96,9 +87,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 DisplayName = x.DisplayName,
                 Email = x.Email,
-                //Role = x.Role.Name,
-                //Status = x.Status ? "Activo" : "Inactivo",
-                //Role = x.Role,
                 Status = x.Status,
                 Id = x.Id
             });
@@ -108,15 +96,12 @@ namespace Mhotivo.Implement.Repositories
         {
             var lstRole = new Collection<Role>();
             var userTemp = GetById(idUser);
-
             if (userTemp == null)
                 return lstRole;
-
             var userroles =
                 _context.UserRoles.Where(x => x.User != null && x.Role != null && x.User.Id == idUser)
                     .Select(x => x.Role)
                     .ToList();
-
             return userroles;
         }
 
@@ -128,7 +113,6 @@ namespace Mhotivo.Implement.Repositories
             user.Notifications = userModel.Notifications;
             user.Parents = userModel.Parents;
             user.Status = userModel.Status;
-
             return Update(user,updateRole,rol);
         }
     }

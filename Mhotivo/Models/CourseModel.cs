@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-//using Mhotivo.Data.Entities;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models

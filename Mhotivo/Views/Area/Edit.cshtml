@@ -17,15 +17,15 @@
             <legend>Actualizar area</legend>
 
             <p class="text-error">
-                @Html.ValidationMessageFor(model => model.DisplayName)
+                @Html.ValidationMessageFor(model => model.Name)
             </p>
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.DisplayName)
+                    @Html.LabelFor(model => model.Name)
                 </div>
                 <div class="controls">
-                    @Html.EditorFor(model => model.DisplayName)
+                    @Html.EditorFor(model => model.Name)
                 </div>
             </div>
 

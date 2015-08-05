@@ -12,7 +12,7 @@ namespace Mhotivo.Implement.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly MhotivoContext _context;
-        private readonly IAreaRepository _areaRepository;
+        private readonly IAreaRepository _areaRepository; //Could this be needed in the future?
 
         public CourseRepository(MhotivoContext ctx, IAreaRepository areaRepository)
         {

@@ -1,0 +1,140 @@
+﻿@model Mhotivo.Models.DisplayTeacherModel
+
+@{
+    ViewBag.Title = "Details " + @Html.DisplayFor(model => model.FullName);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AddToHead{
+    <STYLE type="text/css">
+        span.InputLabel {width: 567px; height: 15px; font-size: 10px; margin: 0 0 10px 0; vertical-align:text-top; line-height: .5em; font-weight: bold;}
+    </STYLE>
+}
+
+@Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+
+<h2>Detalles de @Html.DisplayFor(model => model.FullName)</h2>
+
+<p>
+    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+        Editar
+    </a>
+
+    <a href="../" class="btn btn-small">
+        Regresar
+    </a>
+</p>
+<hr />
+<div id="address" style="width: 500px;">
+    <h3>Dirección</h3>
+    <div id="mainAddress">
+        <input type="text" value="@Html.DisplayFor(model => model.Address)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Address)</span>
+    </div>
+    <br style="clear: left;" />
+    <div style="float: left; width: 200px;">
+        <input type="text" value="@Html.DisplayFor(model => model.City)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.City)</span>
+    </div>
+    <div style="float: left; width: 100px;">
+        <input type="text" value="@Html.DisplayFor(model => model.State)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
+    </div>
+    <div style="float: left; width: 200px;">
+        <input type="text" value="@Html.DisplayFor(model => model.Country)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Country)</span>
+    </div>
+    <br style="clear: left;" />
+</div>
+<hr />
+<div id="information" style="width: 500px;">
+    <h3>Información Personal</h3>
+    <div id="FirstName" style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.FirstName)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.FirstName)</span>
+    </div>
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.LastName)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
+    </div>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.IdNumber)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.IdNumber)</span>
+    </div>
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.BirthDate)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.BirthDate)</span>
+    </div>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.Gender)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Gender)</span>
+    </div>
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.Nationality)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Nationality)</span>
+    </div>
+    <br style="clear: left;" />
+</div>
+<hr />
+<div id="contactInformation" style="width: 500px;">
+    <h3>Información de Contacto</h3>
+    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary active">Agregar</span></a>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+    @if(Model.Contacts != null){
+        foreach (var item in Model.Contacts)
+        {
+            <div style="float: left; width: 250px;">
+                <input type="text" value="@Html.DisplayFor(modelItem => item.Value)" disabled="disabled" />
+                <br />
+                <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/ContactEdit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
+                @using (Html.BeginForm("Delete", "ContactInformation", new { id = Html.DisplayFor(modelItem => item.Id), @control="Meister" }, FormMethod.Post,
+                    new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
+                <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
+                       value="¿Realmente desea eliminar el @Html.DisplayFor(modelItem => item.Type)?" />
+                <span class="InputLabel">@Html.DisplayFor(modelItem => item.Type)</span>
+            </div>
+        }
+    }
+    <br style="clear: left;" />
+</div>
+<div id="studentInformation" style="width: 500px;">
+    <h3>Información de Maestro</h3>
+    <div id="accountNumber" style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.StartDate)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.StartDate)</span>
+    </div>
+    <div style="float: left; width: 250px;">
+        <input type="text" value="@Html.DisplayFor(model => model.EndDate)" disabled="disabled" />
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.EndDate)</span>
+    </div>
+    <br style="clear: left;" />
+    <br style="clear: left;" />
+    <div style="float: left; width: 500px;">
+        <textarea style="margin: 0px 0px 10px; width: 400px; height: 200px;" disabled="disabled">@Html.DisplayFor(model => model.Biography)</textarea>
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Biography)</span>
+    </div>
+    <br style="clear: left;" />
+</div>
+<hr />
+<p>
+    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+        Editar
+    </a>
+
+    <a href="../" class="btn btn-small">
+        Regresar
+    </a>
+</p>
+
+<!-- Modal -->
+<div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
+    <div id="body" class="modal-body">
+        
+    </div>
+</div>

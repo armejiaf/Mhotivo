@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -58,12 +56,12 @@ namespace Mhotivo.Implement.Repositories
             return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
         }
 
+        //Logic is weird. Lots of unused variables being thrown around these two functions.
         public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true,
             bool updateTeacher = true)
         {
             if (updateGrade)
                 _context.Entry(itemToUpdate.Grade).State = EntityState.Modified;
-
             _context.SaveChanges();
             return itemToUpdate;
         }
@@ -73,19 +71,16 @@ namespace Mhotivo.Implement.Repositories
             const bool updateCourse = false;
             var updateGrade = false;
             const bool updateTeacher = false;
-
             var ayear = GetById(itemToUpdate.Id);
             ayear.Approved = itemToUpdate.Approved;
             ayear.IsActive = itemToUpdate.IsActive;
             ayear.Section = itemToUpdate.Section;
             ayear.Year = itemToUpdate.Year;
-
             if (ayear.Grade.Id != itemToUpdate.Grade.Id)
             {
                 ayear.Grade = itemToUpdate.Grade;
                 updateGrade = true;
             }
-
             return Update(ayear, updateCourse, updateGrade, updateTeacher);
         }
 

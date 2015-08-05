@@ -10,6 +10,7 @@ using Mhotivo.Data.Entities;
 
 using Mhotivo.Models;
 
+//TODO: Seemingly deprecated. Confirm if it will serve any purpose at all.
 namespace Mhotivo.Logic
 {
     public class AcademicYearLogic

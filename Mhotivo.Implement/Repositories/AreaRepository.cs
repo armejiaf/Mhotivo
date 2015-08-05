@@ -2,9 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -18,8 +16,6 @@ namespace Mhotivo.Implement.Repositories
         {
             _context = ctx;
         }
-
-
 
         public Area First(Expression<Func<Area, Area>> query)
         {
@@ -63,7 +59,6 @@ namespace Mhotivo.Implement.Repositories
         }
         public Area Delete(long id)
         {
-            //_context.Areas.Remove(itemToDelete);
             var itemToDelete = GetById(id);
             _context.Areas.Remove(itemToDelete);
             _context.SaveChanges();
@@ -80,11 +75,6 @@ namespace Mhotivo.Implement.Repositories
             return Query(x => x).ToList().Select(x => new Area
             {
                 Name = x.Name,
-                //Email = x.Email,
-                //Role = x.Role.Name,
-                //Status = x.Status ? "Activo" : "Inactivo",
-                //Role = x.Role,
-                //Status = x.Status,
                 Id = x.Id
             });
         }

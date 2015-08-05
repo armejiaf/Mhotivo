@@ -13,11 +13,13 @@ namespace Mhotivo.Models
         [Display(Name = "Nombre")]
         public string DisplayName { get; set; }
 
-        [Display(Name = "Estado")]
+        [Display(Name = "Activo")]
         public string Status { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
         public Role Role { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class LocalPasswordModel
@@ -35,7 +37,7 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar la nueva contraseña")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
+        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
