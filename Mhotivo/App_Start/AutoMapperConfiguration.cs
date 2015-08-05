@@ -8,13 +8,13 @@ namespace Mhotivo
     {
         public static void Configure()
         {
-            Mapper.CreateMap<DisplayUserModel, User>();
-            Mapper.CreateMap<UserEditModel, User>();
-            Mapper.CreateMap<NotificationModel, Notification>();
-            Mapper.CreateMap<NotificationTypeModel, NotificationType>();
-            Mapper.CreateMap<DisplayRolModel, Role>();
-            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>();
-            Mapper.CreateMap<CreateHomeworkModel, Homework>();
+            Mapper.CreateMap<DisplayUserModel, User>().ReverseMap();
+            Mapper.CreateMap<UserEditModel, User>().ReverseMap();
+            Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
+            Mapper.CreateMap<NotificationTypeModel, NotificationType>().ReverseMap();
+            Mapper.CreateMap<DisplayRolModel, Role>().ReverseMap();
+            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
+            Mapper.CreateMap<CreateHomeworkModel, Homework>().ReverseMap();
             //Mapper.CreateMap<Homework, CreateHomeworkModel>();
             //Mapper.CreateMap<User, DisplayUserModel>();
             //Mapper.CreateMap<User, UserEditModel>();

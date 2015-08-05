@@ -43,26 +43,51 @@ namespace Mhotivo.ParentSite.Controllers
             _parentRepository = parentRepository;
         }
 
-        public ActionResult Index(string student)
+        public ActionResult Index(string student, string date)
         {
             var students = GetAllStudents(GetParentId());
+            
             StudentsId = GetAllStudentsId(students);
+            
             var enrolls = new List<Enroll>();
+            
             enrolls.AddRange(GetAllEnrolls(StudentsId));
+            
             if (student != null)
                 enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
+           
             var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
-            Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
-            var auxallHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
+
+            switch (date)
+            {
+                case "Dia":
+                    allHomeworks =
+                        allHomeworks.FindAll(
+                            x => x.DeliverDate == DateTime.Now.AddDays(1) || x.DeliverDate == DateTime.Today).ToList();
+                    break;
+                case "Semana":
+                    allHomeworks =
+                        allHomeworks.FindAll(
+                            x => x.DeliverDate >= DateTime.Today && x.DeliverDate <= DateTime.Today.AddDays(7)).ToList();
+                    break;
+                case "Mes":
+                    allHomeworks = allHomeworks.FindAll(x => x.DeliverDate.Month == DateTime.Today.Month).ToList();
+                    break;
+            }
+
+            
+            var mappedHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
+            
             var allHomeworksModel = new List<HomeworkModel>();
+            
             foreach (var enroll in enrolls)
             {
-                allHomeworksModel.AddRange(auxallHomeWorksModel.FindAll(x => x.AcademicYearDetail.AcademicYear.Id == enroll.AcademicYear.Id));
+                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicYearDetail.AcademicYear.Id == enroll.AcademicYear.Id));
             }
             return View(allHomeworksModel);
         }
 
-        private List<long> GetAllStudentsId(IEnumerable<Student> students)
+        private static List<long> GetAllStudentsId(IEnumerable<Student> students)
         {
             var studentsId = new List<long>();
             var enumerable = students as Student[] ?? students.ToArray();
