@@ -39,7 +39,7 @@ else
                     <th>@Html.DisplayFor(modelItem => item.DateTimeScheduled)</th>
                     <th>@Html.DisplayFor(modelItem => item.AppointmentLength)</th>
                     <th>@Html.DisplayFor(modelItem => item.Creator.DisplayName)</th>
-                    <th>@Html.DisplayFor(modelItem => item.IsAproveed)</th>
+                    <th>@Html.DisplayFor(modelItem => item.IsApproved)</th>
                     <td>
                         <i class="icon-edit bigger-120">@Html.ActionLink("Aprobadar/Desaprobar","Approve","Event",new { id=item.Id }, null )</i>
                     </td>

@@ -19,8 +19,7 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe Ingresar en nombre del Area")]
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
-
+        public string Name { get; set; }
     }
 
     public class AreaEditModel
@@ -29,6 +28,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
     }
 }

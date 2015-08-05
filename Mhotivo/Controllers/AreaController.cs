@@ -70,7 +70,7 @@ namespace Mhotivo.Controllers
         {
             var area = new Area
             {
-                Name = modelArea.DisplayName,
+                Name = modelArea.Name,
             };
             _areaReposity.Create(area);
             const string title = "Area Agregada";
@@ -94,7 +94,7 @@ namespace Mhotivo.Controllers
             Area thisArea = _areaReposity.GetById(id);
             Mapper.CreateMap<AreaEditModel, Area>().ReverseMap();
             var area = Mapper.Map<Area,AreaEditModel>(thisArea);
-            area.DisplayName = thisArea.Name;
+            area.Name = thisArea.Name;
             return View("Edit", area);
         }
 
@@ -102,7 +102,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(AreaEditModel modelArea)
         {
             var myArea = Mapper.Map<Area>(modelArea);
-            myArea.Name = modelArea.DisplayName;
+            myArea.Name = modelArea.Name;
             Area area = _areaReposity.Update(myArea);
             const string title = "Area Actualizada";
             var content = "El area" + area.Name + " ha sido actualizado exitosamente.";

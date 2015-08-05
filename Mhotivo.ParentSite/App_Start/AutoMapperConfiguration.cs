@@ -8,16 +8,16 @@ namespace Mhotivo.ParentSite
     {
         public static void Configure()
         {
-            Mapper.CreateMap<Notification, NotificationModel>();
             Mapper.CreateMap<NotificationModel, Notification>();
-            Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
             Mapper.CreateMap<NotificationCommentsModel, NotificationComments>();
-            Mapper.CreateMap<People, PeopleModel>();
             Mapper.CreateMap<PeopleModel, People>();
-            Mapper.CreateMap<Homework, HomeworkModel>();
             Mapper.CreateMap<HomeworkModel, Homework>();
-            Mapper.CreateMap<Homework, HomeworkDateModel>();
             Mapper.CreateMap<HomeworkDateModel, Homework>();
+            //Mapper.CreateMap<Notification, NotificationModel>();
+            //Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
+            //Mapper.CreateMap<People, PeopleModel>();
+            //Mapper.CreateMap<Homework, HomeworkModel>();
+            //Mapper.CreateMap<Homework, HomeworkDateModel>();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Mhotivo.Models
 {
     public class DisplayAcademicYearModel
     {
-        public ICollection<AcademicYear> AcademicYears { get; set; }
+        public ICollection<AcademicYear> AcademicYears { get; set; } //TODO: Seemingly unused. Delete?
         public int Id { get; set; }
 
         [Display(Name = "Grado")]
@@ -81,6 +81,7 @@ namespace Mhotivo.Models
         public string IsActive { get; set; }
     }
 
+    //TODO: Unused. Delete?
     public class AcademicYearViewManagement
     {
         public IEnumerable<DisplayAcademicYearModel> Elements { get; set; }

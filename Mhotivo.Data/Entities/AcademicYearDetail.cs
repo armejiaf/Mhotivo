@@ -15,6 +15,6 @@ namespace Mhotivo.Data.Entities
         public DateTime? TeacherStartDate { get; set; }
         public DateTime? TeacherEndDate { get; set; }
         public DateTime? Schedule { get; set; }
-        public String Room { get; set; }
+        public string Room { get; set; }
     }
 }

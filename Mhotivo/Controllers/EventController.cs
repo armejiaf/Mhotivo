@@ -40,7 +40,7 @@ namespace Mhotivo.Controllers
         public ActionResult Agenda()
         {
             string userEmail = _sessionManagement.GetUserLoggedEmail();
-            var appoinments = _appointmentDiaryRepository.Where(x => String.Compare(x.Creator.Email, userEmail, StringComparison.Ordinal) == 0 && x.IsAproveed);
+            var appoinments = _appointmentDiaryRepository.Where(x => String.Compare(x.Creator.Email, userEmail, StringComparison.Ordinal) == 0 && x.IsApproved);
             return View("Agenda", appoinments); //how is this even compiling!?
         }
 
@@ -68,7 +68,7 @@ namespace Mhotivo.Controllers
             AppointmentDiary rec = _appointmentDiaryRepository.First(s => s.Id == id);
             if (rec != null)
             {
-                rec.IsAproveed = !rec.IsAproveed;
+                rec.IsApproved = !rec.IsApproved;
                 _appointmentDiaryRepository.SaveChanges();
             }
             return RedirectToAction("Principal");
@@ -203,7 +203,7 @@ namespace Mhotivo.Controllers
                     rec.Title = item.Title;
                     rec.Duration = item.AppointmentLength;
                     rec.Date = new DateTime(item.DateTimeScheduled.Year, item.DateTimeScheduled.Month, item.DateTimeScheduled.Day);
-                    rec.Time = item.DateTimeScheduled.ToString("HH:MM"); if (item.IsAproveed)
+                    rec.Time = item.DateTimeScheduled.ToString("HH:MM"); if (item.IsApproved)
                     {
                         result.Add(rec);
                     }
