@@ -59,7 +59,7 @@ namespace Mhotivo.Implement.Repositories
                                                                          .Include(x => x.Teacher).First() : null;
         }
 
-        public AcademicYearDetail GetById(int id)
+        public AcademicYearDetail GetById(long id)
         {
             var academicYearDetails = _context.AcademicYearDetails.Where(x => x.Id == id);
             return academicYearDetails.Count() != 0 ? academicYearDetails.Include(x => x.AcademicYear)
@@ -133,7 +133,7 @@ namespace Mhotivo.Implement.Repositories
             }
             return Update(academicYearDetail, updateAcademicYear, updateCourse, updateTeacher);
         }
-        public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(int academicYearId)
+        public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(long academicYearId)
         {
             var query = Query(x => x).ToList().Select(x => new AcademicYearDetail
             {
@@ -149,7 +149,7 @@ namespace Mhotivo.Implement.Repositories
             return query;
         }
 
-        public AcademicYearDetail Delete(int id)
+        public AcademicYearDetail Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.AcademicYearDetails.Remove(itemToDelete);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.WebPages;
@@ -138,21 +139,33 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(AcademicYearDetailsRegisterModel academicYearDetailsModel)
         {
+
             var academicYearDetails = new AcademicYearDetail
             {
-                TeacherStartDate = Convert.ToDateTime(academicYearDetailsModel.TeacherStartDate),
-                TeacherEndDate = Convert.ToDateTime(academicYearDetailsModel.TeacherEndDate),
-                Schedule = Convert.ToDateTime(academicYearDetailsModel.Schedule),
+                TeacherStartDate = ParseToHonduranDate(academicYearDetailsModel.TeacherStartDate),
+                TeacherEndDate = ParseToHonduranDate(academicYearDetailsModel.TeacherEndDate),
+                Schedule = ParseToHonduranDate(academicYearDetailsModel.Schedule),
                 Room = academicYearDetailsModel.Room,
                 Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id),
                 Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id),
                 AcademicYear = _academicYearRepository.GetById(academicYearDetailsModel.AcademicYearId)
             };
+
+           
             _academicYearDetailsRepository.Create(academicYearDetails);
             const string title = "Detalles de Año Académico Agregado";
             const string content = "El detalle del año académico ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetailsModel.AcademicYearId));
+        }
+
+        public static DateTime ParseToHonduranDate(string dateToParse)
+        {
+            DateTime toReturn;
+            DateTime.TryParseExact(dateToParse, "dd-MM-yyyy", null,
+              DateTimeStyles.None, out toReturn);
+            return toReturn;
+
         }
     }
 }

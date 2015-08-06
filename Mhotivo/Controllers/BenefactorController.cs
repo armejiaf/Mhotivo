@@ -167,7 +167,7 @@ namespace Mhotivo.Controllers
             Student thisStudent = _studentRepository.GetById(id);
             var student = new StudentBenefactorEditModel
             {
-                OldId = (int)id,
+                OldId = id,
                 Id = thisStudent.Benefactor == null ? -1 : thisStudent.Benefactor.Id
             };
             ViewBag.NewID = new SelectList(_studentRepository.Query(x => x), "Id", "FullName", student.OldId);

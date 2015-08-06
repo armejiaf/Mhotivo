@@ -1,5 +1,6 @@
 namespace Mhotivo.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     
     public partial class AddSortOrder : DbMigration
@@ -10,13 +11,13 @@ namespace Mhotivo.Migrations
                 "dbo.AcademicYearDetails",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         TeacherStartDate = c.DateTime(),
                         TeacherEndDate = c.DateTime(),
                         Schedule = c.DateTime(),
                         Room = c.String(),
-                        AcademicYear_Id = c.Int(),
-                        Course_Id = c.Int(),
+                        AcademicYear_Id = c.Long(),
+                        Course_Id = c.Long(),
                         Teacher_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -31,12 +32,12 @@ namespace Mhotivo.Migrations
                 "dbo.AcademicYears",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Year = c.DateTime(nullable: false),
                         Section = c.String(),
                         Approved = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
-                        Grade_Id = c.Int(),
+                        Grade_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Grades", t => t.Grade_Id)
@@ -46,7 +47,7 @@ namespace Mhotivo.Migrations
                 "dbo.Grades",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(),
                         EducationLevel = c.String(),
                     })
@@ -56,9 +57,9 @@ namespace Mhotivo.Migrations
                 "dbo.Courses",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(),
-                        Area_Id = c.Int(),
+                        Area_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Areas", t => t.Area_Id)
@@ -68,7 +69,7 @@ namespace Mhotivo.Migrations
                 "dbo.Areas",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -95,27 +96,26 @@ namespace Mhotivo.Migrations
                         Biography = c.String(),
                         StartDate = c.String(),
                         EndDate = c.String(),
-                        JustARandomColumn = c.String(),
                         Capacity = c.Int(),
                         StartDate1 = c.String(),
                         BloodType = c.String(),
                         AccountNumber = c.String(),
                         Biography1 = c.String(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
-                        UserId_Id = c.Int(),
-                        User_Id = c.Int(),
+                        User_Id = c.Long(),
+                        User_Id1 = c.Long(),
                         Benefactor_Id = c.Long(),
                         Tutor1_Id = c.Long(),
                         Tutor2_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.UserId_Id)
                 .ForeignKey("dbo.Users", t => t.User_Id)
+                .ForeignKey("dbo.Users", t => t.User_Id1)
                 .ForeignKey("dbo.People", t => t.Benefactor_Id)
                 .ForeignKey("dbo.People", t => t.Tutor1_Id)
                 .ForeignKey("dbo.People", t => t.Tutor2_Id)
-                .Index(t => t.UserId_Id)
                 .Index(t => t.User_Id)
+                .Index(t => t.User_Id1)
                 .Index(t => t.Benefactor_Id)
                 .Index(t => t.Tutor1_Id)
                 .Index(t => t.Tutor2_Id);
@@ -124,7 +124,7 @@ namespace Mhotivo.Migrations
                 "dbo.ContactInformations",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Type = c.String(),
                         Value = c.String(),
                         People_Id = c.Long(),
@@ -137,7 +137,7 @@ namespace Mhotivo.Migrations
                 "dbo.Users",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Email = c.String(),
                         DisplayName = c.String(),
                         Password = c.String(),
@@ -160,29 +160,29 @@ namespace Mhotivo.Migrations
                     {
                         Id = c.Long(nullable: false, identity: true),
                         NotificationName = c.String(),
-                        IdGradeAreaUserGeneralSelected = c.Int(nullable: false),
-                        GradeIdifNotificationTypePersonal = c.Int(nullable: false),
-                        StudentId = c.Int(nullable: false),
+                        IdGradeAreaUserGeneralSelected = c.Long(nullable: false),
+                        GradeIdifNotificationTypePersonal = c.Long(nullable: false),
+                        StudentId = c.Long(nullable: false),
                         SendingEmail = c.Boolean(nullable: false),
-                        UserCreatorId = c.Int(nullable: false),
+                        UserCreatorId = c.Long(nullable: false),
                         UserCreatorName = c.String(),
                         Message = c.String(),
                         Created = c.DateTime(nullable: false),
                         Approved = c.Boolean(nullable: false),
-                        NotificationCreator_Id = c.Int(),
-                        NotificationType_NotificationTypeId = c.Int(),
+                        NotificationCreator_Id = c.Long(),
+                        NotificationType_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Users", t => t.NotificationCreator_Id)
-                .ForeignKey("dbo.NotificationTypes", t => t.NotificationType_NotificationTypeId)
+                .ForeignKey("dbo.NotificationTypes", t => t.NotificationType_Id)
                 .Index(t => t.NotificationCreator_Id)
-                .Index(t => t.NotificationType_NotificationTypeId);
+                .Index(t => t.NotificationType_Id);
             
             CreateTable(
                 "dbo.NotificationComments",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         CommentText = c.String(),
                         CreationDate = c.DateTime(nullable: false),
                         Parent_Id = c.Long(),
@@ -198,23 +198,23 @@ namespace Mhotivo.Migrations
                 "dbo.NotificationTypes",
                 c => new
                     {
-                        NotificationTypeId = c.Int(nullable: false, identity: true),
-                        TypeDescription = c.String(),
+                        Id = c.Long(nullable: false, identity: true),
+                        Description = c.String(),
                     })
-                .PrimaryKey(t => t.NotificationTypeId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AppointmentDiaries",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Title = c.String(),
                         DateTimeScheduled = c.DateTime(nullable: false),
                         StatusEnum = c.Int(nullable: false),
                         AppointmentLength = c.Int(nullable: false),
-                        IsAproveed = c.Boolean(nullable: false),
-                        Creator_Id = c.Int(),
-                        AppointmentParticipants_Id = c.Int(),
+                        IsApproved = c.Boolean(nullable: false),
+                        Creator_Id = c.Long(),
+                        AppointmentParticipants_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Users", t => t.Creator_Id)
@@ -226,7 +226,7 @@ namespace Mhotivo.Migrations
                 "dbo.AppointmentParticipants",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         FKUserGroup = c.Long(nullable: false),
                         Type = c.String(),
                     })
@@ -236,12 +236,12 @@ namespace Mhotivo.Migrations
                 "dbo.ClassActivities",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(),
                         Type = c.String(),
                         Description = c.String(),
                         Value = c.Double(nullable: false),
-                        AcademicYear_Id = c.Int(),
+                        AcademicYear_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AcademicYears", t => t.AcademicYear_Id)
@@ -251,11 +251,11 @@ namespace Mhotivo.Migrations
                 "dbo.ClassActivityGradings",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Score = c.Double(nullable: false),
                         Percentage = c.Double(nullable: false),
                         Comments = c.String(),
-                        ClassActivity_Id = c.Int(),
+                        ClassActivity_Id = c.Long(),
                         Student_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -268,8 +268,8 @@ namespace Mhotivo.Migrations
                 "dbo.Enrolls",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        AcademicYear_Id = c.Int(),
+                        Id = c.Long(nullable: false, identity: true),
+                        AcademicYear_Id = c.Long(),
                         Student_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -282,12 +282,12 @@ namespace Mhotivo.Migrations
                 "dbo.Homework",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Title = c.String(),
                         Description = c.String(),
                         DeliverDate = c.DateTime(nullable: false),
                         Points = c.Single(nullable: false),
-                        AcademicYearDetail_Id = c.Int(),
+                        AcademicYearDetail_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AcademicYearDetails", t => t.AcademicYearDetail_Id)
@@ -297,9 +297,9 @@ namespace Mhotivo.Migrations
                 "dbo.Pensums",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        Course_Id = c.Int(),
-                        Grade_Id = c.Int(),
+                        Id = c.Long(nullable: false, identity: true),
+                        Course_Id = c.Long(),
+                        Grade_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Courses", t => t.Course_Id)
@@ -311,7 +311,7 @@ namespace Mhotivo.Migrations
                 "dbo.Roles",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Long(nullable: false, identity: true),
                         Name = c.String(),
                         Description = c.String(),
                     })
@@ -322,8 +322,8 @@ namespace Mhotivo.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Role_Id = c.Int(),
-                        User_Id = c.Int(),
+                        Role_Id = c.Long(),
+                        User_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Roles", t => t.Role_Id)
@@ -336,7 +336,7 @@ namespace Mhotivo.Migrations
                 c => new
                     {
                         Group_Id = c.Long(nullable: false),
-                        User_Id = c.Int(nullable: false),
+                        User_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Group_Id, t.User_Id })
                 .ForeignKey("dbo.Groups", t => t.Group_Id, cascadeDelete: true)
@@ -349,7 +349,7 @@ namespace Mhotivo.Migrations
                 c => new
                     {
                         NotificationId = c.Long(nullable: false),
-                        UserId = c.Int(nullable: false),
+                        UserId = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.NotificationId, t.UserId })
                 .ForeignKey("dbo.Notifications", t => t.NotificationId, cascadeDelete: true)
@@ -377,11 +377,11 @@ namespace Mhotivo.Migrations
             DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
             DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
             DropForeignKey("dbo.People", "Benefactor_Id", "dbo.People");
+            DropForeignKey("dbo.People", "User_Id1", "dbo.Users");
             DropForeignKey("dbo.People", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.People", "UserId_Id", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "NotificationId", "dbo.Notifications");
-            DropForeignKey("dbo.Notifications", "NotificationType_NotificationTypeId", "dbo.NotificationTypes");
+            DropForeignKey("dbo.Notifications", "NotificationType_Id", "dbo.NotificationTypes");
             DropForeignKey("dbo.Notifications", "NotificationCreator_Id", "dbo.Users");
             DropForeignKey("dbo.NotificationComments", "Notification_Id", "dbo.Notifications");
             DropForeignKey("dbo.NotificationComments", "Parent_Id", "dbo.People");
@@ -410,14 +410,14 @@ namespace Mhotivo.Migrations
             DropIndex("dbo.AppointmentDiaries", new[] { "Creator_Id" });
             DropIndex("dbo.NotificationComments", new[] { "Notification_Id" });
             DropIndex("dbo.NotificationComments", new[] { "Parent_Id" });
-            DropIndex("dbo.Notifications", new[] { "NotificationType_NotificationTypeId" });
+            DropIndex("dbo.Notifications", new[] { "NotificationType_Id" });
             DropIndex("dbo.Notifications", new[] { "NotificationCreator_Id" });
             DropIndex("dbo.ContactInformations", new[] { "People_Id" });
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
             DropIndex("dbo.People", new[] { "Tutor1_Id" });
             DropIndex("dbo.People", new[] { "Benefactor_Id" });
+            DropIndex("dbo.People", new[] { "User_Id1" });
             DropIndex("dbo.People", new[] { "User_Id" });
-            DropIndex("dbo.People", new[] { "UserId_Id" });
             DropIndex("dbo.Courses", new[] { "Area_Id" });
             DropIndex("dbo.AcademicYears", new[] { "Grade_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });

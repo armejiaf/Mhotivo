@@ -161,10 +161,10 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public int OldId { get; set; }
+        public long OldId { get; set; }
 
         [Display(Name = "Estudiante")]
-        public int NewId { get; set; }
+        public long NewId { get; set; }
     }
 
     public class StudentRegisterModel

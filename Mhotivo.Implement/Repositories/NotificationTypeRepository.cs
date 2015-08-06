@@ -22,7 +22,7 @@ namespace Mhotivo.Implement.Repositories
 
         public Data.Entities.NotificationType GetById(long id)
         {
-            return _context.NotificationTypes.FirstOrDefault(x => x.NotificationTypeId == id);
+            return _context.NotificationTypes.FirstOrDefault(x => x.Id == id);
         }
 
         public Data.Entities.NotificationType Create(Data.Entities.NotificationType itemToCreate)

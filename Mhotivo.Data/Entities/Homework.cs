@@ -8,9 +8,9 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public String Title { get; set; }
-        public String Description { get; set; }
+        public long Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public DateTime DeliverDate { get; set; }
         public float Points { get; set; }
         public virtual AcademicYearDetail AcademicYearDetail { get; set; }

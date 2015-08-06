@@ -25,8 +25,8 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             IEnumerable<NotificationTypeModel> notificationType = _notificationtypeReporRepository.Query(x => x).ToList().Select(x => new NotificationTypeModel
             { 
-                NotificationTypeId = x.NotificationTypeId,
-                TypeDescription = x.TypeDescription
+                NotificationTypeId = x.Id,
+                TypeDescription = x.Description
             });
             return View(notificationType);
         }
@@ -75,7 +75,7 @@ namespace Mhotivo.Controllers
         {
             NotificationType role = _notificationtypeReporRepository.Update(notificationTypes);
             const string title = "Tipo Notificacion Actualizado";
-            var content = "El Tipo Notificacion " + role.TypeDescription + " ha sido modificado exitosamente.";
+            var content = "El Tipo Notificacion " + role.Description + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }

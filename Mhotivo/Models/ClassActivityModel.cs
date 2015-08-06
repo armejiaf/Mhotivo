@@ -4,7 +4,7 @@ namespace Mhotivo.Models
 {
     public class DisplayClassActivityModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Año Académico")]
         public string AcademicYear { get; set; }
@@ -24,11 +24,11 @@ namespace Mhotivo.Models
 
     public class ClassActivityEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Año Académico")]
         [Display(Name = "Año Académico")]
-        public int AcademicYearId { get; set; }
+        public long AcademicYearId { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Título")]
         [Display(Name = "Título")]
@@ -51,7 +51,7 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe Ingresar Año Académico")]
         [Display(Name = "Año Académico")]
-        public int AcademicYearId { get; set; }
+        public long AcademicYearId { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Título")]
         [Display(Name = "Título")]

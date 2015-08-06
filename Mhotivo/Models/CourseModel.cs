@@ -5,7 +5,7 @@ namespace Mhotivo.Models
 {
     public class DisplayCourseModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Nombre")]
         public string Name { get; set; }
@@ -16,7 +16,7 @@ namespace Mhotivo.Models
 
     public class CourseEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
@@ -35,7 +35,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public int AreaId { get; set; }
+        public long AreaId { get; set; }
     }
 
     public class CourseAreaEditModel

@@ -8,9 +8,9 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public virtual ICollection<AppointmentDiary> AppointmentDiary { get; set; }
-        public long FKUserGroup { get; set; }
+        public long FKUserGroup { get; set; } //Do you mean to use a Group entity?
         public string Type { get; set; }//type Group or Users
     }
 }

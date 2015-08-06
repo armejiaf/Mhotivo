@@ -5,7 +5,7 @@ namespace Mhotivo.Models
 {
     public class ContactInformationEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Controller { get; set; }
 
@@ -22,7 +22,7 @@ namespace Mhotivo.Models
 
     public class ContactInformationRegisterModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Controller { get; set; }
 

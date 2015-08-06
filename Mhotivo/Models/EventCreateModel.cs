@@ -13,6 +13,6 @@ namespace Mhotivo.Models
         public DateTime EndDateTime { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Descripción")]
-        public String Description { get; set; }
+        public string Description { get; set; }
     }
 }

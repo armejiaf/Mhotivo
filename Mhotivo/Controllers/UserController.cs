@@ -116,7 +116,7 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            var rol = _roleRepository.GetById(modelUser.Id);
+            var rol = _roleRepository.GetById(modelUser.RoleId);
             var myUser = new User
                          {
                              DisplayName = modelUser.DisplaName,

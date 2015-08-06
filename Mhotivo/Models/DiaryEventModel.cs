@@ -4,16 +4,15 @@ namespace Mhotivo.Models
 {
     public class DiaryEventModel
     {
-        public String ClassName;
-        public String EndDateString;
-        public int Id;
-        public int SomeImportantKeyId;
+        public string ClassName;
+        public string EndDateString;
+        public long Id;
         public long Duration;
         public DateTime Date;
         public string Time;
-        public String StartDateString;
-        public String StatusColor;
-        public String StatusString;
-        public String Title;
+        public string StartDateString;
+        public string StatusColor;
+        public string StatusString;
+        public string Title;
     }
 } 

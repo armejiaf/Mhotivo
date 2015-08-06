@@ -92,7 +92,7 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public ICollection<Role> GetUserRoles(int idUser)
+        public ICollection<Role> GetUserRoles(long idUser)
         {
             var lstRole = new Collection<Role>();
             var userTemp = GetById(idUser);

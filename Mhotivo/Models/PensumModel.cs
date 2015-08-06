@@ -4,7 +4,7 @@ namespace Mhotivo.Models
 {
     public class DisplayPensumModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Curso")]
         public string Course { get; set; }
@@ -17,24 +17,24 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe Ingresar Curso")]
         [Display(Name = "Curso")]
-        public int IdCourse { get; set; }
+        public long IdCourse { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Grado")]
         [Display(Name = "Grado")]
-        public int IdGrade { get; set; }
+        public long IdGrade { get; set; }
 
     }
 
     public class PensumEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Curso")]
         [Display(Name = "Curso")]
-        public int IdCourse { get; set; }
+        public long IdCourse { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Grado")]
         [Display(Name = "Grado")]
-        public int IdGrade { get; set; }
+        public long IdGrade { get; set; }
     }
 }

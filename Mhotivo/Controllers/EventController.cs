@@ -105,7 +105,6 @@ namespace Mhotivo.Controllers
                            time = e.Time,                           
                            start = e.StartDateString,
                            end = e.EndDateString,
-                           someKey = e.SomeImportantKeyId,
                            allDay = false
                        };
             var rows = eventList.ToArray();
@@ -127,7 +126,6 @@ namespace Mhotivo.Controllers
                            end = e.EndDateString,
                            color = e.StatusColor,
                            className = e.ClassName,
-                           someKey = e.SomeImportantKeyId,
                            allDay = false
                        };
             var rows = eventList.ToArray();

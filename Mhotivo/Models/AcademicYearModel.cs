@@ -7,7 +7,7 @@ namespace Mhotivo.Models
     public class DisplayAcademicYearModel
     {
         public ICollection<AcademicYear> AcademicYears { get; set; } //TODO: Seemingly unused. Delete?
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Grado")]
         public string Grade { get; set; }
@@ -56,7 +56,7 @@ namespace Mhotivo.Models
     public class AcademicYearEditModel
     {
         public ICollection<AcademicYear> AcademicYears { get; set; }
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar un Grado")]
         [Display(Name = "Grado")]

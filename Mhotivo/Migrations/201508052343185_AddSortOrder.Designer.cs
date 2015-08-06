@@ -13,7 +13,7 @@ namespace Mhotivo.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201508030104257_AddSortOrder"; }
+            get { return "201508052343185_AddSortOrder"; }
         }
         
         string IMigrationMetadata.Source

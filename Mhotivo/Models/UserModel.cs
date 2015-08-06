@@ -5,7 +5,7 @@ namespace Mhotivo.Models
 {
     public class DisplayUserModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Correo Elctrónico")]
         public string Email { get; set; }
@@ -84,12 +84,12 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
-        public int Id { get; set; }
+        public int RoleId { get; set; }
     }
 
     public class UserEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]

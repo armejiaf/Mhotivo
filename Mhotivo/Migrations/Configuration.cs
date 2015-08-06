@@ -34,10 +34,10 @@ namespace Mhotivo.Migrations
                 context.Meisters.AddOrUpdate(new Teacher { Id = 1, IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, User = user2 });
                 context.SaveChanges();
             }
-            context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 1, TypeDescription = "General" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 2, TypeDescription = "Area" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 3, TypeDescription = "Grado" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { NotificationTypeId = 4, TypeDescription = "Personal" });
+            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 1, Description = "General" });
+            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 2, Description = "Area" });
+            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 3, Description = "Grado" });
+            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 4, Description = "Personal" });
             context.SaveChanges();
         }
     }

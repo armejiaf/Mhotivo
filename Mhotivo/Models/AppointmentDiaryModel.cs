@@ -7,7 +7,7 @@ namespace Mhotivo.Models
 {
     public class AppointmentDiaryModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required(ErrorMessage = "Debe Ingresar el titulo")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
@@ -29,6 +29,6 @@ namespace Mhotivo.Models
         public DateTime EndDateTime { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Descripción")]
-        public String Description { get; set; }
+        public string Description { get; set; }
     }
 }

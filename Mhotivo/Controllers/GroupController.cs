@@ -50,8 +50,8 @@ namespace Mhotivo.Controllers
         {
             try
             {
-                List<int> usersId = group.Users.Split(',').Select(Int32.Parse).ToList();
-                IQueryable<User> users = _db.Users.Where(x => usersId.Contains(x.Id));
+                List<long> usersId = group.Users.Split(',').Select(Int64.Parse).ToList();
+                IQueryable<User> users = _db.Users.Where(x => usersId.Contains( x.Id));
                 var g = new Group {Name = group.Name, Users = users.ToList()};
                 if (ModelState.IsValid && IsNameAvailble(g.Name))
                 {
@@ -89,7 +89,7 @@ namespace Mhotivo.Controllers
                 g.Name = group.Name;
                 if (!group.Users.IsEmpty())
                 {
-                    List<int> usersId = group.Users.Split(',').Select(Int32.Parse).ToList();
+                    List<long> usersId = group.Users.Split(',').Select(Int64.Parse).ToList();
                     IQueryable<User> users = _db.Users.Where(x => usersId.Contains(x.Id));
                     g.Users = g.Users.Concat(users).ToList();
                 }
