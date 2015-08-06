@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
@@ -23,6 +24,7 @@ namespace Mhotivo.Controllers
             _courseRepository = courseRepository;
         }
 
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             var message = (MessageModel)TempData["MessageInfo"];
@@ -78,6 +80,7 @@ namespace Mhotivo.Controllers
 
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             Pensum thisPensum = _pensumRepository.GetById(id);
@@ -94,6 +97,7 @@ namespace Mhotivo.Controllers
 
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(PensumEditModel modelPensum)
         {
             bool updateCourse = false;
@@ -123,6 +127,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Pensum pensum = _pensumRepository.Delete(id);
@@ -138,6 +143,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.IdGrade = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
@@ -146,6 +152,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(PensumRegisterModel modelPensum)
         {
             var myPensum = new Pensum

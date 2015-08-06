@@ -6,6 +6,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 
 namespace Mhotivo.Controllers
 {
@@ -27,7 +28,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AllowAnonymous]
+         [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -35,6 +36,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -50,6 +52,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             var meister = _teacherRepository.GetTeacherEditModelById(id);
@@ -60,6 +63,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(TeacherEditModel modelMeister)
         {
             var validImageTypes = new []
@@ -109,6 +113,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Teacher meister = _teacherRepository.Delete(id);
@@ -119,6 +124,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -130,12 +136,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             return View("Create");
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(TeacherRegisterModel modelTeacher)
         {
             Mapper.CreateMap<Teacher, TeacherRegisterModel>().ReverseMap();
@@ -158,6 +166,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
             var meister = _teacherRepository.GetTeacherDisplayModelById(id);
@@ -167,6 +176,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
             var meister = _teacherRepository.GetTeacherEditModelById(id);
@@ -176,6 +186,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(TeacherEditModel modelMeister)
         {
             var myMeister = _teacherRepository.GetById(modelMeister.Id);

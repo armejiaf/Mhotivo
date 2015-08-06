@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -22,6 +23,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+        [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -73,7 +75,9 @@ namespace Mhotivo.Controllers
             return View(academicYears.ToPagedList(pageNumber,pageSize));
         }
 
+
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(int id)
         {
             var academicYear = _academicYearRepository.GetById(id);
@@ -91,6 +95,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(AcademicYearEditModel modelAcademicYear)
         {
             var myAcademicYear = _academicYearRepository.GetById(modelAcademicYear.Id);
@@ -116,6 +121,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             var academicYear = _academicYearRepository.Delete(id);
@@ -126,6 +132,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
@@ -133,6 +140,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
         {
             var year = new DateTime(academicYearModel.Year, 01, 01);

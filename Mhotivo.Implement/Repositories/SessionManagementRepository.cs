@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Security;
 using Mhotivo.Data.Entities;
@@ -29,7 +30,11 @@ namespace Mhotivo.Implement.Repositories
             var user = ValidateUser(userEmail, password);
             if (user == null) return false;
             UpdateSessionFromUser(user);
-            if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            if (redirect)
+            {
+               // FormsAuthentication.SetAuthCookie(user.Email, remember);
+                FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            }
             return true;
         }
 
@@ -39,6 +44,7 @@ namespace Mhotivo.Implement.Repositories
             HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
             HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(user.Id).First().Name;
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
+        
         }
 
         public void LogOut(bool redirect = false)

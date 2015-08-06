@@ -4,6 +4,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 
 namespace Mhotivo.Controllers
 {
@@ -18,7 +19,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-
+         [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -29,6 +30,7 @@ namespace Mhotivo.Controllers
 
         // GET: /Role/
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             var r = _roleRepository.GetById(id);
@@ -42,6 +44,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(RoleEditModel modelRole)
         {
             var rol = _roleRepository.GetById(modelRole.Id);

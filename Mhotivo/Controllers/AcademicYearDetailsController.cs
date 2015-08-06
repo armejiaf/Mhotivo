@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.WebPages;
+using Mhotivo.App_Data;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -30,6 +32,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+        [AuthorizeAdmin]
         public ActionResult Index(int id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -82,6 +85,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(int id)
         {
             var academicYearDetails = _academicYearDetailsRepository.GetById(id);
@@ -101,6 +105,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(AcademicYearDetailsEditModel academicYearDetailsModel)
         {
             var myAcademicYearDetails = _academicYearDetailsRepository.GetById(academicYearDetailsModel.Id);
@@ -118,6 +123,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(int id)
         {
             var academicYearDetail = _academicYearDetailsRepository.Delete(id);
@@ -128,6 +134,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add(long id)
         {
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", 0);
@@ -137,14 +144,15 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(AcademicYearDetailsRegisterModel academicYearDetailsModel)
         {
 
             var academicYearDetails = new AcademicYearDetail
             {
-                TeacherStartDate = ParseToHonduranDate(academicYearDetailsModel.TeacherStartDate),
-                TeacherEndDate = ParseToHonduranDate(academicYearDetailsModel.TeacherEndDate),
-                Schedule = ParseToHonduranDate(academicYearDetailsModel.Schedule),
+                TeacherStartDate = ParseToHonduranDateTime.Parse(academicYearDetailsModel.TeacherStartDate),
+                TeacherEndDate = ParseToHonduranDateTime.Parse(academicYearDetailsModel.TeacherEndDate),
+                Schedule = ParseToHonduranDateTime.Parse(academicYearDetailsModel.Schedule),
                 Room = academicYearDetailsModel.Room,
                 Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id),
                 Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id),
@@ -157,15 +165,6 @@ namespace Mhotivo.Controllers
             const string content = "El detalle del año académico ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetailsModel.AcademicYearId));
-        }
-
-        public static DateTime ParseToHonduranDate(string dateToParse)
-        {
-            DateTime toReturn;
-            DateTime.TryParseExact(dateToParse, "dd-MM-yyyy", null,
-              DateTimeStyles.None, out toReturn);
-            return toReturn;
-
         }
     }
 }

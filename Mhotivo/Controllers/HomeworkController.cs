@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.App_Data;
 
 namespace Mhotivo.Controllers
 {
@@ -98,15 +99,12 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Create(CreateHomeworkModel modelHomework)
         {
-            DateTime modifiedDate;
-            DateTime.TryParseExact(modelHomework.DeliverDate, "dd-MM-yyyy", null,
-                DateTimeStyles.None, out modifiedDate);
             
             var myHomework = new Homework
             {
                 Title = modelHomework.Title,
                 Description = modelHomework.Description,
-                DeliverDate = modifiedDate,
+                DeliverDate = ParseToHonduranDateTime.Parse(modelHomework.DeliverDate),
                 Points = modelHomework.Points,
                 AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.Course).Id,GetMeisterId())
             };

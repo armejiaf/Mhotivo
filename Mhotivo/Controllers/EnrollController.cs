@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.ModelBinding;
 using System.Web.Mvc;
+using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
@@ -28,7 +30,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AllowAnonymous]
+       [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -46,6 +48,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Search(string id)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -65,6 +68,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             _enrollRepository.Delete(id);
@@ -75,6 +79,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.Id = new SelectList(_studentRepository.Query(x => x), "Id", "FullName");
@@ -83,6 +88,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(EnrollRegisterModel modelEnroll)
         {
             List<AcademicYear> collection =

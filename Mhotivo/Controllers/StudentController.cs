@@ -7,6 +7,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -27,6 +28,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -70,6 +72,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -85,6 +88,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             var student = _studentRepository.GetStudentEditModelById(id);
@@ -104,6 +108,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(StudentEditModel modelStudent)
         {
             var validImageTypes = new []
@@ -166,6 +171,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Student student = _studentRepository.Delete(id);
@@ -176,6 +182,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -187,6 +194,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",0);
@@ -195,6 +203,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(StudentRegisterModel modelStudent)
         {
             Mapper.CreateMap<Student, StudentRegisterModel>().ReverseMap();
@@ -211,6 +220,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
             var student = _studentRepository.GetStudentDisplayModelById(id);
@@ -220,12 +230,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Details(DisplayStudentModel modelStudent)
         {
             return RedirectToAction("Index");
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
             var student = _studentRepository.GetStudentEditModelById(id);
@@ -237,6 +249,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(StudentEditModel modelStudent)
         {
             var myStudent = _studentRepository.GetById(modelStudent.Id);

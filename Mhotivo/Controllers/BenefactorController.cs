@@ -4,6 +4,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using System.Web.Mvc;
+using Mhotivo.Authorizations;
 
 namespace Mhotivo.Controllers
 {
@@ -23,7 +24,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AllowAnonymous]
+        [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -31,6 +32,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -46,6 +48,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             Mapper.CreateMap<BenefactorEditModel, Benefactor>().ReverseMap();
@@ -55,6 +58,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(BenefactorEditModel modelBenefactor)
         {
             if (modelBenefactor.Capacity < modelBenefactor.StudentsCount)
@@ -79,6 +83,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Benefactor benefactor = _benefactorRepository.Delete(id);
@@ -89,6 +94,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -100,12 +106,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             return View("Create");
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(BenefactorRegisterModel modelBenefactor)
         {
             modelBenefactor.Gender = Implement.Utilities.IsMasculino(modelBenefactor.StrGender);
@@ -121,6 +129,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
             Benefactor benefactor = _benefactorRepository.GetBenefactorDisplayModelById(id);
@@ -130,6 +139,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
             Benefactor benefactor = _benefactorRepository.GetBenefactorEditModelById(id);
@@ -139,6 +149,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(BenefactorEditModel modelBenefactor)
         {
             if (modelBenefactor.StudentsCount > modelBenefactor.Capacity)
@@ -162,6 +173,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult StudentEdit(long id)
         {
             Student thisStudent = _studentRepository.GetById(id);
@@ -175,6 +187,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult StudentAdd(long id)
         {
             var student = new StudentBenefactorEditModel
@@ -186,6 +199,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult StudentAdd(StudentBenefactorEditModel modelStudent)
         {
             Benefactor benefactor = _benefactorRepository.GetById(modelStudent.Id);
@@ -202,6 +216,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult StudentEdit(StudentBenefactorEditModel modelStudent)
         {
             if (modelStudent.NewId <= 0)
@@ -227,6 +242,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult DeleteStudent(long id)
         {
             Student myStudent = _studentRepository.GetById(id);

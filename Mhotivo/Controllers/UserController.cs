@@ -6,6 +6,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -25,6 +26,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -67,6 +69,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             User thisUser = _userRepository.GetById(id);
@@ -77,6 +80,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(UserEditModel modelUser)
         {
             bool updateRole = false;
@@ -97,6 +101,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             User user = _userRepository.Delete(id);
@@ -107,6 +112,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.Id = new SelectList(_roleRepository.Query(x => x), "Id", "Name");
@@ -114,6 +120,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
             var rol = _roleRepository.GetById(modelUser.RoleId);

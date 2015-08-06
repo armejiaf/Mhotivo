@@ -6,6 +6,7 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -22,6 +23,7 @@ namespace Mhotivo.Controllers
             _areaReposity = areaReposity;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
+        [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -58,6 +60,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Create()
         {
             ViewBag.Id = new SelectList(_areaReposity.Query(x => x), "Id", "Name");
@@ -66,6 +69,7 @@ namespace Mhotivo.Controllers
 
         
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Create(AreaRegisterModel modelArea)
         {
             var area = new Area
@@ -80,6 +84,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Area area = _areaReposity.Delete(id);
@@ -89,6 +94,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             Area thisArea = _areaReposity.GetById(id);
@@ -99,6 +105,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(AreaEditModel modelArea)
         {
             var myArea = Mapper.Map<Area>(modelArea);

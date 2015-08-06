@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -27,6 +28,7 @@ namespace Mhotivo.Controllers
         }
 
         /// GET: /Course/
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -76,6 +78,7 @@ namespace Mhotivo.Controllers
 
         /// GET: /Course/Create
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             ViewBag.AreaId = new SelectList(_areaRepository.Query(a => a), "Id", "Name", 0);
@@ -84,6 +87,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Course/Create
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(CourseRegisterModel modelCourse)
         {
             string title;
@@ -111,6 +115,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Course/Delete
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             var course = _courseRepository.Delete(id);
@@ -122,6 +127,7 @@ namespace Mhotivo.Controllers
         
         /// GET: /Course/Edit
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(int id)
         {
             var course = _courseRepository.GetCourseEditModelById(id);
@@ -139,6 +145,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Course/Edit/5
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(CourseEditModel modelCourse)
         {
             var course = _courseRepository.GetById(modelCourse.Id);
