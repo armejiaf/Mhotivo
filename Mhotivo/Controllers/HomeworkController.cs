@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.App_Data;
+using Mhotivo.Authorizations;
 
 namespace Mhotivo.Controllers
 {
@@ -42,6 +43,7 @@ namespace Mhotivo.Controllers
             _userRepository = userRepository;
         }
 
+        [AuthorizeTeacher]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -73,6 +75,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /Homework/Create
+        [AuthorizeTeacher]
         public ActionResult Create()
         {
             MeisterId = GetMeisterId();
@@ -97,6 +100,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Create(CreateHomeworkModel modelHomework)
         {
             
@@ -117,6 +121,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /Homework/Edit/5
+        [AuthorizeTeacher]
         public ActionResult Edit(int id)
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
@@ -127,6 +132,7 @@ namespace Mhotivo.Controllers
 
         // POST: /Homework/Edit/5
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Edit(EditHomeworkModel modelHomework)
         {
             Homework myStudent = _homeworkRepository.GetById(modelHomework.Id);
@@ -140,6 +146,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /Homework/Delete/5
+        [AuthorizeTeacher]
         public ActionResult Delete(int id)
         {
             Homework homework = _homeworkRepository.Delete(id);
@@ -151,6 +158,7 @@ namespace Mhotivo.Controllers
 
         // POST: /Homework/Delete/5
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Delete(int id, FormCollection collection)
         {
             var homework = _homeworkRepository.Delete(id);

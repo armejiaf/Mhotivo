@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Logic;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -126,7 +127,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /NotificationModel/
-        [AllowAnonymous]
+
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();

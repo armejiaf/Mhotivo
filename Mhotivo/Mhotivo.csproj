@@ -161,6 +161,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorizations\AuthorizeAdmin.cs" />
+    <Compile Include="Authorizations\AuthorizeTeacher.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -176,7 +177,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
-    <Compile Include="App_Data\ParseToHonduranDateTime.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationTypeController.cs" />
@@ -563,7 +563,9 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508052343185_AddSortOrder.resx">
       <DependentUpon>201508052343185_AddSortOrder.cs</DependentUpon>

@@ -91,7 +91,7 @@ namespace Mhotivo.Implement.Repositories
                 FormsAuthentication.RedirectToLoginPage();
             var val = HttpContext.Current.Session[_userIdIdentifier];
             if (val != null)
-                if ((int)val > 0) return;
+                if ((long)val > 0) return;
             var id = int.Parse(HttpContext.Current.User.Identity.Name);
             var user = _userRepository.GetById(id);
             UpdateSessionFromUser(user);
