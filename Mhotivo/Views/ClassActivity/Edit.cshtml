@@ -18,7 +18,7 @@
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.AcademicYearId)
-            @Html.ValidationMessageFor(model => model.DisplayName)
+            @Html.ValidationMessageFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Type)
             @Html.ValidationMessageFor(model => model.Description)
             @Html.ValidationMessageFor(model => model.Value)
@@ -35,10 +35,10 @@
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.DisplayName)
+                @Html.LabelFor(model => model.Name)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.DisplayName)
+                @Html.EditorFor(model => model.Name)
             </div>
         </div>
            

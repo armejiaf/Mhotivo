@@ -10,7 +10,7 @@ namespace Mhotivo.Models
         public string AcademicYear { get; set; }
 
         [Display(Name = "Título")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         [Display(Name = "Tipo")]
         public string Type { get; set; }
@@ -32,7 +32,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Título")]
         [Display(Name = "Título")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo")]
         [Display(Name = "Tipo")]
@@ -55,7 +55,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Título")]
         [Display(Name = "Título")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo")]
         [Display(Name = "Tipo")]
