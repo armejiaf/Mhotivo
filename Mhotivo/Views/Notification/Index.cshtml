@@ -40,7 +40,8 @@ else
                 <th>@Html.DisplayNameFor(model => model.NotificationName)</th>
                 <th>@Html.DisplayNameFor(model => model.Created)</th>
                 <th>@Html.DisplayNameFor(model => model.Approved)</th>
-                <th></th>
+                <th>Modificar</th>
+                <th>Borrar</th>
             </tr>
         </thead>
         <tbody>
@@ -50,9 +51,8 @@ else
                     <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
                     <td>@Html.DisplayFor(modelItem => item.Approved)</td>
+                    <td><a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                     <td>
-                        <a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"  ><i class="icon-edit bigger-120"></i></a>
-                        
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Notification", new {id = Html.DisplayFor(modelItem => item.Id)}, FormMethod.Post,
                             new {id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none"}))

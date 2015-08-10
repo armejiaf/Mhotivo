@@ -202,7 +202,8 @@
                 @Html.LabelFor(model => model.BloodType)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.BloodType)
+                @Html.DropDownListFor(model => model.BloodType, new SelectList(new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" }), "-- Tipo de Sangre --")
+                <p class="text-error">@Html.ValidationMessageFor(model => model.BloodType)</p>
             </div>
         </div>
            
@@ -255,10 +256,11 @@
         <div class="space"></div>
 
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-small">
+            @Html.ActionLink("Cancelar", "Index", "Student", null, new { @class = "btn btn-small icon-remove" }) 
+            @*<button data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
                 Cancel
-            </button>
+            </button>*@
 
             <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
