@@ -15,7 +15,8 @@ namespace Mhotivo.Authorizations
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var role = (string)HttpContext.Current.Session["loggedUserRole"];
-            return (!String.IsNullOrEmpty(role) && role.Equals("Admin"));
+            
+            return (!string.IsNullOrEmpty(role) && role.Equals("Admin"));
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext context)
