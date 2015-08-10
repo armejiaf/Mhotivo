@@ -39,10 +39,17 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                var year = Convert.ToInt32(searchString);
-                allAcademicYears = _academicYearRepository.Filter(x => x.Year.Year.Equals(year)).ToList();
+                try
+                {
+                    var year = Convert.ToInt32(searchString);
+                    allAcademicYears = _academicYearRepository.Filter(x => x.Year.Year.Equals(year)).ToList();
+                }
+                catch (Exception e)
+                {
+                   //ignore
+                }
             }
             var academicYears = allAcademicYears.Select(academicYear => new DisplayAcademicYearModel
             {
