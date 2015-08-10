@@ -194,9 +194,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201508052343185_AddSortOrder.cs" />
-    <Compile Include="Migrations\201508052343185_AddSortOrder.Designer.cs">
-      <DependentUpon>201508052343185_AddSortOrder.cs</DependentUpon>
+    <Compile Include="Migrations\201508101555139_UnifiedUser.cs" />
+    <Compile Include="Migrations\201508101555139_UnifiedUser.Designer.cs">
+      <DependentUpon>201508101555139_UnifiedUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -567,8 +567,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508052343185_AddSortOrder.resx">
-      <DependentUpon>201508052343185_AddSortOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508101555139_UnifiedUser.resx">
+      <DependentUpon>201508101555139_UnifiedUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

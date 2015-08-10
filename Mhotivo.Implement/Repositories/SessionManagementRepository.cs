@@ -27,8 +27,9 @@ namespace Mhotivo.Implement.Repositories
 
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
-            var user = ValidateUser(userEmail, password);
+            var user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
             if (user == null) return false;
+            if (!user.CheckPassword(password)) return false;
             UpdateSessionFromUser(user);
             if (redirect)
             {
@@ -76,13 +77,6 @@ namespace Mhotivo.Implement.Repositories
             CheckSession();
             var userRole = HttpContext.Current.Session[_userRoleIdentifier];
             return userRole != null ? userRole.ToString() : "";
-        }
-
-        private User ValidateUser(string userName, string password)
-        {
-            //TODO: Implement secure password operations.
-            var myUsers = _userRepository.Filter(x => x.Email.Equals(userName) && x.Password.Equals(password) && x.Status);
-            return (myUsers != null && myUsers.Any() ? myUsers.First() : null);
         }
 
         public void CheckSession() //Doesn't implement single responsibility or not named appropriately.

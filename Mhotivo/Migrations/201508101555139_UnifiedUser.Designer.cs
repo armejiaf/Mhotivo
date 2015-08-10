@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class AddSortOrder : IMigrationMetadata
+    public sealed partial class UnifiedUser : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddSortOrder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UnifiedUser));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508052343185_AddSortOrder"; }
+            get { return "201508101555139_UnifiedUser"; }
         }
         
         string IMigrationMetadata.Source

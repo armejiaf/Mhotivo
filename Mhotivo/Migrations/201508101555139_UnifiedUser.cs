@@ -3,7 +3,7 @@ namespace Mhotivo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddSortOrder : DbMigration
+    public partial class UnifiedUser : DbMigration
     {
         public override void Up()
         {
@@ -142,6 +142,7 @@ namespace Mhotivo.Migrations
                         DisplayName = c.String(),
                         Password = c.String(),
                         Status = c.Boolean(nullable: false),
+                        Salt = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -199,6 +200,16 @@ namespace Mhotivo.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Name = c.String(),
                         Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -308,30 +319,6 @@ namespace Mhotivo.Migrations
                 .Index(t => t.Grade_Id);
             
             CreateTable(
-                "dbo.Roles",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.UserRols",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Role_Id = c.Long(),
-                        User_Id = c.Long(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Roles", t => t.Role_Id)
-                .ForeignKey("dbo.Users", t => t.User_Id)
-                .Index(t => t.Role_Id)
-                .Index(t => t.User_Id);
-            
-            CreateTable(
                 "dbo.GroupUsers",
                 c => new
                     {
@@ -357,12 +344,23 @@ namespace Mhotivo.Migrations
                 .Index(t => t.NotificationId)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.RoleUsers",
+                c => new
+                    {
+                        Role_Id = c.Long(nullable: false),
+                        User_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Role_Id, t.User_Id })
+                .ForeignKey("dbo.Roles", t => t.Role_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .Index(t => t.Role_Id)
+                .Index(t => t.User_Id);
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.UserRols", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.UserRols", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.Pensums", "Grade_Id", "dbo.Grades");
             DropForeignKey("dbo.Pensums", "Course_Id", "dbo.Courses");
             DropForeignKey("dbo.Homework", "AcademicYearDetail_Id", "dbo.AcademicYearDetails");
@@ -378,6 +376,8 @@ namespace Mhotivo.Migrations
             DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
             DropForeignKey("dbo.People", "Benefactor_Id", "dbo.People");
             DropForeignKey("dbo.People", "User_Id1", "dbo.Users");
+            DropForeignKey("dbo.RoleUsers", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.RoleUsers", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.People", "User_Id", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "NotificationId", "dbo.Notifications");
@@ -392,12 +392,12 @@ namespace Mhotivo.Migrations
             DropForeignKey("dbo.Courses", "Area_Id", "dbo.Areas");
             DropForeignKey("dbo.AcademicYearDetails", "AcademicYear_Id", "dbo.AcademicYears");
             DropForeignKey("dbo.AcademicYears", "Grade_Id", "dbo.Grades");
+            DropIndex("dbo.RoleUsers", new[] { "User_Id" });
+            DropIndex("dbo.RoleUsers", new[] { "Role_Id" });
             DropIndex("dbo.UserNotifications", new[] { "UserId" });
             DropIndex("dbo.UserNotifications", new[] { "NotificationId" });
             DropIndex("dbo.GroupUsers", new[] { "User_Id" });
             DropIndex("dbo.GroupUsers", new[] { "Group_Id" });
-            DropIndex("dbo.UserRols", new[] { "User_Id" });
-            DropIndex("dbo.UserRols", new[] { "Role_Id" });
             DropIndex("dbo.Pensums", new[] { "Grade_Id" });
             DropIndex("dbo.Pensums", new[] { "Course_Id" });
             DropIndex("dbo.Homework", new[] { "AcademicYearDetail_Id" });
@@ -423,10 +423,9 @@ namespace Mhotivo.Migrations
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Course_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "AcademicYear_Id" });
+            DropTable("dbo.RoleUsers");
             DropTable("dbo.UserNotifications");
             DropTable("dbo.GroupUsers");
-            DropTable("dbo.UserRols");
-            DropTable("dbo.Roles");
             DropTable("dbo.Pensums");
             DropTable("dbo.Homework");
             DropTable("dbo.Enrolls");
@@ -434,6 +433,7 @@ namespace Mhotivo.Migrations
             DropTable("dbo.ClassActivities");
             DropTable("dbo.AppointmentParticipants");
             DropTable("dbo.AppointmentDiaries");
+            DropTable("dbo.Roles");
             DropTable("dbo.NotificationTypes");
             DropTable("dbo.NotificationComments");
             DropTable("dbo.Notifications");

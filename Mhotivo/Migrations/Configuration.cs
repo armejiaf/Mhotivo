@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -14,24 +15,36 @@ namespace Mhotivo.Migrations
 
         protected override void Seed(MhotivoContext context)
         {
-            context.Roles.AddOrUpdate(new Role { Id = 1, Description = "Admin", Name = "Admin" });
-            context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Padres", Name = "Padre" });
-            context.Roles.AddOrUpdate(new Role { Id = 3, Description = "Maestro", Name = "Maestro" });
+            context.Roles.AddOrUpdate(new Role { Description = "Admin", Name = "Admin" });
+            context.Roles.AddOrUpdate(new Role { Description = "Padre", Name = "Padre" });
+            context.Roles.AddOrUpdate(new Role { Description = "Maestro", Name = "Maestro" });
             context.SaveChanges();
-            context.Users.AddOrUpdate(new User { Id = 1, DisplayName = "Administrador", Email = "admin@mhotivo.edu", Password = "password", Status = true });
-            context.Users.AddOrUpdate(new User { Id = 2, DisplayName = "Maestro Generico", Email = "teacher@mhotivo.edu", Password = "password", Status = true });
+            var admin = new User
+            {
+                DisplayName = "Administrador",
+                Email = "admin@mhotivo.edu",
+                Password = "password",
+                Status = true,
+                Roles = new List<Role> {context.Roles.First()}
+            };
+            admin.EncryptPassword();
+            var genericTeacher = new User
+            {
+                DisplayName = "Maestro Generico",
+                Email = "teacher@mhotivo.edu",
+                Password = "password",
+                Status = true,
+                Roles = new List<Role> {context.Roles.Find(3)}
+            };
+            genericTeacher.EncryptPassword();
+            context.Users.AddOrUpdate(admin);
+            context.Users.AddOrUpdate(genericTeacher);
             context.SaveChanges();
-            var rol1 = context.Roles.First();
-            var rol2 = context.Roles.Find(3);
-            var user1 = context.Users.First();
-            var user2 = context.Users.Find(2);
-            context.UserRoles.AddOrUpdate(new UserRol { Id = 1, Role = rol1, User = user1 });
-            context.UserRoles.AddOrUpdate(new UserRol { Id = 2, Role = rol2, User = user2 });
-            context.SaveChanges();
+            var user = context.Users.Find(2);
             var maestroDefault = context.Meisters.FirstOrDefault(x => x.FirstName == "Maestro Generico");
             if (maestroDefault == null)
             {
-                context.Meisters.AddOrUpdate(new Teacher { Id = 1, IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, User = user2 });
+                context.Meisters.AddOrUpdate(new Teacher { Id = 1, IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, User = user });
                 context.SaveChanges();
             }
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 1, Description = "General" });
