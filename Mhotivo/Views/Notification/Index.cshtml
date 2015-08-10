@@ -14,14 +14,12 @@
 <br/>
 <br/>*@
 <h2>Notificaciones</h2>
-@using (Html.BeginForm("Index", "Notification", FormMethod.Post))
+@using (Html.BeginForm("Index", "Notification", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
-    <table  class="table-striped" id="sample-table-1"> <thead>
-        <tr>
-            <td>@Html.TextBox("Name")</td>
-            <td><button class="btn btn-small btn-primary active" type="submit">Search</button></td>
-        </tr> </thead>
-    </table>
+    <p>
+        Buscar por Nombre: @Html.TextBox("Searchname", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
 }
 
 @if (!Model.Any())
