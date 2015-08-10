@@ -128,7 +128,7 @@ namespace Mhotivo.Controllers
 
         // GET: /NotificationModel/
 
-        public ActionResult Index()
+        public ActionResult Index(string searchName)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var user =
@@ -136,32 +136,15 @@ namespace Mhotivo.Controllers
                     .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
             var notifications = _notificationRepository.Query(x => x).Include(c => c.NotificationCreator).Where(x => x.UserCreatorId == user.Id)//cuando es personal
                     .OrderByDescending(i => i.Created)
-                    .Take(10);
+                    .Take(10).ToList();
+
+            if (searchName != null)
+                notifications = notifications.ToList().FindAll(x => x.NotificationName == searchName);
+
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
             return View(notificationsModel);
         }
 
-        // GET: /NotificationModel/
-        [HttpPost]
-        public ActionResult Index(FormCollection text)
-        {
-            _searchText = text["Name"];
-            if (string.IsNullOrEmpty(_searchText))
-            {
-                var notifications = _notificationRepository.Query(x => x)
-                        .OrderByDescending(i => i.Created)
-                        .Take(10);
-                var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
-                return View("Index", notificationsModel);
-            }
-            else
-            {
-                var notifications = _notificationRepository.Query(x => x).Where(x => x.NotificationName.Contains(_searchText.Trim()))
-                        .OrderByDescending(i => i.Created).Take(10);
-                var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
-                return View("Index", notificationsModel);
-            }
-        }
 
         // GET: /NotificationModel/Create
         [HttpGet]
