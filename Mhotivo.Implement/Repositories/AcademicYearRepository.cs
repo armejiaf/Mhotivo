@@ -40,7 +40,7 @@ namespace Mhotivo.Implement.Repositories
             var academicYear = _context.AcademicYears.Add(itemToCreate);
             _context.Entry(academicYear.Grade).State = EntityState.Modified;
             _context.SaveChanges();
-            CreateDefaultPensum(itemToCreate);
+            //CreateDefaultPensum(itemToCreate);
             return academicYear;
         }
 
