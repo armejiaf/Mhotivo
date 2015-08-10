@@ -48,6 +48,7 @@ namespace Mhotivo.Controllers
             {
                 allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
+
             Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
             ViewBag.CurrentFilter = searchString;

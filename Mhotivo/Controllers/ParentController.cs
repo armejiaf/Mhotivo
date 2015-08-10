@@ -48,7 +48,7 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }

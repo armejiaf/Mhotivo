@@ -15,7 +15,7 @@ namespace Mhotivo.Migrations
         protected override void Seed(MhotivoContext context)
         {
             context.Roles.AddOrUpdate(new Role { Id = 1, Description = "Admin", Name = "Admin" });
-            context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Padres", Name = "Padres" });
+            context.Roles.AddOrUpdate(new Role { Id = 2, Description = "Padres", Name = "Padre" });
             context.Roles.AddOrUpdate(new Role { Id = 3, Description = "Maestro", Name = "Maestro" });
             context.SaveChanges();
             context.Users.AddOrUpdate(new User { Id = 1, DisplayName = "Administrador", Email = "admin@mhotivo.edu", Password = "password", Status = true });

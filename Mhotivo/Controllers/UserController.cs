@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Data.Entities;
@@ -32,7 +33,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var listaUsuarios = _userRepository.GetAllUsers();
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.EmailSortParm = sortOrder == "Email" ? "email_desc" : "Email";
             if (searchString != null)
             {
@@ -42,10 +43,12 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 listaUsuarios = _userRepository.Filter(x => x.DisplayName.Contains(searchString) || x.Email.Contains(searchString)).ToList();
+
             }
+
             var listaUsuariosModel = listaUsuarios.Select(Mapper.Map<DisplayUserModel>);
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -63,9 +66,18 @@ namespace Mhotivo.Controllers
                     listaUsuariosModel = listaUsuariosModel.OrderBy(s => s.DisplayName).ToList();
                     break;
             }
+
+             var displayUserModels = (IList<DisplayUserModel>) listaUsuariosModel ?? listaUsuariosModel.ToList();
+             foreach (var usuario in displayUserModels)
+             {
+                 var role = _userRepository.GetUserRoles(usuario.Id).FirstOrDefault();
+                 usuario.Role = role;
+                 if (role != null) usuario.RoleName = role.Description;
+             }
+
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
-            return View(listaUsuariosModel.ToPagedList(pageNumber, pageSize));
+            return View(displayUserModels.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
@@ -76,6 +88,8 @@ namespace Mhotivo.Controllers
             var user = Mapper.Map<UserEditModel>(thisUser);
             var roles = _userRepository.GetUserRoles(thisUser.Id);
             ViewBag.RoleId = new SelectList(_roleRepository.Query(x => x), "Id", "Name", roles.First().Id);
+            var firstOrDefault = roles.FirstOrDefault();
+            if (firstOrDefault != null) user.RoleId = (int) firstOrDefault.Id;
             return View("Edit", user);
         }
 
@@ -92,7 +106,7 @@ namespace Mhotivo.Controllers
             {
                 updateRole = true;
             }
-            User user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers, updateRole, rol);
+            var user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers, updateRole, rol);
             const string title = "Usuario Actualizado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email +
                              " ha sido actualizado exitosamente.";
@@ -104,7 +118,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            User user = _userRepository.Delete(id);
+            var user = _userRepository.Delete(id);
             const string title = "Usuario Eliminado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -123,7 +137,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            var rol = _roleRepository.GetById(modelUser.RoleId);
+            var rol = _roleRepository.GetById(1);
             var myUser = new User
                          {
                              DisplayName = modelUser.DisplaName,
