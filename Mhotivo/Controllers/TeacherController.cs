@@ -41,13 +41,13 @@ namespace Mhotivo.Controllers
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
             var contactInformation = new ContactInformationEditModel
-                                     {
-                                         Type = thisContactInformation.Type,
-                                         Value = thisContactInformation.Value,
-                                         Id = thisContactInformation.Id,
-                                         People = thisContactInformation.People,
-                                         Controller = "Meister"
-                                     };
+            {
+                Type = thisContactInformation.Type,
+                Value = thisContactInformation.Value,
+                Id = thisContactInformation.Id,
+                People = thisContactInformation.People,
+                Controller = "Meister"
+            };
             return View("ContactEdit", contactInformation);
         }
 
@@ -154,9 +154,9 @@ namespace Mhotivo.Controllers
                 DisplayName = modelTeacher.FirstName,
                 Email = modelTeacher.Email,
                 Password = modelTeacher.Password,
-                Status = true
+                IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.GetById(3));
+            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault());
             myTeacher.User = newUser;
             _teacherRepository.Create(myTeacher);
             const string title = "Maestro Agregado";

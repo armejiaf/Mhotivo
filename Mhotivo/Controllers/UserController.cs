@@ -137,14 +137,14 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            var rol = _roleRepository.GetById(1);
+            var rol = _roleRepository.Filter(x => x.Name == "Administrador").FirstOrDefault();
             var myUser = new User
-                         {
-                             DisplayName = modelUser.DisplaName,
-                             Email = modelUser.UserName,
-                             Password =modelUser.Password,
-                             Status = modelUser.Status
-                         };
+            {
+                DisplayName = modelUser.DisplaName,
+                Email = modelUser.UserName,
+                Password = modelUser.Password,
+                IsActive = modelUser.Status
+            };
             var user = _userRepository.Create(myUser, rol);
             const string title = "Usuario Agregado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";

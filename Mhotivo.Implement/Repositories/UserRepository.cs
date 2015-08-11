@@ -82,7 +82,7 @@ namespace Mhotivo.Implement.Repositories
             {
                 DisplayName = x.DisplayName,
                 Email = x.Email,
-                Status = x.Status,
+                IsActive = x.IsActive,
                 Id = x.Id
             });
         }
@@ -100,7 +100,7 @@ namespace Mhotivo.Implement.Repositories
             user.Email = userModel.Email;
             user.Notifications = userModel.Notifications;
             user.Parents = userModel.Parents;
-            user.Status = userModel.Status;
+            user.IsActive = userModel.IsActive;
             return Update(user,updateRole,rol);
         }
     }

@@ -106,7 +106,7 @@ namespace Mhotivo.Implement.Repositories
                             (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) +
                              "@mhotivo.hn").ToLower(),
                         Password = "123456",
-                        Status = true
+                        IsActive = true
                     };
                     newUser = userRepository.Create(newUser, roleRepository.GetById(2));
                     pare.User = newUser;

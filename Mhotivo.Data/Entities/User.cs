@@ -15,7 +15,7 @@ namespace Mhotivo.Data.Entities
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
         public string Salt { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Group> Groups { get; set; }
@@ -24,6 +24,8 @@ namespace Mhotivo.Data.Entities
 
         public bool CheckPassword(string password)
         {
+            if (String.IsNullOrEmpty(Salt))
+                return false;
             var hashtool = SHA512.Create();
             var hashBytes = hashtool.ComputeHash(Encoding.UTF8.GetBytes(password));
             var hashString = BitConverter.ToString(hashBytes).Replace("-", "");

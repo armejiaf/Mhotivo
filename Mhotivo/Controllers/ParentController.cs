@@ -201,9 +201,9 @@ namespace Mhotivo.Controllers
                 DisplayName = myParent.FirstName,
                 Email = modelParent.Email,
                 Password = modelParent.Password,
-                Status = true
+                IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.GetById(2));
+            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault());
             myParent.User = newUser;
              _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
