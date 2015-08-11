@@ -93,6 +93,11 @@ namespace Mhotivo.Implement.Repositories
             return personalNotifications;
         }
 
+        public IQueryable<Notification> GetAllNotifications()
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)
         {
             var areaNotifications = _context.Notifications.Where(

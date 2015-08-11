@@ -134,9 +134,11 @@ namespace Mhotivo.Controllers
             var user =
                 _userRepository.GetAllUsers()
                     .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
-            var notifications = _notificationRepository.Query(x => x).Include(c => c.NotificationCreator).Where(x => x.UserCreatorId == user.Id)//cuando es personal
-                    .OrderByDescending(i => i.Created)
-                    .Take(10).ToList();
+
+            var notifications = _notificationRepository.Query(x => x).ToList();
+
+            if (!_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
+                notifications = notifications.FindAll(x => user != null && x.UserCreatorId == user.Id);
 
             if (searchName != null)
                 notifications = notifications.ToList().FindAll(x => x.NotificationName == searchName);
@@ -196,11 +198,16 @@ namespace Mhotivo.Controllers
                 notificationIdentity.UserCreatorId = user.Id;
                 notificationIdentity.UserCreatorName = user.DisplayName;
             }
-            notificationIdentity.Approved = true;
+            notificationIdentity.Approved = false;
             if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
             {
                 notificationIdentity.Approved = false;
             }
+
+            if (notificationIdentity.NotificationType != null &&
+                _sessionManagement.GetUserLoggedRole().Equals("Administrador"))
+                notificationIdentity.Approved = true;
+
             _notificationRepository.Create(notificationIdentity);
             _notificationRepository.SaveChanges();
             const string title = "Notificación Agregado";
@@ -525,7 +532,7 @@ namespace Mhotivo.Controllers
         public ActionResult Approve()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var notifications = _notificationRepository.Query(x => x).Include(c => c.NotificationType).Where(x => x.Approved == false && x.NotificationType.Id == Personal)
+            var notifications = _notificationRepository.Query(x => x).Include(c => c.NotificationType).Where(x => x.Approved == false)
                     .OrderByDescending(i => i.Created)
                     .Take(10);
             var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
