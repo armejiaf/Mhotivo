@@ -3,7 +3,7 @@ namespace Mhotivo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UnifiedUser : DbMigration
+    public partial class ChangingSeederMethod : DbMigration
     {
         public override void Up()
         {
@@ -141,7 +141,7 @@ namespace Mhotivo.Migrations
                         Email = c.String(),
                         DisplayName = c.String(),
                         Password = c.String(),
-                        Status = c.Boolean(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
                     })
                 .PrimaryKey(t => t.Id);

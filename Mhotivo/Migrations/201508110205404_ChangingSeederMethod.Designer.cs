@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class UnifiedUser : IMigrationMetadata
+    public sealed partial class ChangingSeederMethod : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UnifiedUser));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangingSeederMethod));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508101555139_UnifiedUser"; }
+            get { return "201508110205404_ChangingSeederMethod"; }
         }
         
         string IMigrationMetadata.Source
