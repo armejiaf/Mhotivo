@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
 {
-    public class AcademicYearDetail
+    public class AcademicYearDetail : IEnumerable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,5 +17,9 @@ namespace Mhotivo.Data.Entities
         public DateTime? TeacherEndDate { get; set; }
         public DateTime? Schedule { get; set; }
         public string Room { get; set; }
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
