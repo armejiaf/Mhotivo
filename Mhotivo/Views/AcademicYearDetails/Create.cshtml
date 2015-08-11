@@ -101,11 +101,11 @@
     <br style="clear: left;" />
     <div>
         <p>
-            <a href="~/AcademicYearDetails/Index" data-dismiss="modal" class="btn btn-small">
+            @*<a href="~/AcademicYearDetails/Index" data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
                 Cancel
-            </a>
-
+            </a>*@
+            @Html.ActionLink("Cancelar", "Index", "AcademicYearDetails", null, new { @class = "btn btn-small icon-remove" })
             <button type="submit" class="btn btn-small btn-primary">
                 <i class="icon-ok"></i>
                 Agregar
