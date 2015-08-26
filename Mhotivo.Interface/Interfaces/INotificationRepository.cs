@@ -20,5 +20,6 @@ namespace Mhotivo.Interface.Interfaces
         IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id);
         IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id);
         IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id);
+        IQueryable<Notification> GetAllNotifications();
     }
 }
