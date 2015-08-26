@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -38,7 +39,7 @@ namespace Mhotivo.Controllers
             _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-
+         [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -49,6 +50,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Index(ImportDataModel importModel)
         {
             var validImageTypes = new []

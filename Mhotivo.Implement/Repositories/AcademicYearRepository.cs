@@ -40,7 +40,7 @@ namespace Mhotivo.Implement.Repositories
             var academicYear = _context.AcademicYears.Add(itemToCreate);
             _context.Entry(academicYear.Grade).State = EntityState.Modified;
             _context.SaveChanges();
-            CreateDefaultPensum(itemToCreate);
+            //CreateDefaultPensum(itemToCreate);
             return academicYear;
         }
 
@@ -100,7 +100,7 @@ namespace Mhotivo.Implement.Repositories
         public void CreateDefaultPensum(AcademicYear academicYear)
         {
             var pensums = GetDefaultPensum(academicYear.Grade.Id);
-            var teacher = _context.Meisters.First(x => x.FirstName.Equals("Default"));
+            var teacher = _context.Meisters.First(x => x.FirstName.Equals("Maestro"));
             foreach (var pensum in pensums)
             {
                 var academicYearDetails = new AcademicYearDetail
@@ -117,7 +117,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Pensum> GetDefaultPensum(int grade)
+        public IEnumerable<Pensum> GetDefaultPensum(long grade)
         {
             var pensum = _context.Pensums.Where(x => (x.Grade.Id == grade));
             return pensum.Count() != 0 ? pensum.Include(x => x.Course).Include(x => x.Grade) : null;

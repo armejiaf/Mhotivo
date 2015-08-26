@@ -42,7 +42,7 @@ namespace Mhotivo.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Padres no son admitidos en esta pagina");
+                ModelState.AddModelError("", "El usurio no tiene privilegios para entrar a esta pagina");
                 return View(model);
             }
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario

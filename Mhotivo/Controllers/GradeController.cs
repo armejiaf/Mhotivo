@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -23,6 +24,7 @@ namespace Mhotivo.Controllers
         }
 
         /// GET: /Grade/
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -60,6 +62,7 @@ namespace Mhotivo.Controllers
 
         /// GET: /Grade/Add
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
             return View("Create");
@@ -67,6 +70,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Grade/Add
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(GradeRegisterModel modelGrade)
         {
             string title;
@@ -94,6 +98,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Grade/Delete/5
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             var grade = _gradeRepository.Delete(id);
@@ -105,6 +110,7 @@ namespace Mhotivo.Controllers
         
         /// GET: /Grade/Edit/5
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Edit(int id)
         {
             var grade = _gradeRepository.GetGradeEditModelById(id);
@@ -115,6 +121,7 @@ namespace Mhotivo.Controllers
 
         ///  POST: /Grade/Edit/5
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(GradeEditModel modelGrade)
         {
             var myGrade = _gradeRepository.GetById(modelGrade.Id);

@@ -5,7 +5,7 @@ namespace Mhotivo.Models
 {
     public class RoleEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
@@ -17,7 +17,7 @@ namespace Mhotivo.Models
 
     public class DisplayRolModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Nombre")]
         public String Name { get; set; }

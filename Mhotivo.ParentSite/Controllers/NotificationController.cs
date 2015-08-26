@@ -53,7 +53,7 @@ namespace Mhotivo.ParentSite.Controllers
             }
             foreach (var notification in notifications)
             {
-                var noti = Mapper.Map<NotificationModel>(notification);
+                var noti = Mapper.Map<Notification, NotificationModel>(notification);
                 noti.CommentsAmount = notification.NotificationComments.Count;
                 noti.NotificationCreator = notification.UserCreatorName;
                 notificationsModel.Add(noti);

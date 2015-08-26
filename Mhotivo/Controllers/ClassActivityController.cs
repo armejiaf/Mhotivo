@@ -30,7 +30,7 @@ namespace Mhotivo.Controllers
                 .Select(x => new DisplayClassActivityModel
                              {
                                  AcademicYear = Convert.ToString(x.AcademicYear.Year),
-                                 DisplayName = x.Name,
+                                 Name = x.Name,
                                  Type = x.Type,
                                  Description = x.Description,
                                  Value = Convert.ToString(x.Value),
@@ -45,7 +45,7 @@ namespace Mhotivo.Controllers
             var classActivity = new ClassActivityEditModel
                                 {
                                     AcademicYearId = thisClassActivity.AcademicYear.Id,
-                                    DisplayName = thisClassActivity.Name,
+                                    Name = thisClassActivity.Name,
                                     Type = thisClassActivity.Type,
                                     Description = thisClassActivity.Description,
                                     Value = thisClassActivity.Value,
@@ -61,7 +61,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(ClassActivityEditModel modelClassActivity)
         {
             ClassActivity myClassActivity = _classActivityRepository.GetById(modelClassActivity.Id);
-            myClassActivity.Name = modelClassActivity.DisplayName;
+            myClassActivity.Name = modelClassActivity.Name;
             myClassActivity.Type = modelClassActivity.Type;
             myClassActivity.Description = modelClassActivity.Description;
             myClassActivity.Value = modelClassActivity.Value;
@@ -99,7 +99,7 @@ namespace Mhotivo.Controllers
         {
             var myClassActivity = new ClassActivity
                                   {
-                                      Name = modelClassActivity.DisplayName,
+                                      Name = modelClassActivity.Name,
                                       Type = modelClassActivity.Type,
                                       Description = modelClassActivity.Description,
                                       Value = modelClassActivity.Value,

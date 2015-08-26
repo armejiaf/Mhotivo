@@ -7,6 +7,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using PagedList;
 
 namespace Mhotivo.Controllers
@@ -31,7 +32,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AllowAnonymous]
+         [AuthorizeAdmin]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -47,7 +48,7 @@ namespace Mhotivo.Controllers
             {
                 searchString = currentFilter;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
@@ -78,7 +79,7 @@ namespace Mhotivo.Controllers
             return View(allParentDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -93,7 +94,7 @@ namespace Mhotivo.Controllers
             return View("ContactEdit", contactInformation);
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             var parent = _parentRepository.GetParentEditModelById(id);
@@ -104,6 +105,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Edit(ParentEditModel modelParent)
         {
             var validImageTypes = new []
@@ -153,6 +155,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             Parent parent = _parentRepository.Delete(id);
@@ -162,7 +165,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -173,7 +176,7 @@ namespace Mhotivo.Controllers
             return View("ContactAdd", model);
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult Create()
         {
             var modelRegister = new ParentRegisterModel();
@@ -181,6 +184,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Create(ParentRegisterModel modelParent)
         {
             modelParent.Gender = Implement.Utilities.IsMasculino(modelParent.StrGender);
@@ -197,9 +201,9 @@ namespace Mhotivo.Controllers
                 DisplayName = myParent.FirstName,
                 Email = modelParent.Email,
                 Password = modelParent.Password,
-                Status = true
+                IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.GetById(2));
+            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault());
             myParent.User = newUser;
              _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
@@ -208,7 +212,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
             var parent = _parentRepository.GetParentDisplayModelById(id);
@@ -218,7 +222,7 @@ namespace Mhotivo.Controllers
             return View("Details", parentModel);
         }
 
-        
+         [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
             var parent = _parentRepository.GetParentEditModelById(id);
@@ -229,6 +233,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult DetailsEdit(ParentEditModel modelParent)
         {
             var myParent = _parentRepository.GetById(modelParent.Id);

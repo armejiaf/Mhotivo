@@ -50,7 +50,7 @@
 
     <div class="control-group">
         <div class="control-label">
-            @Html.Label("Dirigido a:")
+            @Html.Label("Seleccione Grado:")
         </div>
         <div class="controls">
             @Html.DropDownListFor(model => model.IdIsGradeAreaGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new {id = "AddressedTo"})
@@ -60,10 +60,10 @@
     
     <div class="control-group" id="OcultarList">
         <div class="control-label">
-            @Html.Label("Dirigido a:")
+            @Html.Label("Seleccionar Estudiante:")
         </div>
         <div class="controls">
-            @Html.DropDownListFor(model => model.StudentId, Model.StudentOptionSelectList, "Seleccione Estudent", new {id = "StudentTo"})
+            @Html.DropDownListFor(model => model.StudentId, Model.StudentOptionSelectList, "Seleccione Estudiante", new {id = "StudentTo"})
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
     </div>

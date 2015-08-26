@@ -160,6 +160,8 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authorizations\AuthorizeAdmin.cs" />
+    <Compile Include="Authorizations\AuthorizeTeacher.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -192,9 +194,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201508030104257_AddSortOrder.cs" />
-    <Compile Include="Migrations\201508030104257_AddSortOrder.Designer.cs">
-      <DependentUpon>201508030104257_AddSortOrder.cs</DependentUpon>
+    <Compile Include="Migrations\201508110205404_ChangingSeederMethod.cs" />
+    <Compile Include="Migrations\201508110205404_ChangingSeederMethod.Designer.cs">
+      <DependentUpon>201508110205404_ChangingSeederMethod.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -565,8 +567,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508030104257_AddSortOrder.resx">
-      <DependentUpon>201508030104257_AddSortOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508110205404_ChangingSeederMethod.resx">
+      <DependentUpon>201508110205404_ChangingSeederMethod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

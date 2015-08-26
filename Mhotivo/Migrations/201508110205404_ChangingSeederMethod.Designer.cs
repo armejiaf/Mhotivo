@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class AddSortOrder : IMigrationMetadata
+    public sealed partial class ChangingSeederMethod : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddSortOrder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangingSeederMethod));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508030104257_AddSortOrder"; }
+            get { return "201508110205404_ChangingSeederMethod"; }
         }
         
         string IMigrationMetadata.Source

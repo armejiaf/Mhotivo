@@ -33,10 +33,9 @@ namespace Mhotivo.Implement.Repositories
 
         public User Create(User itemToCreate, Role rol)
         {
-            var userRolNew = new UserRol { User = itemToCreate, Role = rol };
-            _context.Roles.Attach(userRolNew.Role);
+            itemToCreate.Roles = new List<Role>{ rol };
+            itemToCreate.EncryptPassword();
             var user = _context.Users.Add(itemToCreate);
-            _context.UserRoles.Add(userRolNew);
             _context.SaveChanges();
             return user;
         }
@@ -57,12 +56,8 @@ namespace Mhotivo.Implement.Repositories
         {
             if (updateRole)
             {
-                var rolesExist = _context.UserRoles.Where(x => x.User != null && x.Role != null & x.User.Id == itemToUpdate.Id);
-                if (!rolesExist.Any())
-                {
-                    var userRol = new UserRol { User = itemToUpdate, Role = rol };
-                    _context.UserRoles.Add(userRol);
-                }
+                if(!itemToUpdate.Roles.Contains(rol))
+                    itemToUpdate.Roles.Add(rol);
             }
             SaveChanges();
             return itemToUpdate;   
@@ -87,32 +82,25 @@ namespace Mhotivo.Implement.Repositories
             {
                 DisplayName = x.DisplayName,
                 Email = x.Email,
-                Status = x.Status,
+                IsActive = x.IsActive,
                 Id = x.Id
             });
         }
 
-        public ICollection<Role> GetUserRoles(int idUser)
+        public ICollection<Role> GetUserRoles(long idUser)
         {
             var lstRole = new Collection<Role>();
             var userTemp = GetById(idUser);
-            if (userTemp == null)
-                return lstRole;
-            var userroles =
-                _context.UserRoles.Where(x => x.User != null && x.Role != null && x.User.Id == idUser)
-                    .Select(x => x.Role)
-                    .ToList();
-            return userroles;
+            return userTemp == null ? lstRole : userTemp.Roles;
         }
 
         public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol)
         {
-            user.Id = userModel.Id;
             user.DisplayName = userModel.DisplayName;
             user.Email = userModel.Email;
             user.Notifications = userModel.Notifications;
             user.Parents = userModel.Parents;
-            user.Status = userModel.Status;
+            user.IsActive = userModel.IsActive;
             return Update(user,updateRole,rol);
         }
     }

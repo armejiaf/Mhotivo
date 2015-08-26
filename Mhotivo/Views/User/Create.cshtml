@@ -21,7 +21,7 @@
             @Html.ValidationMessageFor(model => model.UserName)
             @Html.ValidationMessageFor(model => model.Password)
             @Html.ValidationMessageFor(model => model.ConfirmPassword)  
-            @Html.ValidationMessageFor(model => model.Id)  
+            @Html.ValidationMessageFor(model => model.RoleId)  
         </p>
         
         <div class="control-group">
@@ -59,16 +59,16 @@
                 @Html.EditorFor(model => model.ConfirmPassword)
             </div>
         </div>
-        
+        <!--  
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Id)
+                @Html.LabelFor(model => model.RoleId)
             </div>
             <div class="controls">
                 @Html.DropDownList("Id")
             </div>
         </div>
-        
+        -->
         <div class="control-group">
             <div class="controls">
                 <div class="control-label" style=" width: 60px;  padding-top: 0;">

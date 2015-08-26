@@ -5,45 +5,39 @@ using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.App_Data;
+using Mhotivo.Authorizations;
 
 namespace Mhotivo.Controllers
 {
     public class HomeworkController : Controller
     {
-        //Loads of unused repositories. Remove them if not needed.
+
         private readonly IAcademicYearDetailsRepository _academicYearDetailRepository;
-        private readonly ISessionManagementRepository _sessionManagementRepository;
-        private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
-        private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
-        private readonly ISecurityRepository _securityRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         public long MeisterId = -1;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailsRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
-            IGradeRepository gradeRepository, ICourseRepository courseRepository, ISessionManagementRepository sessionManagementRepository,
-            ISecurityRepository securityRepository, IUserRepository userRepository)
+            IAcademicYearDetailsRepository academicYearDetailRepository, ICourseRepository courseRepository, ITeacherRepository teacherRepository)
         {
             _homeworkRepository = homeworkRepository;
-            _academicYearRepository = academicYearRepository;
-            _gradeRepository = gradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
             _courseRepository = courseRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
-            _sessionManagementRepository = sessionManagementRepository;
-            _securityRepository = securityRepository;
-            _userRepository = userRepository;
+            _teacherRepository = teacherRepository;
         }
 
+        [AuthorizeTeacher]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            MeisterId = GetMeisterId();
+            MeisterId = GetTeacherId();
             var allAcademicYearsDetails = GetAllAcademicYearsDetail(MeisterId);
             var academicY = new List<long>();
             var academicYearsDetails = allAcademicYearsDetails as AcademicYearDetail[] ?? allAcademicYearsDetails.ToArray();
@@ -58,30 +52,23 @@ namespace Mhotivo.Controllers
             return View(allHomeworkDisplaysModel);
         }
 
-        private long GetMeisterId()
+        private long GetTeacherId()
         {
-            var people = _securityRepository.GetUserLoggedPeoples();
-            long id = 0;
-            foreach (var p in people)
-            {
-                if (p is Teacher)
-                    id = p.Id;
-            }
-            return id;
+            var idUser = (long)System.Web.HttpContext.Current.Session["loggedUserId"];
+            var firstOrDefault = _teacherRepository.Filter(x => x.User.Id == idUser).FirstOrDefault();
+            if (firstOrDefault == null) return -1;
+            var toReturn = firstOrDefault.Id;
+            return toReturn;
         }
 
         // GET: /Homework/Create
+        [AuthorizeTeacher]
         public ActionResult Create()
         {
-            MeisterId = GetMeisterId();
-            var allAcademicYearsByMeister = GetAllAcademicYearsDetail(MeisterId);
-            var courseIds = new List<long>();
-            var academicYearsByMeister = allAcademicYearsByMeister as AcademicYearDetail[] ?? allAcademicYearsByMeister.ToArray();
-            for (int a = 0; a < academicYearsByMeister.Count(); a++)
-            {
-                courseIds.Add(academicYearsByMeister.ElementAt(a).Course.Id);
-            }
-            var query = _courseRepository.Query(x => x).Where(x => courseIds.Contains(x.Id) );
+            var teacherId = GetTeacherId();
+            var detalleAnhosAcademicosActivos = _academicYearDetailRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicYear.IsActive);
+            var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher.Id == teacherId);
+            var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
             ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new CreateHomeworkModel();
             return View(modelRegister);
@@ -95,16 +82,19 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Create(CreateHomeworkModel modelHomework)
         {
+            
             var myHomework = new Homework
             {
                 Title = modelHomework.Title,
                 Description = modelHomework.Description,
-                DeliverDate = DateTime.Parse(modelHomework.DeliverDate),
+                DeliverDate = ParseToHonduranDateTime.Parse(modelHomework.DeliverDate),
                 Points = modelHomework.Points,
-                AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.Course).Id,GetMeisterId())
+                AcademicYearDetail = _academicYearDetailRepository.FindByCourse(_courseRepository.GetById(modelHomework.Course).Id,GetTeacherId())
             };
+
             _homeworkRepository.Create(myHomework);
             const string title = "Tarea agregada";
             string content = "La tarea " + myHomework.Title + " ha sido agregado exitosamente.";
@@ -113,6 +103,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /Homework/Edit/5
+        [AuthorizeTeacher]
         public ActionResult Edit(int id)
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
@@ -123,6 +114,7 @@ namespace Mhotivo.Controllers
 
         // POST: /Homework/Edit/5
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Edit(EditHomeworkModel modelHomework)
         {
             Homework myStudent = _homeworkRepository.GetById(modelHomework.Id);
@@ -136,6 +128,7 @@ namespace Mhotivo.Controllers
         }
 
         // GET: /Homework/Delete/5
+        [AuthorizeTeacher]
         public ActionResult Delete(int id)
         {
             Homework homework = _homeworkRepository.Delete(id);
@@ -147,6 +140,7 @@ namespace Mhotivo.Controllers
 
         // POST: /Homework/Delete/5
         [HttpPost]
+        [AuthorizeTeacher]
         public ActionResult Delete(int id, FormCollection collection)
         {
             var homework = _homeworkRepository.Delete(id);

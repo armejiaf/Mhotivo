@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Security;
 using Mhotivo.Data.Entities;
@@ -26,10 +27,15 @@ namespace Mhotivo.Implement.Repositories
 
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
-            var user = ValidateUser(userEmail, password);
+            var user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
             if (user == null) return false;
+            if (!user.CheckPassword(password)) return false;
             UpdateSessionFromUser(user);
-            if (redirect) FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            if (redirect)
+            {
+               // FormsAuthentication.SetAuthCookie(user.Email, remember);
+                FormsAuthentication.RedirectFromLoginPage(user.Id.ToString(CultureInfo.InvariantCulture), remember);
+            }
             return true;
         }
 
@@ -39,6 +45,7 @@ namespace Mhotivo.Implement.Repositories
             HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
             HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(user.Id).First().Name;
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
+        
         }
 
         public void LogOut(bool redirect = false)
@@ -72,20 +79,13 @@ namespace Mhotivo.Implement.Repositories
             return userRole != null ? userRole.ToString() : "";
         }
 
-        private User ValidateUser(string userName, string password)
-        {
-            //TODO: Implement secure password operations.
-            var myUsers = _userRepository.Filter(x => x.Email.Equals(userName) && x.Password.Equals(password) && x.Status);
-            return (myUsers != null && myUsers.Any() ? myUsers.First() : null);
-        }
-
         public void CheckSession() //Doesn't implement single responsibility or not named appropriately.
         {
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
                 FormsAuthentication.RedirectToLoginPage();
             var val = HttpContext.Current.Session[_userIdIdentifier];
             if (val != null)
-                if ((int)val > 0) return;
+                if ((long)val > 0) return;
             var id = int.Parse(HttpContext.Current.User.Identity.Name);
             var user = _userRepository.GetById(id);
             UpdateSessionFromUser(user);

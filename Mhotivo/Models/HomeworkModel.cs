@@ -6,7 +6,7 @@ namespace Mhotivo.Models
 {
     public class DisplayHomeworkModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Título")]
         public string Title { get; set; }
@@ -52,7 +52,7 @@ namespace Mhotivo.Models
 
     public class EditHomeworkModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required(ErrorMessage = "Debe Ingresar título de la tarea.")]
         [Display(Name = "Titulo")]
         public string Title { get; set; }
