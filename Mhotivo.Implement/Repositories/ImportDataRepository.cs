@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
+using System.Web;
+using Excel;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
@@ -68,17 +71,19 @@ namespace Mhotivo.Implement.Repositories
             SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository, userRepository, roleRepository);
         }
 
-        public DataSet GetDataSetFromExcelFile(string path)
+        //modificado
+        public DataSet GetDataSetFromExcelFile(HttpPostedFileBase getFile)
         {
-            var excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" + path + "';Extended Properties= \"Excel 8.0;HDR=Yes;IMEX=1\";";
-            var excelConnection = new OleDbConnection(excelConnectionString);
-            //Never used?
-            var database = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='"+ path +"';Extended Properties= \"Excel 8.0;HDR=Yes;IMEX=1\";");
-            var cmd = new OleDbCommand("Select * from [Matricula$]", excelConnection);
-            var oDataAdapter = new OleDbDataAdapter(cmd);
-            var oSet = new DataSet();
-            oDataAdapter.Fill(oSet);
-            return oSet;
+            if (getFile != null && getFile.ContentLength > 0)
+            {
+                IExcelDataReader reader = ExcelReaderFactory.CreateBinaryReader(getFile.InputStream);
+                if (Path.GetExtension(getFile.FileName) == ".xlsx")
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(getFile.InputStream);
+                DataSet dataSet = reader.AsDataSet();
+                return dataSet;
+            }
+                return new DataSet();
+            
         }
 
 

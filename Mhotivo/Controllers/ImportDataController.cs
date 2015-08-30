@@ -74,20 +74,8 @@ namespace Mhotivo.Controllers
             }
             try
             {
-                var path = "";
-                if (importModel.UpladFile != null)
-                {
-                    //var extension = System.IO.Path.GetExtension(importModel.UpladFile.FileName);
-                    path = string.Format("{0}\\{1}", Server.MapPath("~/Content/UploadedFolder"), importModel.UpladFile.FileName);
-                    var directory = Server.MapPath("~/Content/UploadedFolder");
-                    if (!System.IO.Directory.Exists(directory))
-                        System.IO.Directory.CreateDirectory(directory);
-                    if (System.IO.File.Exists(path))
-                        System.IO.File.Delete(path);
-                    importModel.UpladFile.SaveAs(path);
-                }
-
-                var myDataSet = _importDataRepository.GetDataSetFromExcelFile(path);
+               
+                var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UpladFile);
                 _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository, _roleRepository);
                 const string title = "Importación de Datos Correcta";
                 var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"

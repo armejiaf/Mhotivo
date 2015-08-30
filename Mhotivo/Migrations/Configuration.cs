@@ -37,6 +37,7 @@ namespace Mhotivo.Migrations
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 4, Description = "Personal" });
             context.SaveChanges();
             DebuggingSeeder(context);
+            context.SaveChanges();
         }
 
         private void DebuggingSeeder(MhotivoContext context)
