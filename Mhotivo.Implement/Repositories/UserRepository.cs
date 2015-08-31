@@ -25,6 +25,12 @@ namespace Mhotivo.Implement.Repositories
             return users;
         }
 
+        public User FirstOrDefault(Expression<Func<User, bool>> query)
+        {
+            var users = _context.Users.FirstOrDefault(query);
+            return users;
+        }
+
         public User GetById(long id)
         {
             var users = _context.Users.Where(x => x.Id == id);

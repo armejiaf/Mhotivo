@@ -145,11 +145,22 @@ namespace Mhotivo.Controllers
                 Password = modelUser.Password,
                 IsActive = modelUser.Status
             };
+
+            
             var user = _userRepository.Create(myUser, rol);
             const string title = "Usuario Agregado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult DoesUserNameExist(string email)
+        {
+
+            var user = _userRepository.FirstOrDefault(x => x.Email == email);
+
+            return Json(user == null);
         }
     }
 }

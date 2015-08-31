@@ -9,6 +9,7 @@ namespace Mhotivo.Interface.Interfaces
     public interface IUserRepository
     {
         User First(Expression<Func<User, bool>> query);
+        User FirstOrDefault(Expression<Func<User,bool>> query);
         User GetById(long id);
         User Create(User itemToCreate, Role rol);
         IQueryable<User> Query(Expression<Func<User, User>> expression);

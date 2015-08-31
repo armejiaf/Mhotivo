@@ -82,7 +82,18 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
-            ViewBag.Id = new SelectList(_studentRepository.Query(x => x), "Id", "FullName");
+            var allStudents = _studentRepository.GetAllStudents().ToList();
+           // var allEnrolls = _enrollRepository.GetAllsEnrolls().ToList();
+            var availableStudents = new List<Student>();
+            foreach (var student in allStudents)
+            {
+                var studentEnroll = _enrollRepository.GetAllsEnrolls().ToList().FindAll(x => x.Student.Id == student.Id && x.AcademicYear.IsActive);
+                if (studentEnroll.Count == 0)
+                    availableStudents.Add(student);
+
+            }
+            ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
+
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
             return View("Create");
         }

@@ -1,5 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using Mhotivo.Custom_Attributes;
 using Mhotivo.Data.Entities;
+using Mhotivo.Controllers;
+using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Models
 {
@@ -37,7 +41,7 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar la nueva contraseña")]
-        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -66,6 +70,8 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
+        [NoDuplicateEmail]
+     //   [RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
         public string UserName { get; set; }
 
         [Display(Name = "Estado")]
@@ -79,7 +85,7 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar contraseña")]
-        [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
