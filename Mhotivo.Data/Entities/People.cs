@@ -24,7 +24,7 @@ namespace Mhotivo.Data.Entities
         public Byte[] Photo { get; set; }
         public bool Gender { get; set; }
         public bool Disable { get; set; }
-        public User User { get; set; }
+        public User MyUser { get; set; }
         public virtual ICollection<ContactInformation> Contacts { get; set; }
     }
 }

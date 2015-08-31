@@ -33,6 +33,13 @@ namespace Mhotivo.Implement.Repositories
             {
                 if(dtDatos.Rows[indice][2].ToString().Trim().Length == 0)
                     continue;
+                var aIdNumber = dtDatos.Rows[indice][2].ToString();
+                var aLastName = (dtDatos.Rows[indice][3] + " " + dtDatos.Rows[indice][4]).Trim();
+                var aFirstName = dtDatos.Rows[indice][6].ToString();
+                var aGender = dtDatos.Rows[indice][8].ToString();
+                var aBirthDate = dtDatos.Rows[indice][9].ToString();
+                var aNationality = dtDatos.Rows[indice][13].ToString();
+                var aState = dtDatos.Rows[indice][15].ToString();
                 var newStudents = new Student
                 {
                     IdNumber = dtDatos.Rows[indice][2].ToString()
@@ -41,19 +48,27 @@ namespace Mhotivo.Implement.Repositories
                     ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][8].ToString())
                     ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][9].ToString()).ToShortDateString()
                     ,Nationality = dtDatos.Rows[indice][13].ToString()
-                    ,State = dtDatos.Rows[indice][15].ToString()
+                    ,State = dtDatos.Rows[indice][14].ToString()
                 };
                 newStudents.FullName = (newStudents.FirstName + " " + newStudents.LastName).Trim();
+                var bIdNumber = dtDatos.Rows[indice][18].ToString();
+                var bLastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][19]).Trim();
+                var bFirstName = dtDatos.Rows[indice][21].ToString();
+                var bGender = dtDatos.Rows[indice][22].ToString();
+                var bBirthDate = dtDatos.Rows[indice][24].ToString();
+                var bNationality = dtDatos.Rows[indice][16].ToString();
+                var bState = dtDatos.Rows[indice][25].ToString();
+                var bCity = dtDatos.Rows[indice][26].ToString();
                 var newParent = new Parent
                 {
-                    Nationality = dtDatos.Rows[indice][16].ToString()
-                    ,IdNumber = dtDatos.Rows[indice][18].ToString()
-                    ,LastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][20]).Trim()
-                    ,FirstName = dtDatos.Rows[indice][21].ToString()
-                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][22].ToString())
-                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][24].ToString()).ToShortDateString()
-                    ,State = dtDatos.Rows[indice][25].ToString()
-                    ,City = dtDatos.Rows[indice][26].ToString()
+                    Nationality = dtDatos.Rows[indice][15].ToString()
+                    ,IdNumber = dtDatos.Rows[indice][17].ToString()
+                    ,LastName = (dtDatos.Rows[indice][18] + " " + dtDatos.Rows[indice][19]).Trim()
+                    ,FirstName = dtDatos.Rows[indice][20].ToString()
+                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][21].ToString())
+                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][23].ToString()).ToShortDateString()
+                    ,State = dtDatos.Rows[indice][24].ToString()
+                    ,City = dtDatos.Rows[indice][25].ToString()
                 };
                 newParent.FullName = (newParent.FirstName + " " + newParent.LastName).Trim();
                 var newContactInformation = new ContactInformation
@@ -114,7 +129,7 @@ namespace Mhotivo.Implement.Repositories
                         IsActive = true
                     };
                     newUser = userRepository.Create(newUser, roleRepository.GetById(2));
-                    pare.User = newUser;
+                    pare.MyUser = newUser;
                     parentRepository.Create(pare);
                 }
                 else
@@ -125,7 +140,7 @@ namespace Mhotivo.Implement.Repositories
                 var temp = allStudents.Where(x => x.IdNumber == stu.IdNumber);
                 if (!temp.Any())
                 {
-                    stu.User = stu.Tutor1.User;
+                    stu.MyUser = stu.Tutor1.MyUser;
                     studentRepository.Create(stu);   
                 }
                 else

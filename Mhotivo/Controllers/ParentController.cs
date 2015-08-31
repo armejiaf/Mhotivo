@@ -204,7 +204,7 @@ namespace Mhotivo.Controllers
                 IsActive = true
             };
             newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault());
-            myParent.User = newUser;
+            myParent.MyUser = newUser;
              _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
             var content = "El Padre o Tutor " + myParent.FullName + " ha sido agregado exitosamente.";

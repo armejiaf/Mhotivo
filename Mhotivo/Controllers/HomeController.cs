@@ -42,8 +42,8 @@ namespace Mhotivo.Controllers
             return View();
         }
 
-        [HttpGet]
-        [ChildActionOnly]
+        //[HttpGet]
+        //[ChildActionOnly]
         public ActionResult GetUserLoggedName()
         {
             var userName = _securityRepository.GetUserLoggedName();

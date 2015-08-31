@@ -180,7 +180,7 @@ namespace Mhotivo.Controllers
             var student = new StudentBenefactorEditModel
             {
                 OldId = id,
-                Id = thisStudent.Benefactor == null ? -1 : thisStudent.Benefactor.Id
+                Id = thisStudent.MyBenefactor == null ? -1 : thisStudent.MyBenefactor.Id
             };
             ViewBag.NewID = new SelectList(_studentRepository.Query(x => x), "Id", "FullName", student.OldId);
             return View("StudentEdit", student);
@@ -208,7 +208,7 @@ namespace Mhotivo.Controllers
                 if (benefactor.Capacity > benefactor.Students.Count)
                 {
                     Student myStudent = _studentRepository.GetById(modelStudent.NewId);
-                    myStudent.Benefactor = benefactor;
+                    myStudent.MyBenefactor = benefactor;
                     _studentRepository.Update(myStudent);
                 }
             }
@@ -222,19 +222,19 @@ namespace Mhotivo.Controllers
             if (modelStudent.NewId <= 0)
             {
                 Student myStudent = _studentRepository.GetById(modelStudent.OldId);
-                myStudent.Benefactor = null;
+                myStudent.MyBenefactor = null;
                 _studentRepository.Update(myStudent);
                 _studentRepository.GetById(modelStudent.NewId);
             }
             else if (modelStudent.OldId != modelStudent.NewId)
             {
                 Student myStudent = _studentRepository.GetById(modelStudent.NewId);
-                if (myStudent.Benefactor == null || myStudent.Benefactor.Id != modelStudent.Id)
+                if (myStudent.MyBenefactor == null || myStudent.MyBenefactor.Id != modelStudent.Id)
                 {
-                    myStudent.Benefactor = _benefactorRepository.GetById(modelStudent.Id);
+                    myStudent.MyBenefactor = _benefactorRepository.GetById(modelStudent.Id);
                     _studentRepository.Update(myStudent);
                     myStudent = _studentRepository.GetById(modelStudent.OldId);
-                    myStudent.Benefactor = null;
+                    myStudent.MyBenefactor = null;
                     _studentRepository.Update(myStudent);
                 }
             }
@@ -246,8 +246,8 @@ namespace Mhotivo.Controllers
         public ActionResult DeleteStudent(long id)
         {
             Student myStudent = _studentRepository.GetById(id);
-            long ID = myStudent.Benefactor.Id;
-            myStudent.Benefactor = null;
+            long ID = myStudent.MyBenefactor.Id;
+            myStudent.MyBenefactor = null;
             _studentRepository.Update(myStudent);
             const string title = "Estudiante Eliminado";
             string content = "El estudiante " + myStudent.FullName + " ha sido eliminado exitosamente.";

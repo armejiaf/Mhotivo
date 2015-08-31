@@ -136,13 +136,13 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public bool ExistAcademicYear(int year, int grade, string section)
+        public bool ExistAcademicYear(int year, long grade, string section)
         {
             var years = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved);
             return years.Any();
         }
 
-        public AcademicYear GetByFields(int year, int grade, string section)
+        public AcademicYear GetByFields(int year, long grade, string section)
         {
             var academicYears = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved).ToArray();
             return academicYears.Any() ? academicYears.First() : null;

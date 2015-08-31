@@ -25,26 +25,26 @@ namespace Mhotivo.Implement.Repositories
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {
-            var parent = _context.Parents.Select(query).Include(x => x.User);
+            var parent = _context.Parents.Select(query).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetById(long id)
         {
-            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable).Include(x => x.User);
+            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetByIdNumber(string idNumber)
         {
-            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable).Include(x => x.User);
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
-            _context.Users.Attach(itemToCreate.User);
+            _context.Users.Attach(itemToCreate.MyUser);
             var parent = _context.Parents.Add(itemToCreate);
             _context.SaveChanges();
             return parent;
@@ -52,13 +52,13 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression)
         {
-            var myParents = _context.Parents.Select(expression).Include(x => x.User);
+            var myParents = _context.Parents.Select(expression).Include(x => x.MyUser);
             return myParents;
         }
 
         public IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression)
         {
-            var myParents = _context.Parents.Where(expression).Include(x => x.User);
+            var myParents = _context.Parents.Where(expression).Include(x => x.MyUser);
             return myParents;
         }
 
@@ -95,7 +95,7 @@ namespace Mhotivo.Implement.Repositories
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Photo = x.Photo,
-                User = x.User
+                MyUser = x.MyUser
             });
         }
 
@@ -155,7 +155,7 @@ namespace Mhotivo.Implement.Repositories
                 City = parentRegisterModel.City,
                 Address = parentRegisterModel.Address,
                 Photo = parentRegisterModel.Photo,
-                User = parentRegisterModel.User
+                MyUser = parentRegisterModel.MyUser
             };
         }
 
@@ -177,7 +177,7 @@ namespace Mhotivo.Implement.Repositories
                 Address = parent.Address,
                 Id = parent.Id,
                 Photo = parent.Photo,
-                User = parent.User
+                MyUser = parent.MyUser
             };
         }
 

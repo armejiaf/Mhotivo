@@ -146,7 +146,7 @@ namespace Mhotivo.Controllers
                     studentModel.Gender = Implement.Utilities.IsMasculino(modelStudent.StrGender);
                     modelStudent.Photo = null;
                     studentModel.Photo = fileBytes ?? myStudent.Photo;
-                    studentModel.User = _parentRepository.GetById(modelStudent.Tutor1.Id).User;
+                    studentModel.MyUser = _parentRepository.GetById(modelStudent.Tutor1.Id).MyUser;
                     myStudent = _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
                     const string title = "Estudiante Actualizado";
                     var content = "El estudiante " + myStudent.FullName + " ha sido actualizado exitosamente.";
@@ -212,7 +212,7 @@ namespace Mhotivo.Controllers
             studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
             studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
             var myStudent = _studentRepository.GenerateStudentFromRegisterModel(studentModel);
-            myStudent.User = studentModel.Tutor1.User;
+            myStudent.MyUser = studentModel.Tutor1.MyUser;
             _studentRepository.Create(myStudent);
             const string title = "Estudiante Agregado";
             var content = "El estudiante " + myStudent.FullName + " ha sido agregado exitosamente.";

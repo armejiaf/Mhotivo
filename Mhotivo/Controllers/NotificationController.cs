@@ -257,9 +257,9 @@ namespace Mhotivo.Controllers
                                                                         .FirstOrDefault();
                     if (notificationParentId != null)
                     {
-                        if (notificationParentId.User != null)
+                        if (notificationParentId.MyUser != null)
                         {
-                            notificationIdentity.Users.Add(notificationParentId.User);
+                            notificationIdentity.Users.Add(notificationParentId.MyUser);
                         }
                     }
                     notificationParentId = _studentRepository.GetAllStudents().Where(x => x.Id == student.Id
@@ -267,7 +267,7 @@ namespace Mhotivo.Controllers
                                                                 .Select(x => x.Tutor2).FirstOrDefault();
                     if (notificationParentId != null)
                     {
-                        User parents = _userRepository.GetById(notificationParentId.User.Id);
+                        User parents = _userRepository.GetById(notificationParentId.MyUser.Id);
                         if (parents != null)
                         {
                             notificationIdentity.Users.Add(parents);
@@ -283,13 +283,13 @@ namespace Mhotivo.Controllers
                                        && x.AcademicYear.Year.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
             foreach (var estudiante in estudiantes)
             {
-                if (estudiante.Tutor1.User != null)
+                if (estudiante.Tutor1.MyUser != null)
                 {
-                    var parents = _userRepository.GetById(estudiante.Tutor1.User.Id);
+                    var parents = _userRepository.GetById(estudiante.Tutor1.MyUser.Id);
                     if (parents != null)
                     {
                         notificationIdentity.Users.Add(parents);
-                        var parents2 = _userRepository.GetById(estudiante.Tutor2.User.Id);
+                        var parents2 = _userRepository.GetById(estudiante.Tutor2.MyUser.Id);
                         if (parents2 != null && parents2.Id != parents.Id)
                         {
                             notificationIdentity.Users.Add(parents2);
@@ -306,7 +306,7 @@ namespace Mhotivo.Controllers
             if (notificationParentId != null)
             {
                 var parents = _parentRepository.GetById(notificationParentId.Id);
-                var user = parents.User;
+                var user = parents.MyUser;
                 if (user != null)
                 {
                     notificationIdentity.Users.Add(user);
