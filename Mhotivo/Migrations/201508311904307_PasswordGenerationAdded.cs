@@ -3,7 +3,7 @@ namespace Mhotivo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class WorkingOnSeeder : DbMigration
+    public partial class PasswordGenerationAdded : DbMigration
     {
         public override void Up()
         {
@@ -317,6 +317,15 @@ namespace Mhotivo.Migrations
                 .Index(t => t.Grade_Id);
             
             CreateTable(
+                "dbo.PreloadedPasswords",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Password = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.GroupUsers",
                 c => new
                     {
@@ -424,6 +433,7 @@ namespace Mhotivo.Migrations
             DropTable("dbo.RoleUsers");
             DropTable("dbo.UserNotifications");
             DropTable("dbo.GroupUsers");
+            DropTable("dbo.PreloadedPasswords");
             DropTable("dbo.Pensums");
             DropTable("dbo.Homework");
             DropTable("dbo.Enrolls");

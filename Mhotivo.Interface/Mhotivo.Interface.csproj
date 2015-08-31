@@ -54,6 +54,7 @@
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IHomeworkRepository.cs" />
     <Compile Include="Interfaces\IImportDataRepository.cs" />
+    <Compile Include="Interfaces\IPasswordGenerationService.cs" />
     <Compile Include="Interfaces\ITeacherRepository.cs" />
     <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\INotificationRepository.cs" />

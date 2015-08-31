@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -14,10 +15,12 @@ namespace Mhotivo.Implement.Repositories
     public class ImportDataRepository : IImportDataRepository
     {
         private readonly MhotivoContext _context;
+        private IPasswordGenerationService _passwordGenerationService;
 
-        public ImportDataRepository(MhotivoContext ctx)
+        public ImportDataRepository(MhotivoContext ctx, IPasswordGenerationService passwordGenerationService)
         {
             _context = ctx;
+            _passwordGenerationService = passwordGenerationService;
         }
 
         public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
@@ -33,42 +36,27 @@ namespace Mhotivo.Implement.Repositories
             {
                 if(dtDatos.Rows[indice][2].ToString().Trim().Length == 0)
                     continue;
-                var aIdNumber = dtDatos.Rows[indice][2].ToString();
-                var aLastName = (dtDatos.Rows[indice][3] + " " + dtDatos.Rows[indice][4]).Trim();
-                var aFirstName = dtDatos.Rows[indice][6].ToString();
-                var aGender = dtDatos.Rows[indice][8].ToString();
-                var aBirthDate = dtDatos.Rows[indice][9].ToString();
-                var aNationality = dtDatos.Rows[indice][13].ToString();
-                var aState = dtDatos.Rows[indice][15].ToString();
                 var newStudents = new Student
                 {
                     IdNumber = dtDatos.Rows[indice][2].ToString()
                     ,LastName = (dtDatos.Rows[indice][3] + " " + dtDatos.Rows[indice][4]).Trim()
                     ,FirstName = dtDatos.Rows[indice][6].ToString()
                     ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][8].ToString())
-                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][9].ToString()).ToShortDateString()
+                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][9].ToString())).ToShortDateString()
                     ,Nationality = dtDatos.Rows[indice][13].ToString()
-                    ,State = dtDatos.Rows[indice][14].ToString()
+                    ,State = dtDatos.Rows[indice][15].ToString()
                 };
                 newStudents.FullName = (newStudents.FirstName + " " + newStudents.LastName).Trim();
-                var bIdNumber = dtDatos.Rows[indice][18].ToString();
-                var bLastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][19]).Trim();
-                var bFirstName = dtDatos.Rows[indice][21].ToString();
-                var bGender = dtDatos.Rows[indice][22].ToString();
-                var bBirthDate = dtDatos.Rows[indice][24].ToString();
-                var bNationality = dtDatos.Rows[indice][16].ToString();
-                var bState = dtDatos.Rows[indice][25].ToString();
-                var bCity = dtDatos.Rows[indice][26].ToString();
                 var newParent = new Parent
                 {
-                    Nationality = dtDatos.Rows[indice][15].ToString()
-                    ,IdNumber = dtDatos.Rows[indice][17].ToString()
-                    ,LastName = (dtDatos.Rows[indice][18] + " " + dtDatos.Rows[indice][19]).Trim()
-                    ,FirstName = dtDatos.Rows[indice][20].ToString()
-                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][21].ToString())
-                    ,BirthDate = Utilities.ConvertStringToDateTime(dtDatos.Rows[indice][23].ToString()).ToShortDateString()
-                    ,State = dtDatos.Rows[indice][24].ToString()
-                    ,City = dtDatos.Rows[indice][25].ToString()
+                    Nationality = dtDatos.Rows[indice][16].ToString()
+                    ,IdNumber = dtDatos.Rows[indice][18].ToString()
+                    ,LastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][20]).Trim()
+                    ,FirstName = dtDatos.Rows[indice][21].ToString()
+                    ,Gender = Utilities.IsMasculino(dtDatos.Rows[indice][22].ToString())
+                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][24].ToString())).ToShortDateString()
+                    ,State = dtDatos.Rows[indice][25].ToString()
+                    ,City = dtDatos.Rows[indice][26].ToString()
                 };
                 newParent.FullName = (newParent.FirstName + " " + newParent.LastName).Trim();
                 var newContactInformation = new ContactInformation
@@ -125,7 +113,7 @@ namespace Mhotivo.Implement.Repositories
                         Email =
                             (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) +
                              "@mhotivo.hn").ToLower(),
-                        Password = "123456",
+                        Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsActive = true
                     };
                     newUser = userRepository.Create(newUser, roleRepository.GetById(2));

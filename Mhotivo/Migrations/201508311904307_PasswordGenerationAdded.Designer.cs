@@ -7,13 +7,13 @@ namespace Mhotivo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class WorkingOnSeeder : IMigrationMetadata
+    public sealed partial class PasswordGenerationAdded : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(WorkingOnSeeder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PasswordGenerationAdded));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508302103144_WorkingOnSeeder"; }
+            get { return "201508311904307_PasswordGenerationAdded"; }
         }
         
         string IMigrationMetadata.Source

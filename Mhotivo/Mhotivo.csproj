@@ -201,9 +201,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201508302103144_WorkingOnSeeder.cs" />
-    <Compile Include="Migrations\201508302103144_WorkingOnSeeder.Designer.cs">
-      <DependentUpon>201508302103144_WorkingOnSeeder.cs</DependentUpon>
+    <Compile Include="Migrations\201508311904307_PasswordGenerationAdded.cs" />
+    <Compile Include="Migrations\201508311904307_PasswordGenerationAdded.Designer.cs">
+      <DependentUpon>201508311904307_PasswordGenerationAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -604,8 +604,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508302103144_WorkingOnSeeder.resx">
-      <DependentUpon>201508302103144_WorkingOnSeeder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508311904307_PasswordGenerationAdded.resx">
+      <DependentUpon>201508311904307_PasswordGenerationAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

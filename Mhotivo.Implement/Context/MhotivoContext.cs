@@ -29,6 +29,7 @@ namespace Mhotivo.Implement.Context
         public DbSet<User> Users { get; set; }
         public DbSet<AppointmentParticipants> AppointmentParticipant { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
+        public DbSet<PreloadedPassword> PreloadedPasswords { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

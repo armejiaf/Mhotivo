@@ -84,6 +84,7 @@ namespace Mhotivo
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
             kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
             kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+            kernel.Bind<IPasswordGenerationService>().To<PreloadedPasswordsGenerationService>().InRequestScope();
         }        
     }
 }
