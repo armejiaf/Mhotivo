@@ -157,7 +157,7 @@ namespace Mhotivo.Controllers
                 IsActive = true
             };
             newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault());
-            myTeacher.User = newUser;
+            myTeacher.MyUser = newUser;
             _teacherRepository.Create(myTeacher);
             const string title = "Maestro Agregado";
             var content = "El maestro " + myTeacher.FullName + "ha sido agregado exitosamente.";

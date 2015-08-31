@@ -55,7 +55,7 @@ namespace Mhotivo.Controllers
         private long GetTeacherId()
         {
             var idUser = (long)System.Web.HttpContext.Current.Session["loggedUserId"];
-            var firstOrDefault = _teacherRepository.Filter(x => x.User.Id == idUser).FirstOrDefault();
+            var firstOrDefault = _teacherRepository.Filter(x => x.MyUser.Id == idUser).FirstOrDefault();
             if (firstOrDefault == null) return -1;
             var toReturn = firstOrDefault.Id;
             return toReturn;

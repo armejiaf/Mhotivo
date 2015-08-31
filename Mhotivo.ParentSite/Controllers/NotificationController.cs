@@ -36,7 +36,7 @@ namespace Mhotivo.ParentSite.Controllers
         {
             var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString(CultureInfo.InvariantCulture));
             var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
-            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+            _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
             var userId = _securityRepository.GetUserLogged().Id;
             var personalNotifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).ToList();
             var notifications = _notificationRepository.GetGradeNotifications(currentAcademicYear, userId).ToList();
@@ -66,7 +66,7 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult AddCommentToNotification(int notificationId, string commentText)
         {
             var loggedUserEmail = System.Web.HttpContext.Current.Session["loggedUserEmail"].ToString();
-            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+            _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
             var selectedNotification = _notificationRepository.GetById(notificationId);
             selectedNotification.NotificationComments.Add(new NotificationComments
             {

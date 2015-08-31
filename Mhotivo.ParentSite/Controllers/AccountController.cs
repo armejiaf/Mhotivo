@@ -28,7 +28,7 @@ namespace Mhotivo.ParentSite.Controllers
         [AllowAnonymous]
         public ActionResult LogIn(ParentLoginModel model, string returnUrl)
         {
-            var parent = _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault();
+            var parent = _parentRepository.Filter(y => y.MyUser.Email == model.Email).FirstOrDefault();
             if (parent != null)
             {
                 if (_sessionManagementRepository.LogIn(model.Email, model.Password))

@@ -19,8 +19,8 @@ namespace Mhotivo.Interface.Interfaces
         void CreateDefaultPensum(AcademicYear academicYear);
         IEnumerable<Pensum> GetDefaultPensum(long grade);
         IEnumerable<AcademicYear> GetAllAcademicYears();
-        bool ExistAcademicYear(int year, int grade, string section);
-        AcademicYear GetByFields(int year, int grade, string section);
+        bool ExistAcademicYear(int year, long grade, string section);
+        AcademicYear GetByFields(int year, long grade, string section);
         AcademicYear GetCurrentAcademicYear();
     }
 }

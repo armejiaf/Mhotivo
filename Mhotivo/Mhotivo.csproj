@@ -200,9 +200,9 @@
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Migrations\201508110205404_ChangingSeederMethod.cs" />
-    <Compile Include="Migrations\201508110205404_ChangingSeederMethod.Designer.cs">
-      <DependentUpon>201508110205404_ChangingSeederMethod.cs</DependentUpon>
+    <Compile Include="Migrations\201508302103144_WorkingOnSeeder.cs" />
+    <Compile Include="Migrations\201508302103144_WorkingOnSeeder.Designer.cs">
+      <DependentUpon>201508302103144_WorkingOnSeeder.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
@@ -573,11 +573,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508110205404_ChangingSeederMethod.resx">
-      <DependentUpon>201508110205404_ChangingSeederMethod.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -605,6 +600,11 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201508302103144_WorkingOnSeeder.resx">
+      <DependentUpon>201508302103144_WorkingOnSeeder.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
