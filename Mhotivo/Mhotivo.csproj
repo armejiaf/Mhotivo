@@ -183,6 +183,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
+    <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\NotificationTypeController.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
+    <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
@@ -553,6 +555,7 @@
     <Content Include="Views\ImportData\Index.cshtml" />
     <Content Include="Views\Notification\Edit.cshtml" />
     <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\NotificationComment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

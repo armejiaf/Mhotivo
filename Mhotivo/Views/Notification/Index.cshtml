@@ -40,6 +40,7 @@ else
                 <th>@Html.DisplayNameFor(model => model.Approved)</th>
                 <th>Modificar</th>
                 <th>Borrar</th>
+                <th>Commentarios</th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +58,10 @@ else
                         {
                         }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar la notificación: @Html.DisplayFor(modelItem => item.NotificationName) - creada: @Html.DisplayFor(modelItem => item.Created)?" />
+                               value="¿Realmente desea eliminar la notificación: @Html.DisplayFor(modelItem => item.NotificationName) - creada: @Html.DisplayFor(modelItem => item.Created)?"/>
+                    </td>
+                    <td>
+                        <p>@Html.ActionLink("Comentarios", "Index", "NotificationComment", new { notificationId = Html.DisplayFor(modelItem => item.Id) }, null)</p>
                     </td>
                 </tr>
             }
