@@ -115,45 +115,12 @@ namespace Mhotivo.Migrations
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(9), Grade = _gradeRepository.GetById(11) });
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(10), Grade = _gradeRepository.GetById(12) });
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(11), Grade = _gradeRepository.GetById(13) });
-            _academicYearRepository.Create(new AcademicYear {Approved = true, Grade = _gradeRepository.GetById(1), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1)});
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(1), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(1), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(2), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(2), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(2), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(3), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(3), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(3), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(4), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(4), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(4), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(5), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(5), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(5), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(6), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(6), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(6), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(7), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(7), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(7), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(8), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(8), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(8), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(9), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(9), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(9), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(10), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(10), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(10), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(11), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(11), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(11), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(12), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(12), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(12), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(13), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(13), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-            _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(13), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
+            for (int i = 1; i <= 13; i++)
+            {
+                _academicYearRepository.Create(new AcademicYear {Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1)});
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
+            }
             var genericTeacher = new User
             {
                 DisplayName = "Maestro Generico",
