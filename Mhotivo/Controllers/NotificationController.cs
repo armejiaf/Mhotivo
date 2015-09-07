@@ -172,6 +172,8 @@ namespace Mhotivo.Controllers
             {
                 notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
                 notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
+                notificationIdentity.TargetStudent = _studentRepository.GetById(eventNotification.StudentId);
+                //////////////////////////////////////////////////////////////////
             }
             else if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id != Area)
             {

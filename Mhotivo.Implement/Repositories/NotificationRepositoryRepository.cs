@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
@@ -88,7 +89,11 @@ namespace Mhotivo.Implement.Repositories
             var personalNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.Id == 4 &&
-                   x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                   //x.Users.FirstOrDefault(u => u.Id == id) != null && 
+                   x.Approved 
+                   //&& x.Id.Equals(id)
+                   && (x.TargetStudent.Tutor1.Id == id || x.TargetStudent.Tutor2.Id == id)
+                   );
 
             return personalNotifications;
         }

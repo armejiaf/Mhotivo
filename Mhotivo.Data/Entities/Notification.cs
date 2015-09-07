@@ -22,6 +22,7 @@ namespace Mhotivo.Data.Entities
         public string Message { get; set; }
         public DateTime Created { get; set; }
         public bool Approved { get; set; }
+        public Student TargetStudent { get; set; }
         public virtual ICollection<NotificationComments> NotificationComments { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
