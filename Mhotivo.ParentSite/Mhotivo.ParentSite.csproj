@@ -374,15 +374,10 @@
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Content\font\fontello\fontello.eot" />
     <Content Include="Content\font\fontello\fontello.ttf" />
     <Content Include="Content\font\fontello\fontello.woff" />
