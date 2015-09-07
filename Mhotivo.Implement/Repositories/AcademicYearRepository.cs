@@ -100,7 +100,7 @@ namespace Mhotivo.Implement.Repositories
         public void CreateDefaultPensum(AcademicYear academicYear)
         {
             var pensums = GetDefaultPensum(academicYear.Grade.Id);
-            var teacher = _context.Meisters.First(x => x.FirstName.Equals("Maestro"));
+            var teacher = _context.Teachers.First(x => x.FirstName.Equals("Maestro"));
             foreach (var pensum in pensums)
             {
                 var academicYearDetails = new AcademicYearDetail

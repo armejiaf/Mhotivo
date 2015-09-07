@@ -117,11 +117,15 @@ namespace Mhotivo.Implement.Repositories
                         IsActive = true
                     };
                     newUser = userRepository.Create(newUser, roleRepository.GetById(2));
+                    
                     pare.MyUser = newUser;
                     parentRepository.Create(pare);
                 }
                 else
+                {
                     pare.Id = temp.First().Id;
+                }
+                    
             }
             foreach (var stu in listStudents)
             {

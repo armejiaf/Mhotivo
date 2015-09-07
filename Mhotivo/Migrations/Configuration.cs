@@ -21,7 +21,7 @@ namespace Mhotivo.Migrations
         private IAcademicYearRepository _academicYearRepository;
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(MhotivoContext context)
@@ -142,10 +142,10 @@ namespace Mhotivo.Migrations
             context.Users.AddOrUpdate(genericTeacher);
             context.Users.AddOrUpdate(genericParent);
             context.SaveChanges();
-            var maestroDefault = context.Meisters.FirstOrDefault(x => x.FullName == "Maestro Generico");
+            var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
             if (maestroDefault == null)
             {
-                context.Meisters.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, MyUser = genericTeacher });
+                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, MyUser = genericTeacher });
             }
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)

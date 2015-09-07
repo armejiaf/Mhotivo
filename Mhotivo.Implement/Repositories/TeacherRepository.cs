@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface.Interfaces;
@@ -19,32 +20,32 @@ namespace Mhotivo.Implement.Repositories
 
         public Teacher First(Expression<Func<Teacher, Teacher>> query)
         {
-            var meisters = _context.Meisters.Select(query);
+            var meisters = _context.Teachers.Select(query);
             return meisters.Count() != 0 ? meisters.First() : null;
         }
 
         public Teacher GetById(long id)
         {
-            var meisters = _context.Meisters.Where(x => x.Id == id);
+            var meisters = _context.Teachers.Where(x => x.Id == id);
             return meisters.Count() != 0 ? meisters.First() : null;
         }
 
         public Teacher Create(Teacher itemToCreate)
         {
             _context.Users.Attach(itemToCreate.MyUser);
-            var meister = _context.Meisters.Add(itemToCreate);
+            var meister = _context.Teachers.Add(itemToCreate);
             _context.SaveChanges();
             return meister;
         }
 
         public IQueryable<Teacher> Query(Expression<Func<Teacher, Teacher>> expression)
         {
-            return _context.Meisters.Select(expression);
+            return _context.Teachers.Select(expression);
         }
 
         public IQueryable<Teacher> Filter(Expression<Func<Teacher, bool>> expression)
         {
-            return _context.Meisters.Where(expression);
+            return _context.Teachers.Where(expression);
         }
 
         public Teacher Update(Teacher itemToUpdate)
@@ -56,14 +57,15 @@ namespace Mhotivo.Implement.Repositories
         public Teacher Delete(long id)
         {
             var itemToDelete = GetById(id);
-            _context.Meisters.Remove(itemToDelete);
+            _context.Teachers.Remove(itemToDelete);
             _context.SaveChanges();
             return itemToDelete;
         }
         //Is all that truly necessary? Lots of repeated code.
         public IEnumerable<Teacher> GetAllTeachers()
         {
-            return Query(x => x).ToList().Select(x => new Teacher
+            var test = _context.Teachers.FirstOrDefault(x => x.FirstName == "Hans");
+            return Query(x => x).Include(x => x.MyUser).ToList().Select(x => new Teacher
                 {
                     Id = x.Id,
                     IdNumber = x.IdNumber,
@@ -82,7 +84,8 @@ namespace Mhotivo.Implement.Repositories
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
                     Biography = x.Biography,
-                    Photo = x.Photo
+                    Photo = x.Photo,
+                    MyUser = x.MyUser
                 });
         }
 
