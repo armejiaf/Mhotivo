@@ -32,11 +32,11 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    <span class="InputLabel">@Html.DisplayNameFor(model => model.AreaId)</span>
-                    <p class="text-error">@Html.ValidationMessageFor(model => model.AreaId)</p>
+                    <span class="InputLabel">@Html.DisplayNameFor(model => model.Area)</span>
+                    <p class="text-error">@Html.ValidationMessageFor(model => model.Area)</p>
                 </div>
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.AreaId, new SelectList(ViewBag.AreaId, "Value", "Text"), "  -- Area --")
+                    @Html.DropDownListFor(model => model.AreaId, new SelectList(ViewBag.Area, "Value", "Text"), "  -- Area --")
                 </div>
             </div>
             
