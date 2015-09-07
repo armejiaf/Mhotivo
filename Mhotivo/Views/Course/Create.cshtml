@@ -36,7 +36,7 @@
                     <p class="text-error">@Html.ValidationMessageFor(model => model.Area)</p>
                 </div>
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.AreaId, new SelectList(ViewBag.Area, "Value", "Text"), "  -- Area --")
+                    @Html.DropDownListFor(model => model.Area, new SelectList(ViewBag.Area, "Value", "Text"), "  -- Area --")
                 </div>
             </div>
             
