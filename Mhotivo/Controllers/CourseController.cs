@@ -94,7 +94,7 @@ namespace Mhotivo.Controllers
             string content;
             Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
-            courseModel.Area = _areaRepository.GetById(modelCourse.AreaId);
+            courseModel.Area = _areaRepository.GetById(modelCourse.Area);
             var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
             var existCourse =
                 _courseRepository.GetAllCourse()

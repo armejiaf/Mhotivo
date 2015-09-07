@@ -35,7 +35,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public long AreaId { get; set; }
+        public long Area { get; set; }
     }
 
     public class CourseAreaEditModel
