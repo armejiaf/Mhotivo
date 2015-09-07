@@ -187,6 +187,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
+    <Compile Include="Controllers\MessageToTeacherController.cs" />
     <Compile Include="Controllers\NotificationCommentsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Global.asax.cs">
@@ -194,10 +195,12 @@
     </Compile>
     <Compile Include="Models\HomeworkDateModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
+    <Compile Include="Models\MessageToTeacherModel.cs" />
     <Compile Include="Models\NotificationCommentsModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\ParentLoginModel.cs" />
     <Compile Include="Models\PeopleModel.cs" />
+    <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -411,7 +414,9 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -444,6 +449,7 @@
     <Content Include="Views\Shared\NotificationComments_layout.cshtml" />
     <Content Include="Views\NotificationComments\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\MessageToTeacher\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

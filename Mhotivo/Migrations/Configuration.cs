@@ -21,7 +21,7 @@ namespace Mhotivo.Migrations
         private IAcademicYearRepository _academicYearRepository;
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(MhotivoContext context)

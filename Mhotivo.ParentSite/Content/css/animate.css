@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license
@@ -3524,3 +3524,5 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
     -o-animation-duration: 0.25s;
     animation-duration: 0.25s;
 }
+
+

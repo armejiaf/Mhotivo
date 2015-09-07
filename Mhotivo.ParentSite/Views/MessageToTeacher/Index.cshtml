@@ -1,0 +1,71 @@
+﻿@model Tuple<IEnumerable<Mhotivo.ParentSite.Models.TeacherModel>, Mhotivo.ParentSite.Models.MessageToTeacherModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well well-sm">
+                @using (Html.BeginForm("SendNewMessage", "MessageToTeacher",null, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <fieldset>
+                        <legend class="text-center">Enviar Mensaje a Maestro</legend>
+
+                        @{
+                           var dropdownCategory = new List<SelectListItem>();
+                            foreach (var teacher in Model.Item1)
+                            {
+                                dropdownCategory.Add(new SelectListItem(){Text = teacher.Name, Value = teacher.Email});
+                            }
+                            ViewData.Add("DropDownCategory", dropdownCategory);
+                        }
+
+                        <!-- Email input-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Para</label>
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(x => x.Item2.To, ViewData["DropDownCategory"] as List<SelectListItem>)
+                            </div>
+                        </div>
+
+                        <!-- Name input-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Asunto</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.Item2.Subject, new { @class = "form-control", placeholder = "Asunto", required = "required" })
+
+                            </div>
+                        </div>
+
+                        <!-- Message body -->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="message">Mensaje</label>
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(x => x.Item2.Message, new { @class = "form-control", placeholder = "Escriba su mensaje aqui", required = "required", rows = "5" })
+                            </div>
+                        </div>
+
+                        <!-- Form actions -->
+                        <div class="form-group">
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                }
+
+                @{
+                    if (null != ViewBag.Message)
+                    {
+                        <script type="text/javascript">
+                            alert("@ViewBag.Message");
+                        </script>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

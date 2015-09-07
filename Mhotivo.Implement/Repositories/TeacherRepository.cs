@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface.Interfaces;
@@ -63,7 +64,8 @@ namespace Mhotivo.Implement.Repositories
         //Is all that truly necessary? Lots of repeated code.
         public IEnumerable<Teacher> GetAllTeachers()
         {
-            return Query(x => x).ToList().Select(x => new Teacher
+            var test = _context.Teachers.FirstOrDefault(x => x.FirstName == "Hans");
+            return Query(x => x).Include(x => x.MyUser).ToList().Select(x => new Teacher
                 {
                     Id = x.Id,
                     IdNumber = x.IdNumber,
@@ -82,7 +84,8 @@ namespace Mhotivo.Implement.Repositories
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
                     Biography = x.Biography,
-                    Photo = x.Photo
+                    Photo = x.Photo,
+                    MyUser = x.MyUser
                 });
         }
 
