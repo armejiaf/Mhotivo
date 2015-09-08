@@ -25,6 +25,8 @@ namespace Mhotivo.Implement.Migrations
 
         protected override void Seed(MhotivoContext context)
         {
+            if (context.Roles.Any())
+                return;
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new AreaRepository(context);
             _gradeRepository = new GradeRepository(context);
