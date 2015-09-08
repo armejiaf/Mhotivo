@@ -41,6 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public ActionResult SendNewMessage([Bind(Prefix = "Item2")] MessageToTeacherModel model)
         {
+            SendEmail.SendEmailToSingleUser(model.To, "testing@mhotivo.com", model.Message, model.Subject);
             return RedirectToAction("Index");
         }
 
