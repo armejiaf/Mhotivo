@@ -146,6 +146,11 @@ namespace Mhotivo.Controllers
                 IsActive = modelUser.Status
             };
 
+            if (_userRepository.ExistEmail(modelUser.UserName))
+            {
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
             
             var user = _userRepository.Create(myUser, rol);
             const string title = "Usuario Agregado";

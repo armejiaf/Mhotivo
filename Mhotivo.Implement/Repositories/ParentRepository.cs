@@ -194,6 +194,12 @@ namespace Mhotivo.Implement.Repositories
             return false;
         }
 
+        public bool ExistEmail(string email)
+        {
+            var parentWithIdNumber = _context.Users.Where(x => x.Email.Equals(email));
+            return parentWithIdNumber.Any();
+        }
+
         internal void Detach(Parent parent)
         {
             _context.Entry(parent).State = EntityState.Detached;

@@ -109,5 +109,11 @@ namespace Mhotivo.Implement.Repositories
             user.IsActive = userModel.IsActive;
             return Update(user,updateRole,rol);
         }
+
+        public bool ExistEmail(string userName)
+        {
+            var user = _context.Users.Where(x => x.Email.Equals(userName));
+            return user.Any();
+        }
     }
 }

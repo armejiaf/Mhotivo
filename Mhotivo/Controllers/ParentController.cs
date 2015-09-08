@@ -193,7 +193,12 @@ namespace Mhotivo.Controllers
             var myParent = _parentRepository.GenerateParentFromRegisterModel(parentModel);
             if (_parentRepository.ExistIdNumber(modelParent.IdNumber))
             {
-                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe este IdNumber", ViewMessageType.ErrorMessage);
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            if (_parentRepository.ExistEmail(modelParent.Email))
+            {
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
             var newUser = new User

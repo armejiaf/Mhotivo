@@ -149,6 +149,16 @@ namespace Mhotivo.Controllers
             Mapper.CreateMap<Teacher, TeacherRegisterModel>().ReverseMap();
             var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
             var myTeacher = _teacherRepository.GenerateTeacherFromRegisterModel(teacherModel);
+            if (_teacherRepository.ExistIdNumber(modelTeacher.IdNumber))
+            {
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            if (_teacherRepository.ExistEmail(modelTeacher.Email))
+            {
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
             var newUser = new User
             {
                 DisplayName = modelTeacher.FirstName,
