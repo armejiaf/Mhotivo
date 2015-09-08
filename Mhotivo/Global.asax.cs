@@ -13,8 +13,6 @@ namespace Mhotivo
     {
         protected void Application_Start()
         {
-            var traceSource = new TraceSource("AppHarborTraceSource", SourceLevels.All);
-            traceSource.TraceEvent(TraceEventType.Verbose, 0, "Running application start");
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -23,7 +21,6 @@ namespace Mhotivo
             AuthConfig.RegisterAuth();
             AutoMapperConfiguration.Configure();
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Configuration>());
-            traceSource.TraceEvent(TraceEventType.Verbose, 0, "initialized database");
         }
     }
 }

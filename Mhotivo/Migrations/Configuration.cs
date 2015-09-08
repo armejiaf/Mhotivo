@@ -22,16 +22,12 @@ namespace Mhotivo.Migrations
         private IAcademicYearRepository _academicYearRepository;
         public Configuration()
         {
-            var traceSource = new TraceSource("AppHarborTraceSource", SourceLevels.All);
-            traceSource.TraceEvent(TraceEventType.Verbose, 0, "Got into configuration constructor");
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(MhotivoContext context)
         {
-            var traceSource = new TraceSource("AppHarborTraceSource", SourceLevels.All);
-            traceSource.TraceEvent(TraceEventType.Verbose, 0, "running seed method");
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new AreaRepository(context);
             _gradeRepository = new GradeRepository(context);
