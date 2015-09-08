@@ -7,9 +7,9 @@ using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 
-namespace Mhotivo.Migrations
+namespace Mhotivo.Implement.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<MhotivoContext>
+    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IAreaRepository _areaRepository;
