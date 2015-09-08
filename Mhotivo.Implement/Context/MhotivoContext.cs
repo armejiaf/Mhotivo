@@ -34,6 +34,7 @@ namespace Mhotivo.Implement.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Migrations.Configuration>());
             modelBuilder.Entity<Notification>().
               HasMany(c => c.Users).
               WithMany(p => p.Notifications).
