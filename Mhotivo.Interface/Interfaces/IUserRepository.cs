@@ -20,5 +20,6 @@ namespace Mhotivo.Interface.Interfaces
         IEnumerable<User> GetAllUsers();
         ICollection<Role> GetUserRoles(long idUser);
         User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol);
+        bool ExistEmail(string userName);
     }
 }

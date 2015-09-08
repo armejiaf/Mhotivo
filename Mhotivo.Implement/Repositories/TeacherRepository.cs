@@ -183,5 +183,17 @@ namespace Mhotivo.Implement.Repositories
         {
             _context.SaveChanges();
         }
+
+        public bool ExistIdNumber(string idNumber)
+        {
+            var teacherWithIdNumber = _context.Teachers.Where(x => x.IdNumber.Equals(idNumber));
+            return teacherWithIdNumber.Any();
+        }
+
+        public bool ExistEmail(string email)
+        {
+            var teacher = _context.Users.Where(x => x.Email.Equals(email));
+            return teacher.Any();
+        }
     }
 }

@@ -21,5 +21,7 @@ namespace Mhotivo.Interface.Interfaces
         Teacher GetTeacherDisplayModelById(long id);
         Teacher UpdateTeacherFromMeisterEditModel(Teacher meisterEditModel, Teacher meister);
         void SaveChanges();
+        bool ExistIdNumber(string idNumber);
+        bool ExistEmail(string email);
     }
 }

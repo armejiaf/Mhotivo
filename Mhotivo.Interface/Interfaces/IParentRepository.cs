@@ -23,5 +23,6 @@ namespace Mhotivo.Interface.Interfaces
         Parent UpdateParentFromParentEditModel(Parent parentEditModel, Parent parent);
         void SaveChanges();
         bool ExistIdNumber(string idNumber);
+        bool ExistEmail(string email);
     }
 }
