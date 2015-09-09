@@ -14,11 +14,11 @@ namespace Mhotivo.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IAreaRepository _areaRepository;
+        private readonly IEducationLevelRepository _areaRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public CourseController(ICourseRepository courseRepository, 
-                                IAreaRepository areaRepository)
+                                IEducationLevelRepository areaRepository)
         {
             if (courseRepository == null) throw new ArgumentNullException("courseRepository");
             if (areaRepository == null) throw new ArgumentNullException("areaRepository");

@@ -10,7 +10,7 @@ namespace Mhotivo.Implement.Context
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
         public DbSet<AppointmentDiary> AppointmentDiary { get; set; }
-        public DbSet<Area> Areas { get; set; }
+        public DbSet<EducationLevel> EducationLevels { get; set; }
         public DbSet<Benefactor> Benefactors { get; set; }
         public DbSet<ClassActivityGrading> ClassActivityGradings { get; set; }
         public DbSet<ClassActivity> ClassActivities { get; set; }

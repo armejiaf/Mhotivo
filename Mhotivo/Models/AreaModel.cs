@@ -2,22 +2,22 @@
 
 namespace Mhotivo.Models
 {
-    public class DisplayAreaModel
+    public class DisplayEducationLevelModel
     {
         [Display(Name = "Código del área")]
         public long Id { get; set; }
 
-        [Display(Name = "Nombre del área")]
+        [Display(Name = "Nombre del Nivel de Educacion")]
         public string Name { get; set; }
     }
-    public class AreaRegisterModel
+    public class EducationLevelRegisterModel
     {
-        [Required(ErrorMessage = "Debe Ingresar en nombre del Area")]
+        [Required(ErrorMessage = "Debe Ingresar en nombre del Nivel de Educacion")]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
     }
 
-    public class AreaEditModel
+    public class EducationLevelEditModel
     {
         public long Id { get; set; }
 

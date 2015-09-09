@@ -39,11 +39,11 @@ namespace Mhotivo.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly INotificationTypeRepository _notificationTypeRepository;
         private readonly IEnrollRepository _enrollRepository;
-        private readonly IAreaRepository _areaReporsitory;
+        private readonly IEducationLevelRepository _areaReporsitory;
         private static string _searchText = string.Empty;
 
         public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository meisterRepository,
-            IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository, IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository, IAreaRepository areaReporsitory)
+            IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository, IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository, IEducationLevelRepository areaReporsitory)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
@@ -173,7 +173,6 @@ namespace Mhotivo.Controllers
                 notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
                 notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
                 notificationIdentity.TargetStudent = _studentRepository.GetById(eventNotification.StudentId);
-                //////////////////////////////////////////////////////////////////
             }
             else if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id != Area)
             {

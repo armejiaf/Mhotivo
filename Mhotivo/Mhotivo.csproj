@@ -171,7 +171,7 @@
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AreaController.cs" />
+    <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
@@ -551,9 +551,9 @@
     <Content Include="Views\AcademicYearDetails\Create.cshtml" />
     <Content Include="Views\AcademicYearDetails\Edit.cshtml" />
     <Content Include="Views\AcademicYearDetails\Index.cshtml" />
-    <Content Include="Views\Area\Create.cshtml" />
-    <Content Include="Views\Area\Edit.cshtml" />
-    <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\EducationLevel\Create.cshtml" />
+    <Content Include="Views\EducationLevel\Edit.cshtml" />
+    <Content Include="Views\EducationLevel\Index.cshtml" />
     <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Homework\Create.cshtml" />
     <Content Include="Views\Homework\Details.cshtml" />

@@ -67,7 +67,7 @@
     <Compile Include="Repositories\AcademicYearDetailsRepository.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\AppoimentParticipant.cs" />
-    <Compile Include="Repositories\AreaRepository.cs" />
+    <Compile Include="Repositories\EducationLevelRepository.cs" />
     <Compile Include="Repositories\BenefactorRepository.cs" />
     <Compile Include="Repositories\ClassActivityRepository.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />

@@ -9,6 +9,6 @@ namespace Mhotivo.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; }
-        public virtual Area Area { get; set; }
+        public virtual EducationLevel Area { get; set; }
     }
 }
