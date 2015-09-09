@@ -41,9 +41,17 @@ namespace Mhotivo.ParentSite.Controllers
 
         public ActionResult SendNewMessage([Bind(Prefix = "Item2")] MessageToTeacherModel model)
         {
-            SendEmail.SendEmailToSingleUser(model.To, "testing@mhotivo.com", model.Message, model.Subject);
+            if (HttpContext.Session != null)
+            {
+                SendEmail.SendEmailToSingleUser(model.To, HttpContext.Session["loggedUserEmail"].ToString(),
+                    model.Message, model.Subject);
+                ViewBag.Message = "Mensaje Enviado!";
+            }
+            else
+            {
+                ViewBag.Message = "Mensaje No Enviado!";
+            }
             return RedirectToAction("Index");
         }
-
     }
 }
