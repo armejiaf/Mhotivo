@@ -1,23 +1,22 @@
-﻿@model Mhotivo.Models.AreaEditModel
+﻿@model Mhotivo.Models.EducationLevelRegisterModel
 
 @{
-    ViewBag.Title = "Editar Area";
+    ViewBag.Title = "Crear nueva nivel de educacion";
     Layout = "";
 }
-
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Edit", "Area", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Create", "EducationLevel", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Actualizar area</legend>
+            <legend>Nuevo Nivel de Educacion</legend>
 
             <p class="text-error">
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)                
             </p>
 
             <div class="control-group">
@@ -39,11 +38,10 @@
 
                 <button type="submit" class="btn btn-small btn-primary">
                     <i class="icon-ok"></i>
-                    Actualizar
+                    Crear
                 </button>
             </div>
         </fieldset>
     }
-    </div>
 
-
+</div>

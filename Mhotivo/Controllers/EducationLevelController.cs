@@ -11,14 +11,14 @@ using PagedList;
 
 namespace Mhotivo.Controllers
 {
-    public class AreaController : Controller
+    public class EducationLevelController : Controller
     {
         //
         // GET: /Area/
-        private readonly IAreaRepository _areaReposity;
+        private readonly IEducationLevelRepository _areaReposity;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public AreaController(IAreaRepository areaReposity)
+        public EducationLevelController(IEducationLevelRepository areaReposity)
         {
             _areaReposity = areaReposity;
             _viewMessageLogic = new ViewMessageLogic(this);
@@ -42,8 +42,8 @@ namespace Mhotivo.Controllers
             {
                 listaArea = _areaReposity.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayAreaModel, Area>().ReverseMap();
-            var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<Area, DisplayAreaModel>).ToList();
+            Mapper.CreateMap<DisplayEducationLevelModel, EducationLevel>().ReverseMap();
+            var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<EducationLevel, DisplayEducationLevelModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -70,14 +70,14 @@ namespace Mhotivo.Controllers
         
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Create(AreaRegisterModel modelArea)
+        public ActionResult Create(EducationLevelRegisterModel modelArea)
         {
-            var area = new Area
+            var area = new EducationLevel
             {
                 Name = modelArea.Name,
             };
             _areaReposity.Create(area);
-            const string title = "Area Agregada";
+            const string title = "Nivel De Educacion Agregado";
             var content = "El area " + area.Name + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
@@ -87,9 +87,9 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            Area area = _areaReposity.Delete(id);
-            const string title = "Area Eliminada";
-            var content = "El area " + area.Name + " ha sido eliminado exitosamente.";
+            EducationLevel area = _areaReposity.Delete(id);
+            const string title = "Nivel De Educacion Eliminado";
+            var content = "El Nivel De Educacion " + area.Name + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
@@ -97,22 +97,22 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            Area thisArea = _areaReposity.GetById(id);
-            Mapper.CreateMap<AreaEditModel, Area>().ReverseMap();
-            var area = Mapper.Map<Area,AreaEditModel>(thisArea);
+            EducationLevel thisArea = _areaReposity.GetById(id);
+            Mapper.CreateMap<EducationLevelEditModel, EducationLevel>().ReverseMap();
+            var area = Mapper.Map<EducationLevel,EducationLevelEditModel>(thisArea);
             area.Name = thisArea.Name;
             return View("Edit", area);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Edit(AreaEditModel modelArea)
+        public ActionResult Edit(EducationLevelEditModel modelArea)
         {
-            var myArea = Mapper.Map<Area>(modelArea);
+            var myArea = Mapper.Map<EducationLevel>(modelArea);
             myArea.Name = modelArea.Name;
-            Area area = _areaReposity.Update(myArea);
-            const string title = "Area Actualizada";
-            var content = "El area" + area.Name + " ha sido actualizado exitosamente.";
+            EducationLevel area = _areaReposity.Update(myArea);
+            const string title = "Nivel de Educacion Actualizado";
+            var content = "El Nivel De Educacion" + area.Name + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }

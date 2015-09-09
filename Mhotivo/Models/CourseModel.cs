@@ -11,7 +11,7 @@ namespace Mhotivo.Models
         public string Name { get; set; }
 
         [Display(Name = "Area")]
-        public Area Area { get; set; }
+        public EducationLevel Area { get; set; }
     }
 
     public class CourseEditModel
@@ -24,7 +24,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public Area Area { get; set; }
+        public EducationLevel Area { get; set; }
     }
 
     public class CourseRegisterModel

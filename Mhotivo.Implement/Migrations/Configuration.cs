@@ -12,7 +12,7 @@ namespace Mhotivo.Implement.Migrations
     public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
-        private IAreaRepository _areaRepository;
+        private IEducationLevelRepository _areaRepository;
         private IGradeRepository _gradeRepository;
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
@@ -28,7 +28,7 @@ namespace Mhotivo.Implement.Migrations
             if (context.Roles.Any())
                 return;
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
-            _areaRepository = new AreaRepository(context);
+            _areaRepository = new EducationLevelRepository(context);
             _gradeRepository = new GradeRepository(context);
             _courseRepository = new CourseRepository(context, _areaRepository);
             _pensumRepository = new PensumRepository(context);
@@ -49,7 +49,7 @@ namespace Mhotivo.Implement.Migrations
             context.Users.AddOrUpdate(admin);
             context.SaveChanges();
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 1, Description = "General" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 2, Description = "Area" });
+            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 2, Description = "Nivel De Educacion" });
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 3, Description = "Grado" });
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 4, Description = "Personal" });
             context.SaveChanges();
@@ -73,9 +73,9 @@ namespace Mhotivo.Implement.Migrations
                 "sanguineo"
             };
             _passwordGenerationService.AddPasswordsToTable(passwordsList);
-            _areaRepository.Create(new Area { Name = "Prescolar" });
-            _areaRepository.Create(new Area { Name = "Primaria" });
-            _areaRepository.Create(new Area { Name = "Secundaria" });
+            _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
+            _areaRepository.Create(new EducationLevel { Name = "Primaria" });
+            _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
             _gradeRepository.Create(new Grade {EducationLevel = _areaRepository.GetById(1).Name, Name = "Kinder"});
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1).Name, Name = "Preparatoria" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Primero" });
