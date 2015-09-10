@@ -7,13 +7,13 @@ namespace Mhotivo.Implement.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class addsortorder : IMigrationMetadata
+    public sealed partial class removestudentidfromnotification : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addsortorder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(removestudentidfromnotification));
         
         string IMigrationMetadata.Id
         {
-            get { return "201509101348514_addsortorder"; }
+            get { return "201509101850279_removestudentidfromnotification"; }
         }
         
         string IMigrationMetadata.Source

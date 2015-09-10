@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class addsortorder : DbMigration
+    public partial class removestudentidfromnotification : DbMigration
     {
         public override void Up()
         {

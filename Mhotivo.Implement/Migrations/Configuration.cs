@@ -11,7 +11,7 @@ namespace Mhotivo.Implement.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
+    public class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
