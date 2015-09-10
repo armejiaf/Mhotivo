@@ -18,7 +18,7 @@ namespace Mhotivo
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
             AutoMapperConfiguration.Configure();
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Implement.Migrations.Configuration>());
+          //  Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Implement.Migrations.Configuration>());
             using (var context = new MhotivoContext())
             {
                 context.Database.Initialize(force: true);

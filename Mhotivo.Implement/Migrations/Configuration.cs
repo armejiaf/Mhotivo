@@ -1,15 +1,17 @@
-using System;
 using System.Collections.Generic;
 using Mhotivo.Data.Entities;
-using System.Data.Entity.Migrations;
-using System.Linq;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Migrations
 {
-    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
@@ -43,7 +45,7 @@ namespace Mhotivo.Implement.Migrations
                 Email = "admin@mhotivo.edu",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> {context.Roles.First()}
+                Roles = new List<Role> { context.Roles.First() }
             };
             admin.EncryptPassword();
             context.Users.AddOrUpdate(admin);
@@ -76,7 +78,7 @@ namespace Mhotivo.Implement.Migrations
             _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
-            _gradeRepository.Create(new Grade {EducationLevel = _areaRepository.GetById(1).Name, Name = "Kinder"});
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1).Name, Name = "Kinder" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1).Name, Name = "Preparatoria" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Primero" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Segundo" });
@@ -89,7 +91,7 @@ namespace Mhotivo.Implement.Migrations
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Noveno" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Decimo" });
             _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Onceavo" });
-            _courseRepository.Create(new Course {Area = _areaRepository.GetById(1), Name = "English"});
+            _courseRepository.Create(new Course { Area = _areaRepository.GetById(1), Name = "English" });
             _courseRepository.Create(new Course { Area = _areaRepository.GetById(1), Name = "Math" });
             _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "English" });
             _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "Math" });
@@ -118,7 +120,7 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(11), Grade = _gradeRepository.GetById(13) });
             for (int i = 1; i <= 13; i++)
             {
-                _academicYearRepository.Create(new AcademicYear {Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1)});
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
                 _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
                 _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
             }
@@ -151,7 +153,7 @@ namespace Mhotivo.Implement.Migrations
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)
             {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyUser = genericParent});
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyUser = genericParent });
             }
             context.SaveChanges();
         }
