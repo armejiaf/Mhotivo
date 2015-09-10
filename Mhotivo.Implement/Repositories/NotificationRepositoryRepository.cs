@@ -33,7 +33,12 @@ namespace Mhotivo.Implement.Repositories
 
         public Notification Create(Notification itemToCreate)
         {
+            foreach (var user in itemToCreate.Users)
+            {
+                _context.Users.Attach(user);
+            }
             var notification = _context.Notifications.Add(itemToCreate);
+            _context.SaveChanges();
             return notification;
         }
 

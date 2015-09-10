@@ -20,7 +20,7 @@ namespace Mhotivo.Logic
             {
                 mailMessage.To.Add(new MailAddress(user.Email));
             }
-            var client = new SmtpClient("smtp.mailgun.com", 587)
+            var client = new SmtpClient("smtp.mailgun.org", 587)
             {
                 UseDefaultCredentials = false,
                 EnableSsl = true,
