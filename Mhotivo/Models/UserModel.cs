@@ -70,7 +70,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
-        [NoDuplicateEmail]
      //   [RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
         public string UserName { get; set; }
 

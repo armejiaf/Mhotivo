@@ -145,7 +145,6 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Correo Electronico")]
-        [NoDuplicateEmail(ErrorMessage = "FUCK!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Una Contraseña")]

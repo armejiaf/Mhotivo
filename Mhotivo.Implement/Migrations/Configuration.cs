@@ -36,6 +36,7 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
             context.Roles.AddOrUpdate(new Role { Description = "Administrador", Name = "Administrador" });
+            context.Roles.AddOrUpdate(new Role { Description = "Director", Name = "Director" });
             context.Roles.AddOrUpdate(new Role { Description = "Padre", Name = "Padre" });
             context.Roles.AddOrUpdate(new Role { Description = "Maestro", Name = "Maestro" });
             context.SaveChanges();
