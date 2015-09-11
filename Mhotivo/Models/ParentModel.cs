@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
-using Mhotivo.Custom_Attributes;
 
 namespace Mhotivo.Models
 {
