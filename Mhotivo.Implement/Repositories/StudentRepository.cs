@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -85,6 +83,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
+        //Lots of seemingly repeated code.
         public IEnumerable<Student> GetAllStudents()
         {
             return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student
@@ -107,7 +106,7 @@ namespace Mhotivo.Implement.Repositories
                 Tutor1 = x.Tutor1,
                 Tutor2 = x.Tutor2,
                 Disable = x.Disable,
-                User = x.User,
+                MyUser = x.MyUser,
                 Photo = x.Photo
             });
         }
@@ -137,7 +136,7 @@ namespace Mhotivo.Implement.Repositories
                 Biography = student.Biography,
                 Tutor1 = student.Tutor1,
                 Tutor2 = student.Tutor2,
-                User = student.User,
+                MyUser = student.MyUser,
                 Photo = student.Photo
             };
         }
@@ -161,7 +160,7 @@ namespace Mhotivo.Implement.Repositories
             student.AccountNumber = studentEditModel.AccountNumber;
             student.Tutor1 = studentEditModel.Tutor1;
             student.Tutor2 = studentEditModel.Tutor2;
-            student.User = studentEditModel.User;
+            student.MyUser = studentEditModel.MyUser;
             student.Photo = studentEditModel.Photo;
             return Update(student);
         }
@@ -188,7 +187,7 @@ namespace Mhotivo.Implement.Repositories
                 AccountNumber = studentRegisterModel.AccountNumber,
                 Tutor1 = studentRegisterModel.Tutor1,
                 Tutor2 = studentRegisterModel.Tutor2,
-                User = studentRegisterModel.User
+                MyUser = studentRegisterModel.MyUser
             };
         }
 
@@ -216,7 +215,7 @@ namespace Mhotivo.Implement.Repositories
                 BloodType = student.BloodType,
                 Tutor1 = student.Tutor1,
                 Tutor2 = student.Tutor2,
-                User = student.User
+                MyUser = student.MyUser
             };
         }
     }

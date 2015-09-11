@@ -67,9 +67,22 @@
     </div>
     <div style="float: left; width: 250px;">
         @Html.EditorFor(model => model.LastName)
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
+        <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.LastName)</p>
     </div>
+
+    <div id="Email" style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.Email)
+        <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.Email)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Email)</p>
+    </div>
+
+    <div style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.Password)
+        <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.Password)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Password)</p>
+    </div>
+
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">

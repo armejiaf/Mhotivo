@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+//TODO: Seemingly deprecated. Delete?
 namespace Mhotivo.Models
 {
     public class EventCreateModel
@@ -13,6 +13,6 @@ namespace Mhotivo.Models
         public DateTime EndDateTime { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Descripción")]
-        public String Description { get; set; }
+        public string Description { get; set; }
     }
 }

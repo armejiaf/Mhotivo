@@ -9,6 +9,7 @@ namespace Mhotivo.Interface.Interfaces
     public interface IUserRepository
     {
         User First(Expression<Func<User, bool>> query);
+        User FirstOrDefault(Expression<Func<User,bool>> query);
         User GetById(long id);
         User Create(User itemToCreate, Role rol);
         IQueryable<User> Query(Expression<Func<User, User>> expression);
@@ -17,8 +18,8 @@ namespace Mhotivo.Interface.Interfaces
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
-
-        ICollection<Role> GetUserRoles(int idUser);
+        ICollection<Role> GetUserRoles(long idUser);
         User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol);
+        bool ExistEmail(string userName);
     }
 }

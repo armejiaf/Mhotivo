@@ -7,8 +7,7 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        public long Id { get; set; }
         public virtual AcademicYear AcademicYear { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }

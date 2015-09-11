@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -74,7 +72,6 @@ namespace Mhotivo.Implement.Repositories
             var enroll = GetById(itemToUpdate.Id);
             bool academicYear = false;
             bool student = false;
-
             if (enroll.AcademicYear != itemToUpdate.AcademicYear)
             {
                 enroll.AcademicYear = itemToUpdate.AcademicYear;
@@ -85,9 +82,7 @@ namespace Mhotivo.Implement.Repositories
                 enroll.Student = itemToUpdate.Student;
                 student = true;
             }
-
             return Update(enroll, academicYear, student);
-
         }
 
         public Enroll Delete(long id)
@@ -105,15 +100,12 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Enroll> GetAllsEnrolls()
         {
-           
             return Query(x => x).ToList().Select(x => new Enroll
             {
                 Id = x.Id,
                AcademicYear = x.AcademicYear,
                Student = x.Student
-
             });
-        
         }
 
         public void Detach(Enroll enroll)

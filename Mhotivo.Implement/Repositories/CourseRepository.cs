@@ -12,9 +12,9 @@ namespace Mhotivo.Implement.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly MhotivoContext _context;
-        private readonly IAreaRepository _areaRepository;
+        private readonly IEducationLevelRepository _areaRepository; //Could this be needed in the future?
 
-        public CourseRepository(MhotivoContext ctx, IAreaRepository areaRepository)
+        public CourseRepository(MhotivoContext ctx, IEducationLevelRepository areaRepository)
         {
             _context = ctx;
             _areaRepository = areaRepository;
@@ -26,7 +26,7 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = c.Id,
                 Name = c.Name,
-                Area = new Area
+                Area = new EducationLevel
                 {
                     Id = c.Area.Id,
                     Name = c.Area.Name
@@ -34,9 +34,9 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public IEnumerable<Area> GetAllAreas()
+        public IEnumerable<EducationLevel> GetAllAreas()
         {
-            return _context.Areas.Select(a => a).ToList().Select(a => new Area
+            return _context.EducationLevels.Select(a => a).ToList().Select(a => new EducationLevel
             {
                 Id = a.Id,
                 Name = a.Name
@@ -106,9 +106,9 @@ namespace Mhotivo.Implement.Repositories
 
         }
 
-        public IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<Area, TResult>> expression)
+        public IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<EducationLevel, TResult>> expression)
         {
-            return _context.Areas.Select(expression);
+            return _context.EducationLevels.Select(expression);
         }
 
         public Course Update(Course itemToUpdate)

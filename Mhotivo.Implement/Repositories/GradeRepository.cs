@@ -16,7 +16,6 @@ namespace Mhotivo.Implement.Repositories
         public GradeRepository(MhotivoContext ctx)
         {
             _context = ctx;
-           
         }
         
         public Grade GetById(long id)
@@ -70,7 +69,6 @@ namespace Mhotivo.Implement.Repositories
         {
             grade.Name = gradeEditModel.Name;
             grade.EducationLevel = gradeEditModel.EducationLevel;
-
             return Update(grade);
         }
 

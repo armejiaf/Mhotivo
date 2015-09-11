@@ -8,11 +8,8 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int NotificationTypeId { get; set; }
-
-        public string TypeDescription { get; set; }
-
+        public long Id { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-
     }
 }

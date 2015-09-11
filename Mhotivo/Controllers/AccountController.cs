@@ -1,6 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Diagnostics;
+using System.Linq;
+using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Logic;
 using Mhotivo.Models;
 
 namespace Mhotivo.Controllers
@@ -10,10 +11,12 @@ namespace Mhotivo.Controllers
     {
         //private readonly ISessionManagement _sessionManagement;
         private readonly ISessionManagementRepository _sessionManagement;
+        private readonly IParentRepository _parentRepository;
 
-        public AccountController(ISessionManagementRepository sessionManagement)
+        public AccountController(ISessionManagementRepository sessionManagement, IParentRepository parentRepository)
         {
             _sessionManagement = sessionManagement;
+            _parentRepository = parentRepository;
         }
 
         // GET: /Account/Login
@@ -24,20 +27,25 @@ namespace Mhotivo.Controllers
             return View();
         }
 
-
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-
-
-            if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+            var parent = _parentRepository.Filter(y => y.MyUser.Email == model.UserEmail).FirstOrDefault();
+            if (parent == null)
             {
-                return RedirectToLocal(returnUrl);
+                if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+                {
+                    return RedirectToLocal(returnUrl);
+                }
             }
-
+            else
+            {
+                ModelState.AddModelError("", "El usurio no tiene privilegios para entrar a esta pagina");
+                return View(model);
+            }
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
             return View(model);
@@ -47,7 +55,6 @@ namespace Mhotivo.Controllers
         public ActionResult Logout(string returnUrl)
         {
             _sessionManagement.LogOut();
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -58,12 +65,10 @@ namespace Mhotivo.Controllers
         public ActionResult Logout()
         {
             _sessionManagement.LogOut();
-
             return RedirectToAction("Index", "Home");
         }
 
         #region Aplicaciones auxiliares
-
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -72,7 +77,6 @@ namespace Mhotivo.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
         #endregion
     }
 }

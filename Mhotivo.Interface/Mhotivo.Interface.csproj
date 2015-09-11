@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,8 +45,7 @@
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
     <Compile Include="Interfaces\IAppointmentParticipants.cs" />
-    <Compile Include="Interfaces\IAreaReporsitory.cs" />
-    <Compile Include="Interfaces\IAreaRepository.cs" />
+    <Compile Include="Interfaces\IEducationLevelRepository.cs" />
     <Compile Include="Interfaces\IBenefactorRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
@@ -54,7 +54,9 @@
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IHomeworkRepository.cs" />
     <Compile Include="Interfaces\IImportDataRepository.cs" />
-    <Compile Include="Interfaces\IMeisterRepository.cs" />
+    <Compile Include="Interfaces\INotificationCommentRepository.cs" />
+    <Compile Include="Interfaces\IPasswordGenerationService.cs" />
+    <Compile Include="Interfaces\ITeacherRepository.cs" />
     <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\INotificationRepository.cs" />
     <Compile Include="Interfaces\INotificationTypeRepository.cs" />
@@ -68,7 +70,6 @@
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
       <Project>{1ee5faf4-d47a-4655-950f-8d8e1eaadfe0}</Project>

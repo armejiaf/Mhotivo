@@ -1,23 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
-//using Mhotivo.Data.Entities;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
     public class DisplayCourseModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Nombre")]
         public string Name { get; set; }
 
         [Display(Name = "Area")]
-        public Area Area { get; set; }
+        public EducationLevel Area { get; set; }
     }
 
     public class CourseEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
@@ -25,7 +24,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public Area Area { get; set; }
+        public EducationLevel Area { get; set; }
     }
 
     public class CourseRegisterModel
@@ -36,7 +35,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Area")]
         [Display(Name = "Area")]
-        public int AreaId { get; set; }
+        public long Area { get; set; }
     }
 
     public class CourseAreaEditModel

@@ -26,7 +26,7 @@
 <p>
     <a href="../Student/Index" data-dismiss="modal" class="btn btn-small">
         <i class="icon-remove"></i>
-        Cancel
+        Cancelar
     </a>
 
     <button type="submit" class="btn btn-small btn-primary">
@@ -130,10 +130,15 @@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.EditorFor(model => model.BloodType)
+        @Html.DropDownListFor(model => model.BloodType, new SelectList(new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" }), "-- Tipo de Sangre --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.BloodType)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.BloodType)</p>
     </div>
+    @*<div style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.BloodType)
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.BloodType)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.BloodType)</p>
+    </div>*@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
@@ -158,7 +163,7 @@
 <p>
     <a href="../Student/Index" data-dismiss="modal" class="btn btn-small">
         <i class="icon-remove"></i>
-        Cancel
+        Cancelar
     </a>
 
     <button type="submit" class="btn btn-small btn-primary">

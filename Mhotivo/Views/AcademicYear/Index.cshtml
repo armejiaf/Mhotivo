@@ -13,7 +13,13 @@
     <h2>Años Académicos Registrados  </h2>
 
     <a class="toAdd" data-toggle="modal" role="button" href="~/AcademicYear/Add"><span class="btn btn-small btn-primary active">Agregar Año Académico</span></a>
-
+    @using (Html.BeginForm("Index", "AcademicYear", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        <p>
+            Buscar por Año: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Buscar" />
+        </p>
+    }
     @if (!Model.Any())
     {
         <div class="well well-large">
@@ -23,13 +29,7 @@
     }
     else
     {
-         using (Html.BeginForm("Index", "AcademicYear", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
-        {
-            <p>
-                Buscar por Año: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-                <input type="submit" value="Buscar" />
-            </p>
-        }
+
         <table class="table table-striped table-bordered table-hover" id="sample-table-1">
             <thead>
                 <tr>

@@ -82,10 +82,11 @@
 
             <div class="space"></div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-small">
+                @Html.ActionLink("Cancelar", "Index", "Homework", null, new { @class = "btn btn-small icon-remove" })
+                @*<button data-dismiss="modal" class="btn btn-small">
                     <i class="icon-remove"></i>
                     Cancelar
-                </button>
+                </button>*@
                 <button type="submit" class="btn btn-small btn-primary">
                     <i class="icon-ok"></i>
                     Actualizar

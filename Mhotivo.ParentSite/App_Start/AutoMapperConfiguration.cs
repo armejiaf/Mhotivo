@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Providers.Entities;
-using AutoMapper;
+﻿using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.ParentSite.Models;
 
@@ -13,20 +8,16 @@ namespace Mhotivo.ParentSite
     {
         public static void Configure()
         {
-            Mapper.CreateMap<Notification, NotificationModel>();
-            Mapper.CreateMap<NotificationModel, Notification>();
-
-            Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
-            Mapper.CreateMap<NotificationCommentsModel, NotificationComments>();
-
-            Mapper.CreateMap<People, PeopleModel>();
-            Mapper.CreateMap<PeopleModel, People>();
-
-            Mapper.CreateMap<Homework, HomeworkModel>();
-            Mapper.CreateMap<HomeworkModel, Homework>();
-            Mapper.CreateMap<Homework, HomeworkDateModel>();
-            Mapper.CreateMap<HomeworkDateModel, Homework>();
-            //Mapper.AssertConfigurationIsValid();
+            Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
+            Mapper.CreateMap<NotificationCommentsModel, NotificationComments>().ReverseMap();
+            Mapper.CreateMap<PeopleModel, People>().ReverseMap();
+            Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
+            Mapper.CreateMap<HomeworkDateModel, Homework>().ReverseMap();
+            //Mapper.CreateMap<Notification, NotificationModel>();
+            //Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
+            //Mapper.CreateMap<People, PeopleModel>();
+            //Mapper.CreateMap<Homework, HomeworkModel>();
+            //Mapper.CreateMap<Homework, HomeworkDateModel>();
         }
     }
 }

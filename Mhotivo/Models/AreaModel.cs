@@ -1,36 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Mhotivo.Data.Entities;
+
 namespace Mhotivo.Models
 {
-    public class DisplayAreaModel
+    public class DisplayEducationLevelModel
     {
-        //[Key]
-        ///[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Código del área")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [Display(Name = "Nombre del área")]
+        [Display(Name = "Nombre del Nivel de Educacion")]
         public string Name { get; set; }
-
-        public bool Any()
-        {
-            throw new System.NotImplementedException();
-        }
     }
-    public class AreaRegisterModel
+    public class EducationLevelRegisterModel
     {
-        [Required(ErrorMessage = "Debe Ingresar en nombre del Area")]
+        [Required(ErrorMessage = "Debe Ingresar en nombre del Nivel de Educacion")]
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
+    }
 
-     }
-    public class AreaEditModel
+    public class EducationLevelEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
     }
 }

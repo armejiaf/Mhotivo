@@ -14,14 +14,12 @@
 <br/>
 <br/>*@
 <h2>Notificaciones</h2>
-@using (Html.BeginForm("Index", "Notification", FormMethod.Post))
+@using (Html.BeginForm("Index", "Notification", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
-    <table  class="table-striped" id="sample-table-1"> <thead>
-        <tr>
-            <td>@Html.TextBox("Name")</td>
-            <td><button class="btn btn-small btn-primary active" type="submit">Search</button></td>
-        </tr> </thead>
-    </table>
+    <p>
+        Buscar por Nombre: @Html.TextBox("Searchname", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
 }
 
 @if (!Model.Any())
@@ -40,7 +38,9 @@ else
                 <th>@Html.DisplayNameFor(model => model.NotificationName)</th>
                 <th>@Html.DisplayNameFor(model => model.Created)</th>
                 <th>@Html.DisplayNameFor(model => model.Approved)</th>
-                <th></th>
+                <th>Modificar</th>
+                <th>Borrar</th>
+                <th>Commentarios</th>
             </tr>
         </thead>
         <tbody>
@@ -50,16 +50,18 @@ else
                     <td>@Html.DisplayFor(modelItem => item.NotificationName)</td>
                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
                     <td>@Html.DisplayFor(modelItem => item.Approved)</td>
+                    <td><a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                     <td>
-                        <a href="/Notification/Edit/@Html.DisplayFor(modelItem => item.Id)"  ><i class="icon-edit bigger-120"></i></a>
-                        
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Notification", new {id = Html.DisplayFor(modelItem => item.Id)}, FormMethod.Post,
                             new {id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none"}))
                         {
                         }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar la notificación: @Html.DisplayFor(modelItem => item.NotificationName) - creada: @Html.DisplayFor(modelItem => item.Created)?" />
+                               value="¿Realmente desea eliminar la notificación: @Html.DisplayFor(modelItem => item.NotificationName) - creada: @Html.DisplayFor(modelItem => item.Created)?"/>
+                    </td>
+                    <td>
+                        <p>@Html.ActionLink("Comentarios", "Index", "NotificationComment", new { notificationId = Html.DisplayFor(modelItem => item.Id) }, null)</p>
                     </td>
                 </tr>
             }

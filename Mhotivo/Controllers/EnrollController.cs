@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.ModelBinding;
 using System.Web.Mvc;
-
-//using Mhotivo.App_Data.Repositories;
-//using Mhotivo.App_Data.Repositories.Interfaces;
-
+using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Implement.Repositories;
 using Mhotivo.Data.Entities;
-
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 
@@ -16,13 +12,10 @@ namespace Mhotivo.Controllers
 {
     public class EnrollController : Controller
     {
-        //
-        // GET: /Enroll/
-
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IGradeRepository _gradeRepository;
-        private readonly IPeopleRepository _peopleRepository;
+        private readonly IPeopleRepository _peopleRepository; //remove if unused
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
@@ -37,7 +30,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AllowAnonymous]
+       [AuthorizeAdmin]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -55,6 +48,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Search(string id)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -70,39 +64,50 @@ namespace Mhotivo.Controllers
                                  Grade = x.AcademicYear.Grade.Name,
                                  Section = x.AcademicYear.Section
                              });
-
             return View("Index", model);
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
             _enrollRepository.Delete(id);
-
             const string title = "Matricula Borrada";
             const string content = "El estudiante ha sido eliminado exitosamente de la lista de matriculados.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-
             return RedirectToAction("Index");
         }
 
         [HttpGet]
+        [AuthorizeAdmin]
         public ActionResult Add()
         {
-            ViewBag.Id = new SelectList(_studentRepository.Query(x => x), "Id", "FullName");
+            var allStudents = _studentRepository.GetAllStudents().ToList();
+           // var allEnrolls = _enrollRepository.GetAllsEnrolls().ToList();
+            var availableStudents = new List<Student>();
+            foreach (var student in allStudents)
+            {
+                var studentEnroll = _enrollRepository.GetAllsEnrolls().ToList().FindAll(x => x.Student.Id == student.Id && x.AcademicYear.IsActive);
+                if (studentEnroll.Count == 0)
+                    availableStudents.Add(student);
+
+            }
+            ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
+
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
             return View("Create");
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult Add(EnrollRegisterModel modelEnroll)
         {
-            List<AcademicYear> Collection =
+            List<AcademicYear> collection =
                 _academicYearRepository.Filter(x => x.Grade.Id == modelEnroll.GradeId).ToList();
             Student student = _studentRepository.GetById(modelEnroll.Id);
-            if (Collection.Count > 0)
+            if (collection.Count > 0)
             {
-                foreach (AcademicYear academicYear in Collection)
+                foreach (AcademicYear academicYear in collection)
                 {
                     var myEnroll = new Enroll
                                    {
@@ -110,7 +115,7 @@ namespace Mhotivo.Controllers
                                        Student = student
                                    };
 
-                    Enroll enroll = _enrollRepository.Create(myEnroll);
+                    _enrollRepository.Create(myEnroll);
                 }
                 const string title = "Usuario Agregado";
                 const string content = "El usuario ha sido matriculado exitosamente.";
@@ -122,7 +127,6 @@ namespace Mhotivo.Controllers
                 const string content = "El usuario no se logro matricular.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             }
-
             return RedirectToAction("Index");
         }
     }

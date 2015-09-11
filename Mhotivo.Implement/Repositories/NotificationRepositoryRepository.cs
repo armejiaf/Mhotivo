@@ -2,10 +2,12 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 
+//TODO: REFACTOR NAME IF THIS REPLACES NotificationRepository.
 namespace Mhotivo.Implement.Repositories
 {
     public class NotificationRepositoryRepository:INotificationRepository
@@ -31,7 +33,12 @@ namespace Mhotivo.Implement.Repositories
 
         public Notification Create(Notification itemToCreate)
         {
+            foreach (var user in itemToCreate.Users)
+            {
+                _context.Users.Attach(user);
+            }
             var notification = _context.Notifications.Add(itemToCreate);
+            _context.SaveChanges();
             return notification;
         }
 
@@ -69,8 +76,7 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Notification> GetGeneralNotifications(int currentAcademicYear)
         {   
             var generalNotifications = _context.Notifications.Where(
-                    n => n.Created.Year==currentAcademicYear && n.NotificationType.NotificationTypeId == 1 && n.Approved);
-
+                    n => n.Created.Year==currentAcademicYear && n.NotificationType.Id == 1 && n.Approved);
             return generalNotifications;
         }
 
@@ -78,34 +84,39 @@ namespace Mhotivo.Implement.Repositories
         {
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 3 &&
-                      x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
-
+                    x.NotificationType.Id == 3 && 
+                        x.Approved );
             return gradeNotifications;
         }
 
         public IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
         {
-
+            var parent = _context.Parents.FirstOrDefault(x => x.MyUser.Id == id);
+            
             var personalNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 4 &&
-                   x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                    x.NotificationType.Id == 4 &&
+                   //x.Users.FirstOrDefault(u => u.Id == id) != null && 
+                   x.Approved 
+                   //&& x.Id.Equals(id)
+                   && (x.TargetStudent.Tutor1.Id == parent.Id || x.TargetStudent.Tutor2.Id == parent.Id)
+                   );
 
             return personalNotifications;
         }
 
+        public IQueryable<Notification> GetAllNotifications()
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)
         {
-
             var areaNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.NotificationTypeId == 2 &&
-                       x.Users.FirstOrDefault(u => u.Id == id) != null && x.Approved);
+                    x.NotificationType.Id == 2 && x.Approved);
 
             return areaNotifications;
         }
-
-
     }
 }

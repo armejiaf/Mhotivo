@@ -4,7 +4,7 @@ namespace Mhotivo.Models
 {
     public class DisplayGradeModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Nombre")]
         public string Name { get; set; }
@@ -15,7 +15,7 @@ namespace Mhotivo.Models
 
     public class GradeEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]

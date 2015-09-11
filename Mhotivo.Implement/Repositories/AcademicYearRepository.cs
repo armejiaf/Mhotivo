@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -42,7 +40,7 @@ namespace Mhotivo.Implement.Repositories
             var academicYear = _context.AcademicYears.Add(itemToCreate);
             _context.Entry(academicYear.Grade).State = EntityState.Modified;
             _context.SaveChanges();
-            CreateDefaultPensum(itemToCreate);
+            //CreateDefaultPensum(itemToCreate);
             return academicYear;
         }
 
@@ -58,12 +56,12 @@ namespace Mhotivo.Implement.Repositories
             return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
         }
 
+        //Logic is weird. Lots of unused variables being thrown around these two functions.
         public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true,
             bool updateTeacher = true)
         {
             if (updateGrade)
                 _context.Entry(itemToUpdate.Grade).State = EntityState.Modified;
-
             _context.SaveChanges();
             return itemToUpdate;
         }
@@ -73,19 +71,16 @@ namespace Mhotivo.Implement.Repositories
             const bool updateCourse = false;
             var updateGrade = false;
             const bool updateTeacher = false;
-
             var ayear = GetById(itemToUpdate.Id);
             ayear.Approved = itemToUpdate.Approved;
             ayear.IsActive = itemToUpdate.IsActive;
             ayear.Section = itemToUpdate.Section;
             ayear.Year = itemToUpdate.Year;
-
             if (ayear.Grade.Id != itemToUpdate.Grade.Id)
             {
                 ayear.Grade = itemToUpdate.Grade;
                 updateGrade = true;
             }
-
             return Update(ayear, updateCourse, updateGrade, updateTeacher);
         }
 
@@ -105,7 +100,7 @@ namespace Mhotivo.Implement.Repositories
         public void CreateDefaultPensum(AcademicYear academicYear)
         {
             var pensums = GetDefaultPensum(academicYear.Grade.Id);
-            var teacher = _context.Meisters.First(x => x.FirstName.Equals("Default"));
+            var teacher = _context.Teachers.First(x => x.FirstName.Equals("Maestro"));
             foreach (var pensum in pensums)
             {
                 var academicYearDetails = new AcademicYearDetail
@@ -122,7 +117,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Pensum> GetDefaultPensum(int grade)
+        public IEnumerable<Pensum> GetDefaultPensum(long grade)
         {
             var pensum = _context.Pensums.Where(x => (x.Grade.Id == grade));
             return pensum.Count() != 0 ? pensum.Include(x => x.Course).Include(x => x.Grade) : null;
@@ -141,13 +136,13 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public bool ExistAcademicYear(int year, int grade, string section)
+        public bool ExistAcademicYear(int year, long grade, string section)
         {
             var years = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved);
             return years.Any();
         }
 
-        public AcademicYear GetByFields(int year, int grade, string section)
+        public AcademicYear GetByFields(int year, long grade, string section)
         {
             var academicYears = GetAllAcademicYears().Where(x => Equals(x.Year.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved).ToArray();
             return academicYears.Any() ? academicYears.First() : null;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
@@ -8,9 +7,8 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        public long Id { get; set; }
         public string Name { get; set; }
-        public virtual Area Area { get; set; }
+        public virtual EducationLevel Area { get; set; }
     }
 }

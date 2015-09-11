@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Models;
 
@@ -12,27 +8,20 @@ namespace Mhotivo
     {
         public static void Configure()
         {
-            Mapper.CreateMap<DisplayUserModel, User>();
-            Mapper.CreateMap<User, DisplayUserModel>();
-
-            Mapper.CreateMap<UserEditModel, User>();
-            Mapper.CreateMap<User, UserEditModel>();
-
-            Mapper.CreateMap<Notification, NotificationModel>();
-            Mapper.CreateMap<NotificationModel, Notification>();
-
-            Mapper.CreateMap<NotificationType, NotificationTypeModel>();
-            Mapper.CreateMap<NotificationTypeModel, NotificationType>();
-
-            Mapper.CreateMap<DisplayRolModel, Role>();
-            Mapper.CreateMap<Role, DisplayRolModel>();
-
-            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>();
-            Mapper.CreateMap<Benefactor, DisplayBenefactorModel>();
-
-            Mapper.CreateMap<CreateHomeworkModel, Homework>();
-            Mapper.CreateMap<Homework, CreateHomeworkModel>();
-            
+            Mapper.CreateMap<DisplayUserModel, User>().ReverseMap();
+            Mapper.CreateMap<UserEditModel, User>().ReverseMap();
+            Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
+            Mapper.CreateMap<NotificationTypeModel, NotificationType>().ReverseMap();
+            Mapper.CreateMap<DisplayRolModel, Role>().ReverseMap();
+            Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
+            Mapper.CreateMap<CreateHomeworkModel, Homework>().ReverseMap();
+            //Mapper.CreateMap<Homework, CreateHomeworkModel>();
+            //Mapper.CreateMap<User, DisplayUserModel>();
+            //Mapper.CreateMap<User, UserEditModel>();
+            //Mapper.CreateMap<Notification, NotificationModel>();
+            //Mapper.CreateMap<NotificationType, NotificationTypeModel>();
+            //Mapper.CreateMap<Role, DisplayRolModel>();
+            //Mapper.CreateMap<Benefactor, DisplayBenefactorModel>();
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
@@ -14,7 +11,7 @@ namespace Mhotivo.Implement.Repositories
     public class SecurityRepository : ISecurityRepository
     {
         private readonly MhotivoContext _context;
-        private readonly IRoleRepository _roleRepository;
+        private readonly IRoleRepository _roleRepository; //TODO: Do more in-depth code reading, see if this is truly necessary.
         private readonly IUserRepository _userRepository;
         private readonly IPeopleRepository _peopleRepository;
         
@@ -40,39 +37,20 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!IsAuthenticated())
                 return new List<Role>();
-
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-            
-            var lstRole = new Collection<Role>();
-            var userTemp = _userRepository.GetById(idUser);
-            
-            if(userTemp == null)
-                return lstRole;
-
-            var userroles =
-                _context.UserRoles.Where(x => x.User != null && x.Role != null && x.User.Id == idUser)
-                    .Select(x => x.Role)
-                    .ToList();
-
-            return userroles;
+            return _userRepository.GetUserRoles(idUser);
         }
 
         public ICollection<Group> GetUserLoggedGroups()
         {
             if (!IsAuthenticated())
                 return new List<Group>();
-
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-
             var userTemp = _userRepository.GetById(idUser);
-
             if (userTemp == null)
                 return new Collection<Group>();
-
             if (userTemp.Groups == null)
                 return new Collection<Group>();
-
-
             return userTemp.Groups;
         }
 
@@ -80,9 +58,7 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!IsAuthenticated())
                 return null;
-
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-
             return _userRepository.GetById(idUser);
         }
 
@@ -90,9 +66,7 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!IsAuthenticated())
                 return new List<People>();
-
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-
             var peopleTemp = _peopleRepository.GetAllPeopleByUserId(idUser).ToList();
             return peopleTemp;
         }
@@ -101,7 +75,6 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!IsAuthenticated())
                 return "";
-
             return HttpContext.Current.Session[_userNameIdentifier].ToString();
         }
 
@@ -109,7 +82,6 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!IsAuthenticated())
                 return "";
-
             return HttpContext.Current.Session[_userEmailIdentifier].ToString();
         }
 
@@ -117,13 +89,9 @@ namespace Mhotivo.Implement.Repositories
         {
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
                 return false;
-
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-
             var val = HttpContext.Current.Session[_userIdIdentifier];
-
             if (val != null) return true;
-
             var myUser = _userRepository.GetById(idUser);
             HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;
             HttpContext.Current.Session[_userNameIdentifier] = myUser.DisplayName;
@@ -131,6 +99,5 @@ namespace Mhotivo.Implement.Repositories
             HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(idUser).First().Name;
             return true;
         }
-
     }
 }

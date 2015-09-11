@@ -59,7 +59,7 @@ namespace Mhotivo.Implement.Repositories
                                                                          .Include(x => x.Teacher).First() : null;
         }
 
-        public AcademicYearDetail GetById(int id)
+        public AcademicYearDetail GetById(long id)
         {
             var academicYearDetails = _context.AcademicYearDetails.Where(x => x.Id == id);
             return academicYearDetails.Count() != 0 ? academicYearDetails.Include(x => x.AcademicYear)
@@ -98,13 +98,10 @@ namespace Mhotivo.Implement.Repositories
         {
             if (updateAcademicYear)
                 _context.Entry(itemToUpdate.AcademicYear).State = EntityState.Modified;
-
             if (updateCourse)
                 _context.Entry(itemToUpdate.Course).State = EntityState.Modified;
-
             if (updateTeacher)
                 _context.Entry(itemToUpdate.Teacher).State = EntityState.Modified;
-
             _context.SaveChanges();
             return itemToUpdate;
         }
@@ -114,34 +111,29 @@ namespace Mhotivo.Implement.Repositories
             var updateCourse = false;
             var updateAcademicYear = false;
             var updateTeacher = false;
-
             var academicYearDetail = GetById(itemToUpdate.Id);
             academicYearDetail.TeacherStartDate = itemToUpdate.TeacherStartDate;
             academicYearDetail.TeacherEndDate = itemToUpdate.TeacherEndDate;
             academicYearDetail.Schedule = itemToUpdate.Schedule;
             academicYearDetail.Room = itemToUpdate.Room;
-
             if (academicYearDetail.AcademicYear.Id != itemToUpdate.AcademicYear.Id)
             {
                 academicYearDetail.AcademicYear = itemToUpdate.AcademicYear;
                 updateAcademicYear = true;
             }
-
             if (academicYearDetail.Course.Id != itemToUpdate.Course.Id)
             {
                 academicYearDetail.Course = itemToUpdate.Course;
                 updateCourse = true;
             }
-
             if (academicYearDetail.Teacher.Id != itemToUpdate.Teacher.Id)
             {
                 academicYearDetail.Teacher = itemToUpdate.Teacher;
                 updateTeacher = true;
             }
-
             return Update(academicYearDetail, updateAcademicYear, updateCourse, updateTeacher);
         }
-        public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(int academicYearId)
+        public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(long academicYearId)
         {
             var query = Query(x => x).ToList().Select(x => new AcademicYearDetail
             {
@@ -157,7 +149,7 @@ namespace Mhotivo.Implement.Repositories
             return query;
         }
 
-        public AcademicYearDetail Delete(int id)
+        public AcademicYearDetail Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.AcademicYearDetails.Remove(itemToDelete);

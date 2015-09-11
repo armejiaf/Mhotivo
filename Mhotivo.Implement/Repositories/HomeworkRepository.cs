@@ -25,7 +25,7 @@ namespace Mhotivo.Implement.Repositories
 
         public Homework GetById(long id)
         {
-            IQueryable<Homework> homeworks = _context.Homeworks.Where(x => x.Id == id && !false);
+            IQueryable<Homework> homeworks = _context.Homeworks.Where(x => x.Id == id);
             return homeworks.Count() != 0 ? homeworks.First() : null;
         }
 
@@ -57,13 +57,12 @@ namespace Mhotivo.Implement.Repositories
         public Homework Delete(long id)
         {
             Homework itemToDelete = GetById(id);
-
             _context.Homeworks.Remove(itemToDelete);
             _context.SaveChanges();
-            
             return itemToDelete;
         }
 
+        //TODO: Automapper & ICloneable.
         public IEnumerable<Homework> GetAllHomeworks()
         {
             return Query(x => x).Where(x => !false).ToList().Select(x => new Homework
@@ -126,7 +125,6 @@ namespace Mhotivo.Implement.Repositories
             homework.DeliverDate = displayHomeworkModel.DeliverDate;
             homework.Points = displayHomeworkModel.Points;
             homework.AcademicYearDetail = displayHomeworkModel.AcademicYearDetail;
-
             return Update(homework);
         }
 

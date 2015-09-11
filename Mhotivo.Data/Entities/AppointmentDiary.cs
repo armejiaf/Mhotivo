@@ -8,12 +8,12 @@ namespace Mhotivo.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public String Title { get; set; }
+        public long Id { get; set; }
+        public string Title { get; set; }
         public DateTime DateTimeScheduled { get; set; }
         public int StatusEnum { get; set; }
         public int AppointmentLength { get; set; }
         public User Creator { get; set; }
-        public bool IsAproveed { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

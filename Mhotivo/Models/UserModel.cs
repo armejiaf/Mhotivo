@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Mhotivo.Data.Entities;
+using Mhotivo.Controllers;
+using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Models
 {
     public class DisplayUserModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Correo Elctrónico")]
         public string Email { get; set; }
@@ -13,11 +16,13 @@ namespace Mhotivo.Models
         [Display(Name = "Nombre")]
         public string DisplayName { get; set; }
 
-        [Display(Name = "Estado")]
+        [Display(Name = "Activo")]
         public string Status { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
         public Role Role { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class LocalPasswordModel
@@ -64,6 +69,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
+     //   [RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
         public string UserName { get; set; }
 
         [Display(Name = "Estado")]
@@ -77,17 +83,17 @@ namespace Mhotivo.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar contraseña")]
-        [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
-        public int Id { get; set; }
+        public int RoleId { get; set; }
     }
 
     public class UserEditModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]

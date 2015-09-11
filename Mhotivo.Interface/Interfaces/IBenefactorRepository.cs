@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
 
-
 namespace Mhotivo.Interface.Interfaces
 {
     public interface IBenefactorRepository

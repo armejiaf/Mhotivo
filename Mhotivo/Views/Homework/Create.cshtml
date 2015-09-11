@@ -52,7 +52,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.course)
+                    @Html.LabelFor(model => model.Course)
                 </div>
                 <div class="controls">
                     @Html.DropDownList("course")
@@ -91,10 +91,12 @@
 
             <div class="space"></div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-small">
+                @*<button data-dismiss="modal" class="btn btn-small">
                     <i class="icon-remove"></i>
                     Cancelar
-                </button>
+                </button>*@
+                @Html.ActionLink("Cancelar", "Index", "Homework", null, new { @class = "btn btn-small icon-remove" })
+                
                 <button type="submit" class="btn btn-small btn-primary">
                     <i class="icon-ok"></i>
                     Crear

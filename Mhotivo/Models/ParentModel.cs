@@ -141,6 +141,15 @@ namespace Mhotivo.Models
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
+        [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Correo Electronico")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Una Contraseña")]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
+
         [Required(ErrorMessage = "Debe Ingresar Estado")]
         [Display(Name = "Estado")]
         public string State { get; set; }

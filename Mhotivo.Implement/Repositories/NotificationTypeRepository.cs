@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
-using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
 namespace Mhotivo.Implement.Repositories
@@ -20,7 +15,6 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-
         public Data.Entities.NotificationType First(System.Linq.Expressions.Expression<Func<Data.Entities.NotificationType, bool>> query)
         {
             return _context.NotificationTypes.First(query);
@@ -28,7 +22,7 @@ namespace Mhotivo.Implement.Repositories
 
         public Data.Entities.NotificationType GetById(long id)
         {
-            return _context.NotificationTypes.FirstOrDefault(x => x.NotificationTypeId == id);
+            return _context.NotificationTypes.FirstOrDefault(x => x.Id == id);
         }
 
         public Data.Entities.NotificationType Create(Data.Entities.NotificationType itemToCreate)
@@ -61,6 +55,5 @@ namespace Mhotivo.Implement.Repositories
         {
             _context.SaveChanges();
         }
-
     }
 }

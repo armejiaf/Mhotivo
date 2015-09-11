@@ -9,7 +9,6 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-
         public string Name { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }

@@ -5,8 +5,6 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Logic
 {
-
-
     public class SendEmail
     {
         public static void SendEmailToUsers(List<User> userList, string emailBodyMessage, string emailSubject)
@@ -17,27 +15,21 @@ namespace Mhotivo.Logic
                 Subject = emailSubject,
                 Body = emailBodyMessage,
                 IsBodyHtml = true
-
             };
-
-
             foreach (var user in userList)
             {
                 mailMessage.To.Add(new MailAddress(user.Email));
             }
-
             var client = new SmtpClient("smtp.mailgun.org", 587)
             {
                 UseDefaultCredentials = false,
                 EnableSsl = true,
                 Credentials =
-                    new NetworkCredential(
-                        "postmaster@app1561.mailgun.org", "70ic5h7hd6z2"), //aca van las credenciales del coreo fuente
+                    new NetworkCredential("mhotivo@sandbox172d6462cbee435f9a8cd0a91d1f6619.mailgun.org", "password"), //aca van las credenciales del coreo fuente
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
-
             client.Send(mailMessage);
-
         }
+
     }
 }

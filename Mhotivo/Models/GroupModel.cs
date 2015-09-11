@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace Mhotivo.Models
 {
     public class AddGroup
     {
+        public long Id { get; set; }
         [Required]
         [DisplayName("Name")]
         public string Name { get; set; }

@@ -1,21 +1,22 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Mhotivo.Data.Entities;
 
+//Unused. Delete?
 namespace Mhotivo.Models
 {
     public class AppointmentDiaryModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required(ErrorMessage = "Debe Ingresar el titulo")]
-        public String Title { get; set; }
+        public string Title { get; set; }
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         public DateTime DateTimeScheduled { get; set; }
         public int StatusEnum { get; set; }
         [Required(ErrorMessage = "Debe Ingresar la duracion")]
         public int AppointmentLength { get; set; }
-        public  Mhotivo.Data.Entities.User Creator { get; set; }
-        public bool IsAproveed { get; set; }
+        public User Creator { get; set; }
+        public bool IsApproved { get; set; }
     }
 
     public class EventCreate
@@ -28,6 +29,6 @@ namespace Mhotivo.Models
         public DateTime EndDateTime { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Descripción")]
-        public String Description { get; set; }
+        public string Description { get; set; }
     }
 }

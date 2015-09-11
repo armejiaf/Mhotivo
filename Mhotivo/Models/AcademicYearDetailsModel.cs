@@ -1,8 +1,6 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
@@ -10,7 +8,7 @@ namespace Mhotivo.Models
     public class DisplayAcademicYearDetailsModel
     {
         public ICollection<AcademicYearDetail> AcademicYears { get; set; }
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Fecha inicio de clase")]
         public DateTime TeacherStartDate { get; set; }
@@ -29,7 +27,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Maestro/a")]
         public string Teacher { get; set; }
-
     }
 
     public class AcademicYearDetailsRegisterModel
@@ -56,17 +53,16 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]
         [Display(Name = "Maestro")]
-        public Meister Teacher { get; set; }
+        public Teacher Teacher { get; set; }
 
         [Display(Name = "Id Año Academico")]
-        public int AcademicYearId { get; set; }
-
+        public long AcademicYearId { get; set; }
     }
 
     public class AcademicYearDetailsEditModel
     {
         public ICollection<AcademicYearDetail> AcademicYears { get; set; }
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar una Fecha de Ingreso del Maestro")]
         [Display(Name = "Fecha ingreso del maestro")]
@@ -90,6 +86,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]
         [Display(Name = "Maestro/a")]
-        public Meister Teacher { get; set; }
+        public Teacher Teacher { get; set; }
     }
 }

@@ -51,7 +51,7 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container-fluid">
-					<a href="#" class="brand">
+					<a href="Home/Index" class="brand">
 						<small>
 							Mhotivo
 						</small>
@@ -62,7 +62,7 @@
                         <li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<span class="user-info">
-								    <small>Welcome,</small>
+								    <small>Bienvenido(a),</small>
                                     @Html.Action("GetUserLoggedName", "Home")
 								</span>
 
@@ -143,36 +143,7 @@
 			</div>
 
 			<div class="main-content">
-				<div class="breadcrumbs" id="breadcrumbs">
-					<ul class="breadcrumb">
-						<li>
-							<i class="icon-home home-icon"></i>
-							<a href="#">Home</a>
-
-							<span class="divider">
-								<i class="icon-angle-right arrow-icon"></i>
-							</span>
-						</li>
-
-						<li>
-							<a href="#">Other Pages</a>
-
-							<span class="divider">
-								<i class="icon-angle-right arrow-icon"></i>
-							</span>
-						</li>
-						<li class="active">Blank Page</li>
-					</ul><!--.breadcrumb-->
-
-					<div class="nav-search" id="nav-search">
-						<form class="form-search" >
-							<span class="input-icon">
-								<input type="text" placeholder="Search ..." class="input-small nav-search-input" id="nav-search-input" autocomplete="off" />
-								<i class="icon-search nav-search-icon"></i>
-							</span>
-						</form>
-					</div><!--#nav-search-->
-				</div>
+				
 
 				@RenderSection("featured", required: false)
 				<div class="page-content">
@@ -315,8 +286,10 @@
     	                id = id.replace("parent/Parent/", "Parent/");
     	                id = id.replace("Benefactor/Benefactor/", "Benefactor/");
     	                id = id.replace("benefactor/Benefactor/", "Benefactor/");
-    	                id = id.replace("Meister/Meister/", "Meister/");
-    	                id = id.replace("meister/Meister/", "Meister/");
+    	                id = id.replace("Teacher/Teacher/", "Teacher/");
+    	                id = id.replace("teacher/Teacher/", "Teacher/");
+    	                id = id.replace("AcademicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
+    	                id = id.replace("academicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
     	                window.location = id;
     	            })
     	        });
@@ -337,8 +310,10 @@
     	                id = id.replace("parent/Parent/", "Parent/");
     	                id = id.replace("Benefactor/Benefactor/", "Benefactor/");
     	                id = id.replace("benefactor/Benefactor/", "Benefactor/");
-    	                id = id.replace("Meister/Meister/", "Meister/");
-    	                id = id.replace("meister/Meister/", "Meister/");
+    	                id = id.replace("Teacher/Teacher/", "Teacher/");
+    	                id = id.replace("teacher/Teacher/", "Teacher/");
+    	                id = id.replace("AcademicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
+    	                id = id.replace("academicYearDetails/AcademicYearDetails/", "AcademicYearDetails/");
     	                window.location = id;
     	            })
     	        });

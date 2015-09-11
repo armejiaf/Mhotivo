@@ -36,8 +36,15 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
@@ -49,12 +56,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\MhotivoContext.cs" />
+    <Compile Include="Migrations\201509101850279_removestudentidfromnotification.cs" />
+    <Compile Include="Migrations\201509101850279_removestudentidfromnotification.Designer.cs">
+      <DependentUpon>201509101850279_removestudentidfromnotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ParseToHonduranDateTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AcademicYearDetailRepository.cs" />
     <Compile Include="Repositories\AcademicYearDetailsRepository.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\AppoimentParticipant.cs" />
-    <Compile Include="Repositories\AreaRepository.cs" />
+    <Compile Include="Repositories\EducationLevelRepository.cs" />
     <Compile Include="Repositories\BenefactorRepository.cs" />
     <Compile Include="Repositories\ClassActivityRepository.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
@@ -64,7 +77,9 @@
     <Compile Include="Repositories\GradeRepository.cs" />
     <Compile Include="Repositories\HomeworkRepository.cs" />
     <Compile Include="Repositories\ImportDataRepository.cs" />
-    <Compile Include="Repositories\MeisterRepository.cs" />
+    <Compile Include="Repositories\NotificationCommentRepository.cs" />
+    <Compile Include="Repositories\PreloadedPasswordsGenerationService.cs" />
+    <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\NotificationRepositoryRepository.cs" />
     <Compile Include="Repositories\NotificationTypeRepository.cs" />
@@ -91,6 +106,11 @@
       <Project>{aec3ffc7-bca3-4b90-8e44-dea10e8f89e8}</Project>
       <Name>Mhotivo.Interface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509101850279_removestudentidfromnotification.resx">
+      <DependentUpon>201509101850279_removestudentidfromnotification.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
@@ -19,7 +16,6 @@ namespace Mhotivo.Models
         public string NotificationName { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        //[Display(Name = "Mensaje")]
         [AllowHtml]
         public string Message { get; set; }
 
@@ -36,7 +32,7 @@ namespace Mhotivo.Models
         public SelectList NotificationTypeOpionSelectList { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
-        public int GradeIdifNotificationTypePersonal { get; set; } //si el NotificationTypeOpionSelectList es Grado que guarde que grado
+        public long GradeIdifNotificationTypePersonal { get; set; } //si el NotificationTypeOpionSelectList es Grado que guarde que grado
 
         [Display(Name = "Enviar Notificacion por correo?")]
         public bool SendingEmail { get; set; }
@@ -45,7 +41,7 @@ namespace Mhotivo.Models
         public string IdIsGradeAreaGeneralSelected { get; set; }//id de grado,area,user seleccionado
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
-        public int NotificationTypeId { get; set; } // For the the selected Product
+        public long NotificationTypeId { get; set; } // For the the selected Product
 
         public DateTime Created { get; set; }
 
@@ -54,6 +50,6 @@ namespace Mhotivo.Models
         public SelectList StudentOptionSelectList { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
-        public int StudentId { get; set; }//id de grado,area,user seleccionado
+        public long StudentId { get; set; }//id de grado,area,user seleccionado
     }
 }

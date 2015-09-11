@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.ParentSite.Models
@@ -17,6 +16,5 @@ namespace Mhotivo.ParentSite.Models
         public float Points { get; set; }
 
         public virtual AcademicYearDetail AcademicYearDetail { get; set; }
-
     }
 }

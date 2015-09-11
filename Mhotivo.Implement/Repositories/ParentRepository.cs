@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using Mhotivo.Interface;
 using Mhotivo.Interface.Interfaces;
-using Mhotivo.Data;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 
@@ -27,26 +25,26 @@ namespace Mhotivo.Implement.Repositories
         
         public Parent First(Expression<Func<Parent, Parent>> query)
         {
-            var parent = _context.Parents.Select(query).Include(x => x.User);
+            var parent = _context.Parents.Select(query).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetById(long id)
         {
-            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable).Include(x => x.User);
+            var parent = _context.Parents.Where(x => x.Id == id && !x.Disable).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent GetByIdNumber(string idNumber)
         {
-            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable).Include(x => x.User);
+            var parent = _context.Parents.Where(x => x.IdNumber == idNumber && !x.Disable).Include(x => x.MyUser);
             return parent.Count() != 0 ? parent.First() : null;
         }
 
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
-            _context.Users.Attach(itemToCreate.User);
+            _context.Users.Attach(itemToCreate.MyUser);
             var parent = _context.Parents.Add(itemToCreate);
             _context.SaveChanges();
             return parent;
@@ -54,13 +52,13 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression)
         {
-            var myParents = _context.Parents.Select(expression).Include(x => x.User);
+            var myParents = _context.Parents.Select(expression).Include(x => x.MyUser);
             return myParents;
         }
 
         public IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression)
         {
-            var myParents = _context.Parents.Where(expression).Include(x => x.User);
+            var myParents = _context.Parents.Where(expression).Include(x => x.MyUser);
             return myParents;
         }
 
@@ -77,7 +75,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return itemToDelete;
         }
-
+        //TODO: AUTOMAPPER.
         public IEnumerable<Parent> GetAllParents()
         {
             return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Parent
@@ -92,12 +90,12 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                //Gender = Utilities.GenderToString(x.Gender),
                 Gender = x.Gender,
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                Photo = x.Photo
+                Photo = x.Photo,
+                MyUser = x.MyUser
             });
         }
 
@@ -118,7 +116,6 @@ namespace Mhotivo.Implement.Repositories
                 City = parent.City,
                 State = parent.State,
                 Country = parent.Country,
-                //Gender = Utilities.GenderToString(parent.Gender),
                 Gender = parent.Gender,
                 Contacts = parent.Contacts,
                 Photo = parent.Photo
@@ -133,14 +130,12 @@ namespace Mhotivo.Implement.Repositories
             parent.Country = parentEditModel.Country;
             parent.IdNumber = parentEditModel.IdNumber;
             parent.BirthDate = parentEditModel.BirthDate;
-            //parent.Gender = Utilities.IsMasculino(parentEditModel.Gender);
             parent.Gender = parentEditModel.Gender;
             parent.Nationality = parentEditModel.Nationality;
             parent.State = parentEditModel.State;
             parent.City = parentEditModel.City;
             parent.Address = parentEditModel.Address;
             parent.Photo = parentEditModel.Photo;
-            //parent.User = parentEditModel.User;
             return Update(parent);
         }
 
@@ -153,7 +148,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parentRegisterModel.FirstName + " " + parentRegisterModel.LastName).Trim(),
                 IdNumber = parentRegisterModel.IdNumber,
                 BirthDate = parentRegisterModel.BirthDate,
-                //Gender = Utilities.IsMasculino(parentRegisterModel.Gender),
                 Gender = parentRegisterModel.Gender,
                 Nationality = parentRegisterModel.Nationality,
                 State = parentRegisterModel.State,
@@ -161,7 +155,7 @@ namespace Mhotivo.Implement.Repositories
                 City = parentRegisterModel.City,
                 Address = parentRegisterModel.Address,
                 Photo = parentRegisterModel.Photo,
-                User = parentRegisterModel.User
+                MyUser = parentRegisterModel.MyUser
             };
         }
 
@@ -175,7 +169,6 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parent.FirstName + " " + parent.LastName).Trim(),
                 IdNumber = parent.IdNumber,
                 BirthDate = parent.BirthDate,
-                //Gender = Utilities.GenderToString(parent.Gender),
                 Gender = parent.Gender,
                 Nationality = parent.Nationality,
                 Country = parent.Country,
@@ -184,7 +177,7 @@ namespace Mhotivo.Implement.Repositories
                 Address = parent.Address,
                 Id = parent.Id,
                 Photo = parent.Photo,
-                User = parent.User
+                MyUser = parent.MyUser
             };
         }
 
@@ -198,8 +191,13 @@ namespace Mhotivo.Implement.Repositories
             var parentWithIdNumber = _context.Parents.Where(x => x.IdNumber.Equals(idNumber));
             if (parentWithIdNumber.Any())
                 return true;
-
             return false;
+        }
+
+        public bool ExistEmail(string email)
+        {
+            var parentWithIdNumber = _context.Users.Where(x => x.Email.Equals(email));
+            return parentWithIdNumber.Any();
         }
 
         internal void Detach(Parent parent)

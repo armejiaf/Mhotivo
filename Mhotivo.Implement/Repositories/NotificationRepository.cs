@@ -6,6 +6,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 
+//TODO: SEEMINGLY DEPRECATED. ELIMINATE AND REFACTOR.
 namespace Mhotivo.Implement.Repositories
 {
     public class NotificationRepository:INotification
@@ -69,9 +70,8 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear)
         {
             var currentYear = currentAcademicYear.Year;
-            var generalNotifications = _context.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationType.NotificationTypeId==1);
+            var generalNotifications = _context.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationType.Id==1);
             return generalNotifications;
         }
-
     }
 }

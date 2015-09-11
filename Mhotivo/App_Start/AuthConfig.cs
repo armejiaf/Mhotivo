@@ -5,6 +5,7 @@ using System.Text;
 //using Microsoft.Web.WebPages.OAuth;
 using Mhotivo.Models;
 
+//TODO: Implement or delete this.
 namespace Mhotivo
 {
     public static class AuthConfig
