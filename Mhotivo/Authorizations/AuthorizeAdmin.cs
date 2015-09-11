@@ -25,6 +25,4 @@ namespace Mhotivo.Authorizations
             context.Result = new RedirectResult(urlHelper.Action("Index","Home"));
         }
     }
-
-
 }

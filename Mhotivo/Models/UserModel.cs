@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Mhotivo.Custom_Attributes;
 using Mhotivo.Data.Entities;
 using Mhotivo.Controllers;
 using Mhotivo.Implement.Context;
@@ -70,7 +69,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
-        [NoDuplicateEmail]
      //   [RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
         public string UserName { get; set; }
 
