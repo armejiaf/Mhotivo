@@ -174,7 +174,7 @@ namespace Mhotivo.Controllers
                 notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
                 notificationIdentity.TargetStudent = _studentRepository.GetById(eventNotification.StudentId);
             }
-            else if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id != Area)
+            else if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Area)
             {
                 notificationIdentity.IdGradeAreaUserGeneralSelected = Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
                 notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
@@ -213,8 +213,10 @@ namespace Mhotivo.Controllers
                 _sessionManagement.GetUserLoggedRole().Equals("Administrador"))
                 notificationIdentity.Approved = true;
 
+            var email = _sessionManagement.GetUserLoggedEmail();
+            notificationIdentity.NotificationCreator =
+                _userRepository.FirstOrDefault(x => x.Email.Equals(email));
             _notificationRepository.Create(notificationIdentity);
-            _notificationRepository.SaveChanges();
             const string title = "Notificación Agregado";
             var content = "El evento " + eventNotification.NotificationName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -223,19 +225,9 @@ namespace Mhotivo.Controllers
 
         private void AddUsersToLevelNotification(Notification notificationIdentity)
         {
-            var grades = new List<long>();
-            if (notificationIdentity.IdGradeAreaUserGeneralSelected == General)
-            {
-                grades = _gradeRepository.GetAllGrade().Where(x => x.EducationLevel == "Kinder").Select(x => x.Id).ToList();
-            }
-            else if (notificationIdentity.IdGradeAreaUserGeneralSelected == Area)
-            {
-                grades = _gradeRepository.GetAllGrade().Where(x => x.EducationLevel == "Primaria").Select(x => x.Id).ToList();
-            }
-            else if (notificationIdentity.IdGradeAreaUserGeneralSelected == Grado)
-            {
-                grades = _gradeRepository.GetAllGrade().Where(x => x.EducationLevel == "Secundaria").Select(x => x.Id).ToList();
-            }
+           
+            var area = _areaReporsitory.GetById(notificationIdentity.IdGradeAreaUserGeneralSelected);
+            var grades = _gradeRepository.GetAllGrade().Where(x => x.EducationLevel.Equals(area.Name)).Select(x => x.Id).ToList();
             if (!grades.Any())
             {
                 return;
@@ -252,9 +244,10 @@ namespace Mhotivo.Controllers
                 }
                 foreach (var student in studentList)
                 {
-                    var notificationParentId = _studentRepository.Query(x => x).Include("Users").Where(x => x.Id == student.Id
+                    var student1 = student;
+                    var notificationParentId = _studentRepository.Query(x => x).Where(x => x.Id == student1.Id
                                                                         && x.Tutor1 != null)
-                                                                        .Select(x => x.Tutor1)
+                                                                        .Select(x => x.Tutor1).Include(x => x.MyUser)
                                                                         .FirstOrDefault();
                     if (notificationParentId != null)
                     {
@@ -347,13 +340,35 @@ namespace Mhotivo.Controllers
                     }).ToList();
                     break;
                 case "3":
-                        
-                    list = _gradeRepository.Query(x => x).Select(c => new SelectListItem
+                    if (_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
                     {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    }).ToList();
+                        list = _gradeRepository.Query(x => x).Select(c => new SelectListItem
+                        {
+                            Text = c.Name,
+                            Value = c.Id.ToString()
+                        }).ToList();
+                    }
+                    else
+                    {
+                        var email = _sessionManagement.GetUserLoggedEmail();
+                        var teacher = _teacherRepository.FirstOrDefault(x => x.MyUser.Email.Equals(email));
+                        var academicYears = _academicYearDetailRepository.GetAllAcademicYear(teacher.Id);
+                        var gradesTeacherGiveClasssesTo = new List<Grade>();
+
+                        foreach (
+                            var year in academicYears.Where(year => !gradesTeacherGiveClasssesTo.Contains(year.Grade)))
+                        {
+                            gradesTeacherGiveClasssesTo.Add(year.Grade);
+                        }
+
+                        list = gradesTeacherGiveClasssesTo.Select(c => new SelectListItem
+                        {
+                            Text = c.Name,
+                            Value = c.Id.ToString()
+                        }).ToList();
+                    }
                     break;
+
                 case "4":
                     var user =
                         _userRepository.GetAllUsers()
@@ -470,16 +485,8 @@ namespace Mhotivo.Controllers
                     if (toEdit.NotificationType != null && toEdit.NotificationType.Id == notificationBeforeEdit.NotificationType.Id)
                     {
                         //Something is weird here. Other than the empty ifs, I mean.
-                        if (toEdit.NotificationType.Id == Personal && toEdit.StudentId == notificationBeforeEdit.StudentId)
-                        {
-                        }
-                        else if (toEdit.NotificationType.Id != Personal && toEdit.IdGradeAreaUserGeneralSelected == notificationBeforeEdit.IdGradeAreaUserGeneralSelected)
-                        {
-                        }
-                        else
-                        {
+
                             receiverChanged = true;
-                        }
                     }
                     else
                     {
