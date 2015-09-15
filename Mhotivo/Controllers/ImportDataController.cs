@@ -13,27 +13,15 @@ namespace Mhotivo.Controllers
         private readonly IImportDataRepository _importDataRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IParentRepository _parentRepository;
-        private readonly IStudentRepository _studentRepository;
-        private readonly IEnrollRepository _enrollRepository;
-        private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ImportDataController(IImportDataRepository importDataRepository
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository
-                                    ,IParentRepository parentRepository
-                                    ,IStudentRepository studentRepository
-                                    ,IEnrollRepository enrollRepository
-                                    ,IUserRepository userRepository)
+                                    ,IAcademicYearRepository academicYearRepository)
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
-            _parentRepository = parentRepository;
-            _studentRepository = studentRepository;
-            _enrollRepository = enrollRepository;
-            _userRepository = userRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
          [AuthorizeAdmin]
@@ -70,7 +58,7 @@ namespace Mhotivo.Controllers
                 return View(importModel);
             }
             var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
-            _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository);
+            _importDataRepository.Import(myDataSet, academicYear);
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
@@ -79,15 +67,6 @@ namespace Mhotivo.Controllers
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
-            /*try
-            {
-               
-                
-            }
-            catch
-            {
-                return View(importModel);
-            }*/
         }
     }
 }
