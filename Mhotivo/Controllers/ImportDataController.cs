@@ -55,12 +55,12 @@ namespace Mhotivo.Controllers
                 "application/vnd.ms-excel"
             };
             bool errorExcel;
-            if (importModel.UpladFile != null && importModel.UpladFile.ContentLength > 0)
-                errorExcel = !validImageTypes.Contains(importModel.UpladFile.ContentType);
+            if (importModel.UploadFile != null && importModel.UploadFile.ContentLength > 0)
+                errorExcel = !validImageTypes.Contains(importModel.UploadFile.ContentType);
             else
                 errorExcel = true;
             if(errorExcel)
-                ModelState.AddModelError("UpladFile", "Por favor seleccione un archivo de Excel");
+                ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
             var academicYear = _academicYearRepository.GetByFields(importModel.Year, importModel.GradeImport, importModel.Section);
             if (academicYear == null)
                 ModelState.AddModelError("Year", "No existe ese año academico");
@@ -69,7 +69,7 @@ namespace Mhotivo.Controllers
             {
                 return View(importModel);
             }
-            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UpladFile);
+            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
             _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository);
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
