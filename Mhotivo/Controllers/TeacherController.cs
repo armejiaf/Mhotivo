@@ -15,16 +15,14 @@ namespace Mhotivo.Controllers
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public TeacherController(ITeacherRepository meisterRepository,
-            IContactInformationRepository contactInformationRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+            IContactInformationRepository contactInformationRepository, IUserRepository userRepository)
         {
             _teacherRepository = meisterRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -166,7 +164,7 @@ namespace Mhotivo.Controllers
                 Password = modelTeacher.Password,
                 IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault());
+            newUser = _userRepository.Create(newUser, Roles.Padre);
             myTeacher.MyUser = newUser;
             _teacherRepository.Create(myTeacher);
             const string title = "Maestro Agregado";

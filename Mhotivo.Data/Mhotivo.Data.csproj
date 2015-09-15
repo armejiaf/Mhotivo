@@ -80,7 +80,6 @@
     <Compile Include="Entities\Parent.cs" />
     <Compile Include="Entities\Pensum.cs" />
     <Compile Include="Entities\People.cs" />
-    <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

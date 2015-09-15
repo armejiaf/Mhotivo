@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class removestudentidfromnotification : DbMigration
+    public partial class newMigration : DbMigration
     {
         public override void Up()
         {
@@ -141,6 +141,7 @@ namespace Mhotivo.Implement.Migrations
                         Password = c.String(),
                         IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
+                        Role = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -200,16 +201,6 @@ namespace Mhotivo.Implement.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Roles",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
                         Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -353,19 +344,6 @@ namespace Mhotivo.Implement.Migrations
                 .Index(t => t.NotificationId)
                 .Index(t => t.UserId);
             
-            CreateTable(
-                "dbo.RoleUsers",
-                c => new
-                    {
-                        Role_Id = c.Long(nullable: false),
-                        User_Id = c.Long(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Role_Id, t.User_Id })
-                .ForeignKey("dbo.Roles", t => t.Role_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
-                .Index(t => t.Role_Id)
-                .Index(t => t.User_Id);
-            
         }
         
         public override void Down()
@@ -382,8 +360,6 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.AppointmentDiaries", "Creator_Id", "dbo.Users");
             DropForeignKey("dbo.AcademicYearDetails", "Teacher_Id", "dbo.People");
             DropForeignKey("dbo.People", "MyUser_Id", "dbo.Users");
-            DropForeignKey("dbo.RoleUsers", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.RoleUsers", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.People", "User_Id", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "NotificationId", "dbo.Notifications");
@@ -402,8 +378,6 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.Courses", "Area_Id", "dbo.EducationLevels");
             DropForeignKey("dbo.AcademicYearDetails", "AcademicYear_Id", "dbo.AcademicYears");
             DropForeignKey("dbo.AcademicYears", "Grade_Id", "dbo.Grades");
-            DropIndex("dbo.RoleUsers", new[] { "User_Id" });
-            DropIndex("dbo.RoleUsers", new[] { "Role_Id" });
             DropIndex("dbo.UserNotifications", new[] { "UserId" });
             DropIndex("dbo.UserNotifications", new[] { "NotificationId" });
             DropIndex("dbo.GroupUsers", new[] { "User_Id" });
@@ -434,7 +408,6 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Course_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "AcademicYear_Id" });
-            DropTable("dbo.RoleUsers");
             DropTable("dbo.UserNotifications");
             DropTable("dbo.GroupUsers");
             DropTable("dbo.PreloadedPasswords");
@@ -445,7 +418,6 @@ namespace Mhotivo.Implement.Migrations
             DropTable("dbo.ClassActivities");
             DropTable("dbo.AppointmentParticipants");
             DropTable("dbo.AppointmentDiaries");
-            DropTable("dbo.Roles");
             DropTable("dbo.NotificationTypes");
             DropTable("dbo.NotificationComments");
             DropTable("dbo.Notifications");

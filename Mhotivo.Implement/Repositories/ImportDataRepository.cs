@@ -23,7 +23,7 @@ namespace Mhotivo.Implement.Repositories
             _passwordGenerationService = passwordGenerationService;
         }
 
-        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+        public void Import(DataSet oDataSet, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository)
         {
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -71,7 +71,7 @@ namespace Mhotivo.Implement.Repositories
                 listStudents.Add(newStudents);
                 listParents.Add(newParent);
             }
-            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository, userRepository, roleRepository);
+            SaveData(listStudents, listParents, academicYear, parentRepository, studentRepository, enrollRepository, academicYearRepository, userRepository);
         }
 
         //modificado
@@ -90,7 +90,7 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository)
         {
             var allParents = parentRepository.GetAllParents();
             var allStudents = studentRepository.GetAllStudents();
@@ -112,11 +112,11 @@ namespace Mhotivo.Implement.Repositories
                         //TODO: Get rid of this bit.
                         Email =
                             (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) +
-                             "@mhotivo.hn").ToLower(),
+                             "@mhotivo.org").ToLower(),
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsActive = true
                     };
-                    newUser = userRepository.Create(newUser, roleRepository.GetById(2));
+                    newUser = userRepository.Create(newUser, Roles.Padre);
                     
                     pare.MyUser = newUser;
                     parentRepository.Create(pare);

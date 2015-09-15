@@ -27,7 +27,7 @@ namespace Mhotivo.Implement.Migrations
 
         protected override void Seed(MhotivoContext context)
         {
-            if (context.Roles.Any())
+            if (context.Users.Any())
                 return;
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new EducationLevelRepository(context);
@@ -35,18 +35,13 @@ namespace Mhotivo.Implement.Migrations
             _courseRepository = new CourseRepository(context, _areaRepository);
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
-            context.Roles.AddOrUpdate(new Role { Description = "Administrador", Name = "Administrador" });
-            context.Roles.AddOrUpdate(new Role { Description = "Director", Name = "Director" });
-            context.Roles.AddOrUpdate(new Role { Description = "Padre", Name = "Padre" });
-            context.Roles.AddOrUpdate(new Role { Description = "Maestro", Name = "Maestro" });
-            context.SaveChanges();
             var admin = new User
             {
                 DisplayName = "Administrador",
-                Email = "admin@mhotivo.edu",
+                Email = "admin@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.First() }
+                Role = Roles.Administrador
             };
             admin.EncryptPassword();
             context.Users.AddOrUpdate(admin);
@@ -128,19 +123,19 @@ namespace Mhotivo.Implement.Migrations
             var genericTeacher = new User
             {
                 DisplayName = "Maestro Generico",
-                Email = "teacher@mhotivo.edu",
+                Email = "teacher@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.Find(3) }
+                Role = Roles.Maestro
             };
             genericTeacher.EncryptPassword();
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
-                Email = "padre@mhotivo.edu",
+                Email = "padre@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.Find(2) }
+                Role = Roles.Padre
             };
             genericParent.EncryptPassword();
             context.Users.AddOrUpdate(genericTeacher);

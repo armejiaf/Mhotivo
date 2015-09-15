@@ -25,7 +25,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Pensum> Pensums { get; set; }
         public DbSet<People> Peoples { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<AppointmentParticipants> AppointmentParticipant { get; set; }

@@ -17,7 +17,6 @@ namespace Mhotivo.Controllers
         private readonly IStudentRepository _studentRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ImportDataController(IImportDataRepository importDataRepository
@@ -26,8 +25,7 @@ namespace Mhotivo.Controllers
                                     ,IParentRepository parentRepository
                                     ,IStudentRepository studentRepository
                                     ,IEnrollRepository enrollRepository
-                                    ,IUserRepository userRepository
-                                    ,IRoleRepository roleRepository)
+                                    ,IUserRepository userRepository)
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
@@ -36,7 +34,6 @@ namespace Mhotivo.Controllers
             _studentRepository = studentRepository;
             _enrollRepository = enrollRepository;
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
          [AuthorizeAdmin]
@@ -73,7 +70,7 @@ namespace Mhotivo.Controllers
                 return View(importModel);
             }
             var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UpladFile);
-            _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository, _roleRepository);
+            _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository);
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0

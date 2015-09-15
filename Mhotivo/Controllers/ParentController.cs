@@ -17,18 +17,15 @@ namespace Mhotivo.Controllers
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ParentController(IParentRepository parentRepository,
             IContactInformationRepository contactInformationRepository,
-            IUserRepository userRepository,
-            IRoleRepository roleRepository)
+            IUserRepository userRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -208,7 +205,7 @@ namespace Mhotivo.Controllers
                 Password = modelParent.Password,
                 IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault());
+            newUser = _userRepository.Create(newUser, Roles.Padre);
             myParent.MyUser = newUser;
              _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";

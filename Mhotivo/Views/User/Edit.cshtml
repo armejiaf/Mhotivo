@@ -59,18 +59,14 @@
                 @Html.EditorFor(model => model.ConfirmPassword)
             </div>
         </div>*@
-
-        @if (!Model.RoleId.Equals(1))
-        {
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.RoleId)
-                </div>
-                <div class="controls">
-                    @Html.DropDownList("RoleId")
-                </div>
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.RoleId)
             </div>
-        }
+            <div class="controls">
+                @Html.DropDownList("RoleId")
+            </div>
+        </div>
         <div class="control-group">
             <div class="controls">
                 <div class="control-label" style=" width: 60px;  padding-top: 0;">

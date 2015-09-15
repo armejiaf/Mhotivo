@@ -190,7 +190,6 @@
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Encryption\MD5CryptoService.cs" />
