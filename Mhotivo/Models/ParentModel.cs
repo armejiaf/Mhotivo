@@ -62,7 +62,7 @@ namespace Mhotivo.Models
         public byte[] Photo { get; set; }
 
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase UploadPhoto { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]

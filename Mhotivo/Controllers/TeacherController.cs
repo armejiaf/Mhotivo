@@ -71,11 +71,11 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelMeister.UpladPhoto != null && modelMeister.UpladPhoto.ContentLength > 0)
+            if (modelMeister.UploadPhoto != null && modelMeister.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelMeister.UpladPhoto.ContentType))
+                if (!validImageTypes.Contains(modelMeister.UploadPhoto.ContentType))
                 {
-                    ModelState.AddModelError("UpladPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                    ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
             }
             if (ModelState.IsValid)
@@ -83,11 +83,11 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelMeister.UpladPhoto != null)
+                    if (modelMeister.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelMeister.UpladPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelMeister.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelMeister.UpladPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelMeister.UploadPhoto.ContentLength);
                         }
                     }
                     var myMeister = _teacherRepository.GetById(modelMeister.Id);

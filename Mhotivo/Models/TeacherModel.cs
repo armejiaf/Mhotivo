@@ -123,7 +123,7 @@ namespace Mhotivo.Models
         public string UrlPicture { get; set; }
 
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase UploadPhoto { get; set; }
     }
 
     public class TeacherRegisterModel

@@ -112,11 +112,11 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelParent.UpladPhoto != null && modelParent.UpladPhoto.ContentLength > 0)
+            if (modelParent.UploadPhoto != null && modelParent.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelParent.UpladPhoto.ContentType))
+                if (!validImageTypes.Contains(modelParent.UploadPhoto.ContentType))
                 {
-                    ModelState.AddModelError("UpladPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                    ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
             }
             if (ModelState.IsValid)
@@ -124,11 +124,11 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelParent.UpladPhoto != null)
+                    if (modelParent.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelParent.UpladPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelParent.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelParent.UpladPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelParent.UploadPhoto.ContentLength);
                         }
                     }
                     var myParent = _parentRepository.GetById(modelParent.Id);

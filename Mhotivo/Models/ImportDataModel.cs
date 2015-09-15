@@ -23,6 +23,6 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe especificar el archivo a subir")]
         [Display(Name = "Archivo Excel")]
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladFile { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
     }
 }
