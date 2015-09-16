@@ -63,7 +63,6 @@
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />
-    <Compile Include="Interfaces\IRoleRepository.cs" />
     <Compile Include="Interfaces\ISecurityRepository.cs" />
     <Compile Include="Interfaces\ISessionManagementRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />

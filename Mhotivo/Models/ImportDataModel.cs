@@ -15,7 +15,7 @@ namespace Mhotivo.Models
         [Display(Name = "Grado")]
         public long GradeImport { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el grado")]
+        [Required(ErrorMessage = "Debe ingresar la seccion")]
         [Display(Name = "Seccion")]
         [MaxLength(1, ErrorMessage = "La longitud debe ser de 1")]
         public string Section { get; set; }
@@ -23,6 +23,6 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe especificar el archivo a subir")]
         [Display(Name = "Archivo Excel")]
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladFile { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace Mhotivo
             Mapper.CreateMap<UserEditModel, User>().ReverseMap();
             Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
             Mapper.CreateMap<NotificationTypeModel, NotificationType>().ReverseMap();
-            Mapper.CreateMap<DisplayRolModel, Role>().ReverseMap();
             Mapper.CreateMap<DisplayBenefactorModel, Benefactor>().ReverseMap();
             Mapper.CreateMap<CreateHomeworkModel, Homework>().ReverseMap();
             //Mapper.CreateMap<Homework, CreateHomeworkModel>();
@@ -20,7 +19,6 @@ namespace Mhotivo
             //Mapper.CreateMap<User, UserEditModel>();
             //Mapper.CreateMap<Notification, NotificationModel>();
             //Mapper.CreateMap<NotificationType, NotificationTypeModel>();
-            //Mapper.CreateMap<Role, DisplayRolModel>();
             //Mapper.CreateMap<Benefactor, DisplayBenefactorModel>();
         }
     }

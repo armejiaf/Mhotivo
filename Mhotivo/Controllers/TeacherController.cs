@@ -15,16 +15,14 @@ namespace Mhotivo.Controllers
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public TeacherController(ITeacherRepository meisterRepository,
-            IContactInformationRepository contactInformationRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+            IContactInformationRepository contactInformationRepository, IUserRepository userRepository)
         {
             _teacherRepository = meisterRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -73,11 +71,11 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelMeister.UpladPhoto != null && modelMeister.UpladPhoto.ContentLength > 0)
+            if (modelMeister.UploadPhoto != null && modelMeister.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelMeister.UpladPhoto.ContentType))
+                if (!validImageTypes.Contains(modelMeister.UploadPhoto.ContentType))
                 {
-                    ModelState.AddModelError("UpladPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                    ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
             }
             if (ModelState.IsValid)
@@ -85,11 +83,11 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelMeister.UpladPhoto != null)
+                    if (modelMeister.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelMeister.UpladPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelMeister.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelMeister.UpladPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelMeister.UploadPhoto.ContentLength);
                         }
                     }
                     var myMeister = _teacherRepository.GetById(modelMeister.Id);
@@ -166,7 +164,7 @@ namespace Mhotivo.Controllers
                 Password = modelTeacher.Password,
                 IsActive = true
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault());
+            newUser = _userRepository.Create(newUser, Roles.Padre);
             myTeacher.MyUser = newUser;
             _teacherRepository.Create(myTeacher);
             const string title = "Maestro Agregado";

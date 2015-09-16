@@ -9,6 +9,7 @@ namespace Mhotivo.Interface.Interfaces
     public interface ITeacherRepository 
     {
         Teacher First(Expression<Func<Teacher, Teacher>> query);
+        Teacher FirstOrDefault(Expression<Func<Teacher, bool>> query);
         Teacher GetById(long id);
         Teacher Create(Teacher itemToCreate);
         IQueryable<Teacher> Query(Expression<Func<Teacher, Teacher>> expression);

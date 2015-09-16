@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
@@ -13,40 +13,26 @@ namespace Mhotivo.Controllers
         private readonly IImportDataRepository _importDataRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IParentRepository _parentRepository;
-        private readonly IStudentRepository _studentRepository;
-        private readonly IEnrollRepository _enrollRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ImportDataController(IImportDataRepository importDataRepository
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository
-                                    ,IParentRepository parentRepository
-                                    ,IStudentRepository studentRepository
-                                    ,IEnrollRepository enrollRepository
-                                    ,IUserRepository userRepository
-                                    ,IRoleRepository roleRepository)
+                                    ,IAcademicYearRepository academicYearRepository)
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
-            _parentRepository = parentRepository;
-            _studentRepository = studentRepository;
-            _enrollRepository = enrollRepository;
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
          [AuthorizeAdmin]
         public ActionResult Index()
         {
-            _viewMessageLogic.SetViewMessageIfExist();
-            var importModel = new ImportDataModel();
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
-            importModel.Year = DateTime.Now.Year;
-            return View(importModel);
+             _viewMessageLogic.SetViewMessageIfExist();
+             var importModel = new ImportDataModel();
+             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
+             ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
+             ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+             return View(importModel);
         }
 
         [HttpPost]
@@ -58,12 +44,12 @@ namespace Mhotivo.Controllers
                 "application/vnd.ms-excel"
             };
             bool errorExcel;
-            if (importModel.UpladFile != null && importModel.UpladFile.ContentLength > 0)
-                errorExcel = !validImageTypes.Contains(importModel.UpladFile.ContentType);
+            if (importModel.UploadFile != null && importModel.UploadFile.ContentLength > 0)
+                errorExcel = !validImageTypes.Contains(importModel.UploadFile.ContentType);
             else
                 errorExcel = true;
             if(errorExcel)
-                ModelState.AddModelError("UpladFile", "Por favor seleccione un archivo de Excel");
+                ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
             var academicYear = _academicYearRepository.GetByFields(importModel.Year, importModel.GradeImport, importModel.Section);
             if (academicYear == null)
                 ModelState.AddModelError("Year", "No existe ese año academico");
@@ -72,8 +58,8 @@ namespace Mhotivo.Controllers
             {
                 return View(importModel);
             }
-            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UpladFile);
-            _importDataRepository.Import(myDataSet, academicYear, _parentRepository, _studentRepository, _enrollRepository, _academicYearRepository, _userRepository, _roleRepository);
+            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
+            _importDataRepository.Import(myDataSet, academicYear);
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
@@ -82,15 +68,6 @@ namespace Mhotivo.Controllers
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
-            /*try
-            {
-               
-                
-            }
-            catch
-            {
-                return View(importModel);
-            }*/
         }
     }
 }

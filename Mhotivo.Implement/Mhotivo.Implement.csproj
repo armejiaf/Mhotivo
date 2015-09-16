@@ -56,9 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201509101850279_removestudentidfromnotification.cs" />
-    <Compile Include="Migrations\201509101850279_removestudentidfromnotification.Designer.cs">
-      <DependentUpon>201509101850279_removestudentidfromnotification.cs</DependentUpon>
+    <Compile Include="Migrations\201509160308382_newMigration.cs" />
+    <Compile Include="Migrations\201509160308382_newMigration.Designer.cs">
+      <DependentUpon>201509160308382_newMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -86,7 +86,6 @@
     <Compile Include="Repositories\ParentRepository.cs" />
     <Compile Include="Repositories\PensumRepository.cs" />
     <Compile Include="Repositories\PeopleRepository.cs" />
-    <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\SecurityRepository.cs" />
     <Compile Include="Repositories\SessionManagementRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
@@ -108,8 +107,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509101850279_removestudentidfromnotification.resx">
-      <DependentUpon>201509101850279_removestudentidfromnotification.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201509160308382_newMigration.resx">
+      <DependentUpon>201509160308382_newMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

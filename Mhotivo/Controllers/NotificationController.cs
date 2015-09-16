@@ -238,7 +238,7 @@ namespace Mhotivo.Controllers
             {
                 long id1 = id;
                 var studentList = _enrollRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Grade.Id == id1
-                                                        && x.AcademicYear.Year.Year == DateTime.Now.Year)
+                                                        && x.AcademicYear.Year == DateTime.Now.Year)
                                                         .Select(x => x.Student).ToList();
                 if (!studentList.Any())
                 {
@@ -276,7 +276,7 @@ namespace Mhotivo.Controllers
         private void AddUsersToGradeNotification(Notification notificationIdentity)
         {
             var estudiantes = _enrollRepository.Query(x => x).Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
-                                       && x.AcademicYear.Year.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
+                                       && x.AcademicYear.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
             foreach (var estudiante in estudiantes)
             {
                 if (estudiante.Tutor1.MyUser != null)
@@ -342,13 +342,35 @@ namespace Mhotivo.Controllers
                     }).ToList();
                     break;
                 case "3":
-                        
-                    list = _gradeRepository.Query(x => x).Select(c => new SelectListItem
+                    if (_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
                     {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    }).ToList();
+                        list = _gradeRepository.Query(x => x).Select(c => new SelectListItem
+                        {
+                            Text = c.Name,
+                            Value = c.Id.ToString()
+                        }).ToList();
+                    }
+                    else
+                    {
+                        var email = _sessionManagement.GetUserLoggedEmail();
+                        var teacher = _teacherRepository.FirstOrDefault(x => x.MyUser.Email.Equals(email));
+                        var academicYears = _academicYearDetailRepository.GetAllAcademicYear(teacher.Id);
+                        var gradesTeacherGiveClasssesTo = new List<Grade>();
+
+                        foreach (
+                            var year in academicYears.Where(year => !gradesTeacherGiveClasssesTo.Contains(year.Grade)))
+                        {
+                            gradesTeacherGiveClasssesTo.Add(year.Grade);
+                        }
+
+                        list = gradesTeacherGiveClasssesTo.Select(c => new SelectListItem
+                        {
+                            Text = c.Name,
+                            Value = c.Id.ToString()
+                        }).ToList();
+                    }
                     break;
+
                 case "4":
                     var user =
                         _userRepository.GetAllUsers()

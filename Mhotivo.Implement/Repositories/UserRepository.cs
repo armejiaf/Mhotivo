@@ -37,9 +37,9 @@ namespace Mhotivo.Implement.Repositories
             return users.Count() != 0 ? users.First() : null;
         }
 
-        public User Create(User itemToCreate, Role rol)
+        public User Create(User itemToCreate, Roles rol)
         {
-            itemToCreate.Roles = new List<Role>{ rol };
+            itemToCreate.Role = rol;
             itemToCreate.EncryptPassword();
             var user = _context.Users.Add(itemToCreate);
             _context.SaveChanges();
@@ -58,12 +58,12 @@ namespace Mhotivo.Implement.Repositories
             return myUsers.Count() != 0 ? myUsers.Include(x => x.Groups) : myUsers;
         }
 
-        public User Update(User itemToUpdate, bool updateRole, Role rol)
+        public User Update(User itemToUpdate, bool updateRole, Roles rol)
         {
             if (updateRole)
             {
-                if(!itemToUpdate.Roles.Contains(rol))
-                    itemToUpdate.Roles.Add(rol);
+                if(!itemToUpdate.Role.Equals(rol))
+                    itemToUpdate.Role = rol;
             }
             SaveChanges();
             return itemToUpdate;   
@@ -93,14 +93,13 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public ICollection<Role> GetUserRoles(long idUser)
+        public Roles GetUserRole(long idUser)
         {
-            var lstRole = new Collection<Role>();
             var userTemp = GetById(idUser);
-            return userTemp == null ? lstRole : userTemp.Roles;
+            return userTemp == null ? Roles.Invalid : userTemp.Role;
         }
 
-        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol)
+        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Roles rol)
         {
             user.DisplayName = userModel.DisplayName;
             user.Email = userModel.Email;

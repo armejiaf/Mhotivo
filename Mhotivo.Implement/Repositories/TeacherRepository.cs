@@ -24,6 +24,12 @@ namespace Mhotivo.Implement.Repositories
             return meisters.Count() != 0 ? meisters.First() : null;
         }
 
+        public Teacher FirstOrDefault(Expression<Func<Teacher, bool>> query)
+        {
+            var teacher = _context.Teachers.FirstOrDefault(query);
+            return teacher;
+        }
+
         public Teacher GetById(long id)
         {
             var meisters = _context.Teachers.Where(x => x.Id == id);

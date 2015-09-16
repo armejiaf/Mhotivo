@@ -28,10 +28,16 @@ namespace Mhotivo.Models
 
     public class EnrollRegisterModel
     {
+        [Required(ErrorMessage = "Debe elegir un grado.")]
         [Display(Name = "Grado")]
         public long GradeId { get; set; }
 
+        [Required(ErrorMessage = "Debe elegir un estudiante.")]
         [Display(Name = "Estudiante")]
         public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public string Section { get; set; }
     }
 }

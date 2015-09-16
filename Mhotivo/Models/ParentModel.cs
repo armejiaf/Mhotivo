@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
-using Mhotivo.Custom_Attributes;
 
 namespace Mhotivo.Models
 {
@@ -63,7 +62,7 @@ namespace Mhotivo.Models
         public byte[] Photo { get; set; }
 
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase UploadPhoto { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -145,7 +144,6 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Correo Electronico")]
-        [NoDuplicateEmail(ErrorMessage = "FUCK!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Una Contraseña")]
