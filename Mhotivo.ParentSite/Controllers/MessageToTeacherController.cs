@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.ParentSite.Authorization;
 using Mhotivo.ParentSite.Models;
 
 namespace Mhotivo.ParentSite.Controllers
@@ -22,7 +23,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         //
         // GET: /MessageToTeacher/
-
+        [VerifyEmail]
         public ActionResult Index()
         {
             var allTeachers = _teacherRepository.GetAllTeachers().ToList();

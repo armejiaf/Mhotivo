@@ -1,0 +1,54 @@
+﻿@model Mhotivo.ParentSite.Models.UpdateParentMailModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well well-sm">
+                @using (Html.BeginForm("UpdateEmail", "Account", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <fieldset>
+                        <legend class="text-center">Porfavor Ingrese Correo</legend>
+
+                        <!-- Name input-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Correo</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.Email, new {@class = "form-control", placeholder = "Correo", required = "required"})
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Confirmar Correo</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.ConfirmEmail, new { @class = "form-control", placeholder = "Confirmar Correo", required = "required" })
+
+                            </div>
+                        </div>
+
+                        <!-- Form actions -->
+                        <div class="form-group">
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-primary btn-lg">Actualizar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                }
+
+                @{
+                    if (null != ViewBag.Message)
+                    {
+                        <script type="text/javascript">
+                            alert("@ViewBag.Message");
+                        </script>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

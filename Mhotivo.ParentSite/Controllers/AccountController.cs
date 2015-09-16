@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
+using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
 
@@ -10,12 +13,14 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly IParentRepository _parentRepository;
+        private readonly IUserRepository _userRepository;
        
-        public AccountController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository)
+        public AccountController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository, IUserRepository userRepository)
         {
             _sessionManagementRepository = sessionManagementRepository;
             _securityRepository = securityRepository;
             _parentRepository = parentRepository;
+            _userRepository = userRepository;
         }
 
         // GET: /Account/
@@ -28,13 +33,22 @@ namespace Mhotivo.ParentSite.Controllers
         [AllowAnonymous]
         public ActionResult LogIn(ParentLoginModel model, string returnUrl)
         {
-            var parent = _parentRepository.Filter(y => y.MyUser.Email == model.Email).FirstOrDefault();
+            var parent = model.Email.Contains("@") ? _parentRepository.Filter(y => y.MyUser.Email == model.Email).FirstOrDefault()
+                : _parentRepository.Filter(y => y.IdNumber == model.Email).FirstOrDefault();
+
             if (parent != null)
             {
+
                 if (_sessionManagementRepository.LogIn(model.Email, model.Password))
                 {
+                    if (parent.MyUser.Email.Equals(""))
+                    {
+                        return RedirectToAction("ConfirmEmail");
+                    }
+
                     return RedirectToAction("Index", "Notification");
                 }
+
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
             }
@@ -48,16 +62,50 @@ namespace Mhotivo.ParentSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //Unused, remove?
-/*
-        private ActionResult RedirectToLocal(string returnUrl)
+        [AllowAnonymous]
+        public ActionResult ConfirmEmail()
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
+            return View("EmailConfirmation");
         }
-*/
+
+        public ActionResult UpdateEmail(UpdateParentMailModel model)
+        {
+            var userId = Convert.ToInt64(_sessionManagementRepository.GetUserLoggedId());
+            var parentUser = _parentRepository.Filter(x => x.MyUser.Id == userId).Include(x => x.MyUser).FirstOrDefault();
+            
+            if (parentUser != null)
+            {
+                var user = parentUser.MyUser;
+                user.Email = model.Email;
+                _userRepository.Update(user, false, null);
+                return RedirectToAction("Index", "Notification");
+            }
+
+            return RedirectToAction("ConfirmEmail");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
+            var user = _userRepository.GetById(userId);
+            if (user.CheckPassword(model.OldPassword))
+            {
+                user.Password = model.NewPassword;
+                user.EncryptPassword();
+                _userRepository.Update(user, false, null);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.Message = "Contraseña Incorrecta";
+
+            return RedirectToAction("ChangePassword");
+        }
     }
 }

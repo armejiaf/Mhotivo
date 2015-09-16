@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface.Interfaces;
@@ -65,6 +66,7 @@ namespace Mhotivo.Implement.Repositories
                 if(!itemToUpdate.Roles.Contains(rol))
                     itemToUpdate.Roles.Add(rol);
             }
+            _context.Users.AddOrUpdate(itemToUpdate);
             SaveChanges();
             return itemToUpdate;   
         }

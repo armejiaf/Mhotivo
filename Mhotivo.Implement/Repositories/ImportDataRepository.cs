@@ -109,10 +109,7 @@ namespace Mhotivo.Implement.Repositories
                     var newUser = new User
                     {
                         DisplayName = pare.FirstName,
-                        //TODO: Get rid of this bit.
-                        Email =
-                            (pare.FirstName.Trim().Replace(" ", "") + "_" + pare.IdNumber.Trim().Substring(10) +
-                             "@mhotivo.hn").ToLower(),
+                        Email = "",
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsActive = true
                     };
