@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
@@ -27,11 +27,12 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Index()
         {
-            _viewMessageLogic.SetViewMessageIfExist();
-            var importModel = new ImportDataModel();
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
-            importModel.Year = DateTime.Now.Year;
-            return View(importModel);
+             _viewMessageLogic.SetViewMessageIfExist();
+             var importModel = new ImportDataModel();
+             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
+             ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
+             ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+             return View(importModel);
         }
 
         [HttpPost]

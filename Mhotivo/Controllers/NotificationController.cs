@@ -236,7 +236,7 @@ namespace Mhotivo.Controllers
             {
                 long id1 = id;
                 var studentList = _enrollRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Grade.Id == id1
-                                                        && x.AcademicYear.Year.Year == DateTime.Now.Year)
+                                                        && x.AcademicYear.Year == DateTime.Now.Year)
                                                         .Select(x => x.Student).ToList();
                 if (!studentList.Any())
                 {
@@ -274,7 +274,7 @@ namespace Mhotivo.Controllers
         private void AddUsersToGradeNotification(Notification notificationIdentity)
         {
             var estudiantes = _enrollRepository.Query(x => x).Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
-                                       && x.AcademicYear.Year.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
+                                       && x.AcademicYear.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
             foreach (var estudiante in estudiantes)
             {
                 if (estudiante.Tutor1.MyUser != null)

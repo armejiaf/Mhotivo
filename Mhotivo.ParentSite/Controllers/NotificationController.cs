@@ -43,7 +43,7 @@ namespace Mhotivo.ParentSite.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.Year.ToString(CultureInfo.InvariantCulture));
+            var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.ToString(CultureInfo.InvariantCulture));
             var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
             _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
             var userId = _securityRepository.GetUserLogged().Id;

@@ -116,9 +116,9 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(11), Grade = _gradeRepository.GetById(13) });
             for (int i = 1; i <= 13; i++)
             {
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = 2015 });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = 2015 });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = 2015 });
             }
             var genericTeacher = new User
             {

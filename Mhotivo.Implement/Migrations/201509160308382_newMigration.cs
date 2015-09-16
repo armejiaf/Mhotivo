@@ -33,7 +33,7 @@ namespace Mhotivo.Implement.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Year = c.DateTime(nullable: false),
+                        Year = c.Int(nullable: false),
                         Section = c.String(),
                         Approved = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.ModelBinding;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
@@ -15,14 +14,12 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IGradeRepository _gradeRepository;
-        private readonly IPeopleRepository _peopleRepository; //remove if unused
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public EnrollController(IPeopleRepository peopleRepository, IAcademicYearRepository academicYearRepository,
+        public EnrollController(IAcademicYearRepository academicYearRepository,
             IStudentRepository studentRepository, IEnrollRepository enrollRepository, IGradeRepository gradeRepository)
         {
-            _peopleRepository = peopleRepository;
             _studentRepository = studentRepository;
             _enrollRepository = enrollRepository;
             _academicYearRepository = academicYearRepository;

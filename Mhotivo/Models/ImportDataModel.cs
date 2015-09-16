@@ -15,7 +15,7 @@ namespace Mhotivo.Models
         [Display(Name = "Grado")]
         public long GradeImport { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el grado")]
+        [Required(ErrorMessage = "Debe ingresar la seccion")]
         [Display(Name = "Seccion")]
         [MaxLength(1, ErrorMessage = "La longitud debe ser de 1")]
         public string Section { get; set; }
