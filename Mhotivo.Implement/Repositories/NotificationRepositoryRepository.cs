@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -82,9 +83,25 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id)
         {
+
+            var students = _context.Students.Where(x => x.Tutor1.Id == id || x.Tutor2.Id == id).ToList();
+            var enrolls = new List<Enroll>();
+            foreach (var student in students)
+            {
+                enrolls.AddRange(_context.Enrolls.Where(x => x.Student.Id == student.Id));
+            }
+            var years = new List<string>();
+            foreach (var enroll in enrolls)
+            {
+                if(enroll.AcademicYear.IsActive)
+                    years.Add(enroll.AcademicYear.Section);
+               
+            }
+            
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.Id == 3 && 
+                    years.Contains(x.Section) &&
                         x.Approved );
             return gradeNotifications;
         }
@@ -96,6 +113,7 @@ namespace Mhotivo.Implement.Repositories
             var personalNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.Id == 4 &&
+                   
                    //x.Users.FirstOrDefault(u => u.Id == id) != null && 
                    x.Approved 
                    //&& x.Id.Equals(id)

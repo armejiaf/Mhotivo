@@ -158,6 +158,7 @@ namespace Mhotivo.Controllers
         {
             var notification = new NotificationModel();
             LoadTypeNotification(ref notification);
+            ViewBag.Section = new SelectList(new List<string> { "Todos", "A", "B", "C" }, "Todos");
             return View("Add", notification);
         }
 
@@ -168,6 +169,7 @@ namespace Mhotivo.Controllers
             notificationIdentity.Created = DateTime.Now;
             var notificationType = _notificationTypeRepository.GetById(eventNotification.NotificationTypeId);
             notificationIdentity.NotificationType = notificationType;
+            notificationIdentity.Section = eventNotification.GradeSection;
             if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
             {
                 notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
@@ -450,6 +452,7 @@ namespace Mhotivo.Controllers
                     toEdit.NotificationType = notificationType;
                     toEdit.NotificationName = eventNotification.NotificationName;
                     toEdit.Message = eventNotification.Message;
+                    
                     if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Personal)
                     {
                         toEdit.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
