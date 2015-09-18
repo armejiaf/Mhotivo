@@ -77,7 +77,7 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 var user = parentUser.MyUser;
                 user.Email = model.Email;
-                _userRepository.Update(user, false, null);
+                _userRepository.Update(user, false, Roles.Invalid);
                 return RedirectToAction("Index", "Notification");
             }
 
@@ -98,7 +98,7 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 user.Password = model.NewPassword;
                 user.EncryptPassword();
-                _userRepository.Update(user, false, null);
+                _userRepository.Update(user, false, Roles.Invalid);
 
                 return RedirectToAction("Index", "Home");
             }
