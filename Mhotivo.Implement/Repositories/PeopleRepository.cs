@@ -24,6 +24,12 @@ namespace Mhotivo.Implement.Repositories
             return peoples.Count() != 0 ? peoples.First() : null;
         }
 
+        public People FirstOrDefault(Expression<Func<People, People>> query)
+        {
+            var peoples = _context.Peoples.Include(x => x.MyUser).Select(query);
+            return peoples.Count() != 0 ? peoples.FirstOrDefault() : null;
+        }
+
         public People GetById(long id)
         {
             var peoples = _context.Peoples.Where(x => x.Id == id);

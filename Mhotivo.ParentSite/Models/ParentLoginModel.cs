@@ -6,7 +6,6 @@ namespace Mhotivo.ParentSite.Models
     {
         [Display(Name = "Email de usuario")]
         [Required(ErrorMessage = "Debe Ingresar Email de Usuario")]
-        [EmailAddress]
         public string Email { get; set; }
 
         [DataType(DataType.Password)]
