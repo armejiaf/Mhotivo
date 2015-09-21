@@ -28,7 +28,7 @@
                 @Html.ValidationMessageFor(model => model.UrlPicture)
                 @Html.ValidationMessageFor(model => model.FirstName)
                 @Html.ValidationMessageFor(model => model.LastName)
-                @Html.ValidationMessageFor(model => model.Gender)
+                @Html.ValidationMessageFor(model => model.MyGender)
                 @Html.ValidationMessageFor(model => model.Nationality)
                 @Html.ValidationMessageFor(model => model.Country)
                 @Html.ValidationMessageFor(model => model.State)
@@ -102,10 +102,10 @@
             </div>
             <div class="control-group">
                 <div class="control-label">
-                    @Html.LabelFor(model => model.Gender)
+                    @Html.LabelFor(model => model.MyGender)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("Gender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
+                    @Html.DropDownList("MyGender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
                 </div>
             </div>
             <div class="control-group">

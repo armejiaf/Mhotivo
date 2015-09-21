@@ -3,15 +3,12 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace Mhotivo.Implement.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    public class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
+    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
@@ -19,6 +16,7 @@ namespace Mhotivo.Implement.Migrations
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;

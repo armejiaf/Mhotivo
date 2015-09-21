@@ -45,7 +45,7 @@ namespace Mhotivo.Models
         public string UrlPicture { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
@@ -113,7 +113,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
         
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
@@ -188,7 +188,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]

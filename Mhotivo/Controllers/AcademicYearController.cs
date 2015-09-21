@@ -132,8 +132,8 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             var academicYear = _academicYearRepository.Delete(id);
-            const string title = "Estudiante Eliminado";
-            var content = "El año académico " + academicYear.Year + " ha sido eliminado exitosamente.";
+            const string title = "Año Académico Eliminado";
+            var content = "El año académico " + academicYear.Year + ", Grado "+academicYear.Grade.Name+", Seccion "+academicYear.Section+" ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }

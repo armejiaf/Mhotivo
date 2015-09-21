@@ -101,7 +101,7 @@ namespace Mhotivo.Controllers
                 studentModel.Tutor2 = new Parent();
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor2.Id);
-            studentModel.Gender = student.MyGender.ToString("G").Substring(0, 1);
+            studentModel.MyGender = student.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", studentModel);
         }
 
@@ -139,7 +139,7 @@ namespace Mhotivo.Controllers
                     if (modelStudent.Tutor2 == null)
                         modelStudent.Tutor2 = myStudent.Tutor2;
                     var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
-                    studentModel.MyGender = Implement.Utilities.DefineGender(modelStudent.Gender);
+                    studentModel.MyGender = Implement.Utilities.DefineGender(modelStudent.MyGender);
                     modelStudent.Photo = null;
                     studentModel.Photo = fileBytes ?? myStudent.Photo;
                     studentModel.MyUser = _parentRepository.GetById(modelStudent.Tutor1.Id).MyUser;
@@ -151,7 +151,7 @@ namespace Mhotivo.Controllers
                 }
                 catch
                 {
-                    modelStudent.Gender = myStudent.MyGender.ToString("G").Substring(0, 1);
+                    modelStudent.MyGender = myStudent.MyGender.ToString("G").Substring(0, 1);
                     modelStudent.FirstParent = myStudent.Tutor1.Id;
                     modelStudent.Tutor1 = myStudent.Tutor1;
                     modelStudent.Tutor2 = myStudent.Tutor2;

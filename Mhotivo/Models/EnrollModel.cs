@@ -13,7 +13,7 @@ namespace Mhotivo.Models
         public string UrlPicture { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Display(Name = "Numero de Cuenta")]
         public string AccountNumber { get; set; }

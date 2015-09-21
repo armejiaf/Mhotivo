@@ -91,7 +91,7 @@ namespace Mhotivo.Controllers
         {
             var parent = _parentRepository.GetParentEditModelById(id);
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.Gender = parent.MyGender.ToString("G").Substring(0, 1);
+            parentModel.MyGender = parent.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", parentModel);
         }
 
@@ -209,7 +209,7 @@ namespace Mhotivo.Controllers
         {
             var parent = _parentRepository.GetParentDisplayModelById(id);
             var parentModel = Mapper.Map<Parent, DisplayParentModel>(parent);
-            parentModel.Gender = parent.MyGender.ToString("G");
+            parentModel.MyGender = parent.MyGender.ToString("G");
             return View("Details", parentModel);
         }
 
@@ -218,7 +218,7 @@ namespace Mhotivo.Controllers
         {
             var parent = _parentRepository.GetParentEditModelById(id);
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.Gender = parent.MyGender.ToString("G");
+            parentModel.MyGender = parent.MyGender.ToString("G");
             return View("DetailsEdit", parentModel);
         }
 

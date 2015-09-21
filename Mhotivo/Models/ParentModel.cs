@@ -45,7 +45,7 @@ namespace Mhotivo.Models
         public byte[] Photo { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
     }
 
     public class ParentEditModel
@@ -101,7 +101,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
     }
 
     public class ParentRegisterModel
@@ -161,6 +161,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
     }
 }

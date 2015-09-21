@@ -131,7 +131,7 @@ namespace Mhotivo.Controllers
         {
             Pensum pensum = _pensumRepository.Delete(id);
             const string title = "Pensum Eliminado";
-            string content = "El Pesum " + pensum.Id + " ha sido eliminado exitosamente.";
+            string content = "El Pesum de "+pensum.Course+" para el grado " + pensum.Grade + " ha sido eliminado exitosamente.";
             TempData["MessageInfo"] = new MessageModel
             {
                 Type = "INFO",

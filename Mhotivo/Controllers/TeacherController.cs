@@ -55,7 +55,7 @@ namespace Mhotivo.Controllers
         {
             var teacher = _teacherRepository.GetTeacherEditModelById(id);
             var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
-            teacherModel.Gender = teacher.MyGender.ToString("G").Substring(0, 1);
+            teacherModel.MyGender = teacher.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", teacherModel);
         }
 
@@ -91,7 +91,7 @@ namespace Mhotivo.Controllers
                     }
                     var myTeacher = _teacherRepository.GetById(modelTeacher.Id);
                     var teacherModel = Mapper.Map<TeacherEditModel, Teacher>(modelTeacher);
-                    teacherModel.MyGender = Implement.Utilities.DefineGender(modelTeacher.Gender);
+                    teacherModel.MyGender = Implement.Utilities.DefineGender(modelTeacher.MyGender);
                     teacherModel.Photo = null;
                     teacherModel.Photo = fileBytes ?? myTeacher.Photo;
                     _teacherRepository.UpdateTeacherFromTeacherEditModel(teacherModel, myTeacher);
