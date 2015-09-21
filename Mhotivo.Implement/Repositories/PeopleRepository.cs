@@ -79,7 +79,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = people.Id,
                 IdNumber = people.IdNumber,
-                UrlPicture = people.UrlPicture,
                 FullName = people.FullName,
                 BirthDate = people.BirthDate,
                 Nationality = people.Nationality,

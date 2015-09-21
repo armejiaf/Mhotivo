@@ -25,7 +25,6 @@ namespace Mhotivo.Data.Entities
         public string State { get; set; }
         public string Country { get; set; }
         public string Address { get; set; }
-        public string UrlPicture { get; set; }
         public Byte[] Photo { get; set; }
         public Gender MyGender { get; set; }
         public bool Disable { get; set; }

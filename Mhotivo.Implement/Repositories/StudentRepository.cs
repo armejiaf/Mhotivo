@@ -90,7 +90,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = x.Id,
                 IdNumber = x.IdNumber,
-                UrlPicture = x.UrlPicture,
                 FullName = x.FullName,
                 BirthDate = x.BirthDate,
                 Nationality = x.Nationality,
@@ -118,7 +117,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = student.Id,
                 IdNumber = student.IdNumber,
-                UrlPicture = student.UrlPicture,
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 FullName = student.FullName,

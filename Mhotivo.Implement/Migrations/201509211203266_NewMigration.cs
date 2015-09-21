@@ -89,7 +89,6 @@ namespace Mhotivo.Implement.Migrations
                         State = c.String(),
                         Country = c.String(),
                         Address = c.String(),
-                        UrlPicture = c.String(),
                         Photo = c.Binary(),
                         MyGender = c.Int(nullable: false),
                         Disable = c.Boolean(nullable: false),
