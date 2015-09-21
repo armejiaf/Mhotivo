@@ -46,7 +46,6 @@
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
     <Compile Include="Interfaces\IAppointmentParticipants.cs" />
     <Compile Include="Interfaces\IEducationLevelRepository.cs" />
-    <Compile Include="Interfaces\IBenefactorRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
     <Compile Include="Interfaces\ICourseRepository.cs" />

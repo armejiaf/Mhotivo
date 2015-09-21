@@ -172,7 +172,6 @@
     <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
-    <Compile Include="Controllers\BenefactorController.cs" />
     <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
@@ -204,7 +203,6 @@
     <Compile Include="Models\AcademicYearModel.cs" />
     <Compile Include="Models\AppointmentDiaryModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
-    <Compile Include="Models\BenefactorModel.cs" />
     <Compile Include="Models\ClassActivityGradingModel.cs" />
     <Compile Include="Models\ClassActivityModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
@@ -490,13 +488,6 @@
     <Content Include="Views\Parent\DetailsEdit.cshtml" />
     <Content Include="Views\Parent\Edit.cshtml" />
     <Content Include="Views\Parent\Index.cshtml" />
-    <Content Include="Views\Benefactor\Create.cshtml" />
-    <Content Include="Views\Benefactor\Details.cshtml" />
-    <Content Include="Views\Benefactor\DetailsEdit.cshtml" />
-    <Content Include="Views\Benefactor\Edit.cshtml" />
-    <Content Include="Views\Benefactor\Index.cshtml" />
-    <Content Include="Views\Benefactor\StudentAdd.cshtml" />
-    <Content Include="Views\Benefactor\StudentEdit.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\Add.cshtml" />
     <Content Include="Views\Group\Edit.cshtml" />
