@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class newMigration : DbMigration
+    public partial class NewMigration : DbMigration
     {
         public override void Up()
         {
@@ -168,6 +168,7 @@ namespace Mhotivo.Implement.Migrations
                         Message = c.String(),
                         Created = c.DateTime(nullable: false),
                         Approved = c.Boolean(nullable: false),
+                        Section = c.String(),
                         NotificationCreator_Id = c.Long(),
                         NotificationType_Id = c.Long(),
                         TargetStudent_Id = c.Long(),
