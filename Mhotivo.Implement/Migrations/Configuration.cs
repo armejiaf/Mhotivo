@@ -144,12 +144,12 @@ namespace Mhotivo.Implement.Migrations
             var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
             if (maestroDefault == null)
             {
-                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, MyUser = genericTeacher });
+                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, MyGender = Gender.Masculino, MyUser = genericTeacher });
             }
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)
             {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyUser = genericParent });
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, MyUser = genericParent });
             }
             context.SaveChanges();
         }

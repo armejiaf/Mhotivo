@@ -37,7 +37,7 @@ namespace Mhotivo.Controllers
                                  Id = x.Id,
                                  FullName = x.Student.FullName,
                                  UrlPicture = x.Student.UrlPicture,
-                                 Gender = Utilities.GenderToString(x.Student.Gender),
+                                 Gender = x.Student.MyGender.ToString("G"),
                                  AccountNumber = x.Student.AccountNumber,
                                  Grade = x.AcademicYear.Grade.Name,
                                  Section = x.AcademicYear.Section
@@ -56,7 +56,7 @@ namespace Mhotivo.Controllers
                                  Id = x.Id,
                                  FullName = x.Student.FullName,
                                  UrlPicture = x.Student.UrlPicture,
-                                 Gender = Utilities.GenderToString(x.Student.Gender),
+                                 Gender = x.Student.MyGender.ToString("G"),
                                  AccountNumber = x.Student.AccountNumber,
                                  Grade = x.AcademicYear.Grade.Name,
                                  Section = x.AcademicYear.Section

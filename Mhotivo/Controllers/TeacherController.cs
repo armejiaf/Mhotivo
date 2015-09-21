@@ -17,10 +17,10 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public TeacherController(ITeacherRepository meisterRepository,
+        public TeacherController(ITeacherRepository teacherRepository,
             IContactInformationRepository contactInformationRepository, IUserRepository userRepository)
         {
-            _teacherRepository = meisterRepository;
+            _teacherRepository = teacherRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
@@ -44,7 +44,7 @@ namespace Mhotivo.Controllers
                 Value = thisContactInformation.Value,
                 Id = thisContactInformation.Id,
                 People = thisContactInformation.People,
-                Controller = "Meister"
+                Controller = "Teacher"
             };
             return View("ContactEdit", contactInformation);
         }
@@ -53,16 +53,15 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            var meister = _teacherRepository.GetTeacherEditModelById(id);
-            Mapper.CreateMap<TeacherEditModel, Teacher>().ReverseMap();
-            var meisterModel = Mapper.Map<Teacher, TeacherEditModel>(meister);
-            meisterModel.StrGender = Implement.Utilities.GenderToString(meister.Gender).Substring(0, 1);
-            return View("Edit", meisterModel);
+            var teacher = _teacherRepository.GetTeacherEditModelById(id);
+            var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
+            teacherModel.Gender = teacher.MyGender.ToString("G").Substring(0, 1);
+            return View("Edit", teacherModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Edit(TeacherEditModel modelMeister)
+        public ActionResult Edit(TeacherEditModel modelTeacher)
         {
             var validImageTypes = new []
             {
@@ -71,9 +70,9 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelMeister.UploadPhoto != null && modelMeister.UploadPhoto.ContentLength > 0)
+            if (modelTeacher.UploadPhoto != null && modelTeacher.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelMeister.UploadPhoto.ContentType))
+                if (!validImageTypes.Contains(modelTeacher.UploadPhoto.ContentType))
                 {
                     ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
@@ -83,40 +82,39 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelMeister.UploadPhoto != null)
+                    if (modelTeacher.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelMeister.UploadPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelTeacher.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelMeister.UploadPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelTeacher.UploadPhoto.ContentLength);
                         }
                     }
-                    var myMeister = _teacherRepository.GetById(modelMeister.Id);
-                    Mapper.CreateMap<Teacher, TeacherEditModel>().ReverseMap();
-                    var meisterModel = Mapper.Map<TeacherEditModel, Teacher>(modelMeister);
-                    meisterModel.Gender = Implement.Utilities.IsMasculino(modelMeister.StrGender);
-                    meisterModel.Photo = null;
-                    meisterModel.Photo = fileBytes ?? myMeister.Photo;
-                    _teacherRepository.UpdateTeacherFromMeisterEditModel(meisterModel, myMeister);
+                    var myTeacher = _teacherRepository.GetById(modelTeacher.Id);
+                    var teacherModel = Mapper.Map<TeacherEditModel, Teacher>(modelTeacher);
+                    teacherModel.MyGender = Implement.Utilities.DefineGender(modelTeacher.Gender);
+                    teacherModel.Photo = null;
+                    teacherModel.Photo = fileBytes ?? myTeacher.Photo;
+                    _teacherRepository.UpdateTeacherFromTeacherEditModel(teacherModel, myTeacher);
                     const string title = "Maestro Actualizado";
-                    var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";
+                    var content = "El maestro " + myTeacher.FullName + " ha sido actualizado exitosamente.";
                     _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                     return RedirectToAction("Index");
                 }
                 catch
                 {
-                    return View(modelMeister);
+                    return View(modelTeacher);
                 }
             }
-            return View(modelMeister);
+            return View(modelTeacher);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            Teacher meister = _teacherRepository.Delete(id);
+            Teacher teacher = _teacherRepository.Delete(id);
             const string title = "Maestro Eliminado";
-            var content = "El maestro " + meister.FullName + " ha sido eliminado exitosamente.";
+            var content = "El maestro " + teacher.FullName + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
@@ -128,7 +126,7 @@ namespace Mhotivo.Controllers
             var model = new ContactInformationRegisterModel
                         {
                             Id = (int) id,
-                            Controller = "Meister"
+                            Controller = "Teacher"
                         };
             return View("ContactAdd", model);
         }
@@ -144,7 +142,6 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(TeacherRegisterModel modelTeacher)
         {
-            Mapper.CreateMap<Teacher, TeacherRegisterModel>().ReverseMap();
             var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
             var myTeacher = _teacherRepository.GenerateTeacherFromRegisterModel(teacherModel);
             if (_teacherRepository.ExistIdNumber(modelTeacher.IdNumber))
@@ -177,34 +174,31 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
-            var meister = _teacherRepository.GetTeacherDisplayModelById(id);
-            Mapper.CreateMap<DisplayTeacherModel, Teacher>().ReverseMap();
-            var meisterModel = Mapper.Map<Teacher, DisplayTeacherModel>(meister);
-            return View("Details", meisterModel);
+            var teacher = _teacherRepository.GetTeacherDisplayModelById(id);
+            var teacherModel = Mapper.Map<Teacher, DisplayTeacherModel>(teacher);
+            return View("Details", teacherModel);
         }
 
         [HttpGet]
         [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
-            var meister = _teacherRepository.GetTeacherEditModelById(id);
-            Mapper.CreateMap<TeacherEditModel, Teacher>().ReverseMap();
-            var meisterModel = Mapper.Map<Teacher, TeacherEditModel>(meister);
-            return View("DetailsEdit", meisterModel);
+            var teacher = _teacherRepository.GetTeacherEditModelById(id);
+            var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
+            return View("DetailsEdit", teacherModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult DetailsEdit(TeacherEditModel modelMeister)
+        public ActionResult DetailsEdit(TeacherEditModel modelTeacher)
         {
-            var myMeister = _teacherRepository.GetById(modelMeister.Id);
-            Mapper.CreateMap<Teacher, TeacherEditModel>().ReverseMap();
-            var meisterModel = Mapper.Map<TeacherEditModel, Teacher>(modelMeister);
-            _teacherRepository.UpdateTeacherFromMeisterEditModel(meisterModel, myMeister);
+            var myTeacher = _teacherRepository.GetById(modelTeacher.Id);
+            var teacherModel = Mapper.Map<TeacherEditModel, Teacher>(modelTeacher);
+            _teacherRepository.UpdateTeacherFromTeacherEditModel(teacherModel, myTeacher);
             const string title = "Maestro Actualizado";
-            var content = "El maestro " + myMeister.FullName + " ha sido actualizado exitosamente.";
+            var content = "El maestro " + myTeacher.FullName + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Details/" + modelMeister.Id);
+            return RedirectToAction("Details/" + modelTeacher.Id);
         }
     }
 }

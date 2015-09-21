@@ -48,8 +48,6 @@ namespace Mhotivo.Controllers
             {
                 allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
-
-            Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -93,7 +91,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             var student = _studentRepository.GetStudentEditModelById(id);
-            Mapper.CreateMap<StudentEditModel, Student>().ReverseMap();
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
             studentModel.FirstParent = student.Tutor1.Id;
             if (student.Tutor2 != null)
@@ -104,7 +101,7 @@ namespace Mhotivo.Controllers
                 studentModel.Tutor2 = new Parent();
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
                 studentModel.Tutor2.Id);
-            studentModel.StrGender = Implement.Utilities.GenderToString(student.Gender).Substring(0, 1);
+            studentModel.Gender = student.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", studentModel);
         }
 
@@ -141,9 +138,8 @@ namespace Mhotivo.Controllers
                         modelStudent.Tutor1 = myStudent.Tutor1;
                     if (modelStudent.Tutor2 == null)
                         modelStudent.Tutor2 = myStudent.Tutor2;
-                    Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
                     var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
-                    studentModel.Gender = Implement.Utilities.IsMasculino(modelStudent.StrGender);
+                    studentModel.MyGender = Implement.Utilities.DefineGender(modelStudent.Gender);
                     modelStudent.Photo = null;
                     studentModel.Photo = fileBytes ?? myStudent.Photo;
                     studentModel.MyUser = _parentRepository.GetById(modelStudent.Tutor1.Id).MyUser;
@@ -155,7 +151,7 @@ namespace Mhotivo.Controllers
                 }
                 catch
                 {
-                    modelStudent.StrGender = Implement.Utilities.GenderToString(myStudent.Gender).Substring(0, 1);
+                    modelStudent.Gender = myStudent.MyGender.ToString("G").Substring(0, 1);
                     modelStudent.FirstParent = myStudent.Tutor1.Id;
                     modelStudent.Tutor1 = myStudent.Tutor1;
                     modelStudent.Tutor2 = myStudent.Tutor2;
@@ -207,7 +203,6 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(StudentRegisterModel modelStudent)
         {
-            Mapper.CreateMap<Student, StudentRegisterModel>().ReverseMap();
             var studentModel = Mapper.Map<StudentRegisterModel, Student>(modelStudent);
             studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
             studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
@@ -225,7 +220,6 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             var student = _studentRepository.GetStudentDisplayModelById(id);
-            Mapper.CreateMap<DisplayStudentModel, Student>().ReverseMap();
             var studentModel = Mapper.Map<Student, DisplayStudentModel>(student);
             return View("Details", studentModel);
         }
@@ -242,7 +236,6 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(long id)
         {
             var student = _studentRepository.GetStudentEditModelById(id);
-            Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",studentModel.Tutor1.Id);
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName", studentModel.Tutor2.Id);
@@ -254,7 +247,6 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(StudentEditModel modelStudent)
         {
             var myStudent = _studentRepository.GetById(modelStudent.Id);
-            Mapper.CreateMap<Student, StudentEditModel>().ReverseMap();
             modelStudent.Tutor1 = _parentRepository.GetById(modelStudent.Tutor1.Id);
             modelStudent.Tutor2 = _parentRepository.GetById(modelStudent.Tutor2.Id);
             var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);

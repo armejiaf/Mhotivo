@@ -42,7 +42,6 @@ namespace Mhotivo.Controllers
             {
                 listaArea = _areaReposity.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayEducationLevelModel, EducationLevel>().ReverseMap();
             var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<EducationLevel, DisplayEducationLevelModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -98,7 +97,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             EducationLevel thisArea = _areaReposity.GetById(id);
-            Mapper.CreateMap<EducationLevelEditModel, EducationLevel>().ReverseMap();
             var area = Mapper.Map<EducationLevel,EducationLevelEditModel>(thisArea);
             area.Name = thisArea.Name;
             return View("Edit", area);

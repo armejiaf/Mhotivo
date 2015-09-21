@@ -82,7 +82,7 @@
 <hr />
 <div id="contactInformation" style="width: 500px;">
     <h3>Información de Contacto</h3>
-    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary active">Agregar</span></a>
+    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Teacher/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary active">Agregar</span></a>
     <br style="clear: left;" />
     <br style="clear: left;" />
     @if(Model.Contacts != null){
@@ -91,9 +91,9 @@
             <div style="float: left; width: 250px;">
                 <input type="text" value="@Html.DisplayFor(modelItem => item.Value)" disabled="disabled" />
                 <br />
-                <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Meister/ContactEdit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Teacher/ContactEdit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                 <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                @using (Html.BeginForm("Delete", "ContactInformation", new { id = Html.DisplayFor(modelItem => item.Id), @control="Meister" }, FormMethod.Post,
+                @using (Html.BeginForm("Delete", "ContactInformation", new { id = Html.DisplayFor(modelItem => item.Id), @control="Teacher" }, FormMethod.Post,
                     new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                 <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                        value="¿Realmente desea eliminar el @Html.DisplayFor(modelItem => item.Type)?" />

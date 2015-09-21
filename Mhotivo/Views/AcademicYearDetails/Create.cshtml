@@ -87,7 +87,7 @@
         </div>
         
         <div style="float: left; width: 250px;">
-            @Html.DropDownListFor(model => model.Teacher.Id, new SelectList(ViewBag.MeisterId, "Value", "Text"), "  -- Maestro --")
+            @Html.DropDownListFor(model => model.Teacher.Id, new SelectList(ViewBag.TeacherId, "Value", "Text"), "  -- Maestro --")
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Teacher)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Teacher)</p>
         </div>

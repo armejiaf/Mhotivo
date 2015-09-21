@@ -43,7 +43,6 @@ namespace Mhotivo.Controllers
             {
                 grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
             var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -75,7 +74,6 @@ namespace Mhotivo.Controllers
         {
             string title;
             string content;
-            Mapper.CreateMap<Grade, GradeRegisterModel>().ReverseMap();
             var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
             var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
             var existGrade =
@@ -114,7 +112,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(int id)
         {
             var grade = _gradeRepository.GetGradeEditModelById(id);
-            Mapper.CreateMap<GradeEditModel, Grade>().ReverseMap();
             var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
             return View("Edit", gradeModel);
         }
@@ -125,7 +122,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(GradeEditModel modelGrade)
         {
             var myGrade = _gradeRepository.GetById(modelGrade.Id);
-            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
             var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
             _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
             const string title = "Grado Actualizado";

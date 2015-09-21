@@ -48,7 +48,6 @@ namespace Mhotivo.Controllers
             {
                 listCourses = _courseRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayCourseModel, Course>().ReverseMap();
             var list = listCourses.Select(item => item.Area != null ? new DisplayCourseModel
             {
                 Id = item.Id,
@@ -92,7 +91,6 @@ namespace Mhotivo.Controllers
         {
             string title;
             string content;
-            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
             courseModel.Area = _areaRepository.GetById(modelCourse.Area);
             var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
@@ -131,7 +129,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(int id)
         {
             var course = _courseRepository.GetCourseEditModelById(id);
-            Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
             var editCourse = new CourseEditModel
             {
                 Id = course.Id,
@@ -149,7 +146,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(CourseEditModel modelCourse)
         {
             var course = _courseRepository.GetById(modelCourse.Id);
-            Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
             _courseRepository.UpdateCourseFromCourseEditModel(courseModel, course);
             const string title = "Materia Actualizada";

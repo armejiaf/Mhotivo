@@ -17,17 +17,17 @@ namespace Mhotivo.Controllers
     {
         private readonly IAcademicYearDetailsRepository _academicYearDetailsRepository;
         private readonly ICourseRepository _courseRepository;
-        private readonly ITeacherRepository _meisterRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicYearRepository _academicYearRepository;
 
         public AcademicYearDetailsController(IAcademicYearDetailsRepository academicYearDetailsRepository,
-            ICourseRepository courseRepository, ITeacherRepository meisterRepository,
+            ICourseRepository courseRepository, ITeacherRepository teacherRepository,
             IAcademicYearRepository academicYearRepository)
         {
             _academicYearDetailsRepository = academicYearDetailsRepository;
             _courseRepository = courseRepository;
-            _meisterRepository = meisterRepository;
+            _teacherRepository = teacherRepository;
             _academicYearRepository = academicYearRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
@@ -100,7 +100,7 @@ namespace Mhotivo.Controllers
                 Teacher = academicYearDetails.Teacher
             };
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", academicYearModel.Course.Id);
-            ViewBag.MeisterId = new SelectList(_meisterRepository.Query(x => x), "Id", "FullName", academicYearModel.Teacher.Id);
+            ViewBag.TeacherId = new SelectList(_teacherRepository.Query(x => x), "Id", "FullName", academicYearModel.Teacher.Id);
             return View("Edit", academicYearModel);
         }
 
@@ -114,7 +114,7 @@ namespace Mhotivo.Controllers
             myAcademicYearDetails.Schedule = academicYearDetailsModel.Schedule.AsDateTime();
             myAcademicYearDetails.Room = academicYearDetailsModel.Room;
             myAcademicYearDetails.Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id);
-            myAcademicYearDetails.Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id);
+            myAcademicYearDetails.Teacher = _teacherRepository.GetById(academicYearDetailsModel.Teacher.Id);
             _academicYearDetailsRepository.Update(myAcademicYearDetails);
             const string title = "El Detalle del Año Académico Actualizado ";
             var content = "El detalle " + myAcademicYearDetails.Course.Name + " ha sido actualizado exitosamente.";
@@ -138,7 +138,7 @@ namespace Mhotivo.Controllers
         public ActionResult Add(long id)
         {
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", 0);
-            ViewBag.MeisterId = new SelectList(_meisterRepository.Query(x => x), "Id", "FullName", 0);
+            ViewBag.TeacherId = new SelectList(_teacherRepository.Query(x => x), "Id", "FullName", 0);
             ViewBag.IdAcademicYear = id;
             return View("Create");
         }
@@ -155,7 +155,7 @@ namespace Mhotivo.Controllers
                 Schedule = ParseToHonduranDateTime.Parse(academicYearDetailsModel.Schedule),
                 Room = academicYearDetailsModel.Room,
                 Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id),
-                Teacher = _meisterRepository.GetById(academicYearDetailsModel.Teacher.Id),
+                Teacher = _teacherRepository.GetById(academicYearDetailsModel.Teacher.Id),
                 AcademicYear = _academicYearRepository.GetById(academicYearDetailsModel.AcademicYearId)
             };
 

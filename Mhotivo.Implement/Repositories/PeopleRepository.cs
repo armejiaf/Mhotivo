@@ -86,7 +86,7 @@ namespace Mhotivo.Implement.Repositories
                 Address = people.Address,
                 City = people.City,
                 State = people.State,
-                Gender = people.Gender
+                MyGender = people.MyGender
             };
         }
 
@@ -99,7 +99,7 @@ namespace Mhotivo.Implement.Repositories
             people.Country = peopleEditModel.Country;
             people.IdNumber = peopleEditModel.IdNumber;
             people.BirthDate = peopleEditModel.BirthDate;
-            people.Gender = peopleEditModel.Gender;
+            people.MyGender = peopleEditModel.MyGender;
             people.Nationality = peopleEditModel.Nationality;
             people.State = peopleEditModel.State;
             people.City = peopleEditModel.City;
@@ -116,7 +116,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (peopleRegisterModel.FirstName + " " + peopleRegisterModel.LastName).Trim(),
                 IdNumber = peopleRegisterModel.IdNumber,
                 BirthDate = peopleRegisterModel.BirthDate,
-                Gender = peopleRegisterModel.Gender,
+                MyGender = peopleRegisterModel.MyGender,
                 Nationality = peopleRegisterModel.Nationality,
                 State = peopleRegisterModel.State,
                 Country = peopleRegisterModel.Country,
@@ -135,7 +135,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (people.FirstName + " " + people.LastName).Trim(),
                 IdNumber = people.IdNumber,
                 BirthDate = people.BirthDate,
-                Gender = people.Gender, 
+                MyGender = people.MyGender, 
                 Nationality = people.Nationality,
                 Country = people.Country,
                 State = people.State,

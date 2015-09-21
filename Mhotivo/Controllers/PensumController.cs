@@ -50,7 +50,6 @@ namespace Mhotivo.Controllers
             {
                 temp = _pensumRepository.Filter(x => x.Course.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayPensumModel, Pensum>().ReverseMap();
             var list = temp.Select(item => item.Course != null ? new DisplayPensumModel
             {
                 Id = item.Id,

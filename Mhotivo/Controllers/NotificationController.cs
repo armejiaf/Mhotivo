@@ -42,7 +42,7 @@ namespace Mhotivo.Controllers
         private readonly IEducationLevelRepository _areaReporsitory;
         private static string _searchText = string.Empty;
 
-        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository meisterRepository,
+        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository teacherRepository,
             IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository, IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository, IEducationLevelRepository areaReporsitory)
         {
             _sessionManagement = sessionManagement;
@@ -50,7 +50,7 @@ namespace Mhotivo.Controllers
             _notificationRepository = notificationRepository;
             _notificationTypeRepository = notificationTypeRepository;
             _peopleRepository = peopleRepository;
-            _teacherRepository = meisterRepository;
+            _teacherRepository = teacherRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
             _parentRepository = parentRepository;
             _studentRepository = studentRepository;

@@ -113,8 +113,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
@@ -189,7 +188,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]

@@ -90,7 +90,7 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                Gender = x.Gender,
+                MyGender = x.MyGender,
                 Contacts = x.Contacts,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
@@ -116,7 +116,7 @@ namespace Mhotivo.Implement.Repositories
                 City = parent.City,
                 State = parent.State,
                 Country = parent.Country,
-                Gender = parent.Gender,
+                MyGender = parent.MyGender,
                 Contacts = parent.Contacts,
                 Photo = parent.Photo
             };
@@ -130,7 +130,7 @@ namespace Mhotivo.Implement.Repositories
             parent.Country = parentEditModel.Country;
             parent.IdNumber = parentEditModel.IdNumber;
             parent.BirthDate = parentEditModel.BirthDate;
-            parent.Gender = parentEditModel.Gender;
+            parent.MyGender = parentEditModel.MyGender;
             parent.Nationality = parentEditModel.Nationality;
             parent.State = parentEditModel.State;
             parent.City = parentEditModel.City;
@@ -148,7 +148,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parentRegisterModel.FirstName + " " + parentRegisterModel.LastName).Trim(),
                 IdNumber = parentRegisterModel.IdNumber,
                 BirthDate = parentRegisterModel.BirthDate,
-                Gender = parentRegisterModel.Gender,
+                MyGender = parentRegisterModel.MyGender,
                 Nationality = parentRegisterModel.Nationality,
                 State = parentRegisterModel.State,
                 Country = parentRegisterModel.Country,
@@ -169,7 +169,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (parent.FirstName + " " + parent.LastName).Trim(),
                 IdNumber = parent.IdNumber,
                 BirthDate = parent.BirthDate,
-                Gender = parent.Gender,
+                MyGender = parent.MyGender,
                 Nationality = parent.Nationality,
                 Country = parent.Country,
                 State = parent.State,
