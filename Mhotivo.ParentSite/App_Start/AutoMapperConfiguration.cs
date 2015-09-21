@@ -10,7 +10,6 @@ namespace Mhotivo.ParentSite
         {
             Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
             Mapper.CreateMap<NotificationCommentsModel, NotificationComments>().ReverseMap();
-            Mapper.CreateMap<PeopleModel, People>().ReverseMap();
             Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
             Mapper.CreateMap<HomeworkDateModel, Homework>().ReverseMap();
             //Mapper.CreateMap<Notification, NotificationModel>();

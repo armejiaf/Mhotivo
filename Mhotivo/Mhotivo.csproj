@@ -188,7 +188,6 @@
     <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
-    <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Encryption\MD5CryptoService.cs" />
@@ -221,7 +220,6 @@
     <Compile Include="Models\NotificationTypeModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\PensumModel.cs" />
-    <Compile Include="Models\PeopleModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -466,9 +464,6 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Shared\_MessageArea.cshtml" />
-    <Content Include="Views\People\Index.cshtml" />
-    <Content Include="Views\People\Create.cshtml" />
-    <Content Include="Views\People\Edit.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Home\UnderConstruction.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />

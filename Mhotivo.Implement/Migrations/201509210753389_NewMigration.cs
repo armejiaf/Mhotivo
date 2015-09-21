@@ -98,21 +98,17 @@ namespace Mhotivo.Implement.Migrations
                         EndDate = c.String(),
                         BloodType = c.String(),
                         AccountNumber = c.String(),
-                        Capacity = c.Int(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
-                        MyBenefactor_Id = c.Long(),
                         Tutor1_Id = c.Long(),
                         Tutor2_Id = c.Long(),
                         User_Id = c.Long(),
                         MyUser_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.People", t => t.MyBenefactor_Id)
                 .ForeignKey("dbo.People", t => t.Tutor1_Id)
                 .ForeignKey("dbo.People", t => t.Tutor2_Id)
                 .ForeignKey("dbo.Users", t => t.User_Id)
                 .ForeignKey("dbo.Users", t => t.MyUser_Id)
-                .Index(t => t.MyBenefactor_Id)
                 .Index(t => t.Tutor1_Id)
                 .Index(t => t.Tutor2_Id)
                 .Index(t => t.User_Id)
@@ -367,7 +363,6 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.Notifications", "TargetStudent_Id", "dbo.People");
             DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
             DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
-            DropForeignKey("dbo.People", "MyBenefactor_Id", "dbo.People");
             DropForeignKey("dbo.Notifications", "NotificationType_Id", "dbo.NotificationTypes");
             DropForeignKey("dbo.Notifications", "NotificationCreator_Id", "dbo.Users");
             DropForeignKey("dbo.NotificationComments", "Notification_Id", "dbo.Notifications");
@@ -403,7 +398,6 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.People", new[] { "User_Id" });
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
             DropIndex("dbo.People", new[] { "Tutor1_Id" });
-            DropIndex("dbo.People", new[] { "MyBenefactor_Id" });
             DropIndex("dbo.Courses", new[] { "Area_Id" });
             DropIndex("dbo.AcademicYears", new[] { "Grade_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });

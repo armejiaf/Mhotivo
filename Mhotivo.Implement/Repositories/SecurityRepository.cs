@@ -3,14 +3,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
     public class SecurityRepository : ISecurityRepository
     {
-        private readonly MhotivoContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IPeopleRepository _peopleRepository;
         
@@ -19,9 +17,8 @@ namespace Mhotivo.Implement.Repositories
         private static string _userEmailIdentifier;
         private static string _userIdIdentifier;
 
-        public SecurityRepository(MhotivoContext ctx, IUserRepository userRepository, IPeopleRepository peopleRepository)
+        public SecurityRepository(IUserRepository userRepository, IPeopleRepository peopleRepository)
         {
-            _context = ctx;
             _userRepository = userRepository;
             _peopleRepository = peopleRepository;
 

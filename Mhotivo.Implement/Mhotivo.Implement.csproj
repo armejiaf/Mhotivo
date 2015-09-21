@@ -56,9 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201509210723145_NewMigration.cs" />
-    <Compile Include="Migrations\201509210723145_NewMigration.Designer.cs">
-      <DependentUpon>201509210723145_NewMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201509210753389_NewMigration.cs" />
+    <Compile Include="Migrations\201509210753389_NewMigration.Designer.cs">
+      <DependentUpon>201509210753389_NewMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -106,8 +106,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509210723145_NewMigration.resx">
-      <DependentUpon>201509210723145_NewMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201509210753389_NewMigration.resx">
+      <DependentUpon>201509210753389_NewMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

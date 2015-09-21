@@ -13,7 +13,7 @@ namespace Mhotivo.Implement.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201509210723145_NewMigration"; }
+            get { return "201509210753389_NewMigration"; }
         }
         
         string IMigrationMetadata.Source
