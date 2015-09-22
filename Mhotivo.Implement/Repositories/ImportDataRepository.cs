@@ -116,10 +116,11 @@ namespace Mhotivo.Implement.Repositories
                         DisplayName = pare.FirstName,
                         Email = "",
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
-                        IsActive = true
+                        IsActive = true,
+                        Role = Roles.Padre
                     };
                     //TODO: add to newUsers table.
-                    newUser = _userRepository.Create(newUser, Roles.Padre);
+                    newUser = _userRepository.Create(newUser);
                     
                     pare.MyUser = newUser;
                     _parentRepository.Create(pare);

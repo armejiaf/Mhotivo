@@ -97,16 +97,9 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(UserEditModel modelUser)
         {
-            bool updateRole = false;
             User myUsers = _userRepository.GetById(modelUser.Id);
             var myUser = Mapper.Map<User>(modelUser);
-            var rol = (Roles)modelUser.RoleId;
-            var roleUser = _userRepository.GetUserRole(myUser.Id);
-            if (roleUser != (Roles)modelUser.RoleId)
-            {
-                updateRole = true;
-            }
-            var user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers, updateRole, rol);
+            var user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers);
             const string title = "Usuario Actualizado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email +
                              " ha sido actualizado exitosamente.";
@@ -140,13 +133,13 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            var rol = Roles.Administrador;
             var myUser = new User
             {
                 DisplayName = modelUser.DisplaName,
                 Email = modelUser.UserName,
                 Password = modelUser.Password,
-                IsActive = modelUser.Status
+                IsActive = modelUser.Status,
+                Role = Roles.Administrador
             };
 
             if (_userRepository.ExistEmail(modelUser.UserName))
@@ -155,7 +148,7 @@ namespace Mhotivo.Controllers
                 return RedirectToAction("Index");
             }
             
-            var user = _userRepository.Create(myUser, rol);
+            var user = _userRepository.Create(myUser);
             const string title = "Usuario Agregado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

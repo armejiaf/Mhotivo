@@ -159,9 +159,10 @@ namespace Mhotivo.Controllers
                 DisplayName = modelTeacher.FirstName,
                 Email = modelTeacher.Email,
                 Password = modelTeacher.Password,
-                IsActive = true
+                IsActive = true,
+                Role = Roles.Maestro
             };
-            newUser = _userRepository.Create(newUser, Roles.Padre);
+            newUser = _userRepository.Create(newUser);
             myTeacher.MyUser = newUser;
             _teacherRepository.Create(myTeacher);
             const string title = "Maestro Agregado";

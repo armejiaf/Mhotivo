@@ -38,9 +38,8 @@ namespace Mhotivo.Implement.Repositories
             return users.Count() != 0 ? users.First() : null;
         }
 
-        public User Create(User itemToCreate, Roles rol)
+        public User Create(User itemToCreate)
         {
-            itemToCreate.Role = rol;
             itemToCreate.EncryptPassword();
             var user = _context.Users.Add(itemToCreate);
             _context.SaveChanges();
@@ -59,13 +58,8 @@ namespace Mhotivo.Implement.Repositories
             return myUsers;
         }
 
-        public User Update(User itemToUpdate, bool updateRole, Roles rol)
+        public User Update(User itemToUpdate)
         {
-            if (updateRole)
-            {
-                if(!itemToUpdate.Role.Equals(rol))
-                    itemToUpdate.Role = rol;
-            }
             _context.Users.AddOrUpdate(itemToUpdate);
             SaveChanges();
             return itemToUpdate;   
@@ -101,13 +95,14 @@ namespace Mhotivo.Implement.Repositories
             return userTemp == null ? Roles.Invalid : userTemp.Role;
         }
 
-        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Roles rol)
+        public User UpdateUserFromUserEditModel(User userModel, User user)
         {
             user.DisplayName = userModel.DisplayName;
             user.Email = userModel.Email;
             user.Notifications = userModel.Notifications;
             user.IsActive = userModel.IsActive;
-            return Update(user,updateRole,rol);
+            user.Role = userModel.Role;
+            return Update(user);
         }
 
         public bool ExistEmail(string userName)

@@ -454,8 +454,6 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Role\Index.cshtml" />
-    <Content Include="Views\Role\_Edit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
@@ -480,9 +478,6 @@
     <Content Include="Views\Parent\DetailsEdit.cshtml" />
     <Content Include="Views\Parent\Edit.cshtml" />
     <Content Include="Views\Parent\Index.cshtml" />
-    <Content Include="Views\Group\Index.cshtml" />
-    <Content Include="Views\Group\Add.cshtml" />
-    <Content Include="Views\Group\Edit.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Course\Add.cshtml" />
@@ -551,7 +546,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewUser\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
