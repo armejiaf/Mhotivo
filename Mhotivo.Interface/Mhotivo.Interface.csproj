@@ -42,8 +42,6 @@
   <ItemGroup>
     <Compile Include="Interfaces\IAcademicYearDetailsRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
-    <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
-    <Compile Include="Interfaces\IAppointmentParticipants.cs" />
     <Compile Include="Interfaces\IEducationLevelRepository.cs" />
     <Compile Include="Interfaces\IClassActivityRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />

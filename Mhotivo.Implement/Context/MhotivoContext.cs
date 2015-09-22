@@ -9,7 +9,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<AcademicYearDetail> AcademicYearDetails { get; set; }
-        public DbSet<AppointmentDiary> AppointmentDiary { get; set; }
         public DbSet<EducationLevel> EducationLevels { get; set; }
         public DbSet<ClassActivityGrading> ClassActivityGradings { get; set; }
         public DbSet<ClassActivity> ClassActivities { get; set; }
@@ -25,7 +24,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<People> Peoples { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<AppointmentParticipants> AppointmentParticipant { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<PreloadedPassword> PreloadedPasswords { get; set; }
 
