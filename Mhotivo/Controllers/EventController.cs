@@ -261,13 +261,11 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public JsonResult GetGroupsAndEmails(string filter)
         {
-            List<string> groups = Db.Groups.Where(x => x.Name.Contains(filter)).Select(x => x.Name).ToList();
             List<string> mails =
                 Db.Users.Where(x => x.DisplayName.Contains(filter) || x.Email.Contains(filter))
                     .Select(x => x.Email)
                     .ToList();
-            groups = groups.Union(mails).ToList();
-            return Json(groups, JsonRequestBehavior.AllowGet);
+            return Json(mails, JsonRequestBehavior.AllowGet);
         }
     }
 }

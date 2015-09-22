@@ -178,7 +178,6 @@
     <Compile Include="Controllers\EnrollController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
-    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Encryption\MD5CryptoService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

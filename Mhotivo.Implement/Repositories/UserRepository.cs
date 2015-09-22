@@ -56,7 +56,7 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<User> Filter(Expression<Func<User, bool>> expression)
         {
             var myUsers = _context.Users.Where(expression);
-            return myUsers.Count() != 0 ? myUsers.Include(x => x.Groups) : myUsers;
+            return myUsers;
         }
 
         public User Update(User itemToUpdate, bool updateRole, Roles rol)
@@ -106,7 +106,6 @@ namespace Mhotivo.Implement.Repositories
             user.DisplayName = userModel.DisplayName;
             user.Email = userModel.Email;
             user.Notifications = userModel.Notifications;
-            user.Parents = userModel.Parents;
             user.IsActive = userModel.IsActive;
             return Update(user,updateRole,rol);
         }

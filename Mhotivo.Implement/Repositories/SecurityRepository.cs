@@ -36,19 +36,6 @@ namespace Mhotivo.Implement.Repositories
             return _userRepository.GetUserRole(idUser);
         }
 
-        public ICollection<Group> GetUserLoggedGroups()
-        {
-            if (!IsAuthenticated())
-                return new List<Group>();
-            var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-            var userTemp = _userRepository.GetById(idUser);
-            if (userTemp == null)
-                return new Collection<Group>();
-            if (userTemp.Groups == null)
-                return new Collection<Group>();
-            return userTemp.Groups;
-        }
-
         public User GetUserLogged()
         {
             if (!IsAuthenticated())

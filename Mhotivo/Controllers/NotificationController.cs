@@ -427,13 +427,11 @@ namespace Mhotivo.Controllers
 
         public JsonResult GetGroupsAndEmails(string filter)
         {
-            List<string> groups = Db.Groups.Where(x => x.Name.Contains(filter)).Select(x => x.Name).ToList();
             List<string> mails =
                 Db.Users.Where(x => x.DisplayName.Contains(filter) || x.Email.Contains(filter))
                     .Select(x => x.Email)
                     .ToList();
-            groups = groups.Union(mails).ToList();
-            return Json(groups, JsonRequestBehavior.AllowGet);
+            return Json(mails, JsonRequestBehavior.AllowGet);
         }
 
         // GET: /NotificationModel/Edit/5
@@ -523,8 +521,7 @@ namespace Mhotivo.Controllers
                     "La notificación no pudo ser editada correctamente, por favor intente nuevamente.",
                     ViewMessageType.ErrorMessage);
             }
-            IQueryable<Group> g = Db.Groups.Select(x => x);
-            return RedirectToAction("Index", g);
+            return RedirectToAction("Index");
         }
 
         // POST: /NotificationModel/Delete/5

@@ -17,7 +17,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enroll> Enrolls { get; set; }
         public DbSet<Grade> Grades { get; set; }
-        public DbSet<Group> Groups { get; set; }
         public DbSet<Teacher> Teachers{ get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<NotificationComments> NotificationComments { get; set; }

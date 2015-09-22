@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IAcademicYearDetailRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearDetailsRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IAppointmentDiaryRepository.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Interfaces\INotificationCommentRepository.cs" />
     <Compile Include="Interfaces\IPasswordGenerationService.cs" />
     <Compile Include="Interfaces\ITeacherRepository.cs" />
-    <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\INotificationRepository.cs" />
     <Compile Include="Interfaces\INotificationTypeRepository.cs" />
     <Compile Include="Interfaces\IParentRepository.cs" />

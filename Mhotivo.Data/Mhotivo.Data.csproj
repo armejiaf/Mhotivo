@@ -68,7 +68,6 @@
     <Compile Include="Entities\Enroll.cs" />
     <Compile Include="Entities\AppointmentParticipants.cs" />
     <Compile Include="Entities\Grade.cs" />
-    <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\PeopleWithBiography.cs" />
     <Compile Include="Entities\PreloadedPassword.cs" />
