@@ -46,7 +46,7 @@ namespace Mhotivo.Controllers
                     var year = Convert.ToInt32(searchString);
                     allAcademicYears = _academicYearRepository.Filter(x => x.Year.Equals(year)).ToList();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                    //ignore
                 }

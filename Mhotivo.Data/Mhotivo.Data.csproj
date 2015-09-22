@@ -60,8 +60,6 @@
     <Compile Include="Entities\AcademicYear.cs" />
     <Compile Include="Entities\AcademicYearDetail.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
-    <Compile Include="Entities\ClassActivity.cs" />
-    <Compile Include="Entities\ClassActivityGrading.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Enroll.cs" />
