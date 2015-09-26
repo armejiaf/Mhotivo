@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
@@ -59,7 +60,16 @@ namespace Mhotivo.Controllers
                 return View(importModel);
             }
             var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
-            _importDataRepository.Import(myDataSet, academicYear);
+            try
+            {
+                _importDataRepository.Import(myDataSet, academicYear);
+            }
+            catch(Exception ex)
+            {
+                _viewMessageLogic.SetNewMessage("Error!", ex.Message, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
