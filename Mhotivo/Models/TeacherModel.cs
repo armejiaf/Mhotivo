@@ -55,6 +55,9 @@ namespace Mhotivo.Models
 
         [Display(Name = "Biografía")]
         public string Biography { get; set; }
+
+        [Display(Name = "Foto Perfil")]
+        public byte[] Photo { get; set; }
     }
 
     public class TeacherEditModel
