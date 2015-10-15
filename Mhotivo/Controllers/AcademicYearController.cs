@@ -46,7 +46,7 @@ namespace Mhotivo.Controllers
                     var year = Convert.ToInt32(searchString);
                     allAcademicYears = _academicYearRepository.Filter(x => x.Year.Equals(year)).ToList();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                    //ignore
                 }
@@ -132,8 +132,8 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             var academicYear = _academicYearRepository.Delete(id);
-            const string title = "Estudiante Eliminado";
-            var content = "El año académico " + academicYear.Year + " ha sido eliminado exitosamente.";
+            const string title = "Año Académico Eliminado";
+            var content = "El año académico " + academicYear.Year + ", "+academicYear.Grade.Name+", "+academicYear.Section+" ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }

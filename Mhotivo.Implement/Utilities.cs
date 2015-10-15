@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Implement
 {
     public class Utilities
     {
-        public static string GenderToString(bool masculino)
+        public static Gender DefineGender(string gender)
         {
-            return masculino ? "Masculino" : "Femenino";
-        }
-
-        public static bool IsMasculino(string sex)
-        {
-            if (sex == null)
-                sex = "";
-            return sex.Equals(sex.Length == 1 ? "M" : "Hombre");
+            if (gender == null)
+                gender = "";
+            return (gender.ToLower().StartsWith("m") ? Gender.Masculino : Gender.Femenino);
         }
     }
 }

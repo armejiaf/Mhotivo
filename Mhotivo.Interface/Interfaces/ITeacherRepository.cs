@@ -17,10 +17,10 @@ namespace Mhotivo.Interface.Interfaces
         Teacher Update(Teacher itemToUpdate);
         Teacher Delete(long id);
         IEnumerable<Teacher> GetAllTeachers();
-        Teacher GenerateTeacherFromRegisterModel(Teacher meisterRegisterModel);
+        Teacher GenerateTeacherFromRegisterModel(Teacher teacherRegisterModel);
         Teacher GetTeacherEditModelById(long id);
         Teacher GetTeacherDisplayModelById(long id);
-        Teacher UpdateTeacherFromMeisterEditModel(Teacher meisterEditModel, Teacher meister);
+        Teacher UpdateTeacherFromTeacherEditModel(Teacher teacherEditModel, Teacher teacher);
         void SaveChanges();
         bool ExistIdNumber(string idNumber);
         bool ExistEmail(string email);

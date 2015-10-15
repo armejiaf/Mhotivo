@@ -17,10 +17,12 @@ namespace Mhotivo.Controllers
         // GET: /Area/
         private readonly IEducationLevelRepository _areaReposity;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private ICourseRepository _courseRepository;
 
-        public EducationLevelController(IEducationLevelRepository areaReposity)
+        public EducationLevelController(IEducationLevelRepository areaReposity, ICourseRepository courseRepository)
         {
             _areaReposity = areaReposity;
+            _courseRepository = courseRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
         [AuthorizeAdmin]
@@ -42,7 +44,6 @@ namespace Mhotivo.Controllers
             {
                 listaArea = _areaReposity.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayEducationLevelModel, EducationLevel>().ReverseMap();
             var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<EducationLevel, DisplayEducationLevelModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -87,18 +88,29 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            EducationLevel area = _areaReposity.Delete(id);
-            const string title = "Nivel De Educacion Eliminado";
-            var content = "El Nivel De Educacion " + area.Name + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Index");
+            var check = _courseRepository.Filter(x => x.Area.Id == id).FirstOrDefault();
+            if (check == null)
+            {
+                var area = _areaReposity.Delete(id);
+                const string title = "Nivel De Educacion Eliminado";
+                var content = "El Nivel De Educacion " + area.Name + " ha sido eliminado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                const string title = "Error!";
+                var content = "No se puede borrar el nivel de educacion pues existe un curso dentro de este.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
         }
+
         [HttpGet]
         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
             EducationLevel thisArea = _areaReposity.GetById(id);
-            Mapper.CreateMap<EducationLevelEditModel, EducationLevel>().ReverseMap();
             var area = Mapper.Map<EducationLevel,EducationLevelEditModel>(thisArea);
             area.Name = thisArea.Name;
             return View("Edit", area);

@@ -34,7 +34,7 @@ namespace Mhotivo.ParentSite.Controllers
                     CommentText = comment.CommentText,
                     CreationDate = comment.CreationDate,
                     Parent = firstOrDefault.Parent.FullName,
-                    ParentPhotoUrl = firstOrDefault.Parent.UrlPicture
+                    Photo = firstOrDefault.Parent.Photo
                 } : null;
             }).ToList();
             selectedNotificationModel.CommentsAmount = commentsList.Count;

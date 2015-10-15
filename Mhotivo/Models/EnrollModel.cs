@@ -10,10 +10,10 @@ namespace Mhotivo.Models
         public string FullName { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
+        public byte[] Photo { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Display(Name = "Numero de Cuenta")]
         public string AccountNumber { get; set; }

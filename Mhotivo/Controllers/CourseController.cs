@@ -16,14 +16,17 @@ namespace Mhotivo.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly IEducationLevelRepository _areaRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private IPensumRepository _pensumRepository;
 
         public CourseController(ICourseRepository courseRepository, 
-                                IEducationLevelRepository areaRepository)
+                                IEducationLevelRepository areaRepository,
+                                IPensumRepository pensumRepository)
         {
             if (courseRepository == null) throw new ArgumentNullException("courseRepository");
             if (areaRepository == null) throw new ArgumentNullException("areaRepository");
             _courseRepository = courseRepository;
             _areaRepository = areaRepository;
+            _pensumRepository = pensumRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -48,7 +51,6 @@ namespace Mhotivo.Controllers
             {
                 listCourses = _courseRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayCourseModel, Course>().ReverseMap();
             var list = listCourses.Select(item => item.Area != null ? new DisplayCourseModel
             {
                 Id = item.Id,
@@ -92,7 +94,6 @@ namespace Mhotivo.Controllers
         {
             string title;
             string content;
-            Mapper.CreateMap<Course, CourseRegisterModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
             courseModel.Area = _areaRepository.GetById(modelCourse.Area);
             var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
@@ -118,11 +119,22 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            var course = _courseRepository.Delete(id);
-            const string title = "Materia Eliminada";
-            var content = course.Name + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Index");
+            var check = _pensumRepository.Filter(x => x.Course.Id == id).FirstOrDefault();
+            if (check == null)
+            {
+                var course = _courseRepository.Delete(id);
+                const string title = "Materia Eliminada";
+                var content = course.Name + " ha sido eliminado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                const string title = "Error!";
+                var content = "No se puede borrar la materia pues existe un pensum con esta materia.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
         }
         
         /// GET: /Course/Edit
@@ -131,7 +143,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(int id)
         {
             var course = _courseRepository.GetCourseEditModelById(id);
-            Mapper.CreateMap<CourseEditModel, Course>().ReverseMap();
             var editCourse = new CourseEditModel
             {
                 Id = course.Id,
@@ -149,7 +160,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(CourseEditModel modelCourse)
         {
             var course = _courseRepository.GetById(modelCourse.Id);
-            Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
             var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
             _courseRepository.UpdateCourseFromCourseEditModel(courseModel, course);
             const string title = "Materia Actualizada";

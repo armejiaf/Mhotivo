@@ -15,11 +15,13 @@ namespace Mhotivo.Controllers
     {
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private IAcademicYearRepository _academicYearRepository;
 
-        public GradeController(IGradeRepository gradeRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository)
         {
             if (gradeRepository == null) throw new ArgumentNullException("gradeRepository");
             _gradeRepository = gradeRepository;
+            _academicYearRepository = academicYearRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -43,7 +45,6 @@ namespace Mhotivo.Controllers
             {
                 grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayGradeModel, Grade>().ReverseMap();
             var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -75,7 +76,6 @@ namespace Mhotivo.Controllers
         {
             string title;
             string content;
-            Mapper.CreateMap<Grade, GradeRegisterModel>().ReverseMap();
             var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
             var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
             var existGrade =
@@ -101,11 +101,22 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            var grade = _gradeRepository.Delete(id);
-            const string title = "Grado ha sido Eliminado";
-            var content = grade.Name + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Index");
+            var check = _academicYearRepository.Filter(x => x.Grade.Id == id).FirstOrDefault();
+            if (check == null)
+            {
+                var grade = _gradeRepository.Delete(id);
+                const string title = "Grado ha sido Eliminado";
+                var content = grade.Name + " ha sido eliminado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                const string title = "Error!";
+                var content = "No se puede borrar el grado pues existe un año académico con este grado.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
         }
         
         /// GET: /Grade/Edit/5
@@ -114,7 +125,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(int id)
         {
             var grade = _gradeRepository.GetGradeEditModelById(id);
-            Mapper.CreateMap<GradeEditModel, Grade>().ReverseMap();
             var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
             return View("Edit", gradeModel);
         }
@@ -125,7 +135,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(GradeEditModel modelGrade)
         {
             var myGrade = _gradeRepository.GetById(modelGrade.Id);
-            Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();
             var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
             _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
             const string title = "Grado Actualizado";

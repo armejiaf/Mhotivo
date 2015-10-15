@@ -3,15 +3,12 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace Mhotivo.Implement.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    public class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
+    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
@@ -19,6 +16,7 @@ namespace Mhotivo.Implement.Migrations
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -132,7 +130,7 @@ namespace Mhotivo.Implement.Migrations
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
-                Email = "padre@mhotivo.org",
+                Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
                 Role = Roles.Padre
@@ -144,12 +142,12 @@ namespace Mhotivo.Implement.Migrations
             var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
             if (maestroDefault == null)
             {
-                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, MyUser = genericTeacher });
+                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, MyGender = Gender.Masculino, MyUser = genericTeacher });
             }
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)
             {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyUser = genericParent });
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, MyUser = genericParent });
             }
             context.SaveChanges();
         }

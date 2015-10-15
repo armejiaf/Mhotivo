@@ -21,7 +21,7 @@ namespace Mhotivo.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-        public long MeisterId = -1;
+        public long TeacherId = -1;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearDetailsRepository academicYearDetailRepository, ICourseRepository courseRepository, ITeacherRepository teacherRepository)
@@ -37,8 +37,8 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            MeisterId = GetTeacherId();
-            var allAcademicYearsDetails = GetAllAcademicYearsDetail(MeisterId);
+            TeacherId = GetTeacherId();
+            var allAcademicYearsDetails = GetAllAcademicYearsDetail(TeacherId);
             var academicY = new List<long>();
             var academicYearsDetails = allAcademicYearsDetails as AcademicYearDetail[] ?? allAcademicYearsDetails.ToArray();
             for (int a = 0; a < academicYearsDetails.Count(); a++)
@@ -46,7 +46,6 @@ namespace Mhotivo.Controllers
                 academicY.Add(academicYearsDetails.ElementAt(a).Id);
             }
             IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => academicY.Contains(x.AcademicYearDetail.Id));
-            Mapper.CreateMap<DisplayHomeworkModel, Homework>().ReverseMap();
             IEnumerable<DisplayHomeworkModel> allHomeworkDisplaysModel =
                 allHomeworks.Select(Mapper.Map<Homework, DisplayHomeworkModel>).ToList();
             return View(allHomeworkDisplaysModel);
@@ -118,7 +117,6 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(EditHomeworkModel modelHomework)
         {
             Homework myStudent = _homeworkRepository.GetById(modelHomework.Id);
-            Mapper.CreateMap<Homework, EditHomeworkModel>().ReverseMap();
             var homeworktModel = Mapper.Map<EditHomeworkModel, Homework>(modelHomework);
             _homeworkRepository.UpdateHomeworkFromHomeworkEditModel(homeworktModel, myStudent);
             const string title = "Tarea Actualizada";

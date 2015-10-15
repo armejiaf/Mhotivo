@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mhotivo.Data.Entities
 {
+    public enum Gender
+    {
+        Femenino = 0,
+        Masculino = 1
+    }
     public class People
     {
         [Key]
@@ -20,9 +25,8 @@ namespace Mhotivo.Data.Entities
         public string State { get; set; }
         public string Country { get; set; }
         public string Address { get; set; }
-        public string UrlPicture { get; set; }
         public Byte[] Photo { get; set; }
-        public bool Gender { get; set; }
+        public Gender MyGender { get; set; }
         public bool Disable { get; set; }
         public User MyUser { get; set; }
         public virtual ICollection<ContactInformation> Contacts { get; set; }
