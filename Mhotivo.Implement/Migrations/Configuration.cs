@@ -130,7 +130,7 @@ namespace Mhotivo.Implement.Migrations
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
-                Email = "padre@mhotivo.org",
+                Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
                 Role = Roles.Padre
