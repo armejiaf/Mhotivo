@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
@@ -30,7 +31,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_teacherRepository.GetAllTeachers());
+            return View(Mapper.Map<IEnumerable<Teacher>, IEnumerable<DisplayTeacherModel> >(_teacherRepository.GetAllTeachers()));
         }
 
         [HttpGet]
