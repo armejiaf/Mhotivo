@@ -15,6 +15,7 @@ namespace Mhotivo.Implement.Migrations
         private IGradeRepository _gradeRepository;
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
+
         private IAcademicYearRepository _academicYearRepository;
 
         public Configuration()
