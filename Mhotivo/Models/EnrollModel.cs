@@ -10,10 +10,10 @@ namespace Mhotivo.Models
         public string FullName { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
+        public byte[] Photo { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Display(Name = "Numero de Cuenta")]
         public string AccountNumber { get; set; }
@@ -28,10 +28,16 @@ namespace Mhotivo.Models
 
     public class EnrollRegisterModel
     {
+        [Required(ErrorMessage = "Debe elegir un grado.")]
         [Display(Name = "Grado")]
         public long GradeId { get; set; }
 
+        [Required(ErrorMessage = "Debe elegir un estudiante.")]
         [Display(Name = "Estudiante")]
         public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public string Section { get; set; }
     }
 }

@@ -5,8 +5,7 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface ISecurityRepository
     {
-        ICollection<Role> GetUserLoggedRoles();
-        ICollection<Group> GetUserLoggedGroups();
+        Roles GetUserLoggedRole();
         ICollection<People> GetUserLoggedPeoples();
         User GetUserLogged();
         string GetUserLoggedName();

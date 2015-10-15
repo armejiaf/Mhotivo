@@ -26,6 +26,8 @@
         @Html.ValidationMessageFor(model => model.Message) 
         @Html.ValidationMessageFor(model => model.NotificationTypeId) 
         @Html.ValidationMessageFor(model => model.StudentId) 
+        @Html.ValidationMessageFor(model => model.GradeSection)
+        
     </p>
 
     <div class="control-group">
@@ -66,6 +68,17 @@
             @Html.DropDownListFor(model => model.StudentId, Model.StudentOptionSelectList, "Seleccione Estudiante", new {id = "StudentTo"})
             @*<select id="AddressedTo" name="AddressedTo"></select>*@
         </div>
+    </div>
+
+    <div class="control-group" id="OcultarList2">
+        <div class="control-label">
+            @Html.LabelFor(model => model.GradeSection)
+        </div>
+        <div class="controls">
+            @Html.DropDownList("Section")
+            @*<select id="AddressedTo" name="AddressedTo"></select>*@
+        </div>
+
     </div>
 
 

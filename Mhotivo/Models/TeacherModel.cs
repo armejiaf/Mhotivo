@@ -45,7 +45,7 @@ namespace Mhotivo.Models
         public string UrlPicture { get; set; }
 
         [Display(Name = "Sexo")]
-        public string Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
@@ -55,6 +55,9 @@ namespace Mhotivo.Models
 
         [Display(Name = "Biografía")]
         public string Biography { get; set; }
+
+        [Display(Name = "Foto Perfil")]
+        public byte[] Photo { get; set; }
     }
 
     public class TeacherEditModel
@@ -113,8 +116,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-        public bool Gender { get; set; }
+        public string MyGender { get; set; }
         
         [Display(Name = "Fecha de Inicio")]
         public string StartDate { get; set; }
@@ -123,7 +125,7 @@ namespace Mhotivo.Models
         public string UrlPicture { get; set; }
 
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase UploadPhoto { get; set; }
     }
 
     public class TeacherRegisterModel
@@ -189,7 +191,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public bool Gender { get; set; }
+        public string MyGender { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
         [Display(Name = "Fecha de Inicio")]

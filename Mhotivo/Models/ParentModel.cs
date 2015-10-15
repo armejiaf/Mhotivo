@@ -45,9 +45,7 @@ namespace Mhotivo.Models
         public byte[] Photo { get; set; }
 
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
-        public bool Gender { get; set; }
+        public string MyGender { get; set; }
     }
 
     public class ParentEditModel
@@ -62,7 +60,7 @@ namespace Mhotivo.Models
         public byte[] Photo { get; set; }
 
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase UpladPhoto { get; set; }
+        public HttpPostedFileBase UploadPhoto { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -103,9 +101,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
-        public bool Gender { get; set; }
+        public string MyGender { get; set; }
     }
 
     public class ParentRegisterModel
@@ -165,8 +161,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string StrGender { get; set; }
-
-        public bool Gender { get; set; }
+        public string MyGender { get; set; }
     }
 }

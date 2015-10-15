@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,10 +7,9 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Interface.Interfaces;
 
-//TODO: SEEMINGLY DEPRECATED. ELIMINATE AND REFACTOR.
 namespace Mhotivo.Implement.Repositories
 {
-    public class NotificationRepository:INotification
+    public class NotificationRepository:INotificationRepository
     {
         private readonly MhotivoContext _context;
 
@@ -32,7 +32,12 @@ namespace Mhotivo.Implement.Repositories
 
         public Notification Create(Notification itemToCreate)
         {
+            foreach (var user in itemToCreate.Users)
+            {
+                _context.Users.Attach(user);
+            }
             var notification = _context.Notifications.Add(itemToCreate);
+            _context.SaveChanges();
             return notification;
         }
 
@@ -67,11 +72,67 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        public IQueryable<Notification> GetGeneralNotifications(AcademicYear currentAcademicYear)
-        {
-            var currentYear = currentAcademicYear.Year;
-            var generalNotifications = _context.Notifications.Where(n => n.Created.Year.Equals(currentYear) && n.NotificationType.Id==1);
+        public IQueryable<Notification> GetGeneralNotifications(int currentAcademicYear)
+        {   
+            var generalNotifications = _context.Notifications.Where(
+                    n => n.Created.Year==currentAcademicYear && n.NotificationType.Id == 1 && n.Approved);
             return generalNotifications;
+        }
+
+        public IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id)
+        {
+
+            var students = _context.Students.Where(x => x.Tutor1.Id == id || x.Tutor2.Id == id).ToList();
+            var enrolls = new List<Enroll>();
+            foreach (var student in students)
+            {
+                enrolls.AddRange(_context.Enrolls.Where(x => x.Student.Id == student.Id));
+            }
+            var years = new List<string>();
+            foreach (var enroll in enrolls)
+            {
+                if(enroll.AcademicYear.IsActive)
+                    years.Add(enroll.AcademicYear.Section);
+               
+            }
+            
+            var gradeNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                    x.NotificationType.Id == 3 && 
+                    years.Contains(x.Section) &&
+                        x.Approved );
+            return gradeNotifications;
+        }
+
+        public IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
+        {
+            var parent = _context.Parents.FirstOrDefault(x => x.MyUser.Id == id);
+            
+            var personalNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                    x.NotificationType.Id == 4 &&
+                   
+                   //x.Users.FirstOrDefault(u => u.Id == id) != null && 
+                   x.Approved 
+                   //&& x.Id.Equals(id)
+                   && (x.TargetStudent.Tutor1.Id == parent.Id || x.TargetStudent.Tutor2.Id == parent.Id)
+                   );
+
+            return personalNotifications;
+        }
+
+        public IQueryable<Notification> GetAllNotifications()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)
+        {
+            var areaNotifications = _context.Notifications.Where(
+                x => x.Created.Year == currentAcademicYear &&
+                    x.NotificationType.Id == 2 && x.Approved);
+
+            return areaNotifications;
         }
     }
 }

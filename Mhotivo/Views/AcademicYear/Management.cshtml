@@ -51,7 +51,7 @@ else
                     @Html.DisplayNameFor(model => meta.Schedule)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => meta.Meister)
+                    @Html.DisplayNameFor(model => meta.Teacher)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => meta.StartDate)
@@ -92,7 +92,7 @@ else
                         @Html.DisplayFor(modelItem => item.Schedule)
                     </td>
                     <td>
-                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/SelectNewTeacher/@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Meister)</a>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/SelectNewTeacher/@Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Teacher)</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)

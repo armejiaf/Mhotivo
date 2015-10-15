@@ -90,7 +90,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = x.Id,
                 IdNumber = x.IdNumber,
-                UrlPicture = x.UrlPicture,
                 FullName = x.FullName,
                 BirthDate = x.BirthDate,
                 Nationality = x.Nationality,
@@ -98,7 +97,7 @@ namespace Mhotivo.Implement.Repositories
                 City = x.City,
                 State = x.State,
                 Country = x.Country,
-                Gender = x.Gender,
+                MyGender = x.MyGender,
                 StartDate = x.StartDate,
                 BloodType = x.BloodType,
                 AccountNumber = x.AccountNumber,
@@ -118,7 +117,6 @@ namespace Mhotivo.Implement.Repositories
             {
                 Id = student.Id,
                 IdNumber = student.IdNumber,
-                UrlPicture = student.UrlPicture,
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 FullName = student.FullName,
@@ -128,7 +126,7 @@ namespace Mhotivo.Implement.Repositories
                 City = student.City,
                 State = student.State,
                 Country = student.Country,
-                Gender = student.Gender,
+                MyGender = student.MyGender,
                 Contacts = student.Contacts,
                 StartDate = student.StartDate,
                 BloodType = student.BloodType,
@@ -149,7 +147,7 @@ namespace Mhotivo.Implement.Repositories
             student.Country = studentEditModel.Country;
             student.IdNumber = studentEditModel.IdNumber;
             student.BirthDate = studentEditModel.BirthDate;
-            student.Gender = studentEditModel.Gender;
+            student.MyGender = studentEditModel.MyGender;
             student.Nationality = studentEditModel.Nationality;
             student.State = studentEditModel.State;
             student.City = studentEditModel.City;
@@ -175,7 +173,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (studentRegisterModel.FirstName + " " + studentRegisterModel.LastName).Trim(),
                 IdNumber = studentRegisterModel.IdNumber,
                 BirthDate = studentRegisterModel.BirthDate,
-                Gender = studentRegisterModel.Gender,
+                MyGender = studentRegisterModel.MyGender,
                 Nationality = studentRegisterModel.Nationality,
                 State = studentRegisterModel.State,
                 Country = studentRegisterModel.Country,
@@ -202,7 +200,7 @@ namespace Mhotivo.Implement.Repositories
                 FullName = (student.FirstName + " " + student.LastName).Trim(),
                 IdNumber = student.IdNumber,
                 BirthDate = student.BirthDate,
-                Gender = student.Gender,
+                MyGender = student.MyGender,
                 Nationality = student.Nationality,
                 Country = student.Country,
                 State = student.State,

@@ -3,15 +3,12 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Interface.Interfaces;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace Mhotivo.Implement.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    public class Configuration : DbMigrationsConfiguration<Mhotivo.Implement.Context.MhotivoContext>
+    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
@@ -19,6 +16,7 @@ namespace Mhotivo.Implement.Migrations
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -27,7 +25,7 @@ namespace Mhotivo.Implement.Migrations
 
         protected override void Seed(MhotivoContext context)
         {
-            if (context.Roles.Any())
+            if (context.Users.Any())
                 return;
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new EducationLevelRepository(context);
@@ -35,18 +33,13 @@ namespace Mhotivo.Implement.Migrations
             _courseRepository = new CourseRepository(context, _areaRepository);
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
-            context.Roles.AddOrUpdate(new Role { Description = "Administrador", Name = "Administrador" });
-            context.Roles.AddOrUpdate(new Role { Description = "Director", Name = "Director" });
-            context.Roles.AddOrUpdate(new Role { Description = "Padre", Name = "Padre" });
-            context.Roles.AddOrUpdate(new Role { Description = "Maestro", Name = "Maestro" });
-            context.SaveChanges();
             var admin = new User
             {
                 DisplayName = "Administrador",
-                Email = "admin@mhotivo.edu",
+                Email = "admin@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.First() }
+                Role = Roles.Administrador
             };
             admin.EncryptPassword();
             context.Users.AddOrUpdate(admin);
@@ -121,26 +114,26 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(11), Grade = _gradeRepository.GetById(13) });
             for (int i = 1; i <= 13; i++)
             {
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = new DateTime(2015, 1, 1) });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = new DateTime(2015, 1, 1) });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = new DateTime(2015, 1, 1) });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = 2015 });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = 2015 });
+                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = 2015 });
             }
             var genericTeacher = new User
             {
                 DisplayName = "Maestro Generico",
-                Email = "teacher@mhotivo.edu",
+                Email = "teacher@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.Find(3) }
+                Role = Roles.Maestro
             };
             genericTeacher.EncryptPassword();
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
-                Email = "padre@mhotivo.edu",
+                Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Roles = new List<Role> { context.Roles.Find(2) }
+                Role = Roles.Padre
             };
             genericParent.EncryptPassword();
             context.Users.AddOrUpdate(genericTeacher);
@@ -149,12 +142,12 @@ namespace Mhotivo.Implement.Migrations
             var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
             if (maestroDefault == null)
             {
-                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, Gender = true, MyUser = genericTeacher });
+                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, MyGender = Gender.Masculino, MyUser = genericTeacher });
             }
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)
             {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyUser = genericParent });
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, MyUser = genericParent });
             }
             context.SaveChanges();
         }

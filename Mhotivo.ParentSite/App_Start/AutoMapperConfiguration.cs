@@ -8,16 +8,10 @@ namespace Mhotivo.ParentSite
     {
         public static void Configure()
         {
-            Mapper.CreateMap<NotificationModel, Notification>().ReverseMap();
-            Mapper.CreateMap<NotificationCommentsModel, NotificationComments>().ReverseMap();
-            Mapper.CreateMap<PeopleModel, People>().ReverseMap();
-            Mapper.CreateMap<HomeworkModel, Homework>().ReverseMap();
-            Mapper.CreateMap<HomeworkDateModel, Homework>().ReverseMap();
-            //Mapper.CreateMap<Notification, NotificationModel>();
-            //Mapper.CreateMap<NotificationComments, NotificationCommentsModel>();
-            //Mapper.CreateMap<People, PeopleModel>();
-            //Mapper.CreateMap<Homework, HomeworkModel>();
-            //Mapper.CreateMap<Homework, HomeworkDateModel>();
+            Mapper.CreateMap<Notification, NotificationModel>().ReverseMap();
+            Mapper.CreateMap<NotificationComments, NotificationCommentsModel>().ReverseMap();
+            Mapper.CreateMap<Homework, HomeworkModel>().ReverseMap();
+            Mapper.CreateMap<Homework, HomeworkDateModel>().ReverseMap();
         }
     }
 }

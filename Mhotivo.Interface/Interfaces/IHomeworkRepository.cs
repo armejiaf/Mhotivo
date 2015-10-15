@@ -16,10 +16,6 @@ namespace Mhotivo.Interface.Interfaces
         Homework Update(Homework itemToUpdate);
         Homework Delete(long id);
         IEnumerable<Homework> GetAllHomeworks();
-        Homework GetHomeworkEditModelById(long id);
-        Homework GetHomeworkDisplayModelById(long id);
         Homework UpdateHomeworkFromHomeworkEditModel(Homework homeworkEditModel, Homework homework);
-        void SaveChanges();
-        Homework GenerateHomeworkFromRegisterModel(Homework homeworkRegisterModel);
     }
 }

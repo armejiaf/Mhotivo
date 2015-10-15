@@ -51,5 +51,9 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
         public long StudentId { get; set; }//id de grado,area,user seleccionado
+
+        [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
+        [Display(Name = "Seccion")]
+        public string GradeSection { get; set; } //seccion del grado, A, B, C o Todos
     }
 }

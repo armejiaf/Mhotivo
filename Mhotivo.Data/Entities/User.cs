@@ -7,6 +7,14 @@ using System.Text;
 
 namespace Mhotivo.Data.Entities
 {
+    public enum Roles
+    {
+        Invalid = -1,
+        Padre = 1,
+        Maestro = 2,
+        Director = 3,
+        Administrador = 4
+    }
     public class User
     {
         [Key]
@@ -18,9 +26,7 @@ namespace Mhotivo.Data.Entities
         public bool IsActive { get; set; }
         public string Salt { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual ICollection<Group> Groups { get; set; }
-        public virtual ICollection<Parent> Parents { get; set; }
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual Roles Role { get; set; }
 
         public bool CheckPassword(string password)
         {

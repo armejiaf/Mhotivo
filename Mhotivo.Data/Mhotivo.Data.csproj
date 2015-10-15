@@ -59,17 +59,11 @@
   <ItemGroup>
     <Compile Include="Entities\AcademicYear.cs" />
     <Compile Include="Entities\AcademicYearDetail.cs" />
-    <Compile Include="Entities\AppointmentDiary.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
-    <Compile Include="Entities\Benefactor.cs" />
-    <Compile Include="Entities\ClassActivity.cs" />
-    <Compile Include="Entities\ClassActivityGrading.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Enroll.cs" />
-    <Compile Include="Entities\AppointmentParticipants.cs" />
     <Compile Include="Entities\Grade.cs" />
-    <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\PeopleWithBiography.cs" />
     <Compile Include="Entities\PreloadedPassword.cs" />
@@ -80,7 +74,6 @@
     <Compile Include="Entities\Parent.cs" />
     <Compile Include="Entities\Pensum.cs" />
     <Compile Include="Entities\People.cs" />
-    <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Student.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

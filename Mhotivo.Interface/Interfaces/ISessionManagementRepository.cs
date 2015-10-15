@@ -7,5 +7,6 @@
         string GetUserLoggedName();
         string GetUserLoggedEmail();
         string GetUserLoggedRole();
+        string GetUserLoggedId();
     }
 }

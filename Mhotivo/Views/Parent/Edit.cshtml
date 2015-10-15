@@ -33,7 +33,7 @@
             @Html.ValidationMessageFor(model => model.City)
             @Html.ValidationMessageFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.StrGender)
+            @Html.ValidationMessageFor(model => model.MyGender)
             @Html.ValidationMessageFor(model => model.Nationality)
             @Html.ValidationMessageFor(model => model.Country)
             @Html.ValidationMessageFor(model => model.State)
@@ -108,10 +108,10 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.StrGender)
+                @Html.LabelFor(model => model.MyGender)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.StrGender, new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
+                @Html.DropDownListFor(model => model.MyGender, new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
             </div>
         </div>
 
@@ -165,8 +165,8 @@
                 @Html.LabelFor(model => model.Photo)
             </div>
             <div class="controls">
-                @Html.TextBoxFor(m => m.UpladPhoto, new { type = "file" })<br />
-                @Html.ValidationMessageFor(model => model.UpladPhoto)
+                @Html.TextBoxFor(m => m.UploadPhoto, new { type = "file" })<br />
+                @Html.ValidationMessageFor(model => model.UploadPhoto)
             </div>
         </div>
 

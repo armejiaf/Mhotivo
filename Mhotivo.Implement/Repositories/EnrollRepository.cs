@@ -50,7 +50,7 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<Enroll> Filter(Expression<Func<Enroll, bool>> expression)
         {
             var myEnrolls = _context.Enrolls.Where(expression);
-            return myEnrolls.Count() != 0 ? myEnrolls : null;
+            return myEnrolls;
         }
 
         public Enroll Update(Enroll itemToUpdate, bool academicYear, bool student)

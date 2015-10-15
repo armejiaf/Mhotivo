@@ -50,7 +50,6 @@ namespace Mhotivo.Controllers
             {
                 temp = _pensumRepository.Filter(x => x.Course.Name.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayPensumModel, Pensum>().ReverseMap();
             var list = temp.Select(item => item.Course != null ? new DisplayPensumModel
             {
                 Id = item.Id,
@@ -132,7 +131,7 @@ namespace Mhotivo.Controllers
         {
             Pensum pensum = _pensumRepository.Delete(id);
             const string title = "Pensum Eliminado";
-            string content = "El Pesum " + pensum.Id + " ha sido eliminado exitosamente.";
+            string content = "El Pesum de "+pensum.Course+" para el grado " + pensum.Grade + " ha sido eliminado exitosamente.";
             TempData["MessageInfo"] = new MessageModel
             {
                 Type = "INFO",

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Interface.Interfaces;
@@ -37,9 +38,8 @@ namespace Mhotivo.Implement.Repositories
             return users.Count() != 0 ? users.First() : null;
         }
 
-        public User Create(User itemToCreate, Role rol)
+        public User Create(User itemToCreate)
         {
-            itemToCreate.Roles = new List<Role>{ rol };
             itemToCreate.EncryptPassword();
             var user = _context.Users.Add(itemToCreate);
             _context.SaveChanges();
@@ -55,16 +55,12 @@ namespace Mhotivo.Implement.Repositories
         public IQueryable<User> Filter(Expression<Func<User, bool>> expression)
         {
             var myUsers = _context.Users.Where(expression);
-            return myUsers.Count() != 0 ? myUsers.Include(x => x.Groups) : myUsers;
+            return myUsers;
         }
 
-        public User Update(User itemToUpdate, bool updateRole, Role rol)
+        public User Update(User itemToUpdate)
         {
-            if (updateRole)
-            {
-                if(!itemToUpdate.Roles.Contains(rol))
-                    itemToUpdate.Roles.Add(rol);
-            }
+            _context.Users.AddOrUpdate(itemToUpdate);
             SaveChanges();
             return itemToUpdate;   
         }
@@ -93,21 +89,20 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public ICollection<Role> GetUserRoles(long idUser)
+        public Roles GetUserRole(long idUser)
         {
-            var lstRole = new Collection<Role>();
             var userTemp = GetById(idUser);
-            return userTemp == null ? lstRole : userTemp.Roles;
+            return userTemp == null ? Roles.Invalid : userTemp.Role;
         }
 
-        public User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol)
+        public User UpdateUserFromUserEditModel(User userModel, User user)
         {
             user.DisplayName = userModel.DisplayName;
             user.Email = userModel.Email;
             user.Notifications = userModel.Notifications;
-            user.Parents = userModel.Parents;
             user.IsActive = userModel.IsActive;
-            return Update(user,updateRole,rol);
+            user.Role = userModel.Role;
+            return Update(user);
         }
 
         public bool ExistEmail(string userName)

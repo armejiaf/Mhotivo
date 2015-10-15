@@ -17,18 +17,15 @@ namespace Mhotivo.Controllers
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ParentController(IParentRepository parentRepository,
             IContactInformationRepository contactInformationRepository,
-            IUserRepository userRepository,
-            IRoleRepository roleRepository)
+            IUserRepository userRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -52,12 +49,7 @@ namespace Mhotivo.Controllers
             {
                 allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
-            Mapper.CreateMap<DisplayParentModel, Parent>().ReverseMap();
             var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, DisplayParentModel>).ToList();
-            foreach (var displayParentModel in allParentDisplaysModel)
-            {
-                displayParentModel.StrGender = Implement.Utilities.GenderToString(displayParentModel.Gender);
-            }
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -98,9 +90,8 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             var parent = _parentRepository.GetParentEditModelById(id);
-            Mapper.CreateMap<ParentEditModel, Parent>().ReverseMap();
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender).Substring(0, 1);
+            parentModel.MyGender = parent.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", parentModel);
         }
 
@@ -115,11 +106,11 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelParent.UpladPhoto != null && modelParent.UpladPhoto.ContentLength > 0)
+            if (modelParent.UploadPhoto != null && modelParent.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelParent.UpladPhoto.ContentType))
+                if (!validImageTypes.Contains(modelParent.UploadPhoto.ContentType))
                 {
-                    ModelState.AddModelError("UpladPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
+                    ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
             }
             if (ModelState.IsValid)
@@ -127,16 +118,14 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelParent.UpladPhoto != null)
+                    if (modelParent.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelParent.UpladPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelParent.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelParent.UpladPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelParent.UploadPhoto.ContentLength);
                         }
                     }
                     var myParent = _parentRepository.GetById(modelParent.Id);
-                    modelParent.Gender = Implement.Utilities.IsMasculino(modelParent.StrGender);
-                    Mapper.CreateMap<Parent, ParentEditModel>().ReverseMap();
                     var parentModel = Mapper.Map<ParentEditModel, Parent>(modelParent);
                     parentModel.Photo = null;
                     parentModel.Photo = fileBytes ?? myParent.Photo;
@@ -187,8 +176,6 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Create(ParentRegisterModel modelParent)
         {
-            modelParent.Gender = Implement.Utilities.IsMasculino(modelParent.StrGender);
-            Mapper.CreateMap<Parent, ParentRegisterModel>().ReverseMap();
             var parentModel = Mapper.Map<ParentRegisterModel, Parent>(modelParent);
             var myParent = _parentRepository.GenerateParentFromRegisterModel(parentModel);
             if (_parentRepository.ExistIdNumber(modelParent.IdNumber))
@@ -206,9 +193,10 @@ namespace Mhotivo.Controllers
                 DisplayName = myParent.FirstName,
                 Email = modelParent.Email,
                 Password = modelParent.Password,
-                IsActive = true
+                IsActive = true,
+                Role = Roles.Padre
             };
-            newUser = _userRepository.Create(newUser, _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault());
+            newUser = _userRepository.Create(newUser);
             myParent.MyUser = newUser;
              _parentRepository.Create(myParent);
             const string title = "Padre o Tutor Agregado";
@@ -221,9 +209,8 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             var parent = _parentRepository.GetParentDisplayModelById(id);
-            Mapper.CreateMap<DisplayParentModel, Parent>().ReverseMap();
             var parentModel = Mapper.Map<Parent, DisplayParentModel>(parent);
-            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender);
+            parentModel.MyGender = parent.MyGender.ToString("G");
             return View("Details", parentModel);
         }
 
@@ -231,9 +218,8 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(long id)
         {
             var parent = _parentRepository.GetParentEditModelById(id);
-            Mapper.CreateMap<ParentEditModel, Parent>().ReverseMap();
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.StrGender = Implement.Utilities.GenderToString(parent.Gender);
+            parentModel.MyGender = parent.MyGender.ToString("G");
             return View("DetailsEdit", parentModel);
         }
 
@@ -242,8 +228,6 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(ParentEditModel modelParent)
         {
             var myParent = _parentRepository.GetById(modelParent.Id);
-            modelParent.Gender = Implement.Utilities.IsMasculino(modelParent.StrGender);
-            Mapper.CreateMap<Parent, ParentEditModel>().ReverseMap();
             var parentModel = Mapper.Map<ParentEditModel, Parent>(modelParent);
             _parentRepository.UpdateParentFromParentEditModel(parentModel, myParent);
             const string title = "Padre o Tutor Actualizado";

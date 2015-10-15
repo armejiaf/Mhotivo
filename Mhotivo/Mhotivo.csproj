@@ -172,14 +172,10 @@
     <Compile Include="Controllers\AcademicYearDetailsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
-    <Compile Include="Controllers\BenefactorController.cs" />
-    <Compile Include="Controllers\ClassActivityController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />
-    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
-    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
@@ -189,32 +185,21 @@
     <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
-    <Compile Include="Controllers\PeopleController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Encryption\MD5CryptoService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logic\AcademicYearLogic.cs" />
     <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
     <Compile Include="Models\AcademicYearDetailsModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
-    <Compile Include="Models\AppointmentDiaryModel.cs" />
     <Compile Include="Models\AreaModel.cs" />
-    <Compile Include="Models\BenefactorModel.cs" />
-    <Compile Include="Models\ClassActivityGradingModel.cs" />
-    <Compile Include="Models\ClassActivityModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
-    <Compile Include="Models\DiaryEventModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
-    <Compile Include="Models\EventCreateModel.cs" />
     <Compile Include="Models\GradeModel.cs" />
-    <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
     <Compile Include="Models\NotificationCommentsModel.cs" />
@@ -224,13 +209,10 @@
     <Compile Include="Models\NotificationTypeModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\PensumModel.cs" />
-    <Compile Include="Models\PeopleModel.cs" />
-    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared.cs" />
-    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-tagsinput.css" />
@@ -462,21 +444,13 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Role\Index.cshtml" />
-    <Content Include="Views\Role\_Edit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Shared\_MessageArea.cshtml" />
-    <Content Include="Views\People\Index.cshtml" />
-    <Content Include="Views\People\Create.cshtml" />
-    <Content Include="Views\People\Edit.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Home\UnderConstruction.cshtml" />
-    <Content Include="Views\Event\Index.cshtml" />
-    <Content Include="Views\Event\Create.cshtml" />
-    <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
@@ -491,16 +465,6 @@
     <Content Include="Views\Parent\DetailsEdit.cshtml" />
     <Content Include="Views\Parent\Edit.cshtml" />
     <Content Include="Views\Parent\Index.cshtml" />
-    <Content Include="Views\Benefactor\Create.cshtml" />
-    <Content Include="Views\Benefactor\Details.cshtml" />
-    <Content Include="Views\Benefactor\DetailsEdit.cshtml" />
-    <Content Include="Views\Benefactor\Edit.cshtml" />
-    <Content Include="Views\Benefactor\Index.cshtml" />
-    <Content Include="Views\Benefactor\StudentAdd.cshtml" />
-    <Content Include="Views\Benefactor\StudentEdit.cshtml" />
-    <Content Include="Views\Group\Index.cshtml" />
-    <Content Include="Views\Group\Add.cshtml" />
-    <Content Include="Views\Group\Edit.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Course\Add.cshtml" />
@@ -518,15 +482,10 @@
     <Content Include="Views\Grade\DetailsEdit.cshtml" />
     <Content Include="Views\Grade\Edit.cshtml" />
     <Content Include="Views\Grade\Index.cshtml" />
-    <Content Include="Views\ClassActivity\Create.cshtml" />
-    <Content Include="Views\ClassActivity\Edit.cshtml" />
-    <Content Include="Views\ClassActivity\Index.cshtml" />
     <Content Include="Views\Pensum\Create.cshtml" />
     <Content Include="Views\Pensum\Details.cshtml" />
     <Content Include="Views\Pensum\Edit.cshtml" />
     <Content Include="Views\Pensum\Index.cshtml" />
-    <Content Include="Views\Event\PrincipalIndex.cshtml" />
-    <Content Include="Views\Event\Agenda.cshtml" />
     <Content Include="Views\NotificationType\Index.cshtml" />
     <Content Include="Views\NotificationType\Edit.cshtml" />
     <Content Include="Views\NotificationType\Add.cshtml" />

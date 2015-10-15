@@ -44,9 +44,9 @@ namespace Mhotivo.Controllers
                 try
                 {
                     var year = Convert.ToInt32(searchString);
-                    allAcademicYears = _academicYearRepository.Filter(x => x.Year.Year.Equals(year)).ToList();
+                    allAcademicYears = _academicYearRepository.Filter(x => x.Year.Equals(year)).ToList();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                    //ignore
                 }
@@ -54,7 +54,7 @@ namespace Mhotivo.Controllers
             var academicYears = allAcademicYears.Select(academicYear => new DisplayAcademicYearModel
             {
                 Id = academicYear.Id,
-                Year = academicYear.Year.Year,
+                Year = academicYear.Year,
                 Section = academicYear.Section,
                 Approved = academicYear.Approved,
                 IsActive = academicYear.IsActive,
@@ -91,7 +91,7 @@ namespace Mhotivo.Controllers
             var academicYearModel = new AcademicYearEditModel
             {
                 Id =academicYear.Id,
-                Year =  academicYear.Year.Year,
+                Year =  academicYear.Year,
                 Grade = academicYear.Grade,
                 Section = academicYear.Section,
                 EducationLevel = academicYear.Grade.EducationLevel,
@@ -106,9 +106,9 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(AcademicYearEditModel modelAcademicYear)
         {
             var myAcademicYear = _academicYearRepository.GetById(modelAcademicYear.Id);
-            var year = myAcademicYear.Year.Year;
+            var year = myAcademicYear.Year;
             var yearModel = new DateTime(modelAcademicYear.Year, 01, 01);
-            myAcademicYear.Year = yearModel;
+            myAcademicYear.Year = yearModel.Year;
             if (modelAcademicYear.Approved.Equals("1") || modelAcademicYear.Approved.Equals("Sí"))
                 myAcademicYear.Approved = true;
             else
@@ -132,8 +132,8 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             var academicYear = _academicYearRepository.Delete(id);
-            const string title = "Estudiante Eliminado";
-            var content = "El año académico " + academicYear.Year.Year + " ha sido eliminado exitosamente.";
+            const string title = "Año Académico Eliminado";
+            var content = "El año académico " + academicYear.Year + ", "+academicYear.Grade.Name+", "+academicYear.Section+" ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
@@ -159,7 +159,7 @@ namespace Mhotivo.Controllers
                 isActive = true;
             var academicYear = new AcademicYear
             {
-                Year = year,
+                Year = year.Year,
                 Grade = _gradeRepository.GetById(academicYearModel.Grade.Id),
                 Section = academicYearModel.Section,
                 Approved = approved,

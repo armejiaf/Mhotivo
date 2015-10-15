@@ -20,8 +20,8 @@ namespace Mhotivo.Implement.Repositories
 
         public Teacher First(Expression<Func<Teacher, Teacher>> query)
         {
-            var meisters = _context.Teachers.Select(query);
-            return meisters.Count() != 0 ? meisters.First() : null;
+            var teachers = _context.Teachers.Select(query);
+            return teachers.Count() != 0 ? teachers.First() : null;
         }
 
         public Teacher FirstOrDefault(Expression<Func<Teacher, bool>> query)
@@ -32,16 +32,16 @@ namespace Mhotivo.Implement.Repositories
 
         public Teacher GetById(long id)
         {
-            var meisters = _context.Teachers.Where(x => x.Id == id);
-            return meisters.Count() != 0 ? meisters.First() : null;
+            var teachers = _context.Teachers.Where(x => x.Id == id);
+            return teachers.Count() != 0 ? teachers.First() : null;
         }
 
         public Teacher Create(Teacher itemToCreate)
         {
             _context.Users.Attach(itemToCreate.MyUser);
-            var meister = _context.Teachers.Add(itemToCreate);
+            var teacher = _context.Teachers.Add(itemToCreate);
             _context.SaveChanges();
-            return meister;
+            return teacher;
         }
 
         public IQueryable<Teacher> Query(Expression<Func<Teacher, Teacher>> expression)
@@ -75,7 +75,6 @@ namespace Mhotivo.Implement.Repositories
                 {
                     Id = x.Id,
                     IdNumber = x.IdNumber,
-                    UrlPicture = x.UrlPicture,
                     FullName = x.FullName,
                     BirthDate = x.BirthDate,
                     Nationality = x.Nationality,
@@ -83,7 +82,7 @@ namespace Mhotivo.Implement.Repositories
                     City = x.City,
                     State = x.State,
                     Country = x.Country,
-                    Gender = x.Gender,
+                    MyGender = x.MyGender,
                     Contacts = x.Contacts,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
@@ -97,91 +96,90 @@ namespace Mhotivo.Implement.Repositories
 
         public Teacher GetTeacherDisplayModelById(long id)
         {
-            var meister = GetById(id);
+            var teacher = GetById(id);
             return new Teacher
             {
-                Id = meister.Id,
-                IdNumber = meister.IdNumber,
-                UrlPicture = meister.UrlPicture,
-                FirstName = meister.FirstName,
-                LastName = meister.LastName,
-                FullName = meister.FullName,
-                BirthDate = meister.BirthDate,
-                Nationality = meister.Nationality,
-                Address = meister.Address,
-                City = meister.City,
-                State = meister.State,
-                Country = meister.Country,
-                Gender = meister.Gender,
-                Contacts = meister.Contacts,
-                StartDate = meister.StartDate,
-                EndDate = meister.EndDate,
-                Biography = meister.Biography
+                Id = teacher.Id,
+                IdNumber = teacher.IdNumber,
+                FirstName = teacher.FirstName,
+                LastName = teacher.LastName,
+                FullName = teacher.FullName,
+                BirthDate = teacher.BirthDate,
+                Nationality = teacher.Nationality,
+                Address = teacher.Address,
+                City = teacher.City,
+                State = teacher.State,
+                Country = teacher.Country,
+                MyGender = teacher.MyGender,
+                Contacts = teacher.Contacts,
+                StartDate = teacher.StartDate,
+                EndDate = teacher.EndDate,
+                Biography = teacher.Biography
             };
         }
 
-        public Teacher UpdateTeacherFromMeisterEditModel(Teacher meisterEditModel, Teacher meister)
+        public Teacher UpdateTeacherFromTeacherEditModel(Teacher teacherEditModel, Teacher teacher)
         {
-            meister.FirstName = meisterEditModel.FirstName;
-            meister.LastName = meisterEditModel.LastName;
-            meister.FullName = (meisterEditModel.FirstName + " " + meisterEditModel.LastName).Trim();
-            meister.Country = meisterEditModel.Country;
-            meister.IdNumber = meisterEditModel.IdNumber;
-            meister.BirthDate =meisterEditModel.BirthDate;
-            meister.Gender = meisterEditModel.Gender;
-            meister.Nationality = meisterEditModel.Nationality;
-            meister.State = meisterEditModel.State;
-            meister.City = meisterEditModel.City;
-            meister.Address = meisterEditModel.Address;
-            meister.Biography = meisterEditModel.Biography;
-            meister.StartDate = meisterEditModel.StartDate;
-            meister.EndDate = meisterEditModel.EndDate;
-            meister.Photo = meisterEditModel.Photo;
-            return Update(meister);
+            teacher.FirstName = teacherEditModel.FirstName;
+            teacher.LastName = teacherEditModel.LastName;
+            teacher.FullName = (teacherEditModel.FirstName + " " + teacherEditModel.LastName).Trim();
+            teacher.Country = teacherEditModel.Country;
+            teacher.IdNumber = teacherEditModel.IdNumber;
+            teacher.BirthDate =teacherEditModel.BirthDate;
+            teacher.MyGender = teacherEditModel.MyGender;
+            teacher.Nationality = teacherEditModel.Nationality;
+            teacher.State = teacherEditModel.State;
+            teacher.City = teacherEditModel.City;
+            teacher.Address = teacherEditModel.Address;
+            teacher.Biography = teacherEditModel.Biography;
+            teacher.StartDate = teacherEditModel.StartDate;
+            teacher.EndDate = teacherEditModel.EndDate;
+            teacher.Photo = teacherEditModel.Photo;
+            return Update(teacher);
         }
 
-        public Teacher GenerateTeacherFromRegisterModel(Teacher meisterRegisterModel)
+        public Teacher GenerateTeacherFromRegisterModel(Teacher teacherRegisterModel)
         {
             return new Teacher
             {
-                FirstName = meisterRegisterModel.FirstName,
-                LastName = meisterRegisterModel.LastName,
-                FullName = (meisterRegisterModel.FirstName + " " + meisterRegisterModel.LastName).Trim(),
-                IdNumber = meisterRegisterModel.IdNumber,
-                BirthDate = meisterRegisterModel.BirthDate,
-                Gender = meisterRegisterModel.Gender,
-                Nationality = meisterRegisterModel.Nationality,
-                State = meisterRegisterModel.State,
-                Country = meisterRegisterModel.Country,
-                City = meisterRegisterModel.City,
-                Address = meisterRegisterModel.Address,
-                Biography = meisterRegisterModel.Biography,
-                StartDate = meisterRegisterModel.StartDate,
-                EndDate = meisterRegisterModel.EndDate
+                FirstName = teacherRegisterModel.FirstName,
+                LastName = teacherRegisterModel.LastName,
+                FullName = (teacherRegisterModel.FirstName + " " + teacherRegisterModel.LastName).Trim(),
+                IdNumber = teacherRegisterModel.IdNumber,
+                BirthDate = teacherRegisterModel.BirthDate,
+                MyGender = teacherRegisterModel.MyGender,
+                Nationality = teacherRegisterModel.Nationality,
+                State = teacherRegisterModel.State,
+                Country = teacherRegisterModel.Country,
+                City = teacherRegisterModel.City,
+                Address = teacherRegisterModel.Address,
+                Biography = teacherRegisterModel.Biography,
+                StartDate = teacherRegisterModel.StartDate,
+                EndDate = teacherRegisterModel.EndDate
             };
         }
 
         public Teacher GetTeacherEditModelById(long id)
         {
-            var meister = GetById(id);
+            var teacher = GetById(id);
             return new Teacher
             {
-                FirstName = meister.FirstName,
-                LastName = meister.LastName,
-                FullName = (meister.FirstName + " " + meister.LastName).Trim(),
-                IdNumber = meister.IdNumber,
-                BirthDate = meister.BirthDate,
-                Gender = meister.Gender,
-                Nationality = meister.Nationality,
-                Country = meister.Country,
-                State = meister.State,
-                City = meister.City,
-                Address = meister.Address,
-                Id = meister.Id,
-                StartDate = meister.StartDate,
-                EndDate = meister.EndDate,
-                Biography = meister.Biography,
-                Photo = meister.Photo
+                FirstName = teacher.FirstName,
+                LastName = teacher.LastName,
+                FullName = (teacher.FirstName + " " + teacher.LastName).Trim(),
+                IdNumber = teacher.IdNumber,
+                BirthDate = teacher.BirthDate,
+                MyGender = teacher.MyGender,
+                Nationality = teacher.Nationality,
+                Country = teacher.Country,
+                State = teacher.State,
+                City = teacher.City,
+                Address = teacher.Address,
+                Id = teacher.Id,
+                StartDate = teacher.StartDate,
+                EndDate = teacher.EndDate,
+                Biography = teacher.Biography,
+                Photo = teacher.Photo
             };
         }
 

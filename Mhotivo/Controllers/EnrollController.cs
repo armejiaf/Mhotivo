@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.ModelBinding;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
@@ -15,14 +14,12 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IGradeRepository _gradeRepository;
-        private readonly IPeopleRepository _peopleRepository; //remove if unused
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public EnrollController(IPeopleRepository peopleRepository, IAcademicYearRepository academicYearRepository,
+        public EnrollController(IAcademicYearRepository academicYearRepository,
             IStudentRepository studentRepository, IEnrollRepository enrollRepository, IGradeRepository gradeRepository)
         {
-            _peopleRepository = peopleRepository;
             _studentRepository = studentRepository;
             _enrollRepository = enrollRepository;
             _academicYearRepository = academicYearRepository;
@@ -39,8 +36,8 @@ namespace Mhotivo.Controllers
                              {
                                  Id = x.Id,
                                  FullName = x.Student.FullName,
-                                 UrlPicture = x.Student.UrlPicture,
-                                 Gender = Utilities.GenderToString(x.Student.Gender),
+                                 Photo = x.Student.Photo,
+                                 MyGender = x.Student.MyGender.ToString("G"),
                                  AccountNumber = x.Student.AccountNumber,
                                  Grade = x.AcademicYear.Grade.Name,
                                  Section = x.AcademicYear.Section
@@ -58,8 +55,8 @@ namespace Mhotivo.Controllers
                              {
                                  Id = x.Id,
                                  FullName = x.Student.FullName,
-                                 UrlPicture = x.Student.UrlPicture,
-                                 Gender = Utilities.GenderToString(x.Student.Gender),
+                                 Photo = x.Student.Photo,
+                                 MyGender = x.Student.MyGender.ToString("G"),
                                  AccountNumber = x.Student.AccountNumber,
                                  Grade = x.AcademicYear.Grade.Name,
                                  Section = x.AcademicYear.Section
@@ -83,18 +80,12 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             var allStudents = _studentRepository.GetAllStudents().ToList();
-           // var allEnrolls = _enrollRepository.GetAllsEnrolls().ToList();
-            var availableStudents = new List<Student>();
-            foreach (var student in allStudents)
-            {
-                var studentEnroll = _enrollRepository.GetAllsEnrolls().ToList().FindAll(x => x.Student.Id == student.Id && x.AcademicYear.IsActive);
-                if (studentEnroll.Count == 0)
-                    availableStudents.Add(student);
-
-            }
+            var availableStudents = (from student in allStudents 
+                                     where !_enrollRepository.Filter(x => x.Student.Id == student.Id && x.AcademicYear.IsActive).Any() 
+                                     select student).ToList();
             ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
-
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
+            ViewBag.Section = new SelectList(new List<string> {"A", "B", "C"}, "A");
             return View("Create");
         }
 
@@ -102,30 +93,29 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(EnrollRegisterModel modelEnroll)
         {
-            List<AcademicYear> collection =
-                _academicYearRepository.Filter(x => x.Grade.Id == modelEnroll.GradeId).ToList();
             Student student = _studentRepository.GetById(modelEnroll.Id);
-            if (collection.Count > 0)
+            List<AcademicYear> collection =
+                _academicYearRepository.Filter(x => x.Grade.Id == modelEnroll.GradeId && x.Section.Equals(modelEnroll.Section)).ToList();
+            if (collection.Count > 0 && student != null)
             {
                 foreach (AcademicYear academicYear in collection)
                 {
                     var myEnroll = new Enroll
-                                   {
-                                       AcademicYear = academicYear,
-                                       Student = student
-                                   };
-
+                    {
+                        AcademicYear = academicYear,
+                        Student = student
+                    };
                     _enrollRepository.Create(myEnroll);
                 }
-                const string title = "Usuario Agregado";
-                const string content = "El usuario ha sido matriculado exitosamente.";
+                const string title = "Estudiante Agregado";
+                const string content = "El estudiante ha sido matriculado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             }
             else
             {
-                const string title = "Usuario No Agregado";
-                const string content = "El usuario no se logro matricular.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                const string title = "Estudiante No Agregado";
+                const string content = "El estudiante no se logro matricular.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
             }
             return RedirectToAction("Index");
         }

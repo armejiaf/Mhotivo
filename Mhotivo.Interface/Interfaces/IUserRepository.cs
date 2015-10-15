@@ -11,15 +11,15 @@ namespace Mhotivo.Interface.Interfaces
         User First(Expression<Func<User, bool>> query);
         User FirstOrDefault(Expression<Func<User,bool>> query);
         User GetById(long id);
-        User Create(User itemToCreate, Role rol);
+        User Create(User itemToCreate);
         IQueryable<User> Query(Expression<Func<User, User>> expression);
         IQueryable<User> Filter(Expression<Func<User, bool>> expression);
-        User Update(User itemToUpdate, bool updateRole, Role rol);
+        User Update(User itemToUpdate);
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
-        ICollection<Role> GetUserRoles(long idUser);
-        User UpdateUserFromUserEditModel(User userModel, User user, bool updateRole, Role rol);
+        Roles GetUserRole(long idUser);
+        User UpdateUserFromUserEditModel(User userModel, User user);
         bool ExistEmail(string userName);
     }
 }

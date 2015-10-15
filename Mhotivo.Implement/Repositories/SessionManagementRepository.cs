@@ -11,14 +11,16 @@ namespace Mhotivo.Implement.Repositories
     public class SessionManagementRepository : ISessionManagementRepository
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPeopleRepository _peopleRepository;
         private readonly string _userNameIdentifier;
         private readonly string _userRoleIdentifier;
         private readonly string _userEmailIdentifier;
         private readonly string _userIdIdentifier;
 
-        public SessionManagementRepository(IUserRepository userRepository)
+        public SessionManagementRepository(IUserRepository userRepository, IPeopleRepository peopleRepository)
         {
             _userRepository = userRepository;
+            _peopleRepository = peopleRepository;
             _userNameIdentifier = "loggedUserName";
             _userEmailIdentifier = "loggedUserEmail";
             _userRoleIdentifier = "loggedUserRole";
@@ -27,7 +29,13 @@ namespace Mhotivo.Implement.Repositories
 
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
-            var user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
+            User user;
+            if (userEmail.Contains("@"))
+                user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
+            else
+            {
+                user = _peopleRepository.Filter(x => x.IdNumber.Equals(userEmail)).FirstOrDefault().MyUser;
+            }
             if (user == null) return false;
             if (!user.CheckPassword(password)) return false;
             UpdateSessionFromUser(user);
@@ -43,7 +51,7 @@ namespace Mhotivo.Implement.Repositories
         {
             HttpContext.Current.Session[_userEmailIdentifier] = user.Email;
             HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
-            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRoles(user.Id).First().Name;
+            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(user.Id).ToString("G");
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
         
         }
@@ -77,6 +85,13 @@ namespace Mhotivo.Implement.Repositories
             CheckSession();
             var userRole = HttpContext.Current.Session[_userRoleIdentifier];
             return userRole != null ? userRole.ToString() : "";
+        }
+
+        public string GetUserLoggedId()
+        {
+            CheckSession();
+            var userId = HttpContext.Current.Session[_userIdIdentifier];
+            return userId != null ? userId.ToString() : "";
         }
 
         public void CheckSession() //Doesn't implement single responsibility or not named appropriately.

@@ -65,56 +65,7 @@ namespace Mhotivo.Implement.Repositories
         //TODO: Automapper & ICloneable.
         public IEnumerable<Homework> GetAllHomeworks()
         {
-            return Query(x => x).Where(x => !false).ToList().Select(x => new Homework
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Description = x.Description,
-                DeliverDate = x.DeliverDate,
-                Points = x.Points,
-                AcademicYearDetail = x.AcademicYearDetail
-            });
-        }
-
-        public Homework GenerateHomeworkFromRegisterModel(Homework homeworkRegisterModel)
-        {
-            return new Homework
-            {
-                Id = homeworkRegisterModel.Id,
-                Title = homeworkRegisterModel.Title,
-                Description = homeworkRegisterModel.Description,
-                DeliverDate = homeworkRegisterModel.DeliverDate,
-                Points = homeworkRegisterModel.Points,
-                AcademicYearDetail = homeworkRegisterModel.AcademicYearDetail
-            };
-        }
-
-        public Homework GetHomeworkEditModelById(long id)
-        {
-            Homework homework = GetById(id);
-            return new Homework
-            {
-                Id = homework.Id,
-                Title = homework.Title,
-                Description = homework.Description,
-                DeliverDate = homework.DeliverDate,
-                Points = homework.Points,
-                AcademicYearDetail = homework.AcademicYearDetail
-            };
-        }
-
-        public Homework GetHomeworkDisplayModelById(long id)
-        {
-            Homework homework = GetById(id);
-            return new Homework
-            {
-                Id = homework.Id,
-                Title = homework.Title,
-                Description = homework.Description,
-                DeliverDate = homework.DeliverDate,
-                Points = homework.Points,
-                AcademicYearDetail = homework.AcademicYearDetail
-            };
+            return Query(x => x).Where(x => !false).ToList();
         }
 
         public Homework UpdateHomeworkFromHomeworkEditModel(Homework displayHomeworkModel, Homework homework)
@@ -126,11 +77,6 @@ namespace Mhotivo.Implement.Repositories
             homework.Points = displayHomeworkModel.Points;
             homework.AcademicYearDetail = displayHomeworkModel.AcademicYearDetail;
             return Update(homework);
-        }
-
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
         }
     }
 }

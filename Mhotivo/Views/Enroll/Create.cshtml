@@ -5,7 +5,10 @@
     Layout = "";
 }
 
+<script src="~/Scripts/jquery-2.1.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
@@ -19,6 +22,7 @@
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.GradeId)
             @Html.ValidationMessageFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Section)
         </p>
         
         <div class="control-group">
@@ -30,12 +34,21 @@
             </div>
         </div>
         
-         <div class="control-group">
+        <div class="control-group">
             <div class="control-label">
                 @Html.LabelFor(model => model.GradeId)
             </div>
             <div class="controls">
                 @Html.DropDownList("GradeId")
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => model.Section)
+            </div>
+            <div class="controls">
+                @Html.DropDownList("Section")
             </div>
         </div>
 

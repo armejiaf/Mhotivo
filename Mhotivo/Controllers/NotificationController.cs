@@ -42,7 +42,7 @@ namespace Mhotivo.Controllers
         private readonly IEducationLevelRepository _areaReporsitory;
         private static string _searchText = string.Empty;
 
-        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository meisterRepository,
+        public NotificationController(ISessionManagementRepository sessionManagement, IUserRepository userRepository, INotificationRepository notificationRepository, INotificationTypeRepository notificationTypeRepository, IPeopleRepository peopleRepository, ITeacherRepository teacherRepository,
             IAcademicYearDetailsRepository academicYearDetailRepository, IStudentRepository studentRepository, IParentRepository parentRepository, IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository, IEducationLevelRepository areaReporsitory)
         {
             _sessionManagement = sessionManagement;
@@ -50,7 +50,7 @@ namespace Mhotivo.Controllers
             _notificationRepository = notificationRepository;
             _notificationTypeRepository = notificationTypeRepository;
             _peopleRepository = peopleRepository;
-            _teacherRepository = meisterRepository;
+            _teacherRepository = teacherRepository;
             _academicYearDetailRepository = academicYearDetailRepository;
             _parentRepository = parentRepository;
             _studentRepository = studentRepository;
@@ -158,6 +158,7 @@ namespace Mhotivo.Controllers
         {
             var notification = new NotificationModel();
             LoadTypeNotification(ref notification);
+            ViewBag.Section = new SelectList(new List<string> { "Todos", "A", "B", "C" }, "Todos");
             return View("Add", notification);
         }
 
@@ -168,6 +169,7 @@ namespace Mhotivo.Controllers
             notificationIdentity.Created = DateTime.Now;
             var notificationType = _notificationTypeRepository.GetById(eventNotification.NotificationTypeId);
             notificationIdentity.NotificationType = notificationType;
+            notificationIdentity.Section = eventNotification.GradeSection;
             if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
             {
                 notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
@@ -236,7 +238,7 @@ namespace Mhotivo.Controllers
             {
                 long id1 = id;
                 var studentList = _enrollRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Grade.Id == id1
-                                                        && x.AcademicYear.Year.Year == DateTime.Now.Year)
+                                                        && x.AcademicYear.Year == DateTime.Now.Year)
                                                         .Select(x => x.Student).ToList();
                 if (!studentList.Any())
                 {
@@ -274,7 +276,7 @@ namespace Mhotivo.Controllers
         private void AddUsersToGradeNotification(Notification notificationIdentity)
         {
             var estudiantes = _enrollRepository.Query(x => x).Where(x => x.AcademicYear.Grade.Id == notificationIdentity.IdGradeAreaUserGeneralSelected
-                                       && x.AcademicYear.Year.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
+                                       && x.AcademicYear.Year == DateTime.Now.Year).Select(s => s.Student).ToList();
             foreach (var estudiante in estudiantes)
             {
                 if (estudiante.Tutor1.MyUser != null)
@@ -425,13 +427,11 @@ namespace Mhotivo.Controllers
 
         public JsonResult GetGroupsAndEmails(string filter)
         {
-            List<string> groups = Db.Groups.Where(x => x.Name.Contains(filter)).Select(x => x.Name).ToList();
             List<string> mails =
                 Db.Users.Where(x => x.DisplayName.Contains(filter) || x.Email.Contains(filter))
                     .Select(x => x.Email)
                     .ToList();
-            groups = groups.Union(mails).ToList();
-            return Json(groups, JsonRequestBehavior.AllowGet);
+            return Json(mails, JsonRequestBehavior.AllowGet);
         }
 
         // GET: /NotificationModel/Edit/5
@@ -472,6 +472,7 @@ namespace Mhotivo.Controllers
                     toEdit.NotificationType = notificationType;
                     toEdit.NotificationName = eventNotification.NotificationName;
                     toEdit.Message = eventNotification.Message;
+                    
                     if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Personal)
                     {
                         toEdit.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
@@ -520,8 +521,7 @@ namespace Mhotivo.Controllers
                     "La notificación no pudo ser editada correctamente, por favor intente nuevamente.",
                     ViewMessageType.ErrorMessage);
             }
-            IQueryable<Group> g = Db.Groups.Select(x => x);
-            return RedirectToAction("Index", g);
+            return RedirectToAction("Index");
         }
 
         // POST: /NotificationModel/Delete/5
