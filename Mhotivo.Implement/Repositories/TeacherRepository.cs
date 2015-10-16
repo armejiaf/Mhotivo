@@ -67,7 +67,9 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
             return itemToDelete;
         }
+
         //Is all that truly necessary? Lots of repeated code.
+        //TODO: Hans?
         public IEnumerable<Teacher> GetAllTeachers()
         {
             var test = _context.Teachers.FirstOrDefault(x => x.FirstName == "Hans");

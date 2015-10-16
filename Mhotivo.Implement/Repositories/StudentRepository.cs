@@ -83,7 +83,7 @@ namespace Mhotivo.Implement.Repositories
             _context.SaveChanges();
         }
 
-        //Lots of seemingly repeated code.
+        //TODO: Lots of seemingly repeated code.
         public IEnumerable<Student> GetAllStudents()
         {
             return Query(x => x).Where(x => !x.Disable).ToList().Select(x => new Student

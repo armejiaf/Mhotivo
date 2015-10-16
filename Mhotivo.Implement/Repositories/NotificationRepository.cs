@@ -88,14 +88,7 @@ namespace Mhotivo.Implement.Repositories
             {
                 enrolls.AddRange(_context.Enrolls.Where(x => x.Student.Id == student.Id));
             }
-            var years = new List<string>();
-            foreach (var enroll in enrolls)
-            {
-                if(enroll.AcademicYear.IsActive)
-                    years.Add(enroll.AcademicYear.Section);
-               
-            }
-            
+            var years = (from enroll in enrolls where enroll.AcademicYear.IsActive select enroll.AcademicYear.Section).ToList();
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.Id == 3 && 
@@ -121,6 +114,7 @@ namespace Mhotivo.Implement.Repositories
             return personalNotifications;
         }
 
+        //TODO: GET RID OF THIS OR IMPLEMENT IT, ALTHOUGH IT'S NOT USED
         public IQueryable<Notification> GetAllNotifications()
         {
             throw new NotImplementedException();

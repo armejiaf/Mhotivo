@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
@@ -95,6 +93,7 @@ namespace Mhotivo.Implement.Repositories
             return userTemp == null ? Roles.Invalid : userTemp.Role;
         }
 
+        //TODO: GET RID OF THIS
         public User UpdateUserFromUserEditModel(User userModel, User user)
         {
             user.DisplayName = userModel.DisplayName;

@@ -12,12 +12,10 @@ namespace Mhotivo.Implement.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly MhotivoContext _context;
-        private readonly IEducationLevelRepository _areaRepository; //Could this be needed in the future?
 
-        public CourseRepository(MhotivoContext ctx, IEducationLevelRepository areaRepository)
+        public CourseRepository(MhotivoContext ctx)
         {
             _context = ctx;
-            _areaRepository = areaRepository;
         }
 
         public IEnumerable<Course> GetAllCourse()
