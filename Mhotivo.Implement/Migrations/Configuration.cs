@@ -30,7 +30,7 @@ namespace Mhotivo.Implement.Migrations
             _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new EducationLevelRepository(context);
             _gradeRepository = new GradeRepository(context);
-            _courseRepository = new CourseRepository(context, _areaRepository);
+            _courseRepository = new CourseRepository(context);
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
             var admin = new User
