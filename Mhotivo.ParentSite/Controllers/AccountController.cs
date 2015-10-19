@@ -38,17 +38,18 @@ namespace Mhotivo.ParentSite.Controllers
 
             if (parent != null)
             {
-
                 if (_sessionManagementRepository.LogIn(model.Email, model.Password))
                 {
+                    if (parent.MyUser.IsUsingDefaultPassword)
+                    {
+                        return RedirectToAction("ChangePassword");
+                    }
                     if (parent.MyUser.Email.Equals(""))
                     {
                         return RedirectToAction("ConfirmEmail");
                     }
-
-                    return RedirectToAction("Index", "Notification");
+                    return RedirectToAction("Index", "Home");
                 }
-
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
             }
@@ -94,18 +95,11 @@ namespace Mhotivo.ParentSite.Controllers
         {
             var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
-            if (user.CheckPassword(model.OldPassword))
-            {
-                user.Password = model.NewPassword;
-                user.EncryptPassword();
-                _userRepository.Update(user);
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ViewBag.Message = "Contraseña Incorrecta";
-
-            return RedirectToAction("ChangePassword");
+            user.Password = model.NewPassword;
+            user.EncryptPassword();
+            user.IsUsingDefaultPassword = false;
+            _userRepository.Update(user);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
