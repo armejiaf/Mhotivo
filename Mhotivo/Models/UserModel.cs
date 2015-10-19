@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 using Mhotivo.Data.Entities;
-using Mhotivo.Controllers;
-using Mhotivo.Implement.Context;
+using Mhotivo.Implement.Attributes;
 
 namespace Mhotivo.Models
 {
@@ -25,6 +23,33 @@ namespace Mhotivo.Models
         public string RoleName { get; set; }
     }
 
+    public class DisplayNewUserModel
+    {
+        public long Id { get; set; }
+
+        [Display(Name = "Correo Elctrónico")]
+        public string Email { get; set; }
+
+        [Display(Name = "Nombre")]
+        public string DisplayName { get; set; }
+
+        [Display(Name = "Tipo de Usuario")]
+        public Roles Role { get; set; }
+
+        public string RoleName { get; set; }
+    }
+
+    public class DisplayNewUserDefaultPasswordModel
+    {
+        public long Id { get; set; }
+
+        [Display(Name = "Nombre")]
+        public string DisplayName { get; set; }
+
+        [Display(Name = "Contraseña Temporal")]
+        public string DefaultPassword { get; set; }
+
+    }
     public class LocalPasswordModel
     {
         [Required(ErrorMessage = "Debe Ingresar Contraseña actual")]
@@ -33,20 +58,20 @@ namespace Mhotivo.Models
         public string OldPassword { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nueva contraseña")]
-        [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "El número de caracteres debe ser al menos {2}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nueva contraseña")]
+        [NotEqualTo("OldPassword", ErrorMessage = "Debe ingresar una contraseña diferente a la actual.")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar la nueva contraseña")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
+        [Compare("NewPassword", ErrorMessage = "La nueva contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
     public class LoginModel
     {
-        
         [Display(Name = "Email de usuario")]
         [Required(ErrorMessage = "Debe Ingresar Email de Usuario")]
         [EmailAddress]
@@ -65,26 +90,15 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe Ingresar Nombre")]
         [Display(Name = "Nombre")]
-        public string DisplaName { get; set; }
+        public string DisplayName { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
-     //   [RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
-        public string UserName { get; set; }
+        //[RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
+        public string Email { get; set; }
 
         [Display(Name = "Estado")]
         public bool Status { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Contraseña")]
-        [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Contraseña")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirmar contraseña")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
-        public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]

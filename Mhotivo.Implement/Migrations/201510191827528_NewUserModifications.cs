@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NewMigration : DbMigration
+    public partial class NewUserModifications : DbMigration
     {
         public override void Up()
         {
@@ -131,6 +131,8 @@ namespace Mhotivo.Implement.Migrations
                         Email = c.String(),
                         DisplayName = c.String(),
                         Password = c.String(),
+                        DefaultPassword = c.String(),
+                        IsUsingDefaultPassword = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
                         Role = c.Int(nullable: false),

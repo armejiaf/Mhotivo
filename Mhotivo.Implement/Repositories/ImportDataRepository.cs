@@ -123,12 +123,13 @@ namespace Mhotivo.Implement.Repositories
                     var newUser = new User
                     {
                         DisplayName = pare.FirstName,
-                        Email = emails[iterator],
+                        Email = emails[iterator],//TODO: Possibly deprecated.
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
+                        IsUsingDefaultPassword = true,
                         IsActive = true,
                         Role = Roles.Padre
                     };
-                    //TODO: add to newUsers table.
+                    newUser.DefaultPassword = newUser.Password;
                     newUser = _userRepository.Create(newUser);
                     
                     pare.MyUser = newUser;

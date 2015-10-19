@@ -1,0 +1,23 @@
+﻿@model Mhotivo.Models.DisplayNewUserDefaultPasswordModel
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<div id="body" class="modal-body" style="max-height: 500px;">
+    <fieldset>
+        <legend>Contraseña para @Html.DisplayFor(model => model.DisplayName)</legend>
+        <div class="control-group">
+            <div class="control-label">
+                @Html.DisplayNameFor(model => model.DefaultPassword):
+            </div>
+            <div class="controls">
+                <h3>@Html.DisplayFor(model => model.DefaultPassword)</h3>
+            </div>
+        </div>
+        <div class="space"></div>
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-primary">
+                <i class="icon-ok"></i>
+                Regresar
+            </button>
+        </div>
+    </fieldset>
+</div>

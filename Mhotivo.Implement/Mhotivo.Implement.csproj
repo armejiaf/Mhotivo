@@ -55,10 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\NotEqualToAttribute.cs" />
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201509220418134_NewMigration.cs" />
-    <Compile Include="Migrations\201509220418134_NewMigration.Designer.cs">
-      <DependentUpon>201509220418134_NewMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201510191827528_NewUserModifications.cs" />
+    <Compile Include="Migrations\201510191827528_NewUserModifications.Designer.cs">
+      <DependentUpon>201510191827528_NewUserModifications.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -101,8 +102,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509220418134_NewMigration.resx">
-      <DependentUpon>201509220418134_NewMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510191827528_NewUserModifications.resx">
+      <DependentUpon>201510191827528_NewUserModifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

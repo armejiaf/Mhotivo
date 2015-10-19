@@ -32,7 +32,9 @@ namespace Mhotivo
             Mapper.CreateMap<Teacher, DisplayTeacherModel>().ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G"))).ReverseMap().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
             Mapper.CreateMap<Teacher, TeacherEditModel>().ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G"))).ReverseMap().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
             Mapper.CreateMap<Teacher, TeacherRegisterModel>().ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G"))).ReverseMap().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
-            Mapper.CreateMap<User, DisplayUserModel>().ReverseMap();
+            Mapper.CreateMap<User, DisplayUserModel>().ForMember(p => p.RoleName, o => o.MapFrom(src => src.Role.ToString("G"))).ReverseMap();
+            Mapper.CreateMap<User, DisplayNewUserModel>().ForMember(p => p.RoleName, o => o.MapFrom(src => src.Role.ToString("G"))).ReverseMap();
+            Mapper.CreateMap<User, DisplayNewUserDefaultPasswordModel>().ReverseMap();
             Mapper.CreateMap<User, UserEditModel>().ReverseMap();
         }
     }
