@@ -15,6 +15,23 @@ namespace Mhotivo.Data.Entities
         Director = 3,
         Administrador = 4
     }
+
+    public sealed class Role
+    {
+        public static readonly Role Parent = new Role("Padre");
+        public static readonly Role Teacher = new Role("Maestro");
+        public static readonly Role Director = new Role("Director");
+        public static readonly Role Administrator = new Role("Administrador");
+
+        private Role(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; set; }
+        
+    }
+
     public class User
     {
         [Key]
