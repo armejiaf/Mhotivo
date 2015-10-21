@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
@@ -10,7 +9,6 @@ namespace Mhotivo.Implement.Migrations
 {
     public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
-        private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
         private IGradeRepository _gradeRepository;
         private ICourseRepository _courseRepository;
@@ -27,7 +25,6 @@ namespace Mhotivo.Implement.Migrations
         {
             if (context.Users.Any())
                 return;
-            _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new EducationLevelRepository(context);
             _gradeRepository = new GradeRepository(context);
             _courseRepository = new CourseRepository(context);
@@ -55,20 +52,6 @@ namespace Mhotivo.Implement.Migrations
 
         private void DebuggingSeeder(MhotivoContext context)
         {
-            var passwordsList = new List<string>
-            {
-                "arbol",
-                "madera",
-                "republica",
-                "imperio",
-                "crucio",
-                "excursion",
-                "pitonisa",
-                "ventilador",
-                "oraculo",
-                "sanguineo"
-            };
-            _passwordGenerationService.AddPasswordsToTable(passwordsList);
             _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });

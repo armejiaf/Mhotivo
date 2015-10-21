@@ -57,9 +57,9 @@
   <ItemGroup>
     <Compile Include="Attributes\NotEqualToAttribute.cs" />
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201510191827528_NewUserModifications.cs" />
-    <Compile Include="Migrations\201510191827528_NewUserModifications.Designer.cs">
-      <DependentUpon>201510191827528_NewUserModifications.cs</DependentUpon>
+    <Compile Include="Migrations\201510210011273_RemovedPreloadedPasswordsTable.cs" />
+    <Compile Include="Migrations\201510210011273_RemovedPreloadedPasswordsTable.Designer.cs">
+      <DependentUpon>201510210011273_RemovedPreloadedPasswordsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Repositories\HomeworkRepository.cs" />
     <Compile Include="Repositories\ImportDataRepository.cs" />
     <Compile Include="Repositories\NotificationCommentRepository.cs" />
-    <Compile Include="Repositories\PreloadedPasswordsGenerationService.cs" />
+    <Compile Include="Repositories\RandomPasswordGenerationService.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\NotificationTypeRepository.cs" />
@@ -102,8 +102,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201510191827528_NewUserModifications.resx">
-      <DependentUpon>201510191827528_NewUserModifications.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201510210011273_RemovedPreloadedPasswordsTable.resx">
+      <DependentUpon>201510210011273_RemovedPreloadedPasswordsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

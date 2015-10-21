@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
 
@@ -11,14 +10,12 @@ namespace Mhotivo.ParentSite.Controllers
     public class AccountController : Controller
     {
         private readonly ISessionManagementRepository _sessionManagementRepository;
-        private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
        
-        public AccountController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository, IUserRepository userRepository)
         {
             _sessionManagementRepository = sessionManagementRepository;
-            _securityRepository = securityRepository;
             _parentRepository = parentRepository;
             _userRepository = userRepository;
         }
@@ -97,6 +94,7 @@ namespace Mhotivo.ParentSite.Controllers
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;
             user.EncryptPassword();
+            user.DefaultPassword = null;
             user.IsUsingDefaultPassword = false;
             _userRepository.Update(user);
             return RedirectToAction("Index", "Home");

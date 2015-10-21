@@ -23,7 +23,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
-        public DbSet<PreloadedPassword> PreloadedPasswords { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
