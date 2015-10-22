@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Mhotivo.Data.Entities;
@@ -18,8 +19,8 @@ namespace Mhotivo.Interface.Interfaces
         void SaveChanges();
         IQueryable<Notification> GetGeneralNotifications(int currentAcademicYear);
         IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id);
-        IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id);
-        IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id);
-        IQueryable<Notification> GetAllNotifications();
+        IEnumerable<Notification> GetGradeNotifications(int currentAcademicYear, long id);
+        IEnumerable<Notification> GetPersonalNotifications(int currentAcademicYear, long id);
+        IEnumerable<Notification> GetAllNotifications();
     }
 }

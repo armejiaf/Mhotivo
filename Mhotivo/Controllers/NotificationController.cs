@@ -169,7 +169,7 @@ namespace Mhotivo.Controllers
             notificationIdentity.Created = DateTime.Now;
             var notificationType = _notificationTypeRepository.GetById(eventNotification.NotificationTypeId);
             notificationIdentity.NotificationType = notificationType;
-            notificationIdentity.Section = eventNotification.GradeSection;
+            notificationIdentity.Section = eventNotification.Section;
             if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
             {
                 notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;

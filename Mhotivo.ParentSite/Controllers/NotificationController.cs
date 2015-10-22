@@ -41,27 +41,37 @@ namespace Mhotivo.ParentSite.Controllers
 
         // GET: /Notification/
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string filter)
         {
             var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.ToString(CultureInfo.InvariantCulture));
             var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
             _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
-            var userId = _securityRepository.GetUserLogged().Id;
-            var personalNotifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, userId).ToList();
-            var notifications = _notificationRepository.GetGradeNotifications(currentAcademicYear, userId).ToList();
-            notifications.AddRange(_notificationRepository.GetAreaNotifications(currentAcademicYear, userId).ToList());
-            notifications.AddRange(_notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList());
-            var personalNotificationsModel = new List<NotificationModel>();
-            var notificationsModel = new List<NotificationModel>();
-            foreach (var notification in personalNotifications)
+            long parentId = 0;
+            if (_loggedParent != null)
+                parentId = _loggedParent.Id;
+
+            List<Notification> notifications;
+
+            switch (filter)
             {
-                var noti = Mapper.Map<NotificationModel>(notification);
-                noti.CommentsAmount = notification.NotificationComments.Count;
-                noti.NotificationCreator = notification.UserCreatorName;
-               // if(noti.Id != )
-                personalNotificationsModel.Add(noti);
-                
+                case "NDE":
+                    notifications = _notificationRepository.GetAreaNotifications(currentAcademicYear, parentId).ToList();
+                    break;
+                case "Grado":
+                    notifications = _notificationRepository.GetGradeNotifications(currentAcademicYear, parentId).ToList();
+                    break;
+
+                case "Personal":
+                    notifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, parentId).ToList();
+                    break;
+                default:
+                    notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList();
+                    break;
             }
+           
+
+            var notificationsModel = new List<NotificationModel>();
+
             foreach (var notification in notifications)
             {
                 var noti = Mapper.Map<Notification, NotificationModel>(notification);
@@ -69,9 +79,11 @@ namespace Mhotivo.ParentSite.Controllers
                 noti.NotificationCreator = notification.UserCreatorName;
                 notificationsModel.Add(noti);
             }
-            personalNotificationsModel = personalNotificationsModel.OrderByDescending(x => x.Created).ToList();
+
+
             notificationsModel = notificationsModel.OrderByDescending(x => x.Created).ToList();
-            return View(new Tuple<List<NotificationModel>, List<NotificationModel>>(personalNotificationsModel, notificationsModel));
+
+            return View(notificationsModel);
         }
 
         public static IEnumerable<Student> GetAllStudents(long parentId)

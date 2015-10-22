@@ -54,6 +54,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar opcion de tipo de Notificacion")]
         [Display(Name = "Seccion")]
-        public string GradeSection { get; set; } //seccion del grado, A, B, C o Todos
+        public string Section { get; set; } //seccion del grado, A, B, C o Todos
     }
 }
