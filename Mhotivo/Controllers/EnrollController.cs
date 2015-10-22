@@ -75,6 +75,42 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [AuthorizeAdmin]
+        public ActionResult DeleteAll(EnrollDeleteModel model)
+        {
+            var year =
+                _academicYearRepository.Filter(x => x.Grade.Id == model.GradeId && x.Section.Equals(model.Section))
+                    .FirstOrDefault();
+            if (year == null)
+            {
+                const string title = "Error";
+                const string content = "No  hay un año academico con ese grado y seccion";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            var enrolls = _enrollRepository.Filter(x => x.AcademicYear.Id == year.Id).ToList();
+            
+            foreach (var enroll in enrolls)
+            {
+                _enrollRepository.Delete(enroll.Id);
+            }
+            const string title2 = "Matricula Borrada";
+            const string content2 = "Todos los estudiantes de ese grado y seccion han sido eliminados exitosamente.";
+            _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.InformationMessage);
+            return RedirectToAction("Index");
+        }
+
+        [AuthorizeAdmin]
+        public ActionResult DeleteAll()
+        {
+        var model = new EnrollDeleteModel();
+        ViewBag.GradeId = new SelectList(_gradeRepository.Query(a => a), "Id", "Name",
+        model.GradeId);
+            ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+            return PartialView(model);
+        }
+
         [HttpGet]
         [AuthorizeAdmin]
         public ActionResult Add()
