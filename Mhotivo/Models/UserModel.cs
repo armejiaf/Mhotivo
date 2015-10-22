@@ -118,7 +118,7 @@ namespace Mhotivo.Models
         public string Email { get; set; }
 
         [Display(Name = "Activo")]
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
