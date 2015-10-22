@@ -73,7 +73,7 @@ namespace Mhotivo.Controllers
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
-                                        , importModel.GradeImport // 1
+                                        , academicYear.Grade.Name // 1
                                         , importModel.Section // 2
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
