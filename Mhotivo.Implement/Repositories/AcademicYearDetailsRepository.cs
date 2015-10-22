@@ -24,7 +24,8 @@ namespace Mhotivo.Implement.Repositories
                 _context.AcademicYearDetails.Where(x => x.Course.Id == id && x.Teacher.Id==teacherId &&!false);
             return academicYearDetail.Count() != 0 ? academicYearDetail.First() : null;
         }
-
+        
+        //TODO: ugh
         public IEnumerable<AcademicYear> GetAllAcademicYear(long mesiterId)
         {
             IQueryable<AcademicYearDetail> academicYearDetail = _context.AcademicYearDetails.Include(x => x.AcademicYear).Include(c => c.Teacher).Where(x => x.Teacher.Id == mesiterId); ;
@@ -133,6 +134,8 @@ namespace Mhotivo.Implement.Repositories
             }
             return Update(academicYearDetail, updateAcademicYear, updateCourse, updateTeacher);
         }
+
+        //TODO: ugh
         public IEnumerable<AcademicYearDetail> GetAllAcademicYearsDetails(long academicYearId)
         {
             var query = Query(x => x).ToList().Select(x => new AcademicYearDetail

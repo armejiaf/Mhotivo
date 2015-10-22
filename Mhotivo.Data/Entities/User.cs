@@ -23,6 +23,8 @@ namespace Mhotivo.Data.Entities
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
+        public string DefaultPassword { get; set; }
+        public bool IsUsingDefaultPassword { get; set; }
         public bool IsActive { get; set; }
         public string Salt { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }

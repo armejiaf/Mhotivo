@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
 
@@ -11,14 +10,12 @@ namespace Mhotivo.ParentSite.Controllers
     public class AccountController : Controller
     {
         private readonly ISessionManagementRepository _sessionManagementRepository;
-        private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
        
-        public AccountController(ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository, IUserRepository userRepository)
         {
             _sessionManagementRepository = sessionManagementRepository;
-            _securityRepository = securityRepository;
             _parentRepository = parentRepository;
             _userRepository = userRepository;
         }
@@ -38,17 +35,14 @@ namespace Mhotivo.ParentSite.Controllers
 
             if (parent != null)
             {
-
                 if (_sessionManagementRepository.LogIn(model.Email, model.Password))
                 {
-                    if (parent.MyUser.Email.Equals(""))
+                    if (parent.MyUser.IsUsingDefaultPassword)
                     {
-                        return RedirectToAction("ConfirmEmail");
+                        return RedirectToAction("ChangePassword");
                     }
-
-                    return RedirectToAction("Index", "Notification");
+                    return parent.MyUser.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
                 }
-
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
             }
@@ -92,20 +86,16 @@ namespace Mhotivo.ParentSite.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
+            if (!ModelState.IsValid)
+                return View();
             var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
-            if (user.CheckPassword(model.OldPassword))
-            {
-                user.Password = model.NewPassword;
-                user.EncryptPassword();
-                _userRepository.Update(user);
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ViewBag.Message = "Contraseña Incorrecta";
-
-            return RedirectToAction("ChangePassword");
+            user.Password = model.NewPassword;
+            user.EncryptPassword();
+            user.DefaultPassword = null;
+            user.IsUsingDefaultPassword = false;
+            _userRepository.Update(user);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

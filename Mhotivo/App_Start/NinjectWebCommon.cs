@@ -1,7 +1,6 @@
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Implement.Context;
-using Mhotivo.Logic;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Mhotivo.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Mhotivo.NinjectWebCommon), "Stop")]
@@ -79,7 +78,7 @@ namespace Mhotivo
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
             kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
             kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
-            kernel.Bind<IPasswordGenerationService>().To<PreloadedPasswordsGenerationService>().InRequestScope();
+            kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
         }        
     }

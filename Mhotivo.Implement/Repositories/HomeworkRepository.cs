@@ -62,12 +62,12 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        //TODO: Automapper & ICloneable.
         public IEnumerable<Homework> GetAllHomeworks()
         {
             return Query(x => x).Where(x => !false).ToList();
         }
 
+        //TODO: Automapper & ICloneable.
         public Homework UpdateHomeworkFromHomeworkEditModel(Homework displayHomeworkModel, Homework homework)
         {
             homework.Id = displayHomeworkModel.Id;

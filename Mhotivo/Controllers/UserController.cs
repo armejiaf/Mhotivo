@@ -17,11 +17,13 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IPasswordGenerationService _passwordGenerationService;
 
-        public UserController(IUserRepository userRepository, ISecurityRepository securityRepository)
+        public UserController(IUserRepository userRepository, ISecurityRepository securityRepository, IPasswordGenerationService passwordGenerationService)
         {
             _userRepository = userRepository;
             _securityRepository = securityRepository;
+            _passwordGenerationService = passwordGenerationService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -133,21 +135,21 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            var myUser = new User
-            {
-                DisplayName = modelUser.DisplaName,
-                Email = modelUser.UserName,
-                Password = modelUser.Password,
-                IsActive = modelUser.Status,
-                Role = Roles.Administrador
-            };
-
-            if (_userRepository.ExistEmail(modelUser.UserName))
+            if (_userRepository.ExistEmail(modelUser.Email))
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            
+            var myUser = new User
+            {
+                DisplayName = modelUser.DisplayName,
+                Email = modelUser.Email,
+                Password = _passwordGenerationService.GenerateTemporaryPassword(),
+                IsUsingDefaultPassword = true,
+                IsActive = modelUser.Status,
+                Role = Roles.Administrador
+            };
+            myUser.DefaultPassword = myUser.Password;
             var user = _userRepository.Create(myUser);
             const string title = "Usuario Agregado";
             var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";

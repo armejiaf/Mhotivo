@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NewMigration : DbMigration
+    public partial class RemovedPreloadedPasswordsTable : DbMigration
     {
         public override void Up()
         {
@@ -131,6 +131,8 @@ namespace Mhotivo.Implement.Migrations
                         Email = c.String(),
                         DisplayName = c.String(),
                         Password = c.String(),
+                        DefaultPassword = c.String(),
+                        IsUsingDefaultPassword = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
                         Role = c.Int(nullable: false),
@@ -233,15 +235,6 @@ namespace Mhotivo.Implement.Migrations
                 .Index(t => t.Grade_Id);
             
             CreateTable(
-                "dbo.PreloadedPasswords",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Password = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.UserNotifications",
                 c => new
                     {
@@ -301,7 +294,6 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.AcademicYearDetails", new[] { "Course_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "AcademicYear_Id" });
             DropTable("dbo.UserNotifications");
-            DropTable("dbo.PreloadedPasswords");
             DropTable("dbo.Pensums");
             DropTable("dbo.Homework");
             DropTable("dbo.Enrolls");
