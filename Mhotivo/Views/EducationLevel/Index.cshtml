@@ -11,9 +11,10 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-<h2>Niveles de Educacion Registrados  </h2>
+<h2>Niveles de Educacion Registrados</h2>
 
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="EducationLevel/Create"><span class="btn btn-small btn-primary active">Agregar Nivel De Educacion</span></a>
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="EducationLevel/Create"><span class="btn btn-small btn-primary">Agregar Nivel De Educacion</span></a>
+<div class="space"></div>
    @using (Html.BeginForm("Index", "EducationLevel", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
     <p>

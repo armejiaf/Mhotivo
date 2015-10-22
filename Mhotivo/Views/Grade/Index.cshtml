@@ -4,18 +4,15 @@
 @model PagedList.IPagedList<Mhotivo.Models.DisplayGradeModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+<h2>Grados Registrados</h2>
 
-<h2>Grados Registrados </h2>
-
-<a class="toEdit" data-target="#EditModal" data-toggle="modal" id="/Grade/Add/" role="button"><span class="btn btn-small btn-primary active">Agregar Grado</span></a>
-
+<a class="toEdit" data-target="#EditModal" data-toggle="modal" id="/Grade/Add/" role="button"><span class="btn btn-small btn-primary">Agregar Grado</span></a>
+<div class="space"></div>
 @if(!Model.Any())
 {
     <div class="well well-large">
