@@ -89,7 +89,7 @@ namespace Mhotivo.Controllers
             var role = _userRepository.GetUserRole(thisUser.Id);
             var directions = from Role d in _rolesRepository.GetAll()
                              where d != null
-                             select new { ID = d.RoleId, Name = d.RoleId };
+                             select new { ID = d.RoleId, d.Name };
             user.RoleId = role.RoleId;
             ViewBag.RoleId = new SelectList(directions, "ID", "Name", user.RoleId);
             return View("Edit", user);

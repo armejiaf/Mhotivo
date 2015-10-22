@@ -36,7 +36,9 @@ namespace Mhotivo.Implement.Migrations
             _academicYearRepository = new AcademicYearRepository(context);
             _roleRepository = new RoleRepository(context);
             _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), RoleId = 0 });
-            
+            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
+            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
+            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), RoleId = 3 });
             var admin = new User
             {
                 DisplayName = "Administrador",
@@ -73,9 +75,6 @@ namespace Mhotivo.Implement.Migrations
                 "sanguineo"
             };
             _passwordGenerationService.AddPasswordsToTable(passwordsList);
-            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
-            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
-            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), RoleId = 3 });
             _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
