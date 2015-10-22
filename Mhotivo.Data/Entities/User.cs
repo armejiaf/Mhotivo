@@ -7,33 +7,47 @@ using System.Text;
 
 namespace Mhotivo.Data.Entities
 {
-    public enum Roles
+    //public enum Roles
+    //{
+    //    Invalid = -1,
+    //    Padre = 1,
+    //    Maestro = 2,
+    //    Director = 3,
+    //    Administrador = 4
+    //}
+
+    public class Role
     {
-        Invalid = -1,
-        Padre = 1,
-        Maestro = 2,
-        Director = 3,
-        Administrador = 4
+        public Role()
+        {
+            Privileges = new HashSet<Privilege>();
+            Users = new HashSet<User>();
+        }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int RoleId { get; set; }
+        public string Name { get; set; }
+        public int Value { get; set; }
+        public virtual ICollection<Privilege> Privileges { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 
-    public sealed class Role
+    public class Privilege
     {
-        public static readonly Role Parent = new Role("Padre");
-        public static readonly Role Teacher = new Role("Maestro");
-        public static readonly Role Director = new Role("Director");
-        public static readonly Role Administrator = new Role("Administrador");
-
-        private Role(string name)
-        {
-            Name = name;
-        }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PrivilegeId { get; set; }
         public string Name { get; set; }
-        
+        public string Description { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 
     public class User
     {
+        public User()
+        {
+            Notifications = new HashSet<Notification>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -43,8 +57,7 @@ namespace Mhotivo.Data.Entities
         public bool IsActive { get; set; }
         public string Salt { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual Roles Role { get; set; }
-
+        
         public bool CheckPassword(string password)
         {
             if (String.IsNullOrEmpty(Salt))
@@ -56,7 +69,7 @@ namespace Mhotivo.Data.Entities
             var hashedPassword = BitConverter.ToString(prePassword).Replace("-", "");
             return Password.Equals(hashedPassword);
         }
-
+        public virtual Role Role { get; set; }
         public void EncryptPassword()
         {
             var hashtool = SHA512.Create();

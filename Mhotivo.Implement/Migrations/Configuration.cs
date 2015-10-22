@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Web.Security;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
@@ -16,7 +17,7 @@ namespace Mhotivo.Implement.Migrations
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
-
+        private IRoleRepository _roleRepository;
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -33,13 +34,16 @@ namespace Mhotivo.Implement.Migrations
             _courseRepository = new CourseRepository(context, _areaRepository);
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
+            _roleRepository = new RoleRepository(context);
+            _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), RoleId = 0 });
+            
             var admin = new User
             {
                 DisplayName = "Administrador",
                 Email = "admin@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Administrador
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Administrador")
             };
             admin.EncryptPassword();
             context.Users.AddOrUpdate(admin);
@@ -69,6 +73,9 @@ namespace Mhotivo.Implement.Migrations
                 "sanguineo"
             };
             _passwordGenerationService.AddPasswordsToTable(passwordsList);
+            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
+            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
+            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), RoleId = 3 });
             _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
@@ -124,7 +131,7 @@ namespace Mhotivo.Implement.Migrations
                 Email = "teacher@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Maestro
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Maestro")
             };
             genericTeacher.EncryptPassword();
             var genericParent = new User
@@ -133,7 +140,7 @@ namespace Mhotivo.Implement.Migrations
                 Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Padre
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
             };
             genericParent.EncryptPassword();
             context.Users.AddOrUpdate(genericTeacher);

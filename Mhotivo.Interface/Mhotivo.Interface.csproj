@@ -51,6 +51,8 @@
     <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\INotificationCommentRepository.cs" />
     <Compile Include="Interfaces\IPasswordGenerationService.cs" />
+    <Compile Include="Interfaces\IPrivilegeRepository.cs" />
+    <Compile Include="Interfaces\IRoleRepository.cs" />
     <Compile Include="Interfaces\ITeacherRepository.cs" />
     <Compile Include="Interfaces\INotificationRepository.cs" />
     <Compile Include="Interfaces\INotificationTypeRepository.cs" />

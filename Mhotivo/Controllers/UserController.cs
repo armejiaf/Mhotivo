@@ -17,11 +17,13 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ISecurityRepository _securityRepository; //Will this be used?
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IRoleRepository _rolesRepository;
 
-        public UserController(IUserRepository userRepository, ISecurityRepository securityRepository)
+        public UserController(IUserRepository userRepository, ISecurityRepository securityRepository, IRoleRepository rolesRepository)
         {
             _userRepository = userRepository;
             _securityRepository = securityRepository;
+            _rolesRepository = rolesRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -70,7 +72,7 @@ namespace Mhotivo.Controllers
              {
                  var role = _userRepository.GetUserRole(usuario.Id);
                  usuario.Role = role;
-                 usuario.RoleName = usuario.Role.ToString("G");
+                 usuario.RoleName = usuario.Role.Name;
              }
 
             const int pageSize = 10;
@@ -85,10 +87,10 @@ namespace Mhotivo.Controllers
             User thisUser = _userRepository.GetById(id);
             var user = Mapper.Map<UserEditModel>(thisUser);
             var role = _userRepository.GetUserRole(thisUser.Id);
-            var directions = from Roles d in Enum.GetValues(typeof(Roles))
-                             where d != Roles.Invalid
-                             select new { ID = (int)d, Name = d.ToString("G") };
-            user.RoleId = Convert.ToInt32(role.ToString("D"));
+            var directions = from Role d in _rolesRepository.GetAll()
+                             where d != null
+                             select new { ID = d.RoleId, Name = d.RoleId };
+            user.RoleId = role.RoleId;
             ViewBag.RoleId = new SelectList(directions, "ID", "Name", user.RoleId);
             return View("Edit", user);
         }
@@ -122,9 +124,9 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
-            var directions = from Roles d in Enum.GetValues(typeof(Roles))
-                             where d != Roles.Invalid
-                             select new { ID = (int)d, Name = d.ToString("G") };
+            var directions = from Role d in _rolesRepository.GetAll()
+                             where d != null
+                             select new { ID = d.RoleId, Name = d.Name};
             ViewBag.Id = new SelectList(directions, "ID", "Name");
             return View("Create");
         }
@@ -139,7 +141,7 @@ namespace Mhotivo.Controllers
                 Email = modelUser.UserName,
                 Password = modelUser.Password,
                 IsActive = modelUser.Status,
-                Role = Roles.Administrador
+                Role = _rolesRepository.FirstOrDefault(x => x.Name == "Administrador")
             };
 
             if (_userRepository.ExistEmail(modelUser.UserName))

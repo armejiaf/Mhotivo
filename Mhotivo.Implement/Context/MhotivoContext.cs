@@ -24,6 +24,8 @@ namespace Mhotivo.Implement.Context
         public DbSet<User> Users { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<PreloadedPassword> PreloadedPasswords { get; set; }
+        public DbSet<Privilege> Privileges { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -37,6 +39,7 @@ namespace Mhotivo.Implement.Context
                    m.MapRightKey("UserId"); //Campo asociado con Users
                    m.ToTable("UserNotifications");
                });
+
         }
     }
 }

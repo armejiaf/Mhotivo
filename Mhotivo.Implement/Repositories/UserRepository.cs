@@ -89,10 +89,10 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public Roles GetUserRole(long idUser)
+        public Role GetUserRole(long idUser)
         {
             var userTemp = GetById(idUser);
-            return userTemp == null ? Roles.Invalid : userTemp.Role;
+            return userTemp == null ? null : userTemp.Role;
         }
 
         public User UpdateUserFromUserEditModel(User userModel, User user)

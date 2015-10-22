@@ -18,14 +18,16 @@ namespace Mhotivo.Controllers
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IRoleRepository _roleRepository;
 
         public ParentController(IParentRepository parentRepository,
             IContactInformationRepository contactInformationRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -194,7 +196,7 @@ namespace Mhotivo.Controllers
                 Email = modelParent.Email,
                 Password = modelParent.Password,
                 IsActive = true,
-                Role = Roles.Padre
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
             };
             newUser = _userRepository.Create(newUser);
             myParent.MyUser = newUser;
