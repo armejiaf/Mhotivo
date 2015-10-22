@@ -41,11 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
                     {
                         return RedirectToAction("ChangePassword");
                     }
-                    if (parent.MyUser.Email.Equals(""))
-                    {
-                        return RedirectToAction("ConfirmEmail");
-                    }
-                    return RedirectToAction("Index", "Home");
+                    return parent.MyUser.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
@@ -90,6 +86,8 @@ namespace Mhotivo.ParentSite.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
+            if (!ModelState.IsValid)
+                return View();
             var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;

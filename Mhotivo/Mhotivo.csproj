@@ -510,6 +510,7 @@
     <Content Include="Views\NotificationComment\Index.cshtml" />
     <Content Include="Views\NewUser\Index.cshtml" />
     <Content Include="Views\NewUser\Details.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

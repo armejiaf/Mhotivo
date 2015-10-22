@@ -50,7 +50,7 @@ namespace Mhotivo.Models
         public string DefaultPassword { get; set; }
 
     }
-    public class LocalPasswordModel
+    public class ChangePasswordModel
     {
         [Required(ErrorMessage = "Debe Ingresar Contraseña actual")]
         [DataType(DataType.Password)]
