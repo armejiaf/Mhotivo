@@ -508,6 +508,7 @@
     <Content Include="Views\Notification\Edit.cshtml" />
     <Content Include="Views\Notification\Add.cshtml" />
     <Content Include="Views\NotificationComment\Index.cshtml" />
+    <Content Include="Views\Enroll\DeleteAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
