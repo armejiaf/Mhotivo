@@ -3,6 +3,8 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm())
+    {
     <fieldset>
         <legend>Borrar matriculas por seccion</legend>
 
@@ -20,17 +22,22 @@
                 @Html.DisplayNameFor(model => model.Section)
             </div>
             <div class="controls">
-                @Html.DropDownList("Section")
+                @Html.DropDownListFor(model => model.Section, (SelectList)ViewBag.Section, "  -- Seccion --")
             </div>
         </div>
 
     </fieldset>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <p>
-            <input type="submit" value="DeleteAll" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </p>
+    @Html.AntiForgeryToken()
+    <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-small">
+            <i class="icon-remove"></i>
+            Regresar
+        </button>
+
+        <button type="submit" class="btn btn-small btn-primary">
+            <i class="icon-ok"></i>
+            Eliminar
+        </button>
+    </div>
     }
 </div>
