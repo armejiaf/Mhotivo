@@ -3,7 +3,7 @@ namespace Mhotivo.Implement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class RemovedPreloadedPasswordsTable : DbMigration
+    public partial class NMigration : DbMigration
     {
         public override void Up()
         {
@@ -135,9 +135,11 @@ namespace Mhotivo.Implement.Migrations
                         IsUsingDefaultPassword = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
-                        Role = c.Int(nullable: false),
+                        Role_RoleId = c.Int(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Roles", t => t.Role_RoleId)
+                .Index(t => t.Role_RoleId);
             
             CreateTable(
                 "dbo.Notifications",
@@ -190,6 +192,26 @@ namespace Mhotivo.Implement.Migrations
                         Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        RoleId = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Value = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Privileges",
+                c => new
+                    {
+                        PrivilegeId = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.PrivilegeId);
             
             CreateTable(
                 "dbo.Enrolls",
@@ -247,6 +269,19 @@ namespace Mhotivo.Implement.Migrations
                 .Index(t => t.NotificationId)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.PrivilegeRoles",
+                c => new
+                    {
+                        Privilege_PrivilegeId = c.Int(nullable: false),
+                        Role_RoleId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Privilege_PrivilegeId, t.Role_RoleId })
+                .ForeignKey("dbo.Privileges", t => t.Privilege_PrivilegeId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.Role_RoleId, cascadeDelete: true)
+                .Index(t => t.Privilege_PrivilegeId)
+                .Index(t => t.Role_RoleId);
+            
         }
         
         public override void Down()
@@ -258,6 +293,9 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.Enrolls", "AcademicYear_Id", "dbo.AcademicYears");
             DropForeignKey("dbo.AcademicYearDetails", "Teacher_Id", "dbo.People");
             DropForeignKey("dbo.People", "MyUser_Id", "dbo.Users");
+            DropForeignKey("dbo.Users", "Role_RoleId", "dbo.Roles");
+            DropForeignKey("dbo.PrivilegeRoles", "Role_RoleId", "dbo.Roles");
+            DropForeignKey("dbo.PrivilegeRoles", "Privilege_PrivilegeId", "dbo.Privileges");
             DropForeignKey("dbo.UserNotifications", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserNotifications", "NotificationId", "dbo.Notifications");
             DropForeignKey("dbo.Notifications", "TargetStudent_Id", "dbo.People");
@@ -272,6 +310,8 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.Courses", "Area_Id", "dbo.EducationLevels");
             DropForeignKey("dbo.AcademicYearDetails", "AcademicYear_Id", "dbo.AcademicYears");
             DropForeignKey("dbo.AcademicYears", "Grade_Id", "dbo.Grades");
+            DropIndex("dbo.PrivilegeRoles", new[] { "Role_RoleId" });
+            DropIndex("dbo.PrivilegeRoles", new[] { "Privilege_PrivilegeId" });
             DropIndex("dbo.UserNotifications", new[] { "UserId" });
             DropIndex("dbo.UserNotifications", new[] { "NotificationId" });
             DropIndex("dbo.Pensums", new[] { "Grade_Id" });
@@ -284,6 +324,7 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.Notifications", new[] { "TargetStudent_Id" });
             DropIndex("dbo.Notifications", new[] { "NotificationType_Id" });
             DropIndex("dbo.Notifications", new[] { "NotificationCreator_Id" });
+            DropIndex("dbo.Users", new[] { "Role_RoleId" });
             DropIndex("dbo.ContactInformations", new[] { "People_Id" });
             DropIndex("dbo.People", new[] { "MyUser_Id" });
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
@@ -293,10 +334,13 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.AcademicYearDetails", new[] { "Teacher_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "Course_Id" });
             DropIndex("dbo.AcademicYearDetails", new[] { "AcademicYear_Id" });
+            DropTable("dbo.PrivilegeRoles");
             DropTable("dbo.UserNotifications");
             DropTable("dbo.Pensums");
             DropTable("dbo.Homework");
             DropTable("dbo.Enrolls");
+            DropTable("dbo.Privileges");
+            DropTable("dbo.Roles");
             DropTable("dbo.NotificationTypes");
             DropTable("dbo.NotificationComments");
             DropTable("dbo.Notifications");

@@ -91,7 +91,7 @@ namespace Mhotivo.ParentSite.Controllers
             var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;
-            user.EncryptPassword();
+            user.HashPassword();
             user.DefaultPassword = null;
             user.IsUsingDefaultPassword = false;
             _userRepository.Update(user);

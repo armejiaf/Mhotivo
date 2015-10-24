@@ -18,7 +18,7 @@ namespace Mhotivo.Models
         public string Status { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
-        public Roles Role { get; set; }
+        public Role Role { get; set; }
 
         public string RoleName { get; set; }
     }
@@ -34,7 +34,7 @@ namespace Mhotivo.Models
         public string DisplayName { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
-        public Roles Role { get; set; }
+        public Role Role { get; set; }
 
         public string RoleName { get; set; }
     }

@@ -7,13 +7,13 @@ namespace Mhotivo.Implement.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class RemovedPreloadedPasswordsTable : IMigrationMetadata
+    public sealed partial class NMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovedPreloadedPasswordsTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(NMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201510210011273_RemovedPreloadedPasswordsTable"; }
+            get { return "201510242104324_NMigration"; }
         }
         
         string IMigrationMetadata.Source

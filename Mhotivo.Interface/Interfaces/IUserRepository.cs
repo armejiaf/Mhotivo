@@ -18,7 +18,7 @@ namespace Mhotivo.Interface.Interfaces
         User Delete(long id);
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
-        Roles GetUserRole(long idUser);
+        Role GetUserRole(long idUser);
         User UpdateUserFromUserEditModel(User userModel, User user);
         bool ExistEmail(string userName);
     }
