@@ -66,7 +66,8 @@
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\PeopleWithBiography.cs" />
-    <Compile Include="Entities\PreloadedPassword.cs" />
+    <Compile Include="Entities\Privilege.cs" />
+    <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationComments.cs" />

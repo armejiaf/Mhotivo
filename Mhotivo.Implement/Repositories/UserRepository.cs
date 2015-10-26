@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
@@ -40,7 +38,7 @@ namespace Mhotivo.Implement.Repositories
 
         public User Create(User itemToCreate)
         {
-            itemToCreate.EncryptPassword();
+            itemToCreate.HashPassword();
             var user = _context.Users.Add(itemToCreate);
             _context.SaveChanges();
             return user;
@@ -89,12 +87,13 @@ namespace Mhotivo.Implement.Repositories
             });
         }
 
-        public Roles GetUserRole(long idUser)
+        public Role GetUserRole(long idUser)
         {
             var userTemp = GetById(idUser);
-            return userTemp == null ? Roles.Invalid : userTemp.Role;
+            return userTemp == null ? null : userTemp.Role;
         }
 
+        //TODO: GET RID OF THIS
         public User UpdateUserFromUserEditModel(User userModel, User user)
         {
             user.DisplayName = userModel.DisplayName;

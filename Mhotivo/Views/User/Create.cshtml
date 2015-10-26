@@ -20,46 +20,26 @@
         <legend>Nuevo Usuario</legend>
         
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.DisplaName)
-            @Html.ValidationMessageFor(model => model.UserName)
-            @Html.ValidationMessageFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)  
+            @Html.ValidationMessageFor(model => model.DisplayName)
+            @Html.ValidationMessageFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.RoleId)  
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.DisplaName)
+                @Html.LabelFor(model => model.DisplayName)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.DisplaName)
+                @Html.EditorFor(model => model.DisplayName)
             </div>
         </div>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.UserName)
+                @Html.LabelFor(model => model.Email)
             </div>
             <div class="controls">
-                @Html.EditorFor(model => model.UserName)
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Password)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Password)
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.ConfirmPassword)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.ConfirmPassword)
+                @Html.EditorFor(model => model.Email)
             </div>
         </div>
         <!--  

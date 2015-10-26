@@ -18,8 +18,10 @@ namespace Mhotivo.Implement.Repositories
         private readonly IEnrollRepository _enrollRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IPrivilegeRepository _privilegeRepository;
 
-        public ImportDataRepository(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository)
+        public ImportDataRepository(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository, IPrivilegeRepository privilegeRepository)
         {
             _passwordGenerationService = passwordGenerationService;
             _parentRepository = parentRepository;
@@ -27,6 +29,8 @@ namespace Mhotivo.Implement.Repositories
             _enrollRepository = enrollRepository;
             _academicYearRepository = academicYearRepository;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
+            _privilegeRepository = privilegeRepository;
         }
 
         public void Import(DataSet oDataSet, AcademicYear academicYear)
@@ -123,12 +127,13 @@ namespace Mhotivo.Implement.Repositories
                     var newUser = new User
                     {
                         DisplayName = pare.FirstName,
-                        Email = emails[iterator],
+                        Email = emails[iterator],//TODO: Possibly deprecated.
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
+                        IsUsingDefaultPassword = true,
                         IsActive = true,
-                        Role = Roles.Padre
+                        Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
                     };
-                    //TODO: add to newUsers table.
+                    newUser.DefaultPassword = newUser.Password;
                     newUser = _userRepository.Create(newUser);
                     
                     pare.MyUser = newUser;

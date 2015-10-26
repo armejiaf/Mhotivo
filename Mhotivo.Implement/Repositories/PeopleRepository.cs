@@ -72,6 +72,7 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
+        //TODO: Possibly implement automapper. Too many of these.
         public People GetPeopleDisplayModelById(long id)
         {
             var people = GetById(id);
@@ -88,8 +89,6 @@ namespace Mhotivo.Implement.Repositories
                 MyGender = people.MyGender
             };
         }
-
-        //TODO: Possibly implement automapper. Too many of these.
         public People UpdatePeopleFromPeopleEditModel(People peopleEditModel, People people) 
         {
             people.FirstName = peopleEditModel.FirstName;

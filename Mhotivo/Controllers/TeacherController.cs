@@ -17,13 +17,17 @@ namespace Mhotivo.Controllers
         private readonly ITeacherRepository _teacherRepository;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IPasswordGenerationService _passwordGenerationService;
+        private readonly IRoleRepository _roleRepository;
 
-        public TeacherController(ITeacherRepository teacherRepository,
-            IContactInformationRepository contactInformationRepository, IUserRepository userRepository)
+        public TeacherController(ITeacherRepository teacherRepository, IContactInformationRepository contactInformationRepository, 
+            IUserRepository userRepository, IRoleRepository roleRepository, IPasswordGenerationService passwordGenerationService)
         {
             _teacherRepository = teacherRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
+            _passwordGenerationService = passwordGenerationService;
+            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -159,10 +163,12 @@ namespace Mhotivo.Controllers
             {
                 DisplayName = modelTeacher.FirstName,
                 Email = modelTeacher.Email,
-                Password = modelTeacher.Password,
+                Password = _passwordGenerationService.GenerateTemporaryPassword(),
+                IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = Roles.Maestro
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Maestro")
             };
+            newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
             myTeacher.MyUser = newUser;
             _teacherRepository.Create(myTeacher);

@@ -9,6 +9,5 @@ namespace Mhotivo.Interface.Interfaces
     public interface IPasswordGenerationService
     {
         string GenerateTemporaryPassword();
-        void AddPasswordsToTable(List<string> passwordsList);
     }
 }

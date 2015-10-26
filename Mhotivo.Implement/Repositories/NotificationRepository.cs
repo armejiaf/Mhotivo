@@ -79,7 +79,7 @@ namespace Mhotivo.Implement.Repositories
             return generalNotifications;
         }
 
-        public IQueryable<Notification> GetGradeNotifications(int currentAcademicYear, long id)
+        public IEnumerable<Notification> GetGradeNotifications(int currentAcademicYear, long id)
         {
 
             var students = _context.Students.Where(x => x.Tutor1.Id == id || x.Tutor2.Id == id).ToList();
@@ -88,42 +88,31 @@ namespace Mhotivo.Implement.Repositories
             {
                 enrolls.AddRange(_context.Enrolls.Where(x => x.Student.Id == student.Id));
             }
-            var years = new List<string>();
-            foreach (var enroll in enrolls)
-            {
-                if(enroll.AcademicYear.IsActive)
-                    years.Add(enroll.AcademicYear.Section);
-               
-            }
-            
+            var years = (from enroll in enrolls where enroll.AcademicYear.IsActive select enroll.AcademicYear.Section).ToList();
             var gradeNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
                     x.NotificationType.Id == 3 && 
                     years.Contains(x.Section) &&
-                        x.Approved );
+                        x.Approved ).ToList();
             return gradeNotifications;
         }
 
-        public IQueryable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
+        public IEnumerable<Notification> GetPersonalNotifications(int currentAcademicYear, long id)
         {
-            var parent = _context.Parents.FirstOrDefault(x => x.MyUser.Id == id);
-            
+
             var personalNotifications = _context.Notifications.Where(
                 x => x.Created.Year == currentAcademicYear &&
-                    x.NotificationType.Id == 4 &&
-                   
-                   //x.Users.FirstOrDefault(u => u.Id == id) != null && 
-                   x.Approved 
-                   //&& x.Id.Equals(id)
-                   && (x.TargetStudent.Tutor1.Id == parent.Id || x.TargetStudent.Tutor2.Id == parent.Id)
-                   );
+                     x.NotificationType.Id == 4 &&
+                     x.Approved
+                     && (x.TargetStudent.Tutor1.Id == id || x.TargetStudent.Tutor2.Id == id)
+                );
 
             return personalNotifications;
         }
 
-        public IQueryable<Notification> GetAllNotifications()
+        public IEnumerable<Notification> GetAllNotifications()
         {
-            throw new NotImplementedException();
+            return Query(x => x).ToList();
         }
 
         public IQueryable<Notification> GetAreaNotifications(int currentAcademicYear, long id)

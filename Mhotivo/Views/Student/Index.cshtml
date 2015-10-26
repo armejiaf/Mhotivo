@@ -13,8 +13,9 @@
 
 <h2>Estudiantes Registrados  </h2>
 
-<a class="toAdd" data-toggle="modal" role="button" data-id="Student/Add"><span class="btn btn-small btn-primary active">Agregar Estudiante</span></a>
-<!--<a href="Student/Add"><span class="btn btn-small btn-primary active">Agregar Estudiante</span></a>-->
+<a class="toAdd" data-toggle="modal" role="button" data-id="Student/Add"><span class="btn btn-small btn-primary">Agregar Estudiante</span></a>
+<div class="space"></div>
+<!--<a href="Student/Add"><span class="btn btn-small btn-primary">Agregar Estudiante</span></a>-->
 
     @using (Html.BeginForm("Index", "Student", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {

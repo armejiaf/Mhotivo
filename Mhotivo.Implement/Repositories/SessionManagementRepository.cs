@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Security;
 using Mhotivo.Data.Entities;
@@ -29,13 +28,7 @@ namespace Mhotivo.Implement.Repositories
 
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
-            User user;
-            if (userEmail.Contains("@"))
-                user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
-            else
-            {
-                user = _peopleRepository.Filter(x => x.IdNumber.Equals(userEmail)).FirstOrDefault().MyUser;
-            }
+            var user = userEmail.Contains("@") ? _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault() : _peopleRepository.Filter(x => x.IdNumber.Equals(userEmail)).FirstOrDefault().MyUser;
             if (user == null) return false;
             if (!user.CheckPassword(password)) return false;
             UpdateSessionFromUser(user);
@@ -51,9 +44,8 @@ namespace Mhotivo.Implement.Repositories
         {
             HttpContext.Current.Session[_userEmailIdentifier] = user.Email;
             HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
-            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(user.Id).ToString("G");
+            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(user.Id).Name;
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
-        
         }
 
         public void LogOut(bool redirect = false)

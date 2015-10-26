@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
@@ -10,13 +10,15 @@ namespace Mhotivo.Controllers
     public class AccountController : Controller
     {
         //private readonly ISessionManagement _sessionManagement;
-        private readonly ISessionManagementRepository _sessionManagement;
+        private readonly ISessionManagementRepository _sessionManagementRepository;
         private readonly IParentRepository _parentRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(ISessionManagementRepository sessionManagement, IParentRepository parentRepository)
+        public AccountController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository, IUserRepository userRepository)
         {
-            _sessionManagement = sessionManagement;
+            _sessionManagementRepository = sessionManagementRepository;
             _parentRepository = parentRepository;
+            _userRepository = userRepository;
         }
 
         // GET: /Account/Login
@@ -36,9 +38,10 @@ namespace Mhotivo.Controllers
             var parent = _parentRepository.Filter(y => y.MyUser.Email == model.UserEmail).FirstOrDefault();
             if (parent == null)
             {
-                if (_sessionManagement.LogIn(model.UserEmail, model.Password, model.RememberMe))
+                if (_sessionManagementRepository.LogIn(model.UserEmail, model.Password, model.RememberMe))
                 {
-                    return RedirectToLocal(returnUrl);
+                    var user = _userRepository.FirstOrDefault(x => x.Email == model.UserEmail);
+                    return user.IsUsingDefaultPassword ? RedirectToAction("ChangePassword") : RedirectToLocal(returnUrl);
                 }
             }
             else
@@ -54,20 +57,37 @@ namespace Mhotivo.Controllers
         // GET: /Account/Logout
         public ActionResult Logout(string returnUrl)
         {
-            _sessionManagement.LogOut();
+            _sessionManagementRepository.LogOut();
             return RedirectToAction("Index", "Home");
         }
-
 
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            _sessionManagement.LogOut();
+            _sessionManagementRepository.LogOut();
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
+            var user = _userRepository.GetById(userId);
+            user.Password = model.NewPassword;
+            user.HashPassword();
+            user.DefaultPassword = null;
+            user.IsUsingDefaultPassword = false;
+            _userRepository.Update(user);
+            return RedirectToAction("Index", "Home");
+        }
         #region Aplicaciones auxiliares
         private ActionResult RedirectToLocal(string returnUrl)
         {

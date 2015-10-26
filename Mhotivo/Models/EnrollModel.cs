@@ -40,4 +40,15 @@ namespace Mhotivo.Models
         [Display(Name = "Seccion")]
         public string Section { get; set; }
     }
+
+    public class EnrollDeleteModel
+    {
+        [Required(ErrorMessage = "Debe elegir un grado.")]
+        [Display(Name = "Grado")]
+        public long GradeId { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public string Section { get; set; }
+    }
 }

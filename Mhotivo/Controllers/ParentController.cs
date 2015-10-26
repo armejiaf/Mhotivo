@@ -15,17 +15,22 @@ namespace Mhotivo.Controllers
     public class ParentController : Controller
     {
         private readonly IContactInformationRepository _contactInformationRepository;
+        private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IRoleRepository _roleRepository;
 
         public ParentController(IParentRepository parentRepository,
             IContactInformationRepository contactInformationRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IPasswordGenerationService passwordGenerationService,
+            IRoleRepository roleRepository)
         {
             _parentRepository = parentRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
+            _passwordGenerationService = passwordGenerationService;
+            _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -192,10 +197,12 @@ namespace Mhotivo.Controllers
             {
                 DisplayName = myParent.FirstName,
                 Email = modelParent.Email,
-                Password = modelParent.Password,
+                Password = _passwordGenerationService.GenerateTemporaryPassword(),
+                IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = Roles.Padre
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
             };
+            newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
             myParent.MyUser = newUser;
              _parentRepository.Create(myParent);

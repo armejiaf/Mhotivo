@@ -16,13 +16,13 @@ namespace Mhotivo
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AuthConfig.RegisterAuth();
             AutoMapperConfiguration.Configure();
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Implement.Migrations.Configuration>());
             using (var context = new MhotivoContext())
             {
-                context.Database.Initialize(force: true);
+                context.Database.Initialize(true);
             } 
         }
     }
 }
+//

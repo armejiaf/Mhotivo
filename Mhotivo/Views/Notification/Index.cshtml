@@ -10,10 +10,12 @@
 
 @*<h2>Notificaciones</h2>
 <br/>
-<a href="/Notification/Add/"><span class="btn btn-small btn-primary active">Agregar Notificación</span></a>
+<a href="/Notification/Add/"><span class="btn btn-small btn-primary">Agregar Notificación</span></a>
 <br/>
 <br/>*@
 <h2>Notificaciones</h2>
+<a href="/Notification/Add/"><span class="btn btn-small btn-primary">Agregar Notificación</span></a>
+<div class="space"></div>
 @using (Html.BeginForm("Index", "Notification", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
     <p>
@@ -70,11 +72,9 @@ else
     
 }
 
-<a href="/Notification/Add/"><span class="btn btn-small btn-primary active">Agregar Notificación</span></a>
-
 @*@if (@)
 {
-    <a href="/Notification/Approve/"><span class="btn btn-small btn-primary active">Aprobar Notificaciones</span></a>
+    <a href="/Notification/Approve/"><span class="btn btn-small btn-primary">Aprobar Notificaciones</span></a>
 }*@
     
 <br/>

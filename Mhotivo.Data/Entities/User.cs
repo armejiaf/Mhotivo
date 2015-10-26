@@ -7,27 +7,34 @@ using System.Text;
 
 namespace Mhotivo.Data.Entities
 {
-    public enum Roles
-    {
-        Invalid = -1,
-        Padre = 1,
-        Maestro = 2,
-        Director = 3,
-        Administrador = 4
-    }
+    //public enum Roles
+    //{
+    //    Invalid = -1,
+    //    Padre = 1,
+    //    Maestro = 2,
+    //    Director = 3,
+    //    Administrador = 4
+    //}
+
     public class User
     {
+        public User()
+        {
+            Notifications = new HashSet<Notification>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
+        public string DefaultPassword { get; set; }
+        public bool IsUsingDefaultPassword { get; set; }
         public bool IsActive { get; set; }
         public string Salt { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual Roles Role { get; set; }
-
+        
         public bool CheckPassword(string password)
         {
             if (String.IsNullOrEmpty(Salt))
@@ -39,8 +46,8 @@ namespace Mhotivo.Data.Entities
             var hashedPassword = BitConverter.ToString(prePassword).Replace("-", "");
             return Password.Equals(hashedPassword);
         }
-
-        public void EncryptPassword()
+        
+        public void HashPassword()
         {
             var hashtool = SHA512.Create();
             if (String.IsNullOrEmpty(Salt))

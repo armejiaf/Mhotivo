@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using Mhotivo.Data.Entities;
@@ -11,7 +10,6 @@ namespace Mhotivo.Implement.Repositories
     {
         private readonly IUserRepository _userRepository;
         private readonly IPeopleRepository _peopleRepository;
-        
         private static string _userNameIdentifier;
         private static string _userRoleIdentifier;
         private static string _userEmailIdentifier;
@@ -21,17 +19,16 @@ namespace Mhotivo.Implement.Repositories
         {
             _userRepository = userRepository;
             _peopleRepository = peopleRepository;
-
             _userNameIdentifier = "loggedUserName";
             _userEmailIdentifier = "loggedUserEmail";
             _userRoleIdentifier = "loggedUserRole";
             _userIdIdentifier = "loggedUserId";
         }
 
-        public Roles GetUserLoggedRole()
+        public Role GetUserLoggedRole()
         {
             if (!IsAuthenticated())
-                return Roles.Invalid;
+                return null;
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
             return _userRepository.GetUserRole(idUser);
         }
@@ -78,7 +75,7 @@ namespace Mhotivo.Implement.Repositories
             HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;
             HttpContext.Current.Session[_userNameIdentifier] = myUser.DisplayName;
             HttpContext.Current.Session[_userEmailIdentifier] = myUser.Email;
-            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(idUser).ToString("G");
+            HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(idUser).Name;
             return true;
         }
     }

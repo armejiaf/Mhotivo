@@ -70,9 +70,9 @@
         <div class="control-group">
             <div class="controls">
                 <div class="control-label" style=" width: 60px;  padding-top: 0;">
-                    @Html.LabelFor(model => model.Status, new {@style="text-align: left; margin-left: 0;"})
+                    @Html.LabelFor(model => model.IsActive, new {@style="text-align: left; margin-left: 0;"})
                 </div>
-                @Html.CheckBoxFor(model => model.Status,new { @style="-ms-opacity: 1; opacity: 1; margin-top: 1px;"})
+                @Html.CheckBoxFor(model => model.IsActive,new { @style="-ms-opacity: 1; opacity: 1; margin-top: 1px;"})
             </div>
         </div>
 
@@ -81,7 +81,7 @@
         <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
-                Cancel
+                Cancelar
             </button>
 
             <button type="submit" class="btn btn-small btn-primary">

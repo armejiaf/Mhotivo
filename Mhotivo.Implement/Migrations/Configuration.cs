@@ -10,13 +10,12 @@ namespace Mhotivo.Implement.Migrations
 {
     public class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
-        private IPasswordGenerationService _passwordGenerationService;
         private IEducationLevelRepository _areaRepository;
         private IGradeRepository _gradeRepository;
         private ICourseRepository _courseRepository;
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
-
+        private IRoleRepository _roleRepository;
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -27,21 +26,25 @@ namespace Mhotivo.Implement.Migrations
         {
             if (context.Users.Any())
                 return;
-            _passwordGenerationService = new PreloadedPasswordsGenerationService(context);
             _areaRepository = new EducationLevelRepository(context);
             _gradeRepository = new GradeRepository(context);
-            _courseRepository = new CourseRepository(context, _areaRepository);
+            _courseRepository = new CourseRepository(context);
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
+            _roleRepository = new RoleRepository(context);
+            _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), RoleId = 0 });
+            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
+            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
+            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), RoleId = 3 });
             var admin = new User
             {
                 DisplayName = "Administrador",
                 Email = "admin@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Administrador
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Administrador")
             };
-            admin.EncryptPassword();
+            admin.HashPassword();
             context.Users.AddOrUpdate(admin);
             context.SaveChanges();
             context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 1, Description = "General" });
@@ -55,20 +58,6 @@ namespace Mhotivo.Implement.Migrations
 
         private void DebuggingSeeder(MhotivoContext context)
         {
-            var passwordsList = new List<string>
-            {
-                "arbol",
-                "madera",
-                "republica",
-                "imperio",
-                "crucio",
-                "excursion",
-                "pitonisa",
-                "ventilador",
-                "oraculo",
-                "sanguineo"
-            };
-            _passwordGenerationService.AddPasswordsToTable(passwordsList);
             _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
@@ -124,18 +113,18 @@ namespace Mhotivo.Implement.Migrations
                 Email = "teacher@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Maestro
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Maestro")
             };
-            genericTeacher.EncryptPassword();
+            genericTeacher.HashPassword();
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
                 Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = Roles.Padre
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
             };
-            genericParent.EncryptPassword();
+            genericParent.HashPassword();
             context.Users.AddOrUpdate(genericTeacher);
             context.Users.AddOrUpdate(genericParent);
             context.SaveChanges();

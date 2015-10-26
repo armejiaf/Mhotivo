@@ -13,8 +13,9 @@
 }
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/Add/"><span class="btn btn-small btn-primary active">Matricular Estudiante</span></a>
-
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/Add/"><span class="btn btn-small btn-primary">Matricular Estudiante</span></a>
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Enroll/DeleteAll/"><span class="btn btn-small btn-primary">Eliminar matriculas por seccion</span></a>
+<div class="space"></div>
 @if(!Model.Any())
 {
     <div class="well well-large">
