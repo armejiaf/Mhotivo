@@ -172,7 +172,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
-    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -462,9 +461,6 @@
     <Content Include="Views\Parent\DetailsEdit.cshtml" />
     <Content Include="Views\Parent\Edit.cshtml" />
     <Content Include="Views\Parent\Index.cshtml" />
-    <Content Include="Views\Course\Edit.cshtml" />
-    <Content Include="Views\Course\Index.cshtml" />
-    <Content Include="Views\Course\Add.cshtml" />
     <Content Include="Views\AcademicYear\Management.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Teacher\Create.cshtml" />
@@ -493,7 +489,6 @@
     <Content Include="Views\EducationLevel\Create.cshtml" />
     <Content Include="Views\EducationLevel\Edit.cshtml" />
     <Content Include="Views\EducationLevel\Index.cshtml" />
-    <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Homework\Create.cshtml" />
     <Content Include="Views\Homework\Details.cshtml" />
     <Content Include="Views\Homework\Edit.cshtml" />
