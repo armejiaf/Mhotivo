@@ -122,6 +122,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
-        public int RoleId { get; set; }
+        public long RoleId { get; set; }
     }
 }

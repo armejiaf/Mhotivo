@@ -77,7 +77,6 @@ namespace Mhotivo.Controllers
             string title;
             string content;
             var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
-            var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
             var existGrade =
                 _gradeRepository.GetAllGrade()
                     .FirstOrDefault(
@@ -89,7 +88,7 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                 return RedirectToAction("Index");
             }
-            var grade = _gradeRepository.Create(myGrade);
+            var grade = _gradeRepository.Create(gradeModel);
             title = "Grado Agregado";
             content = grade.Name + " grado ha sido guardado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -122,9 +121,9 @@ namespace Mhotivo.Controllers
         /// GET: /Grade/Edit/5
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(long id)
         {
-            var grade = _gradeRepository.GetGradeEditModelById(id);
+            var grade = _gradeRepository.GetById(id);
             var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
             return View("Edit", gradeModel);
         }
@@ -135,8 +134,8 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(GradeEditModel modelGrade)
         {
             var myGrade = _gradeRepository.GetById(modelGrade.Id);
-            var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
-            _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
+            Mapper.Map(modelGrade, myGrade);
+            _gradeRepository.Update(myGrade);
             const string title = "Grado Actualizado";
             var content = myGrade.Name + " grado ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

@@ -28,7 +28,24 @@ namespace Mhotivo.Implement.Repositories
 
         public bool LogIn(string userEmail, string password, bool remember = false, bool redirect = true)
         {
-            var user = userEmail.Contains("@") ? _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault() : _peopleRepository.Filter(x => x.IdNumber.Equals(userEmail)).FirstOrDefault().MyUser;
+            User user;
+            if (userEmail.Contains("@"))
+            {
+                user = _userRepository.Filter(x => x.Email.Equals(userEmail)).FirstOrDefault();
+            }
+            else
+            {
+                var people = _peopleRepository.Filter(x => x.IdNumber.Equals(userEmail)).FirstOrDefault();
+                var withUser = people as PeopleWithUser;
+                if (withUser != null)
+                {
+                    user = withUser.User;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (user == null) return false;
             if (!user.CheckPassword(password)) return false;
             UpdateSessionFromUser(user);

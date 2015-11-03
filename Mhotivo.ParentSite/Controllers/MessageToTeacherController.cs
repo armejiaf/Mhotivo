@@ -34,7 +34,7 @@ namespace Mhotivo.ParentSite.Controllers
                 allTeachersModel.Add(new TeacherModel()
                 {
                     Name = teacher.FullName,
-                    Email = teacher.MyUser.Email
+                    Email = teacher.User.Email
                 });
             }
             return View(new Tuple<IEnumerable<TeacherModel>, MessageToTeacherModel>(allTeachersModel,null));

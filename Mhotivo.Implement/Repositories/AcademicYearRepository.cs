@@ -18,70 +18,33 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public MhotivoContext GeContext()
-        {
-            return _context;
-        }
-
-        public AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query)
-        {
-            var academicYear = _context.AcademicYears.Select(query);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
-        }
-
         public AcademicYear GetById(long id)
         {
-            var academicYear = _context.AcademicYears.Where(x => x.Id == id);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade).First() : null;
+            return _context.AcademicYears.FirstOrDefault(x => x.Id == id);
         }
 
-        public AcademicYear Create(AcademicYear itemToCreate)
+        public AcademicYear Create(AcademicYear academicYearGradeToCreate)
         {
-            var academicYear = _context.AcademicYears.Add(itemToCreate);
-            _context.Entry(academicYear.Grade).State = EntityState.Modified;
+            var academicYear = _context.AcademicYears.Add(academicYearGradeToCreate);
             _context.SaveChanges();
-            //CreateDefaultPensum(itemToCreate);
             return academicYear;
         }
 
         public IQueryable<AcademicYear> Query(Expression<Func<AcademicYear, AcademicYear>> expression)
         {
-            var academicYear = _context.AcademicYears.Select(expression);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
+            return _context.AcademicYears.Select(expression);
         }
 
         public IQueryable<AcademicYear> Filter(Expression<Func<AcademicYear, bool>> expression)
         {
-            var academicYear = _context.AcademicYears.Where(expression);
-            return academicYear.Count() != 0 ? academicYear.Include(x => x.Grade) : academicYear;
-        }
-
-        //TODO: Logic is weird. Lots of unused variables being thrown around these two functions.
-        public AcademicYear Update(AcademicYear itemToUpdate, bool updateCourse = true, bool updateGrade = true,
-            bool updateTeacher = true)
-        {
-            if (updateGrade)
-                _context.Entry(itemToUpdate.Grade).State = EntityState.Modified;
-            _context.SaveChanges();
-            return itemToUpdate;
+            return _context.AcademicYears.Where(expression);
         }
 
         public AcademicYear Update(AcademicYear itemToUpdate)
         {
-            const bool updateCourse = false;
-            var updateGrade = false;
-            const bool updateTeacher = false;
-            var ayear = GetById(itemToUpdate.Id);
-            ayear.Approved = itemToUpdate.Approved;
-            ayear.IsActive = itemToUpdate.IsActive;
-            ayear.Section = itemToUpdate.Section;
-            ayear.Year = itemToUpdate.Year;
-            if (ayear.Grade.Id != itemToUpdate.Grade.Id)
-            {
-                ayear.Grade = itemToUpdate.Grade;
-                updateGrade = true;
-            }
-            return Update(ayear, updateCourse, updateGrade, updateTeacher);
+            _context.Entry(itemToUpdate).State = EntityState.Modified;
+            _context.SaveChanges();
+            return itemToUpdate;
         }
 
         public AcademicYear Delete(long id)
@@ -92,77 +55,21 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void SaveChanges()
+        public AcademicYear Delete(AcademicYear itemToDelete)
         {
+            _context.AcademicYears.Remove(itemToDelete);
             _context.SaveChanges();
-        }
-
-        public void CreateDefaultPensum(AcademicYear academicYear)
-        {
-            var pensums = GetDefaultPensum(academicYear.Grade.Id);
-            var teacher = _context.Teachers.First(x => x.FirstName.Equals("Maestro"));
-            foreach (var pensum in pensums)
-            {
-                var academicYearDetails = new AcademicYearDetail
-                {
-                    TeacherStartDate = DateTime.Now,
-                    TeacherEndDate = DateTime.Now,
-                    Schedule = DateTime.Now,
-                    AcademicYear = academicYear,
-                    Course = pensum.Course,
-                    Teacher = teacher
-                };
-                _context.AcademicYearDetails.Add(academicYearDetails);
-            }
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<Pensum> GetDefaultPensum(long grade)
-        {
-            var pensum = _context.Pensums.Where(x => (x.Grade.Id == grade));
-            return pensum.Count() != 0 ? pensum.Include(x => x.Course).Include(x => x.Grade) : null;
+            return itemToDelete;
         }
 
         public IEnumerable<AcademicYear> GetAllAcademicYears()
         {
-            return Query(x => x).ToList().Select(x => new AcademicYear
-            {
-                Id = x.Id,
-                Approved = x.Approved,
-                Grade = x.Grade,
-                IsActive = x.IsActive,
-                Section = x.Section,
-                Year = x.Year
-            });
-        }
-
-        public bool ExistAcademicYear(int year, long grade, string section)
-        {
-            var years = GetAllAcademicYears().Where(x => Equals(x.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved);
-            return years.Any();
-        }
-
-        public AcademicYear GetByFields(int year, long grade, string section)
-        {
-            var academicYears = GetAllAcademicYears().Where(x => Equals(x.Year, year) && Equals(x.Grade.Id, grade) && Equals(x.Section, section) && x.Approved).ToArray();
-            return academicYears.Any() ? academicYears.First() : null;
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
-
-        public void Detach(AcademicYear academicYear)
-        {
-            _context.Entry(academicYear).State = EntityState.Detached;
+            return Query(x => x).ToList();
         }
 
         public AcademicYear GetCurrentAcademicYear()
         {
-            var currentYear = DateTime.Now.Year;
-            var currentAcademicYeary = _context.AcademicYears.FirstOrDefault(ay => ay.Year.Equals(currentYear));
-            return currentAcademicYeary ?? new AcademicYear();
+            return _context.AcademicYears.FirstOrDefault(ay => ay.IsActive);
         }
     }
 }

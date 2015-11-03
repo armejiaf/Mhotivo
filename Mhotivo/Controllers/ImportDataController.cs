@@ -14,18 +14,21 @@ namespace Mhotivo.Controllers
         private readonly IImportDataRepository _importDataRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ImportDataController(IImportDataRepository importDataRepository
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository)
+                                    ,IAcademicYearRepository academicYearRepository, IAcademicYearGradeRepository academicYearGradeRepository)
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
+            _academicYearGradeRepository = academicYearGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-         [AuthorizeAdmin]
+        
+        [AuthorizeAdmin]
         public ActionResult Index()
         {
              _viewMessageLogic.SetViewMessageIfExist();
@@ -34,6 +37,30 @@ namespace Mhotivo.Controllers
              ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
              ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
              return View(importModel);
+        }
+        public class DdlItems
+        {
+            public DdlItems()
+            {
+                Items = new List<SelectListItem>();
+            }
+            public List<SelectListItem> Items { get; set; }
+        }
+
+        [AuthorizeAdmin]
+        public ActionResult DynamicDropDownList(long gradeId)
+        {
+            var model = new DdlItems();
+            var items = _academicYearGradeRepository.Filter(x => x.Grade.Id == gradeId).Select(x => x.Section);
+            foreach (var item in items)
+            {
+                model.Items.Add(new SelectListItem
+                {
+                    Text = item,
+                    Value = item
+                });
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -51,7 +78,8 @@ namespace Mhotivo.Controllers
                 errorExcel = true;
             if(errorExcel)
                 ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
-            var academicYear = _academicYearRepository.GetByFields(importModel.Year, importModel.GradeImport, importModel.Section);
+            var academicYear = _academicYearRepository.Filter(x => x.Year == importModel.Year
+            && x.Grades.Any(n => n.Grade.Id == importModel.GradeImport && n.Section == importModel.Section));
             if (academicYear == null)
                 ModelState.AddModelError("Year", "No existe ese año academico");
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);

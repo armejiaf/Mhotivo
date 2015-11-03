@@ -6,9 +6,13 @@ namespace Mhotivo.Data.Entities
 {
     public class Privilege
     {
+        public Privilege()
+        {
+            Roles = new HashSet<Role>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PrivilegeId { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual ICollection<Role> Roles { get; set; }

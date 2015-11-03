@@ -90,7 +90,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            var student = _studentRepository.GetStudentEditModelById(id);
+            var student = _studentRepository.GetById(id);
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
             studentModel.FirstParent = student.Tutor1.Id;
             if (student.Tutor2 != null)
@@ -138,12 +138,9 @@ namespace Mhotivo.Controllers
                         modelStudent.Tutor1 = myStudent.Tutor1;
                     if (modelStudent.Tutor2 == null)
                         modelStudent.Tutor2 = myStudent.Tutor2;
-                    var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
-                    studentModel.MyGender = Implement.Utilities.DefineGender(modelStudent.MyGender);
-                    modelStudent.Photo = null;
-                    studentModel.Photo = fileBytes ?? myStudent.Photo;
-                    studentModel.MyUser = _parentRepository.GetById(modelStudent.Tutor1.Id).MyUser;
-                    myStudent = _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
+                    Mapper.Map(modelStudent, myStudent);
+                    myStudent.Photo = fileBytes ?? myStudent.Photo;
+                    _studentRepository.Update(myStudent);
                     const string title = "Estudiante Actualizado";
                     var content = "El estudiante " + myStudent.FullName + " ha sido actualizado exitosamente.";
                     _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -206,11 +203,9 @@ namespace Mhotivo.Controllers
             var studentModel = Mapper.Map<StudentRegisterModel, Student>(modelStudent);
             studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
             studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
-            var myStudent = _studentRepository.GenerateStudentFromRegisterModel(studentModel);
-            myStudent.MyUser = studentModel.Tutor1.MyUser;
-            _studentRepository.Create(myStudent);
+            _studentRepository.Create(studentModel);
             const string title = "Estudiante Agregado";
-            var content = "El estudiante " + myStudent.FullName + " ha sido agregado exitosamente.";
+            var content = "El estudiante " + studentModel.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -219,7 +214,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
-            var student = _studentRepository.GetStudentDisplayModelById(id);
+            var student = _studentRepository.GetById(id);
             var studentModel = Mapper.Map<Student, DisplayStudentModel>(student);
             return View("Details", studentModel);
         }
@@ -235,7 +230,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
-            var student = _studentRepository.GetStudentEditModelById(id);
+            var student = _studentRepository.GetById(id);
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
             ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",studentModel.Tutor1.Id);
             ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName", studentModel.Tutor2.Id);
@@ -249,8 +244,8 @@ namespace Mhotivo.Controllers
             var myStudent = _studentRepository.GetById(modelStudent.Id);
             modelStudent.Tutor1 = _parentRepository.GetById(modelStudent.Tutor1.Id);
             modelStudent.Tutor2 = _parentRepository.GetById(modelStudent.Tutor2.Id);
-            var studentModel = Mapper.Map<StudentEditModel, Student>(modelStudent);
-            _studentRepository.UpdateStudentFromStudentEditModel(studentModel, myStudent);
+            Mapper.Map(modelStudent, myStudent);
+            _studentRepository.Update(myStudent);
             const string title = "Estudiante Actualizado";
             var content = "El estudiante " + myStudent.FullName + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

@@ -10,13 +10,13 @@ namespace Mhotivo.Interface.Interfaces
     {
         Privilege First(Expression<Func<Privilege, bool>> query);
         Privilege FirstOrDefault(Expression<Func<Privilege, bool>> query);
-        Privilege GetById(int id);
+        Privilege GetById(long id);
         Privilege Create(Privilege itemToCreate);
         IQueryable<Privilege> Query(Expression<Func<Privilege, Privilege>> expression);
         IQueryable<Privilege> Filter(Expression<Func<Privilege, bool>> expression);
         Privilege Update(Privilege itemToUpdate);
         Privilege Delete(Privilege itemToDelete);
-        void SaveChanges();
+        Privilege Delete(long id);
         IEnumerable<Privilege> GetAll();
     }
 }

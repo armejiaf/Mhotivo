@@ -18,21 +18,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public MhotivoContext GeContext()
-        {
-            return _context;
-        }
-
-        public Enroll First(Expression<Func<Enroll, Enroll>> query)
-        {
-            var enroll = _context.Enrolls.Select(query);
-            return enroll.Count() != 0 ? enroll.First() : null;
-        }
-
         public Enroll GetById(long id)
         {
-            var enroll = _context.Enrolls.Where(x => x.Id == id);
-            return enroll.Count() != 0 ? enroll.First() : null;
+            return _context.Enrolls.FirstOrDefault(x => x.Id == id);
         }
 
         public Enroll Create(Enroll itemToCreate)
@@ -49,40 +37,14 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Enroll> Filter(Expression<Func<Enroll, bool>> expression)
         {
-            var myEnrolls = _context.Enrolls.Where(expression);
-            return myEnrolls;
-        }
-
-        public Enroll Update(Enroll itemToUpdate, bool academicYear, bool student)
-        {
-            if (academicYear)
-            {
-                _context.Entry(itemToUpdate.AcademicYear).State = EntityState.Modified;
-            }
-            if (student)
-            {
-                _context.Entry(itemToUpdate.Student).State = EntityState.Modified;
-            }
-            _context.SaveChanges();
-            return itemToUpdate;
+            return _context.Enrolls.Where(expression);
         }
 
         public Enroll Update(Enroll itemToUpdate)
         {
-            var enroll = GetById(itemToUpdate.Id);
-            bool academicYear = false;
-            bool student = false;
-            if (enroll.AcademicYear != itemToUpdate.AcademicYear)
-            {
-                enroll.AcademicYear = itemToUpdate.AcademicYear;
-                academicYear = true;
-            }
-            if (enroll.Student != itemToUpdate.Student)
-            {
-                enroll.Student = itemToUpdate.Student;
-                student = true;
-            }
-            return Update(enroll, academicYear, student);
+            _context.Entry(itemToUpdate).State = EntityState.Modified;
+            _context.SaveChanges();
+            return itemToUpdate;
         }
 
         public Enroll Delete(long id)
@@ -93,24 +55,16 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void SaveChanges()
+        public Enroll Delete(Enroll itemToDelete)
         {
+            _context.Enrolls.Remove(itemToDelete);
             _context.SaveChanges();
+            return itemToDelete;
         }
 
         public IEnumerable<Enroll> GetAllsEnrolls()
         {
-            return Query(x => x).ToList().Select(x => new Enroll
-            {
-                Id = x.Id,
-               AcademicYear = x.AcademicYear,
-               Student = x.Student
-            });
-        }
-
-        public void Detach(Enroll enroll)
-        {
-            _context.Entry(enroll).State = EntityState.Detached;
+            return Query(x => x).ToList();
         }
     }
 }

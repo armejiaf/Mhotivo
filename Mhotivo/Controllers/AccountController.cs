@@ -35,12 +35,12 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            var parent = _parentRepository.Filter(y => y.MyUser.Email == model.UserEmail).FirstOrDefault();
+            var parent = _parentRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
             if (parent == null)
             {
                 if (_sessionManagementRepository.LogIn(model.UserEmail, model.Password, model.RememberMe))
                 {
-                    var user = _userRepository.FirstOrDefault(x => x.Email == model.UserEmail);
+                    var user = _userRepository.Filter(x => x.Email == model.UserEmail).FirstOrDefault();
                     return user.IsUsingDefaultPassword ? RedirectToAction("ChangePassword") : RedirectToLocal(returnUrl);
                 }
             }

@@ -7,6 +7,6 @@ namespace Mhotivo.Interface.Interfaces
     public interface IImportDataRepository
     {
         DataSet GetDataSetFromExcelFile(HttpPostedFileBase getFile);
-        void Import(DataSet myDataSet, AcademicYear academicYear);
+        void Import(DataSet myDataSet, AcademicYear academicYearGrade);
     }
 }

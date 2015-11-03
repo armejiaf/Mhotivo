@@ -5,7 +5,7 @@ namespace Mhotivo.ParentSite.Models
 {
     public class HomeworkModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Title { get; set; }
 
@@ -15,6 +15,6 @@ namespace Mhotivo.ParentSite.Models
 
         public float Points { get; set; }
 
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+        public virtual AcademicYearCourse AcademicYearCourse { get; set; }
     }
 }

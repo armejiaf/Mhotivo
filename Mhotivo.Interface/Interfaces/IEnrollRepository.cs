@@ -8,14 +8,13 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface IEnrollRepository
     {
-        Enroll First(Expression<Func<Enroll, Enroll>> query);
         Enroll GetById(long id);
         Enroll Create(Enroll itemToCreate);
         IQueryable<Enroll> Query(Expression<Func<Enroll, Enroll>> expression);
         IQueryable<Enroll> Filter(Expression<Func<Enroll, bool>> expression);
-        Enroll Update(Enroll itemToUpdate, bool academicYear, bool student);
+        Enroll Update(Enroll itemToUpdate);
         Enroll Delete(long id);
-        void SaveChanges();
+        Enroll Delete(Enroll itemToDelete);
         IEnumerable<Enroll> GetAllsEnrolls(); 
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
@@ -16,6 +18,12 @@ namespace Mhotivo.Implement.Migrations
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
         private IRoleRepository _roleRepository;
+        private IUserRepository _userRepository;
+        private ITeacherRepository _teacherRepository;
+        private IParentRepository _parentRepository;
+        private IAcademicYearGradeRepository _academicYearGradeRepository;
+        private IAcademicYearCourseRepository _academicYearCourseRepository;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -32,113 +40,140 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
             _roleRepository = new RoleRepository(context);
-            _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), RoleId = 0 });
-            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
-            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
-            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), RoleId = 3 });
+            _userRepository = new UserRepository(context);
+            _teacherRepository = new TeacherRepository(context);
+            _parentRepository = new ParentRepository(context);
+            _academicYearGradeRepository = new AcademicYearGradeRepository(context);
+            _academicYearCourseRepository = new AcademicYearCourseRepository(context);
+
+            _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), Id = 0 });
+            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), Id = 1 });
+            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), Id = 2 });
+            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), Id = 3 });
+
             var admin = new User
             {
                 DisplayName = "Administrador",
                 Email = "admin@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = _roleRepository.FirstOrDefault(x => x.Name == "Administrador")
+                Role = _roleRepository.Filter(x => x.Name == "Administrador").FirstOrDefault()
             };
-            admin.HashPassword();
-            context.Users.AddOrUpdate(admin);
-            context.SaveChanges();
-            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 1, Description = "General" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 2, Description = "Nivel De Educacion" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 3, Description = "Grado" });
-            context.NotificationTypes.AddOrUpdate(new NotificationType { Id = 4, Description = "Personal" });
-            context.SaveChanges();
-            DebuggingSeeder(context);
-            context.SaveChanges();
+            _userRepository.Create(admin);
+            DebuggingSeeder();
         }
 
-        private void DebuggingSeeder(MhotivoContext context)
+        private void DebuggingSeeder()
         {
-            _areaRepository.Create(new EducationLevel { Name = "Prescolar" });
+            _areaRepository.Create(new EducationLevel { Name = "Pre-Escolar" });
             _areaRepository.Create(new EducationLevel { Name = "Primaria" });
             _areaRepository.Create(new EducationLevel { Name = "Secundaria" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1).Name, Name = "Kinder" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1).Name, Name = "Preparatoria" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Primero" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Segundo" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Tercero" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Cuarto" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Quinto" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2).Name, Name = "Sexto" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Septimo" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Octavo" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Noveno" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Decimo" });
-            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3).Name, Name = "Onceavo" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(1), Name = "English" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(1), Name = "Math" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "English" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "Math" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "Science" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "Espaniol" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(2), Name = "Estudios Sociales" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(3), Name = "Algebra" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(3), Name = "Geometry" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(3), Name = "Physics" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(3), Name = "Biology" });
-            _courseRepository.Create(new Course { Area = _areaRepository.GetById(3), Name = "Physical Education" });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(1), Grade = _gradeRepository.GetById(1) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(1), Grade = _gradeRepository.GetById(2) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(2), Grade = _gradeRepository.GetById(2) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(2), Grade = _gradeRepository.GetById(1) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(3), Grade = _gradeRepository.GetById(3) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(3), Grade = _gradeRepository.GetById(4) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(4), Grade = _gradeRepository.GetById(5) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(5), Grade = _gradeRepository.GetById(6) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(6), Grade = _gradeRepository.GetById(7) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(7), Grade = _gradeRepository.GetById(8) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(8), Grade = _gradeRepository.GetById(9) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(12), Grade = _gradeRepository.GetById(10) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(9), Grade = _gradeRepository.GetById(11) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(10), Grade = _gradeRepository.GetById(12) });
-            _pensumRepository.Create(new Pensum { Course = _courseRepository.GetById(11), Grade = _gradeRepository.GetById(13) });
-            for (int i = 1; i <= 13; i++)
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1), Name = "Kinder" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(1), Name = "Preparatoria" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Primero" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Segundo" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Tercero" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Cuarto" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Quinto" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(2), Name = "Sexto" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3), Name = "Septimo" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3), Name = "Octavo" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3), Name = "Noveno" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3), Name = "Decimo" });
+            _gradeRepository.Create(new Grade { EducationLevel = _areaRepository.GetById(3), Name = "Onceavo" });
+
+            foreach (var grade in _gradeRepository.GetAllGrade())
             {
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "A", Year = 2015 });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "B", Year = 2015 });
-                _academicYearRepository.Create(new AcademicYear { Approved = true, Grade = _gradeRepository.GetById(i), IsActive = true, Section = "C", Year = 2015 });
+                var p = new Pensum{ Grade = grade };
+                p = _pensumRepository.Create(p);
+                grade.Pensums.Add(p);
+                _gradeRepository.Update(grade);
+                var c1 = new Course {Name = "Ingles para " + grade.Name + "grado", Pensum = p};
+                var c2 = new Course { Name = "Matematicas para " + grade.Name + "grado", Pensum = p };
+                var c3 = new Course { Name = "Ciencias para " + grade.Name + "grado", Pensum = p };
+                _courseRepository.Create(c1);
+                _courseRepository.Create(c2);
+                _courseRepository.Create(c3);
+                p.Courses.Add(c1);
+                p.Courses.Add(c2);
+                p.Courses.Add(c3);
+                _pensumRepository.Update(p);
             }
+
             var genericTeacher = new User
             {
                 DisplayName = "Maestro Generico",
                 Email = "teacher@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = _roleRepository.FirstOrDefault(x => x.Name == "Maestro")
+                Role = _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault(),
+                IsUsingDefaultPassword = false
             };
-            genericTeacher.HashPassword();
+            genericTeacher = _userRepository.Create(genericTeacher);
+            var generTeacher = new Teacher
+            {
+                Address = "Jardines del Valle, 4 calle, 1 etapa",
+                BirthDate = new DateTime(1993, 3, 8),
+                City = "San Pedro Sula",
+                Country = "Honduras",
+                Disable = false,
+                FirstName = "Jose",
+                LastName = "Avila",
+                FullName = "Jose Avila",
+                IdNumber = "0501-1993-08405",
+                MyGender = Gender.Masculino,
+                Nationality = "Nacional",
+                State = "Cortes",
+                User = genericTeacher
+            };
+            generTeacher = _teacherRepository.Create(generTeacher);
+
+            var academicYear = new AcademicYear { IsActive = true, Year = 2015 };
+            academicYear = _academicYearRepository.Create(academicYear);
+            for (int i = 1; i <= 13; i++)
+            {
+                var rnd = new Random();
+                char section = 'A';
+                do
+                {
+                    var grade = _gradeRepository.GetById(i);
+                    var newGrade = new AcademicYearGrade
+                    {
+                        Grade = grade,
+                        AcademicYear = academicYear,
+                        Section = section++ + "",
+                        ActivePensum = grade.Pensums.ElementAt(0)
+                    };
+                    newGrade = _academicYearGradeRepository.Create(newGrade);
+                    foreach (var course in newGrade.ActivePensum.Courses)
+                    {
+                        var academicCourse = new AcademicYearCourse
+                        {
+                            Course = course,
+                            AcademicYearGrade = newGrade,
+                            Schedule = newGrade.CoursesDetails.Any() ? 
+                            newGrade.CoursesDetails.Last().Schedule.Duration().Add(new TimeSpan(0, 40, 0)) : 
+                            new TimeSpan(7, 0, 0),
+                            Teacher = generTeacher //TODO: Create more teachers to randomize this a little bit more?
+                        };
+                        academicCourse = _academicYearCourseRepository.Create(academicCourse);
+                        newGrade.CoursesDetails.Add(academicCourse);
+                        newGrade = _academicYearGradeRepository.Update(newGrade);
+                    }
+                    academicYear.Grades.Add(newGrade);
+                    _academicYearRepository.Update(academicYear);
+                } while (!Boolean.Parse(rnd.Next(0, 1).ToString(CultureInfo.InvariantCulture)));
+            }
             var genericParent = new User
             {
                 DisplayName = "Padre Generico",
                 Email = "parent@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
+                Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
             };
-            genericParent.HashPassword();
-            context.Users.AddOrUpdate(genericTeacher);
-            context.Users.AddOrUpdate(genericParent);
-            context.SaveChanges();
-            var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
-            if (maestroDefault == null)
-            {
-                context.Teachers.AddOrUpdate(new Teacher { IdNumber = "0000000000000", FirstName = "Maestro", LastName = "Generico", FullName = "Maestro Generico", Disable = false, MyGender = Gender.Masculino, MyUser = genericTeacher });
-            }
-            var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
-            if (padreDefault == null)
-            {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, MyUser = genericParent });
-            }
-            context.SaveChanges();
+            _userRepository.Create(genericParent);
+            _parentRepository.Create(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, User = genericParent });
         }
     }
 }

@@ -117,7 +117,7 @@ namespace Mhotivo.Controllers
         {
             var allStudents = _studentRepository.GetAllStudents().ToList();
             var availableStudents = (from student in allStudents 
-                                     where !_enrollRepository.Filter(x => x.Student.Id == student.Id && x.AcademicYear.IsActive).Any() 
+                                     //TODO: where !_enrollRepository.Filter(x => x.Student.Id == student.Id && x.AcademicYear.IsActive).Any() 
                                      select student).ToList();
             ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");

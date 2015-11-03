@@ -40,7 +40,7 @@ else
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.Raw(@item.Description)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.DeliverDate)</td>
                     <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Points)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.AcademicYearDetail.Course.Name)</td>
+                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.AcademicYearCourse.Course.Name)</td>
                     <td><a href="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                     <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>

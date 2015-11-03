@@ -17,21 +17,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
-        public ContactInformation First(Expression<Func<ContactInformation, ContactInformation>> query)
-        {
-            var contactInformations = _context.ContactInformations.Select(query);
-            return contactInformations.Count() != 0 ? contactInformations.First() : null;
-        }
-
         public ContactInformation GetById(long id)
         {
-            var contactInformations = _context.ContactInformations.Where(x => x.Id == id);
-            return contactInformations.Count() != 0 ? contactInformations.Include(x => x.People).First() : null;
+            return _context.ContactInformations.FirstOrDefault(x => x.Id == id);
         }
 
         public ContactInformation Create(ContactInformation itemToCreate)
@@ -42,7 +30,7 @@ namespace Mhotivo.Implement.Repositories
             return contactInformation;
         }
 
-        public IQueryable<TResult> Query<TResult>(Expression<Func<ContactInformation, TResult>> expression)
+        public IQueryable<ContactInformation> Query(Expression<Func<ContactInformation, ContactInformation>> expression)
         {
             return _context.ContactInformations.Select(expression);
         }
@@ -55,13 +43,20 @@ namespace Mhotivo.Implement.Repositories
         public ContactInformation Update(ContactInformation itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
         }
 
         public ContactInformation Delete(long id)
         {
             var itemToDelete = GetById(id);
+            _context.ContactInformations.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
+        }
+
+        public ContactInformation Delete(ContactInformation itemToDelete)
+        {
             _context.ContactInformations.Remove(itemToDelete);
             _context.SaveChanges();
             return itemToDelete;

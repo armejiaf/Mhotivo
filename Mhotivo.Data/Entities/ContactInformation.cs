@@ -10,6 +10,6 @@ namespace Mhotivo.Data.Entities
         public long Id { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
-        public People People { get; set; }
+        public virtual People People { get; set; }
     }
 }

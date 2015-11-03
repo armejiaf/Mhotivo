@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mhotivo.Interface.Interfaces
+﻿namespace Mhotivo.Interface.Interfaces
 {
     public interface IPasswordGenerationService
     {

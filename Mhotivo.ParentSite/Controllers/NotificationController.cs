@@ -43,9 +43,9 @@ namespace Mhotivo.ParentSite.Controllers
         [HttpGet]
         public ActionResult Index(string filter)
         {
-            var currentAcademicYear = Convert.ToInt32(_academicYearRepository.GetCurrentAcademicYear().Year.ToString(CultureInfo.InvariantCulture));
+            var currentAcademicYear = _academicYearRepository.GetCurrentAcademicYear().Year;
             var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
-            _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
+            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
             long parentId = 0;
             if (_loggedParent != null)
                 parentId = _loggedParent.Id;
@@ -151,15 +151,15 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult AddCommentToNotification(int notificationId, string commentText)
         {
             var loggedUserEmail = System.Web.HttpContext.Current.Session["loggedUserEmail"].ToString();
-            _loggedParent = _parentRepository.Filter(y => y.MyUser.Email == loggedUserEmail).FirstOrDefault();
+            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
             var selectedNotification = _notificationRepository.GetById(notificationId);
-            selectedNotification.NotificationComments.Add(new NotificationComments
+            selectedNotification.NotificationComments.Add(new NotificationComment
             {
                 CommentText = commentText,
                 CreationDate = DateTime.Now,
                 Parent = _loggedParent
             });
-            _notificationRepository.SaveChanges();
+            _notificationRepository.Update(selectedNotification);
             return RedirectToAction("Index");
         }
     }

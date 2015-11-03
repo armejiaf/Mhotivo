@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
@@ -23,9 +24,9 @@ namespace Mhotivo.Controllers
             return View(newUsers);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(long id)
         {
-            var toReturn = Mapper.Map<User, DisplayNewUserDefaultPasswordModel>(_userRepository.FirstOrDefault(x => x.Id == id));
+            var toReturn = Mapper.Map<User, DisplayNewUserDefaultPasswordModel>(_userRepository.Filter(x => x.Id == id).FirstOrDefault());
             return PartialView(toReturn);
         }
     }

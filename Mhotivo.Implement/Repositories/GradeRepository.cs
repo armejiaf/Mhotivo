@@ -37,8 +37,7 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Grade> Filter(Expression<Func<Grade, bool>> expression)
         {
-            var myGrades = _context.Grades.Where(expression);
-            return myGrades;
+            return _context.Grades.Where(expression);
         }
 
         public Grade Update(Grade itemToUpdate)
@@ -48,37 +47,16 @@ namespace Mhotivo.Implement.Repositories
             return itemToUpdate;
         }
 
+        public Grade Delete(Grade itemToDelete)
+        {
+            _context.Grades.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
+        }
+
         public IEnumerable<Grade> GetAllGrade()
         {
-            return
-                Query(g => g).ToList().Select(g => new Grade
-                    {
-                        Id = g.Id, 
-                        Name = g.Name, 
-                        EducationLevel = g.EducationLevel
-                    });
-        }
-
-        public Grade GetGradeEditModelById(long id)
-        {
-            var grade = GetById(id);
-            return grade;
-        }
-
-        public Grade UpdateGradeFromGradeEditModel(Grade gradeEditModel, Grade grade)
-        {
-            grade.Name = gradeEditModel.Name;
-            grade.EducationLevel = gradeEditModel.EducationLevel;
-            return Update(grade);
-        }
-
-        public Grade GenerateGradeFromRegisterModel(Grade gradeRegisterModel)
-        {
-            return new Grade
-            {
-                Name = gradeRegisterModel.Name,
-                EducationLevel = gradeRegisterModel.EducationLevel
-            };
+            return Query(g => g).ToList();
         }
 
         public Grade Delete(long id)

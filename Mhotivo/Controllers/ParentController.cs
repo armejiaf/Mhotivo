@@ -94,7 +94,7 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            var parent = _parentRepository.GetParentEditModelById(id);
+            var parent = _parentRepository.GetById(id);
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
             parentModel.MyGender = parent.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", parentModel);
@@ -131,10 +131,9 @@ namespace Mhotivo.Controllers
                         }
                     }
                     var myParent = _parentRepository.GetById(modelParent.Id);
-                    var parentModel = Mapper.Map<ParentEditModel, Parent>(modelParent);
-                    parentModel.Photo = null;
-                    parentModel.Photo = fileBytes ?? myParent.Photo;
-                    _parentRepository.UpdateParentFromParentEditModel(parentModel, myParent);
+                    Mapper.Map(modelParent, myParent);
+                    myParent.Photo = fileBytes ?? myParent.Photo;
+                    _parentRepository.Update(myParent);
                     const string title = "Padre o Tutor Actualizado";
                     var content = "El Padre o Tutor " + myParent.FullName + " ha sido actualizado exitosamente.";
                     _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -182,32 +181,31 @@ namespace Mhotivo.Controllers
         public ActionResult Create(ParentRegisterModel modelParent)
         {
             var parentModel = Mapper.Map<ParentRegisterModel, Parent>(modelParent);
-            var myParent = _parentRepository.GenerateParentFromRegisterModel(parentModel);
-            if (_parentRepository.ExistIdNumber(modelParent.IdNumber))
+            if (_parentRepository.Filter(x => x.IdNumber == modelParent.IdNumber).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            if (_parentRepository.ExistEmail(modelParent.Email))
+            if (_parentRepository.Filter(x => x.User.Email == modelParent.Email).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
             var newUser = new User
             {
-                DisplayName = myParent.FirstName,
+                DisplayName = parentModel.FirstName,
                 Email = modelParent.Email,
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
+                Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
             };
             newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
-            myParent.MyUser = newUser;
-             _parentRepository.Create(myParent);
+            parentModel.User = newUser;
+             _parentRepository.Create(parentModel);
             const string title = "Padre o Tutor Agregado";
-            var content = "El Padre o Tutor " + myParent.FullName + " ha sido agregado exitosamente.";
+            var content = "El Padre o Tutor " + parentModel.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -215,7 +213,7 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
-            var parent = _parentRepository.GetParentDisplayModelById(id);
+            var parent = _parentRepository.GetById(id);
             var parentModel = Mapper.Map<Parent, DisplayParentModel>(parent);
             parentModel.MyGender = parent.MyGender.ToString("G");
             return View("Details", parentModel);
@@ -224,7 +222,7 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
-            var parent = _parentRepository.GetParentEditModelById(id);
+            var parent = _parentRepository.GetById(id);
             var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
             parentModel.MyGender = parent.MyGender.ToString("G");
             return View("DetailsEdit", parentModel);
@@ -235,8 +233,8 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(ParentEditModel modelParent)
         {
             var myParent = _parentRepository.GetById(modelParent.Id);
-            var parentModel = Mapper.Map<ParentEditModel, Parent>(modelParent);
-            _parentRepository.UpdateParentFromParentEditModel(parentModel, myParent);
+            Mapper.Map(modelParent, myParent);
+            _parentRepository.Update(myParent);
             const string title = "Padre o Tutor Actualizado";
             var content = "El Padre o Tutor " + myParent.FullName + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

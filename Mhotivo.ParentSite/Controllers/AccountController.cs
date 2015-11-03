@@ -30,18 +30,18 @@ namespace Mhotivo.ParentSite.Controllers
         [AllowAnonymous]
         public ActionResult LogIn(ParentLoginModel model, string returnUrl)
         {
-            var parent = model.Email.Contains("@") ? _parentRepository.Filter(y => y.MyUser.Email == model.Email).FirstOrDefault()
+            var parent = model.Email.Contains("@") ? _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault()
                 : _parentRepository.Filter(y => y.IdNumber == model.Email).FirstOrDefault();
 
             if (parent != null)
             {
                 if (_sessionManagementRepository.LogIn(model.Email, model.Password))
                 {
-                    if (parent.MyUser.IsUsingDefaultPassword)
+                    if (parent.User.IsUsingDefaultPassword)
                     {
                         return RedirectToAction("ChangePassword");
                     }
-                    return parent.MyUser.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
+                    return parent.User.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
@@ -65,11 +65,11 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult UpdateEmail(UpdateParentMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementRepository.GetUserLoggedId());
-            var parentUser = _parentRepository.Filter(x => x.MyUser.Id == userId).Include(x => x.MyUser).FirstOrDefault();
+            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
             
             if (parentUser != null)
             {
-                var user = parentUser.MyUser;
+                var user = parentUser.User;
                 user.Email = model.Email;
                 _userRepository.Update(user);
                 return RedirectToAction("Index", "Notification");

@@ -18,22 +18,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public User First(Expression<Func<User, bool>> query)
-        {
-            var users = _context.Users.First(query);
-            return users;
-        }
-
-        public User FirstOrDefault(Expression<Func<User, bool>> query)
-        {
-            var users = _context.Users.FirstOrDefault(query);
-            return users;
-        }
-
         public User GetById(long id)
         {
-            var users = _context.Users.Where(x => x.Id == id);
-            return users.Count() != 0 ? users.First() : null;
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
 
         public User Create(User itemToCreate)
@@ -59,7 +46,7 @@ namespace Mhotivo.Implement.Repositories
         public User Update(User itemToUpdate)
         {
             _context.Users.AddOrUpdate(itemToUpdate);
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;   
         }
 
@@ -71,43 +58,22 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void SaveChanges()
+        public User Delete(User itemToDelete)
         {
+            _context.Users.Remove(itemToDelete);
             _context.SaveChanges();
+            return itemToDelete;
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return Query(x => x).ToList().Select(x => new User
-            {
-                DisplayName = x.DisplayName,
-                Email = x.Email,
-                IsActive = x.IsActive,
-                Id = x.Id
-            });
+            return Query(x => x).ToList();
         }
 
         public Role GetUserRole(long idUser)
         {
             var userTemp = GetById(idUser);
             return userTemp == null ? null : userTemp.Role;
-        }
-
-        //TODO: GET RID OF THIS
-        public User UpdateUserFromUserEditModel(User userModel, User user)
-        {
-            user.DisplayName = userModel.DisplayName;
-            user.Email = userModel.Email;
-            user.Notifications = userModel.Notifications;
-            user.IsActive = userModel.IsActive;
-            user.Role = userModel.Role;
-            return Update(user);
-        }
-
-        public bool ExistEmail(string userName)
-        {
-            var user = _context.Users.Where(x => x.Email.Equals(userName));
-            return user.Any();
         }
     }
 }

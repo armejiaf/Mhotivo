@@ -182,7 +182,6 @@
     <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -484,9 +483,6 @@
     <Content Include="Views\Pensum\Details.cshtml" />
     <Content Include="Views\Pensum\Edit.cshtml" />
     <Content Include="Views\Pensum\Index.cshtml" />
-    <Content Include="Views\NotificationType\Index.cshtml" />
-    <Content Include="Views\NotificationType\Edit.cshtml" />
-    <Content Include="Views\NotificationType\Add.cshtml" />
     <Content Include="Views\Notification\Approve.cshtml" />
     <Content Include="Views\AcademicYear\Create.cshtml" />
     <Content Include="Views\AcademicYear\Edit.cshtml" />

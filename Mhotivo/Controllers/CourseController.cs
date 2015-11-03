@@ -96,7 +96,6 @@ namespace Mhotivo.Controllers
             string content;
             var courseModel = Mapper.Map<CourseRegisterModel, Course>(modelCourse);
             courseModel.Area = _areaRepository.GetById(modelCourse.Area);
-            var myCourse = _courseRepository.GenerateCourseFromRegisterModel(courseModel);
             var existCourse =
                 _courseRepository.GetAllCourse()
                     .FirstOrDefault(c => c.Name.Equals(modelCourse.Name));
@@ -107,7 +106,7 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                 return RedirectToAction("Index");
             }
-            var newCourse = _courseRepository.Create(myCourse);
+            var newCourse = _courseRepository.Create(courseModel);
             title = "Materia Agregada";
             content = "La materia " + newCourse.Name + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -140,9 +139,9 @@ namespace Mhotivo.Controllers
         /// GET: /Course/Edit
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(long id)
         {
-            var course = _courseRepository.GetCourseEditModelById(id);
+            var course = _courseRepository.GetById(id);
             var editCourse = new CourseEditModel
             {
                 Id = course.Id,
@@ -160,8 +159,8 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(CourseEditModel modelCourse)
         {
             var course = _courseRepository.GetById(modelCourse.Id);
-            var courseModel = Mapper.Map<CourseEditModel, Course>(modelCourse);
-            _courseRepository.UpdateCourseFromCourseEditModel(courseModel, course);
+            Mapper.Map(modelCourse, course);
+            _courseRepository.Update(course);
             const string title = "Materia Actualizada";
             var content = course.Name + " ha sido modificado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

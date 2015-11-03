@@ -69,7 +69,7 @@ namespace Mhotivo.ParentSite
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearCourseRepository>().To<AcademicYearCourseRepository>().InRequestScope();
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();

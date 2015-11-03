@@ -22,6 +22,7 @@ namespace Mhotivo.Data.Entities
         {
             Notifications = new HashSet<Notification>();
         }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }

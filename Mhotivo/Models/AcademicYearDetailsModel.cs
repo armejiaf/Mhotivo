@@ -7,7 +7,7 @@ namespace Mhotivo.Models
 {
     public class DisplayAcademicYearDetailsModel
     {
-        public ICollection<AcademicYearDetail> AcademicYears { get; set; }
+        public ICollection<AcademicYearCourse> AcademicYears { get; set; }
         public long Id { get; set; }
 
         [Display(Name = "Fecha inicio de clase")]
@@ -61,7 +61,7 @@ namespace Mhotivo.Models
 
     public class AcademicYearDetailsEditModel
     {
-        public ICollection<AcademicYearDetail> AcademicYears { get; set; }
+        public ICollection<AcademicYearCourse> AcademicYears { get; set; }
         public long Id { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar una Fecha de Ingreso del Maestro")]

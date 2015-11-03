@@ -46,7 +46,7 @@ namespace Mhotivo.Implement.Repositories
             if (!IsAuthenticated())
                 return new List<People>();
             var idUser = int.Parse(HttpContext.Current.User.Identity.Name);
-            var peopleTemp = _peopleRepository.GetAllPeopleByUserId(idUser).ToList();
+            var peopleTemp = _peopleRepository.Filter(x => ((PeopleWithUser) x).User.Id == idUser).ToList();
             return peopleTemp;
         }
 

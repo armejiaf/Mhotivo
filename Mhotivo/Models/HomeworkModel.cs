@@ -24,7 +24,7 @@ namespace Mhotivo.Models
         public int AcademicYearId { get; set; }
 
         [Display(Name = "Materia")]
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+        public virtual AcademicYearCourse AcademicYearCourse { get; set; }
     }
 
     public class CreateHomeworkModel
@@ -71,6 +71,6 @@ namespace Mhotivo.Models
         public float Points { get; set; }
 
         [Display(Name = "Materia")]
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+        public virtual AcademicYearCourse AcademicYearCourse { get; set; }
     }
 }

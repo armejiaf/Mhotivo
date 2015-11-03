@@ -8,19 +8,14 @@ namespace Mhotivo.Interface.Interfaces
 {
     public interface IAcademicYearRepository
     {
-        AcademicYear First(Expression<Func<AcademicYear, AcademicYear>> query);
         AcademicYear GetById(long id);
-        AcademicYear Create(AcademicYear academicYearToCreate);
+        AcademicYear Create(AcademicYear academicYearGradeToCreate);
         IQueryable<AcademicYear> Query(Expression<Func<AcademicYear, AcademicYear>> expression);
         IQueryable<AcademicYear> Filter(Expression<Func<AcademicYear, bool>> expression);
         AcademicYear Update(AcademicYear itemToUpdate);
         AcademicYear Delete(long id);
-        void SaveChanges();
-        void CreateDefaultPensum(AcademicYear academicYear);
-        IEnumerable<Pensum> GetDefaultPensum(long grade);
+        AcademicYear Delete(AcademicYear itemToDelete);
         IEnumerable<AcademicYear> GetAllAcademicYears();
-        bool ExistAcademicYear(int year, long grade, string section);
-        AcademicYear GetByFields(int year, long grade, string section);
         AcademicYear GetCurrentAcademicYear();
     }
 }

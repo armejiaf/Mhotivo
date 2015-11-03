@@ -58,7 +58,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            var teacher = _teacherRepository.GetTeacherEditModelById(id);
+            var teacher = _teacherRepository.GetById(id);
             var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
             teacherModel.MyGender = teacher.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", teacherModel);
@@ -95,11 +95,9 @@ namespace Mhotivo.Controllers
                         }
                     }
                     var myTeacher = _teacherRepository.GetById(modelTeacher.Id);
-                    var teacherModel = Mapper.Map<TeacherEditModel, Teacher>(modelTeacher);
-                    teacherModel.MyGender = Implement.Utilities.DefineGender(modelTeacher.MyGender);
-                    teacherModel.Photo = null;
-                    teacherModel.Photo = fileBytes ?? myTeacher.Photo;
-                    _teacherRepository.UpdateTeacherFromTeacherEditModel(teacherModel, myTeacher);
+                    Mapper.Map(modelTeacher, myTeacher);
+                    myTeacher.Photo = fileBytes ?? myTeacher.Photo;
+                    _teacherRepository.Update(myTeacher);
                     const string title = "Maestro Actualizado";
                     var content = "El maestro " + myTeacher.FullName + " ha sido actualizado exitosamente.";
                     _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -148,13 +146,12 @@ namespace Mhotivo.Controllers
         public ActionResult Add(TeacherRegisterModel modelTeacher)
         {
             var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
-            var myTeacher = _teacherRepository.GenerateTeacherFromRegisterModel(teacherModel);
-            if (_teacherRepository.ExistIdNumber(modelTeacher.IdNumber))
+            if (_teacherRepository.Filter(x => x.IdNumber == modelTeacher.IdNumber).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            if (_teacherRepository.ExistEmail(modelTeacher.Email))
+            if (_teacherRepository.Filter(x => x.User.Email == modelTeacher.Email).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
@@ -166,14 +163,14 @@ namespace Mhotivo.Controllers
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = _roleRepository.FirstOrDefault(x => x.Name == "Maestro")
+                Role = _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault()
             };
             newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
-            myTeacher.MyUser = newUser;
-            _teacherRepository.Create(myTeacher);
+            teacherModel.User = newUser;
+            _teacherRepository.Create(teacherModel);
             const string title = "Maestro Agregado";
-            var content = "El maestro " + myTeacher.FullName + "ha sido agregado exitosamente.";
+            var content = "El maestro " + teacherModel.FullName + "ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -182,7 +179,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
-            var teacher = _teacherRepository.GetTeacherDisplayModelById(id);
+            var teacher = _teacherRepository.GetById(id);
             var teacherModel = Mapper.Map<Teacher, DisplayTeacherModel>(teacher);
             return View("Details", teacherModel);
         }
@@ -191,7 +188,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
-            var teacher = _teacherRepository.GetTeacherEditModelById(id);
+            var teacher = _teacherRepository.GetById(id);
             var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
             return View("DetailsEdit", teacherModel);
         }
@@ -201,8 +198,8 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(TeacherEditModel modelTeacher)
         {
             var myTeacher = _teacherRepository.GetById(modelTeacher.Id);
-            var teacherModel = Mapper.Map<TeacherEditModel, Teacher>(modelTeacher);
-            _teacherRepository.UpdateTeacherFromTeacherEditModel(teacherModel, myTeacher);
+            Mapper.Map(modelTeacher, myTeacher);
+            _teacherRepository.Update(myTeacher);
             const string title = "Maestro Actualizado";
             var content = "El maestro " + myTeacher.FullName + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

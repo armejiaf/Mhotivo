@@ -33,7 +33,7 @@ namespace Mhotivo.Implement.Repositories
             _privilegeRepository = privilegeRepository;
         }
 
-        public void Import(DataSet oDataSet, AcademicYear academicYear)
+        public void Import(DataSet oDataSet, AcademicYear academicYearGrade)
         {
             var emails = new List<string>();
             if(oDataSet.Tables.Count == 0)
@@ -53,7 +53,7 @@ namespace Mhotivo.Implement.Repositories
                     ,LastName = (dtDatos.Rows[indice][3] + " " + dtDatos.Rows[indice][4]).Trim()
                     ,FirstName = dtDatos.Rows[indice][6].ToString()
                     ,MyGender = Utilities.DefineGender(dtDatos.Rows[indice][8].ToString())
-                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][9].ToString())).ToShortDateString()
+                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][9].ToString()))
                     ,Nationality = dtDatos.Rows[indice][13].ToString()
                     ,State = dtDatos.Rows[indice][15].ToString()
                 };
@@ -65,7 +65,7 @@ namespace Mhotivo.Implement.Repositories
                     ,LastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][20]).Trim()
                     ,FirstName = dtDatos.Rows[indice][21].ToString()
                     ,MyGender = Utilities.DefineGender(dtDatos.Rows[indice][22].ToString())
-                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][24].ToString())).ToShortDateString()
+                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][24].ToString()))
                     ,State = dtDatos.Rows[indice][25].ToString()
                     ,City = dtDatos.Rows[indice][26].ToString()
                 };
@@ -78,13 +78,13 @@ namespace Mhotivo.Implement.Repositories
                 };
                 emails.Add(dtDatos.Rows[indice][28].ToString());
                 var listContacts = new List<ContactInformation> {newContactInformation};
-                newParent.Contacts = listContacts;
+                newParent.ContactInformation = listContacts;
                 //newParent.MyUser.Email
                 newStudents.Tutor1 = newParent;
                 listStudents.Add(newStudents);
                 listParents.Add(newParent);
             }
-            SaveData(listStudents, listParents, academicYear, emails);
+            SaveData(listStudents, listParents, academicYearGrade, emails);
         }
 
         //modificado
@@ -102,22 +102,15 @@ namespace Mhotivo.Implement.Repositories
         }
 
 
-        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYear, List<string> emails)
+        private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYearGrade, List<string> emails)
         {
             var allEnrolls = _enrollRepository.GetAllsEnrolls();
-            var enrls = allEnrolls.Where(x => x.AcademicYear.Id == academicYear.Id);
+            var enrls = allEnrolls.Where(x => x.AcademicYearGrade.Id == academicYearGrade.Id);
             if (enrls.Any())
                 throw new Exception("Ya hay alumos en este grado, borrelos e ingreselos denuevo");
 
             var allParents = _parentRepository.GetAllParents();
             var allStudents = _studentRepository.GetAllStudents();
-            
-            if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((ParentRepository)_parentRepository).GeContext())))
-                return;
-            if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((StudentRepository)_studentRepository).GeContext())))
-                return;
-            if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((AcademicYearRepository)_academicYearRepository).GeContext())))
-                return;
             int iterator = 0;
             foreach (var pare in listParents)
             {
@@ -131,12 +124,12 @@ namespace Mhotivo.Implement.Repositories
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsUsingDefaultPassword = true,
                         IsActive = true,
-                        Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
+                        Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
                     };
                     newUser.DefaultPassword = newUser.Password;
                     newUser = _userRepository.Create(newUser);
                     
-                    pare.MyUser = newUser;
+                    pare.User = newUser;
                     _parentRepository.Create(pare);
                 }
                 else
@@ -150,17 +143,16 @@ namespace Mhotivo.Implement.Repositories
                 var temp = allStudents.Where(x => x.IdNumber == stu.IdNumber);
                 if (!temp.Any())
                 {
-                    stu.MyUser = stu.Tutor1.MyUser;
                     _studentRepository.Create(stu);   
                 }
                 else
                     stu.Id = temp.First().Id;
-                var enr = allEnrolls.Where(x => x.AcademicYear.Id == academicYear.Id && x.Student.Id == stu.Id);
+                var enr = allEnrolls.Where(x => x.AcademicYearGrade.Id == academicYearGrade.Id && x.Student.Id == stu.Id);
                 if (enr.Any()) continue;
                 var te = new Enroll();
-                var academicYearTemp = _academicYearRepository.GetById(academicYear.Id);
+                var academicYearTemp = _academicYearRepository.GetById(academicYearGrade.Id);
                 var studentTemp = _studentRepository.GetById(stu.Id);
-                te.AcademicYear = academicYearTemp;
+                //te.AcademicYear = academicYearTemp;
                 te.Student = studentTemp;
                 _enrollRepository.Create(te);
             }

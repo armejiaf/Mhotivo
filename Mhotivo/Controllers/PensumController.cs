@@ -7,6 +7,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
 using PagedList;
+using WebGrease.Css.Extensions;
 
 namespace Mhotivo.Controllers
 {
@@ -85,11 +86,14 @@ namespace Mhotivo.Controllers
             Pensum thisPensum = _pensumRepository.GetById(id);
             var pensum = new PensumEditModel
             {
-                IdCourse = thisPensum.Course.Id,
                 Id = thisPensum.Id,
                 IdGrade = thisPensum.Grade.Id
             };
-            ViewBag.IdCourse = new SelectList(_courseRepository.Query(x => x), "Id", "Name", thisPensum.Course.Id);
+            foreach (var course in thisPensum.Courses)
+            {
+                pensum.Courses.Add(course.Name);
+            }
+            ViewBag.IdCourse = new SelectList(_courseRepository.Filter(x => x.Pensum == thisPensum), "Id", "Name", thisPensum.Courses);
             ViewBag.IdGrade = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", thisPensum.Grade.Id);
             return View("Edit", pensum);
         }
@@ -112,7 +116,7 @@ namespace Mhotivo.Controllers
                 myPensum.Course = _courseRepository.GetById(modelPensum.IdCourse);
                 updateCourse = true;
             }
-            Pensum pensum = _pensumRepository.Update(myPensum, updateCourse,updateGrade);
+            Pensum pensum = _pensumRepository.Update(myPensum);
             const string title = "Pensum Actualizado";
             string content = "El Pensum " + pensum.Id +
                              " ha sido actualizado exitosamente.";

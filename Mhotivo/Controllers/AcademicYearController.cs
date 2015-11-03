@@ -85,7 +85,7 @@ namespace Mhotivo.Controllers
 
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(long id)
         {
             var academicYear = _academicYearRepository.GetById(id);
             var academicYearModel = new AcademicYearEditModel

@@ -18,63 +18,21 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public IEnumerable<Course> GetAllCourse()
+        public Course Delete(Course itemToDelete)
         {
-            return Query(c => c).ToList().Select(c => new Course
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Area = new EducationLevel
-                {
-                    Id = c.Area.Id,
-                    Name = c.Area.Name
-                }
-            });
+            _context.Courses.Remove(itemToDelete);
+            _context.SaveChanges();
+            return itemToDelete;
         }
 
-        public IEnumerable<EducationLevel> GetAllAreas()
+        public IEnumerable<Course> GetAllCourse()
         {
-            return _context.EducationLevels.Select(a => a).ToList().Select(a => new EducationLevel
-            {
-                Id = a.Id,
-                Name = a.Name
-            });
+            return Query(c => c).ToList();
         }
 
         public IQueryable<Course> Filter(Expression<Func<Course, bool>> expression)
         {
-            var myCourses = _context.Courses.Where(expression);
-            return myCourses;
-        }
-
-        public Course GenerateCourseFromRegisterModel(Course courseRegisterModel)
-        {
-            return new Course
-            {
-                Id = courseRegisterModel.Id,
-                Name = courseRegisterModel.Name,
-                Area = courseRegisterModel.Area
-            };
-        }
-
-        public Course GetCourseEditModelById(long id)
-        {
-            var course = GetById(id);
-            return new Course
-            {
-                Id = course.Id,
-                Name = course.Name,
-                Area = course.Area
-            };
-        }
-
-        public Course UpdateCourseFromCourseEditModel(Course courseEditModel, Course course)
-        {
-            course.Id = courseEditModel.Id;
-            course.Name = courseEditModel.Name;
-            course.Area = courseEditModel.Area;
-
-            return Update(course);
+            return _context.Courses.Where(expression);
         }
 
         public Course Delete(long id)
@@ -87,8 +45,7 @@ namespace Mhotivo.Implement.Repositories
 
         public Course GetById(long id)
         {
-            var courses = _context.Courses.Where(x => x.Id == id);
-            return courses.Count() != 0 ? courses.First() : null;
+            return _context.Courses.FirstOrDefault(x => x.Id == id);
         }
 
         public Course Create(Course itemToCreate)
@@ -98,15 +55,10 @@ namespace Mhotivo.Implement.Repositories
             return role;
         }
 
-        public IQueryable<TResult> Query<TResult>(Expression<Func<Course, TResult>> expression)
+        public IQueryable<Course> Query(Expression<Func<Course, Course>> expression)
         {
             return _context.Courses.Select(expression);
 
-        }
-
-        public IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<EducationLevel, TResult>> expression)
-        {
-            return _context.EducationLevels.Select(expression);
         }
 
         public Course Update(Course itemToUpdate)
@@ -114,11 +66,6 @@ namespace Mhotivo.Implement.Repositories
             _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

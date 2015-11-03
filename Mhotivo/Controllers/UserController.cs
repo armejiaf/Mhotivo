@@ -92,8 +92,8 @@ namespace Mhotivo.Controllers
             var role = _userRepository.GetUserRole(thisUser.Id);
             var directions = from Role d in _rolesRepository.GetAll()
                              where d != null
-                             select new { ID = d.RoleId, d.Name };
-            user.RoleId = role.RoleId;
+                             select new { ID = d.Id, d.Name };
+            user.RoleId = role.Id;
             ViewBag.RoleId = new SelectList(directions, "ID", "Name", user.RoleId);
             return View("Edit", user);
         }
@@ -102,11 +102,11 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(UserEditModel modelUser)
         {
-            User myUsers = _userRepository.GetById(modelUser.Id);
-            var myUser = Mapper.Map<User>(modelUser);
-            var user = _userRepository.UpdateUserFromUserEditModel(myUser,myUsers);
+            User myUser = _userRepository.GetById(modelUser.Id);
+            Mapper.Map(modelUser, myUser);
+            _userRepository.Update(myUser);
             const string title = "Usuario Actualizado";
-            var content = "El usuario " + user.DisplayName + " - " + user.Email +
+            var content = "El usuario " + myUser.DisplayName + " - " + myUser.Email +
                              " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
@@ -129,7 +129,7 @@ namespace Mhotivo.Controllers
         {
             var directions = from Role d in _rolesRepository.GetAll()
                              where d != null
-                             select new { ID = d.RoleId, Name = d.Name};
+                             select new { ID = d.Id, Name = d.Name};
             ViewBag.Id = new SelectList(directions, "ID", "Name");
             return View("Create");
         }
@@ -138,7 +138,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(UserRegisterModel modelUser)
         {
-            if (_userRepository.ExistEmail(modelUser.Email))
+            if (_userRepository.Filter(x => x.Email == modelUser.Email).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
@@ -150,7 +150,7 @@ namespace Mhotivo.Controllers
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = modelUser.Status,
-                Role = _rolesRepository.FirstOrDefault(x => x.Name == "Administrador")
+                Role = _rolesRepository.Filter(x => x.Name == "Administrador").FirstOrDefault()
             };
             myUser.DefaultPassword = myUser.Password;
             var user = _userRepository.Create(myUser);
@@ -163,9 +163,7 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public JsonResult DoesUserNameExist(string email)
         {
-
-            var user = _userRepository.FirstOrDefault(x => x.Email == email);
-
+            var user = _userRepository.Filter(x => x.Email == email).FirstOrDefault();
             return Json(user == null);
         }
     }

@@ -6,19 +6,15 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface ICourseRepository :  IDisposable
+    public interface ICourseRepository
     {
         Course Create(Course itemToCreate);
         Course Delete(long id);
+        Course Delete(Course itemToDelete);
         IEnumerable<Course> GetAllCourse();
-        IEnumerable<EducationLevel> GetAllAreas();
         IQueryable<Course> Filter(Expression<Func<Course, bool>> expression);
         Course GetById(long id);
-        Course GetCourseEditModelById(long id);
-        Course GenerateCourseFromRegisterModel(Course courseRegisterModel);
-        IQueryable<TResult> Query<TResult>(Expression<Func<Course, TResult>> expression);
-        IQueryable<TResult> QueryAreaResults<TResult>(Expression<Func<EducationLevel, TResult>> expression);
+        IQueryable<Course> Query(Expression<Func<Course, Course>> expression);
         Course Update(Course itemToUpdate);
-        Course UpdateCourseFromCourseEditModel(Course courseEditModel, Course course);
     }
 }
