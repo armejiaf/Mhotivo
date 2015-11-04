@@ -3,7 +3,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface ISecurityRepository
+    public interface ISecurityService
     {
         Role GetUserLoggedRole();
         ICollection<People> GetUserLoggedPeoples();

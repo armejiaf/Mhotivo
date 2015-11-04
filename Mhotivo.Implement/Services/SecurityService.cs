@@ -4,9 +4,9 @@ using System.Web;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 
-namespace Mhotivo.Implement.Repositories
+namespace Mhotivo.Implement.Services
 {
-    public class SecurityRepository : ISecurityRepository
+    public class SecurityService : ISecurityService
     {
         private readonly IUserRepository _userRepository;
         private readonly IPeopleRepository _peopleRepository;
@@ -15,7 +15,7 @@ namespace Mhotivo.Implement.Repositories
         private static string _userEmailIdentifier;
         private static string _userIdIdentifier;
 
-        public SecurityRepository(IUserRepository userRepository, IPeopleRepository peopleRepository)
+        public SecurityService(IUserRepository userRepository, IPeopleRepository peopleRepository)
         {
             _userRepository = userRepository;
             _peopleRepository = peopleRepository;

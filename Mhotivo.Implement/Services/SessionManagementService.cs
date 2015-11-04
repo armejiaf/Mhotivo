@@ -5,9 +5,9 @@ using System.Web.Security;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 
-namespace Mhotivo.Implement.Repositories
+namespace Mhotivo.Implement.Services
 {
-    public class SessionManagementRepository : ISessionManagementRepository
+    public class SessionManagementService : ISessionManagementService
     {
         private readonly IUserRepository _userRepository;
         private readonly IPeopleRepository _peopleRepository;
@@ -16,7 +16,7 @@ namespace Mhotivo.Implement.Repositories
         private readonly string _userEmailIdentifier;
         private readonly string _userIdIdentifier;
 
-        public SessionManagementRepository(IUserRepository userRepository, IPeopleRepository peopleRepository)
+        public SessionManagementService(IUserRepository userRepository, IPeopleRepository peopleRepository)
         {
             _userRepository = userRepository;
             _peopleRepository = peopleRepository;

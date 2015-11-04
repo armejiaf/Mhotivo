@@ -1,3 +1,4 @@
+using Mhotivo.Implement.Services;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Implement.Repositories;
 using Mhotivo.Implement.Context;
@@ -59,7 +60,7 @@ namespace Mhotivo
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
-            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
+            kernel.Bind<ISessionManagementService>().To<SessionManagementService>().InRequestScope();
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<IAcademicYearCourseRepository>().To<AcademicYearCourseRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
@@ -73,13 +74,15 @@ namespace Mhotivo
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
-            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
+            kernel.Bind<ISecurityService>().To<SecurityService>().InRequestScope();
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
             kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
             kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
             kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearCourseRepository>().To<AcademicYearCourseRepository>().InRequestScope();
+            kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
         }        
     }
 }

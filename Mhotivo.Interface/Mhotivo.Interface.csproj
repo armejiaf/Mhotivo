@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\IHomeworkRepository.cs" />
     <Compile Include="Interfaces\IImportDataRepository.cs" />
     <Compile Include="Interfaces\INotificationCommentRepository.cs" />
+    <Compile Include="Interfaces\INotificationHandlerService.cs" />
     <Compile Include="Interfaces\IPasswordGenerationService.cs" />
     <Compile Include="Interfaces\IPrivilegeRepository.cs" />
     <Compile Include="Interfaces\IRoleRepository.cs" />
@@ -59,8 +60,8 @@
     <Compile Include="Interfaces\IParentRepository.cs" />
     <Compile Include="Interfaces\IPensumRepository.cs" />
     <Compile Include="Interfaces\IPeopleRepository.cs" />
-    <Compile Include="Interfaces\ISecurityRepository.cs" />
-    <Compile Include="Interfaces\ISessionManagementRepository.cs" />
+    <Compile Include="Interfaces\ISecurityService.cs" />
+    <Compile Include="Interfaces\ISessionManagementService.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

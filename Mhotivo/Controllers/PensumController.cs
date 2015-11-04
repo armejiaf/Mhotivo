@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
 using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
 using PagedList;
-using WebGrease.Css.Extensions;
 
 namespace Mhotivo.Controllers
 {

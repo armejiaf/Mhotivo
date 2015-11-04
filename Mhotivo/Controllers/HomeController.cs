@@ -6,21 +6,19 @@ namespace Mhotivo.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ISessionManagementRepository _sessionManagement;
-        private readonly ISecurityRepository _securityRepository;
+        private readonly ISecurityService _securityService;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public HomeController(ISessionManagementRepository sessionManagement, ISecurityRepository securityRepository)
+        public HomeController(ISecurityService securityService)
         {
-            _sessionManagement = sessionManagement;
-            _securityRepository = securityRepository;
+            _securityService = securityService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
         public ActionResult Index()
         {
             ViewBag.Message = "Modifique esta plantilla para poner en marcha su aplicación ASP.NET MVC.";
-            _securityRepository.GetUserLoggedPeoples();
+            _securityService.GetUserLoggedPeoples();
             _viewMessageLogic.SetViewMessageIfExist();
             return View();
         }
@@ -46,7 +44,7 @@ namespace Mhotivo.Controllers
         //[ChildActionOnly]
         public ActionResult GetUserLoggedName()
         {
-            var userName = _securityRepository.GetUserLoggedName();
+            var userName = _securityService.GetUserLoggedName();
             return Content(userName);
         }
     }

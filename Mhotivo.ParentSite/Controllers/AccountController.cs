@@ -9,13 +9,13 @@ namespace Mhotivo.ParentSite.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ISessionManagementRepository _sessionManagementRepository;
+        private readonly ISessionManagementService _sessionManagementService;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
        
-        public AccountController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementService sessionManagementService, IParentRepository parentRepository, IUserRepository userRepository)
         {
-            _sessionManagementRepository = sessionManagementRepository;
+            _sessionManagementService = sessionManagementService;
             _parentRepository = parentRepository;
             _userRepository = userRepository;
         }
@@ -35,7 +35,7 @@ namespace Mhotivo.ParentSite.Controllers
 
             if (parent != null)
             {
-                if (_sessionManagementRepository.LogIn(model.Email, model.Password))
+                if (_sessionManagementService.LogIn(model.Email, model.Password))
                 {
                     if (parent.User.IsUsingDefaultPassword)
                     {
@@ -52,7 +52,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public ActionResult LogOut()
         {
-            _sessionManagementRepository.LogOut();
+            _sessionManagementService.LogOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -64,7 +64,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public ActionResult UpdateEmail(UpdateParentMailModel model)
         {
-            var userId = Convert.ToInt64(_sessionManagementRepository.GetUserLoggedId());
+            var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
             var parentUser = _parentRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
             
             if (parentUser != null)
@@ -88,7 +88,7 @@ namespace Mhotivo.ParentSite.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
+            var userId = Convert.ToInt32(_sessionManagementService.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;
             user.HashPassword();

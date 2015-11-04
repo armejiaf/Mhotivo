@@ -17,12 +17,12 @@ namespace Mhotivo.Controllers
         // GET: /Area/
         private readonly IEducationLevelRepository _areaReposity;
         private readonly ViewMessageLogic _viewMessageLogic;
-        private ICourseRepository _courseRepository;
+        private readonly IGradeRepository _gradeRepository;
 
-        public EducationLevelController(IEducationLevelRepository areaReposity, ICourseRepository courseRepository)
+        public EducationLevelController(IEducationLevelRepository areaReposity, IGradeRepository gradeRepository)
         {
             _areaReposity = areaReposity;
-            _courseRepository = courseRepository;
+            _gradeRepository = gradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
         [AuthorizeAdmin]
@@ -88,7 +88,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            var check = _courseRepository.Filter(x => x.Area.Id == id).FirstOrDefault();
+            var check = _gradeRepository.Filter(x => x.EducationLevel.Id == id).FirstOrDefault();
             if (check == null)
             {
                 var area = _areaReposity.Delete(id);

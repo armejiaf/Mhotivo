@@ -18,11 +18,6 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public Notification First(Expression<Func<Notification, bool>> query)
-        {
-            return _context.Notifications.First(query);
-        }
-
         public Notification GetById(long id)
         {
             return _context.Notifications.FirstOrDefault(x => x.Id == id);
@@ -40,7 +35,7 @@ namespace Mhotivo.Implement.Repositories
             return _context.Notifications.Select(expression);
         }
 
-        public IQueryable<Notification> Where(Expression<Func<Notification, bool>> expression)
+        public IQueryable<Notification> Filter(Expression<Func<Notification, bool>> expression)
         {
             return _context.Notifications.Where(expression);
         }

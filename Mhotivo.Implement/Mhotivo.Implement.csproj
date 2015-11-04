@@ -75,17 +75,19 @@
     <Compile Include="Repositories\HomeworkRepository.cs" />
     <Compile Include="Repositories\ImportDataRepository.cs" />
     <Compile Include="Repositories\NotificationCommentRepository.cs" />
-    <Compile Include="Repositories\RandomPasswordGenerationService.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\ParentRepository.cs" />
     <Compile Include="Repositories\PensumRepository.cs" />
     <Compile Include="Repositories\PeopleRepository.cs" />
-    <Compile Include="Repositories\SecurityRepository.cs" />
-    <Compile Include="Repositories\SessionManagementRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\NotificationHandlerService.cs" />
+    <Compile Include="Services\RandomPasswordGenerationService.cs" />
+    <Compile Include="Services\SecurityService.cs" />
+    <Compile Include="Services\SessionManagementService.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +109,7 @@
       <DependentUpon>201510242104324_NMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

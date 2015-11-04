@@ -16,56 +16,66 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IParentRepository _parentRepository;
-        private readonly ISessionManagementRepository _sessionManagementRepository; //Will this be used?
-        private readonly ISecurityRepository _securityRepository;
+        private readonly ISessionManagementService _sessionManagementService; //Will this be used?
+        private readonly ISecurityService _securityService;
         private Parent _loggedParent;
         public static IStudentRepository StudentRepository;
         public static IEnrollRepository EnrollsRepository;
-        public static ISecurityRepository SecurityRepository;
+        public static ISecurityService SecurityService;
 
         public static List<long> StudentsId;
 
         public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,
-            IParentRepository parentRepository, ISessionManagementRepository sessionManagementRepository, ISecurityRepository securityRepository,
+            IParentRepository parentRepository, ISessionManagementService sessionManagementService, ISecurityService securityService,
             IStudentRepository studentRepository, IEnrollRepository enrollsRepository)
         {
             _notificationRepository = notificationRepository;
             _academicYearRepository = academicYearRepository;
             _parentRepository = parentRepository;
-            _sessionManagementRepository = sessionManagementRepository;
-            _securityRepository = securityRepository;
+            _sessionManagementService = sessionManagementService;
+            _securityService = securityService;
             StudentRepository = studentRepository;
             EnrollsRepository = enrollsRepository;
-            SecurityRepository = securityRepository;
+            SecurityService = securityService;
         }
 
         // GET: /Notification/
         [HttpGet]
         public ActionResult Index(string filter)
         {
-            var currentAcademicYear = _academicYearRepository.GetCurrentAcademicYear().Year;
-            var loggedUserEmail = _securityRepository.GetUserLoggedEmail();
+            var loggedUserEmail = _securityService.GetUserLoggedEmail();
             _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
-            long parentId = 0;
-            if (_loggedParent != null)
-                parentId = _loggedParent.Id;
+            if (_loggedParent == null)
+                return RedirectToAction("Index", "Home");
 
             List<Notification> notifications;
 
             switch (filter)
             {
                 case "NDE":
-                    notifications = _notificationRepository.GetAreaNotifications(currentAcademicYear, parentId).ToList();
+                    notifications =
+                        _loggedParent
+                            .User.Notifications.Where(x => x.NotificationType == NotificationType.EducationLevel && x.AcademicYear.IsActive)
+                            .ToList();
                     break;
                 case "Grado":
-                    notifications = _notificationRepository.GetGradeNotifications(currentAcademicYear, parentId).ToList();
+                    notifications =
+                        _loggedParent
+                            .User.Notifications.Where(x => x.NotificationType == NotificationType.Grade && x.AcademicYear.IsActive)
+                            .ToList();
                     break;
 
                 case "Personal":
-                    notifications = _notificationRepository.GetPersonalNotifications(currentAcademicYear, parentId).ToList();
+                    notifications =
+                        _loggedParent
+                            .User.Notifications.Where(x => x.NotificationType == NotificationType.Personal && x.AcademicYear.IsActive)
+                            .ToList();
                     break;
                 default:
-                    notifications = _notificationRepository.GetGeneralNotifications(currentAcademicYear).ToList();
+                    notifications =
+                        _loggedParent
+                            .User.Notifications.Where(x => x.NotificationType == NotificationType.General && x.AcademicYear.IsActive)
+                            .ToList();
                     break;
             }
            
@@ -76,7 +86,7 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 var noti = Mapper.Map<Notification, NotificationModel>(notification);
                 noti.CommentsAmount = notification.NotificationComments.Count;
-                noti.NotificationCreator = notification.UserCreatorName;
+                noti.NotificationCreator = notification.NotificationCreator.DisplayName;
                 notificationsModel.Add(noti);
             }
 
@@ -121,7 +131,7 @@ namespace Mhotivo.ParentSite.Controllers
         public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
         {
             IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
+                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYearGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
             return allEnrolls;
         }
 
@@ -138,7 +148,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public static long GetParentId()
         {
-            var people = SecurityRepository.GetUserLoggedPeoples();
+            var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {

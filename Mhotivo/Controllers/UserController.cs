@@ -15,16 +15,16 @@ namespace Mhotivo.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly ISecurityRepository _securityRepository; //Will this be used?
+        private readonly ISecurityService _securityService; //Will this be used?
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly IRoleRepository _rolesRepository;
 
-        public UserController(IUserRepository userRepository, ISecurityRepository securityRepository,
+        public UserController(IUserRepository userRepository, ISecurityService securityService,
             IPasswordGenerationService passwordGenerationService, IRoleRepository rolesRepository)
         {
             _userRepository = userRepository;
-            _securityRepository = securityRepository;
+            _securityService = securityService;
             _passwordGenerationService = passwordGenerationService;
             _rolesRepository = rolesRepository;
             _viewMessageLogic = new ViewMessageLogic(this);

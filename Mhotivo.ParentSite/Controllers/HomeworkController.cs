@@ -20,16 +20,16 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly ICourseRepository _courseRepository;
         public static IStudentRepository StudentRepository;
         public static IEnrollRepository EnrollsRepository;
-        private readonly ISessionManagementRepository _sessionManagementRepository;
-        public static ISecurityRepository SecurityRepository;
+        private readonly ISessionManagementService _sessionManagementService;
+        public static ISecurityService SecurityService;
         private readonly IParentRepository _parentRepository;
         public static List<long> StudentsId;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicYearCourseRepository academicYearCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
-            IEnrollRepository enrollsRepository, ISessionManagementRepository sessionManagementRepository, 
-            ISecurityRepository securityRepository, IParentRepository parentRepository)
+            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService, 
+            ISecurityService securityService, IParentRepository parentRepository)
         {
             _homeworkRepository = homeworkRepository;
             _academicYearRepository = academicYearRepository;
@@ -38,8 +38,8 @@ namespace Mhotivo.ParentSite.Controllers
             _academicYearCourseRepository = academicYearCourseRepository;
             StudentRepository = studentRepository;
             EnrollsRepository = enrollsRepository;
-            _sessionManagementRepository = sessionManagementRepository;
-            SecurityRepository = securityRepository;
+            _sessionManagementService = sessionManagementService;
+            SecurityService = securityService;
             _parentRepository = parentRepository;
         }
 
@@ -73,7 +73,7 @@ namespace Mhotivo.ParentSite.Controllers
             var allHomeworksModel = new List<HomeworkModel>();
             foreach (var enroll in enrolls)
             {
-                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicYearCourse.AcademicYearGrade.Id == enroll.AcademicYear.Id));
+                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicYearCourse.AcademicYearGrade.Id == enroll.AcademicYearGrade.AcademicYear.Id));
             }
 
             if (param != null)
@@ -118,7 +118,7 @@ namespace Mhotivo.ParentSite.Controllers
         public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
         {
             IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
+                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYearGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
             return allEnrolls;
         }
 
@@ -135,7 +135,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public static long GetParentId()
         {
-            var people = SecurityRepository.GetUserLoggedPeoples();
+            var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {

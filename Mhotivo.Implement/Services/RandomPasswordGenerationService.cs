@@ -2,7 +2,7 @@
 using System.Linq;
 using Mhotivo.Interface.Interfaces;
 
-namespace Mhotivo.Implement.Repositories
+namespace Mhotivo.Implement.Services
 {
     public class RandomPasswordGenerationService : IPasswordGenerationService
     {

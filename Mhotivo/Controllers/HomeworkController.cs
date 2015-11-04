@@ -65,7 +65,7 @@ namespace Mhotivo.Controllers
         public ActionResult Create()
         {
             var teacherId = GetTeacherId();
-            var detalleAnhosAcademicosActivos = _academicYearCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicYearGrade.IsActive);
+            var detalleAnhosAcademicosActivos = _academicYearCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicYearGrade.AcademicYear.IsActive);
             var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher.Id == teacherId);
             var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
             ViewBag.course = new SelectList(query, "Id", "Name");
@@ -91,7 +91,7 @@ namespace Mhotivo.Controllers
                 Description = modelHomework.Description,
                 DeliverDate = ParseToHonduranDateTime.Parse(modelHomework.DeliverDate),
                 Points = modelHomework.Points,
-                AcademicYearCourse = _academicYearCourseRepository.FindByCourse(_courseRepository.GetById(modelHomework.Course).Id,GetTeacherId())
+                AcademicYearCourse = _academicYearCourseRepository.Filter(x => x.Course.Id == _courseRepository.GetById(modelHomework.Course).Id &&x.Teacher.Id == GetTeacherId()).FirstOrDefault()
             };
 
             _homeworkRepository.Create(myHomework);

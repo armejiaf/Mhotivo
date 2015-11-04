@@ -16,12 +16,14 @@ namespace Mhotivo.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private IAcademicYearRepository _academicYearRepository;
+        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
 
-        public GradeController(IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository, IAcademicYearGradeRepository academicYearGradeRepository)
         {
             if (gradeRepository == null) throw new ArgumentNullException("gradeRepository");
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
+            _academicYearGradeRepository = academicYearGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -100,7 +102,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            var check = _academicYearRepository.Filter(x => x.Grade.Id == id).FirstOrDefault();
+            var check = _academicYearGradeRepository.Filter(x => x.Grade.Id == id && x.AcademicYear.IsActive).FirstOrDefault();
             if (check == null)
             {
                 var grade = _gradeRepository.Delete(id);
