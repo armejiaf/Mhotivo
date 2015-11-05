@@ -195,6 +195,7 @@
     <Compile Include="Models\AreaModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
+    <Compile Include="Models\DynamicListModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\GradeModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />

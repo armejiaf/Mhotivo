@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using AutoMapper;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -26,13 +22,13 @@ namespace Mhotivo.Controllers
         private readonly IPeopleRepository _peopleRepository;
         private readonly IParentRepository _parentRepository;
         private readonly IStudentRepository _studentRepository;
-        private readonly IAcademicYearRepository _academicYear;
+        private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
         private readonly IAcademicYearCourseRepository _academicYearCourseRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IEducationLevelRepository _areaReporsitory;
         private readonly INotificationHandlerService _notificationHandlerService;
-        private static string _searchText = string.Empty;
 
         public NotificationController(ISessionManagementService sessionManagement, IUserRepository userRepository,
             INotificationRepository notificationRepository, IPeopleRepository peopleRepository,
@@ -40,7 +36,7 @@ namespace Mhotivo.Controllers
             IAcademicYearCourseRepository academicYearCourseRepository, IStudentRepository studentRepository,
             IParentRepository parentRepository, IGradeRepository gradeRepository,
             IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository,
-            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService)
+            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicYearGradeRepository academicYearGradeRepository)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
@@ -51,104 +47,22 @@ namespace Mhotivo.Controllers
             _parentRepository = parentRepository;
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
-            _academicYear = academicYearRepository;
+            _academicYearRepository = academicYearRepository;
             _enrollRepository = enrollRepository;
             _areaReporsitory = areaReporsitory;
             _notificationHandlerService = notificationHandlerService;
+            _academicYearGradeRepository = academicYearGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-
-        private void LoadTypeNotification(NotificationModel model)
-        {
-            var items = ((NotificationType[])Enum.GetValues(typeof(NotificationType))).Select(c => new SelectListItem
-            {
-                Text = c.ToString("G"),
-                Value = c.ToString("D")
-            }).ToList();
-
-
-            model.NotificationTypeSelectList = new SelectList(items, "Value", "Text", model.NotificationTypeId);
-            if ((NotificationType)model.NotificationTypeId == NotificationType.Personal)
-            {
-                var list = GetListOpcionTypeNotification(model.NotificationTypeId.ToString(CultureInfo.InvariantCulture));
-                model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text",
-                    model.GradeIdifNotificationTypePersonal);
-                IEnumerable<SelectListItem> listStudent =
-                    LoadListStudent(model.NotificationTypeId == (int)NotificationType.Personal
-                        ? Convert.ToInt32(model.IdIsGradeAreaGeneralSelected)
-                        : 0);
-                model.StudentOptionSelectList = new SelectList(listStudent, "Value", "Text",
-                    model.IdIsGradeAreaGeneralSelected);
-            }
-            else
-            {
-                var list = GetListOpcionTypeNotification(model.NotificationTypeId.ToString(CultureInfo.InvariantCulture));
-                model.NotificationTypeOpionSelectList = new SelectList(list, "Value", "Text",
-                    model.IdIsGradeAreaGeneralSelected);
-                var lis2 = new List<SelectListItem> {new SelectListItem {Value = "0", Text = "N/A"}};
-                model.StudentOptionSelectList = new SelectList(lis2, "Value", "Text", model.IdIsGradeAreaGeneralSelected);
-            }
-        }
-
-
-        private IEnumerable<SelectListItem> LoadListStudent(long idGrade)
-        {
-            var list = new List<SelectListItem>();
-            if (idGrade != 0)
-            {
-                var grade = _gradeRepository.GetById(idGrade);
-                var academyYear =
-                    _academicYear.Query(x => x)
-                        .Select(x => x)
-                        .Include("Grade")
-                        .FirstOrDefault(x => x.Grade.Id.Equals(grade.Id));
-                var query =
-                    from a in Db.Enrolls
-                    join b in Db.Students on a.Student.Id equals b.Id
-                    where a.AcademicYear.Id == academyYear.Id
-                    select new
-                    {
-                        Field1 = a.Student.FullName,
-                        Field2 = a.Student.Id
-                    };
-                try
-                {
-                    if (query.Any())
-                    {
-                        list = query.Select(c => new SelectListItem
-                        {
-                            Text = c.Field1,
-                            Value = c.Field2.ToString()
-                        }).ToList();
-                    }
-                }
-                catch (TargetException)
-                {
-                    ; //silently catch an exception and do nothing with it? Let's find out why... *throws*
-                    throw;
-                }
-            }
-            if (list.Count <= 0)
-            {
-                list.Add(new SelectListItem {Value = "0", Text = "N/A"});
-            }
-            return list;
-        }
-
-        // GET: /NotificationModel/
 
         public ActionResult Index(string searchName)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var user =
-                _userRepository.GetAllUsers()
-                    .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
-
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
             var notifications = _notificationRepository.Query(x => x).ToList();
-
             if (!_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
-                notifications = notifications.FindAll(x => user != null && x.UserCreatorId == user.Id);
-
+                notifications = notifications.FindAll(x => user != null && x.NotificationCreator == user);
             if (searchName != null)
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
@@ -156,290 +70,50 @@ namespace Mhotivo.Controllers
             return View(notificationsModel);
         }
 
-
-        // GET: /NotificationModel/Create
         [HttpGet]
         public ActionResult Add()
         {
-            var notification = new NotificationModel();
-            LoadTypeNotification(ref notification);
-            ViewBag.Section = new SelectList(new List<string> {"Todos", "A", "B", "C"}, "Todos");
+            var notification = new NotificationMainModel();
+            var items = ((NotificationType[])Enum.GetValues(typeof(NotificationType))).Select(c => new SelectListItem
+            {
+                Text = c.ToString("G"),
+                Value = c.ToString("D")
+            }).ToList();
+
+            ViewBag.NotificationTypes = new SelectList(items, "Value", "Text", notification.NotificationType);
             return View("Add", notification);
         }
 
         [HttpPost]
-        public ActionResult Add(NotificationModel eventNotification, string addressedTo)
+        public ActionResult Add(NotificationMainModel eventNotification)
         {
             var notificationIdentity = Mapper.Map<Notification>(eventNotification);
-            notificationIdentity.CreationDate = DateTime.Now;
-            var notificationType = _notificationTypeRepository.GetById(eventNotification.NotificationTypeId);
-            notificationIdentity.NotificationType = notificationType;
-            notificationIdentity.Section = eventNotification.Section;
-            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
-            {
-                notificationIdentity.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
-                notificationIdentity.GradeIdifNotificationTypePersonal =
-                    Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
-                notificationIdentity.TargetStudent = _studentRepository.GetById(eventNotification.StudentId);
-            }
-            else if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Area)
-            {
-                notificationIdentity.IdGradeAreaUserGeneralSelected =
-                    Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
-                notificationIdentity.GradeIdifNotificationTypePersonal =
-                    Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
-            }
-            if (addressedTo.IsEmpty() || addressedTo == null)
-                addressedTo = "0";
-            notificationIdentity.GradeIdifNotificationTypePersonal = Convert.ToInt32(addressedTo);
-            notificationIdentity.Users = new List<User>();
-            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
-            {
-                AddUsersToPersonalNotification(notificationIdentity);
-            }
-            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Grado)
-            {
-                AddUsersToGradeNotification(notificationIdentity);
-            }
-            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Area)
-            {
-                AddUsersToLevelNotification(notificationIdentity);
-            }
-            var user =
-                _userRepository.GetAllUsers()
-                    .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
-            if (user != null)
-            {
-                notificationIdentity.UserCreatorId = user.Id;
-                notificationIdentity.UserCreatorName = user.DisplayName;
-            }
-            notificationIdentity.Approved = false;
-            if (notificationIdentity.NotificationType != null && notificationIdentity.NotificationType.Id == Personal)
-            {
-                notificationIdentity.Approved = false;
-            }
-
-            if (notificationIdentity.NotificationType != null &&
-                _sessionManagement.GetUserLoggedRole().Equals("Administrador"))
-                notificationIdentity.Approved = true;
-
-            var email = _sessionManagement.GetUserLoggedEmail();
-            notificationIdentity.NotificationCreator =
-                _userRepository.FirstOrDefault(x => x.Email.Equals(email));
+            var user = _userRepository.Filter(x => x.Email == _sessionManagement.GetUserLoggedEmail()).FirstOrDefault();
+            notificationIdentity.NotificationCreator = user;
+            notificationIdentity.AcademicYear = _academicYearRepository.GetCurrentAcademicYear();
+            notificationIdentity.Approved = _sessionManagement.GetUserLoggedRole().Equals("Administrador");
             _notificationRepository.Create(notificationIdentity);
             const string title = "Notificación Agregado";
-            var content = "El evento " + eventNotification.NotificationName + " ha sido agregado exitosamente.";
+            var content = "El evento " + eventNotification.Title + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
-        public JsonResult OptiontList(string id)
-        {
-            var list = GetListOpcionTypeNotification(id);
-            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult ListStudent(string id)
-        {
-            var list = LoadListStudent(Convert.ToInt32(id));
-            return Json(new SelectList(list, "Value", "Text"), JsonRequestBehavior.AllowGet);
-        }
-
-        private IEnumerable GetListOpcionTypeNotification(string id)
-        {
-            var list = new List<SelectListItem>();
-            //uh, no.
-            switch (id)
-            {
-                case "1":
-                    list.Add(new SelectListItem {Value = "0", Text = "N/A"});
-                    break;
-                case "2":
-                    list = _areaReporsitory.Query(x => x).Select(c => new SelectListItem
-                    {
-                        Text = c.Name,
-                        Value = c.Id.ToString()
-                    }).ToList();
-                    break;
-                case "3":
-                    if (_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
-                    {
-                        list = _gradeRepository.Query(x => x).Select(c => new SelectListItem
-                        {
-                            Text = c.Name,
-                            Value = c.Id.ToString()
-                        }).ToList();
-                    }
-                    else
-                    {
-                        var email = _sessionManagement.GetUserLoggedEmail();
-                        var teacher = _teacherRepository.FirstOrDefault(x => x.User.Email.Equals(email));
-                        var academicYears = _academicYearCourseRepository.GetAllAcademicYear(teacher.Id);
-                        var gradesTeacherGiveClasssesTo = new List<Grade>();
-
-                        foreach (
-                            var year in academicYears.Where(year => !gradesTeacherGiveClasssesTo.Contains(year.Grade)))
-                        {
-                            gradesTeacherGiveClasssesTo.Add(year.Grade);
-                        }
-
-                        list = gradesTeacherGiveClasssesTo.Select(c => new SelectListItem
-                        {
-                            Text = c.Name,
-                            Value = c.Id.ToString()
-                        }).ToList();
-                    }
-                    break;
-
-                case "4":
-                    var user =
-                        _userRepository.GetAllUsers()
-                            .FirstOrDefault(x => x.Email == _sessionManagement.GetUserLoggedEmail());
-                    var listGrade = new List<Grade>();
-                    if (user != null)
-                    {
-                        var people = _peopleRepository.GetAllPeopleByUserId(user.Id).FirstOrDefault(x => x is Teacher);
-                        if (people != null)
-                        {
-                            var meiser = _teacherRepository.GetById(people.Id);
-                            if (meiser != null)
-                            {
-                                var academyYear = _academicYearCourseRepository.GetAllAcademicYear(meiser.Id).ToList();
-
-                                foreach (var year in academyYear.Where(year => !listGrade.Contains(year.Grade)))
-                                {
-                                    listGrade.Add(year.Grade);
-                                }
-                            }
-                            else
-                            {
-                                list = _gradeRepository.GetAllGrade().Select(c => new SelectListItem
-                                {
-                                    Text = c.Name,
-                                    Value = c.Id.ToString()
-                                }).ToList();
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            list = _gradeRepository.GetAllGrade().Select(c => new SelectListItem
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString()
-                            }).ToList();
-                            break;
-                        }
-                    }
-                    var allgrade = _gradeRepository.GetAllGrade().Select(x => x).ToList();
-                    var query = from c in allgrade
-                        join d in listGrade on c.Id equals d.Id
-                        select new SelectListItem
-                        {
-                            Text = c.Name,
-                            Value = d.Id.ToString()
-                        };
-                    list = query.ToList();
-                    break;
-            }
-            return list;
-        }
-
-        public JsonResult GetGroupsAndEmails(string filter)
-        {
-            List<string> mails =
-                Db.Users.Where(x => x.DisplayName.Contains(filter) || x.Email.Contains(filter))
-                    .Select(x => x.Email)
-                    .ToList();
-            return Json(mails, JsonRequestBehavior.AllowGet);
-        }
-
-        // GET: /NotificationModel/Edit/5
         public ActionResult Edit(long id)
         {
             var toEdit =
-                _notificationRepository.Query(x => x).Include("NotificationType").FirstOrDefault(x => x.Id.Equals(id));
-            var toEditModel = Mapper.Map<NotificationModel>(toEdit);
-            if (toEdit != null)
-            {
-                if (toEdit.NotificationType != null)
-                    toEditModel.NotificationTypeId = toEdit.NotificationType.Id;
-                if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Personal)
-                {
-                    toEditModel.StudentId = toEdit.IdGradeAreaUserGeneralSelected;
-                    toEditModel.IdIsGradeAreaGeneralSelected =
-                        toEdit.GradeIdifNotificationTypePersonal.ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    toEditModel.IdIsGradeAreaGeneralSelected =
-                        toEdit.IdGradeAreaUserGeneralSelected.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-            LoadTypeNotification(ref toEditModel);
+                _notificationRepository.GetById(id);
+            var toEditModel = Mapper.Map<NotificationEditModel>(toEdit);
             return View(toEditModel);
         }
 
-        // POST: /NotificationModel/Edit/5
         [HttpPost]
         public ActionResult Edit(long id, NotificationModel eventNotification)
         {
             try
             {
-                var toEdit =
-                    _notificationRepository.Query(x => x)
-                        .Include("NotificationType")
-                        .FirstOrDefault(x => x.Id.Equals(id));
-                if (toEdit != null)
-                {
-                    var notificationBeforeEdit = _notificationRepository.GetById(toEdit.Id);
-                    var notificationType =
-                        _notificationTypeRepository.First(c => c.Id == eventNotification.NotificationTypeId);
-                    var receiverChanged = false;
-                    toEdit.NotificationType = notificationType;
-                    toEdit.Title = eventNotification.NotificationName;
-                    toEdit.Message = eventNotification.Message;
-
-                    if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Personal)
-                    {
-                        toEdit.IdGradeAreaUserGeneralSelected = eventNotification.StudentId;
-                        toEdit.GradeIdifNotificationTypePersonal =
-                            Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
-                    }
-                    else
-                    {
-                        toEdit.IdGradeAreaUserGeneralSelected =
-                            Convert.ToInt32(eventNotification.IdIsGradeAreaGeneralSelected);
-                        toEdit.GradeIdifNotificationTypePersonal = 0;
-                    }
-                    if (toEdit.NotificationType != null &&
-                        toEdit.NotificationType.Id == notificationBeforeEdit.NotificationType.Id)
-                    {
-                        //Something is weird here. Other than the empty ifs, I mean.
-
-                        receiverChanged = true;
-                    }
-                    else
-                    {
-                        receiverChanged = true;
-                    }
-                    if (receiverChanged)
-                    {
-                        toEdit.Users = new List<User>();
-                        if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Personal)
-                        {
-                            AddUsersToPersonalNotification(toEdit);
-                        }
-                        if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Grado)
-                        {
-                            AddUsersToGradeNotification(toEdit);
-                        }
-                        if (toEdit.NotificationType != null && toEdit.NotificationType.Id == Area)
-                        {
-                            AddUsersToLevelNotification(toEdit);
-                        }
-                    }
-                }
+                var toEdit = _notificationRepository.GetById(eventNotification.Id);
+                Mapper.Map(eventNotification, toEdit);
                 _notificationRepository.Update(toEdit);
                 _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.",
                     ViewMessageType.SuccessMessage);
@@ -453,14 +127,12 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: /NotificationModel/Delete/5
         [HttpPost]
         public ActionResult Delete(long id)
         {
             try
             {
-                Notification toDelete = _notificationRepository.GetById(id);
-                _notificationRepository.Delete(toDelete);
+                _notificationRepository.Delete(id);
                 IQueryable<long> notifications = _notificationRepository.Query(x => x).Select(x => x.Id);
                 return RedirectToAction("Index", notifications);
             }
@@ -470,7 +142,6 @@ namespace Mhotivo.Controllers
             }
         }
 
-        // GET: /NotificationModel/
         [AllowAnonymous]
         public ActionResult Approve()
         {
@@ -507,6 +178,142 @@ namespace Mhotivo.Controllers
                     ViewMessageType.ErrorMessage);
             }
             return RedirectToAction("Approve");
+        }
+
+        private SelectListNotificationRegisterModel LoadEducationLevels(SelectListNotificationRegisterModel model)
+        {
+            var toReturn = model as EducationLevelNotificationRegisterModel;
+            if (toReturn == null) return model;
+            toReturn.EducationLevelSelectList = new SelectList(_areaReporsitory.GetAllAreas(), "Id", "Name",
+                model.DestinationId);
+            return toReturn;
+        }
+
+        private SelectListNotificationRegisterModel LoadGrades(SelectListNotificationRegisterModel model)
+        {
+            var toReturn = model as GradeNotificationRegisterModel;
+            if (toReturn == null) return model;
+            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", model.DestinationId);
+            return toReturn;
+        }
+
+        private SelectListNotificationRegisterModel LoadAcademicGrades(SelectListNotificationRegisterModel model)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var toReturn = model as AcademicGradeNotificationRegisterModel;
+            if (toReturn == null) return model;
+            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
+            if (toReturn.GradeId != -1)
+            {
+                toReturn.AcademicGradeSelectList =
+                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
+                        "Name", model.DestinationId);
+            }
+            else
+            {
+                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
+            }
+            return toReturn;
+        }
+
+        private SelectListNotificationRegisterModel LoadAcademicCourses(SelectListNotificationRegisterModel model)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var toReturn = model as AcademicCourseNotificationRegisterModel;
+            if (toReturn == null) return model;
+            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
+            if (toReturn.GradeId != -1)
+            {
+                toReturn.AcademicGradeSelectList =
+                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
+                        "Name", toReturn.AcademicGradeId);
+            }
+            else
+            {
+                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
+            }
+            if (toReturn.AcademicGradeId != -1)
+            {
+                toReturn.AcademicCourseSelectList =
+                    new SelectList(
+                        _academicYearCourseRepository.Filter(x => x.AcademicYearGrade.Id == toReturn.AcademicGradeId),
+                        "Id", "Name", toReturn.DestinationId);
+            }
+            else
+            {
+                toReturn.AcademicCourseSelectList = new SelectList(list, "Value", "Text");
+            }
+            return toReturn;
+        }
+
+        private SelectListNotificationRegisterModel LoadStudents(SelectListNotificationRegisterModel model)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var toReturn = model as PersonalNotificationRegisterModel;
+            if (toReturn == null) return model;
+            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
+            if (toReturn.GradeId != -1)
+            {
+                toReturn.AcademicGradeSelectList =
+                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
+                        "Name", toReturn.AcademicGradeId);
+            }
+            else
+            {
+                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
+            }
+            if (toReturn.AcademicGradeId != -1)
+            {
+                toReturn.PersonalSelectList =
+                    new SelectList(_studentRepository.Filter(x => x.MyGrade.Id == toReturn.AcademicGradeId), "Id",
+                        "FullName", toReturn.DestinationId);
+            }
+            else
+            {
+                toReturn.PersonalSelectList = new SelectList(list, "Value", "Text");
+            }
+            return toReturn;
+        }
+
+        public JsonResult LoadTypeNotification(SelectListNotificationRegisterModel model, long notificationType)
+        {
+            var dictType = new Dictionary<Type, NotificationType>
+            {
+                {typeof (EducationLevelNotificationRegisterModel), NotificationType.EducationLevel},
+                {typeof (GradeNotificationRegisterModel), NotificationType.Grade},
+                {typeof (AcademicGradeNotificationRegisterModel), NotificationType.Section},
+                {typeof (AcademicCourseNotificationRegisterModel), NotificationType.Course},
+                {typeof (PersonalNotificationRegisterModel), NotificationType.Personal}
+            };
+            if (model == null || dictType[model.GetType()] != (NotificationType)notificationType)
+            {
+                var dictModel = new Dictionary<NotificationType, SelectListNotificationRegisterModel>
+                {
+                    {NotificationType.EducationLevel, new EducationLevelNotificationRegisterModel()},
+                    {NotificationType.Grade, new GradeNotificationRegisterModel()},
+                    {NotificationType.Section, new AcademicGradeNotificationRegisterModel()},
+                    {NotificationType.Course, new AcademicCourseNotificationRegisterModel()},
+                    {NotificationType.Personal, new PersonalNotificationRegisterModel()}
+                };
+                model = dictModel[(NotificationType) notificationType];
+            }
+            var dict =
+                new Dictionary<Type, Func<SelectListNotificationRegisterModel, SelectListNotificationRegisterModel>>
+                {
+                    {typeof(EducationLevelNotificationRegisterModel), LoadEducationLevels},
+                    {typeof(GradeNotificationRegisterModel), LoadGrades},
+                    {typeof(AcademicGradeNotificationRegisterModel), LoadAcademicGrades},
+                    {typeof(AcademicCourseNotificationRegisterModel), LoadAcademicCourses},
+                    {typeof(PersonalNotificationRegisterModel), LoadStudents}
+                };
+            return Json(dict[model.GetType()](model), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetGroupsAndEmails(string filter)
+        {
+            List<string> mails =
+                _userRepository.Filter(x => x.DisplayName == filter || x.Email == filter).Select(x => x.Email).ToList();
+            return Json(mails, JsonRequestBehavior.AllowGet);
         }
     }
 }

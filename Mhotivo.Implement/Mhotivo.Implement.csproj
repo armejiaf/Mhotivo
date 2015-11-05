@@ -57,9 +57,9 @@
   <ItemGroup>
     <Compile Include="Attributes\NotEqualToAttribute.cs" />
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201510242104324_NMigration.cs" />
-    <Compile Include="Migrations\201510242104324_NMigration.Designer.cs">
-      <DependentUpon>201510242104324_NMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201511050350290_NMigration.cs" />
+    <Compile Include="Migrations\201511050350290_NMigration.Designer.cs">
+      <DependentUpon>201511050350290_NMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -105,11 +105,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201510242104324_NMigration.resx">
-      <DependentUpon>201510242104324_NMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511050350290_NMigration.resx">
+      <DependentUpon>201511050350290_NMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -47,19 +47,19 @@ namespace Mhotivo.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                temp = _pensumRepository.Filter(x => x.Course.Name.Contains(searchString)).ToList();
+                //temp = _pensumRepository.Filter(x => x.Course.Name.Contains(searchString)).ToList();
             }
-            var list = temp.Select(item => item.Course != null ? new DisplayPensumModel
+            var list = temp.Select(item => item.Courses != null ? new DisplayPensumModel
             {
                 Id = item.Id,
-                Course = item.Course.Name,
+                Courses = item.Courses.Select(c => c.Name).ToList(),
                 Grade = item.Grade.Name
             } : null).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
                 case "course_desc":
-                    list = list.OrderByDescending(s => s.Course).ToList();
+                    list = list.OrderByDescending(s => s.Courses).ToList();
                     break;
                 case "Grade":
                     list = list.OrderBy(s => s.Grade).ToList();
@@ -68,7 +68,7 @@ namespace Mhotivo.Controllers
                     list = list.OrderByDescending(s => s.Grade).ToList();
                     break;
                 default:  // Name ascending 
-                    list = list.OrderBy(s => s.Course).ToList();
+                    list = list.OrderBy(s => s.Courses).ToList();
                     break;
             }
             const int pageSize = 10;
@@ -109,11 +109,11 @@ namespace Mhotivo.Controllers
                 myPensum.Grade = _gradeRepository.GetById(modelPensum.IdGrade);
                 updateGrade = true;
             }
-            if (myPensum.Course.Id != modelPensum.IdCourse)
-            {
-                myPensum.Course = _courseRepository.GetById(modelPensum.IdCourse);
-                updateCourse = true;
-            }
+            //if (myPensum.Course.Id != modelPensum.IdCourse)
+            //{
+            //    myPensum.Course = _courseRepository.GetById(modelPensum.IdCourse);
+            //    updateCourse = true;
+            //}
             Pensum pensum = _pensumRepository.Update(myPensum);
             const string title = "Pensum Actualizado";
             string content = "El Pensum " + pensum.Id +
@@ -133,7 +133,7 @@ namespace Mhotivo.Controllers
         {
             Pensum pensum = _pensumRepository.Delete(id);
             const string title = "Pensum Eliminado";
-            string content = "El Pesum de "+pensum.Course+" para el grado " + pensum.Grade + " ha sido eliminado exitosamente.";
+            string content = "El Pesum para el grado " + pensum.Grade + " ha sido eliminado exitosamente.";
             TempData["MessageInfo"] = new MessageModel
             {
                 Type = "INFO",
@@ -159,7 +159,7 @@ namespace Mhotivo.Controllers
             var myPensum = new Pensum
             {
                 Grade = _gradeRepository.GetById(modelPensum.IdGrade),
-                Course = _courseRepository.GetById(modelPensum.IdCourse)
+                //Course = _courseRepository.GetById(modelPensum.IdCourse)
             };
             Pensum user = _pensumRepository.Create(myPensum);
             const string title = "Pensum Agregado";

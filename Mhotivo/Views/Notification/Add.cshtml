@@ -1,4 +1,5 @@
-﻿@model Mhotivo.Models.NotificationModel
+﻿@using System.Data.SqlClient
+@model Mhotivo.Models.NotificationMainModel
 
 @{
     ViewBag.Title = "Notificaciones";
@@ -16,36 +17,44 @@
 <link href="~/Content/summernote-bs3.css" rel="stylesheet" />
 <script src="~/Scripts/summernote.min.js"></script>
 
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
 
 @using (Html.BeginForm("Add", "Notification", FormMethod.Post, new {id = "Form", @class = "form-horizontal"}))
 {
     @Html.ValidationSummary(true)
 
     <p class="text-error">
-        @Html.ValidationMessageFor(model => model.NotificationName)
+        @Html.ValidationMessageFor(model => model.Title)
         @Html.ValidationMessageFor(model => model.Message) 
-        @Html.ValidationMessageFor(model => model.NotificationTypeId) 
-        @Html.ValidationMessageFor(model => model.StudentId) 
-        @Html.ValidationMessageFor(model => model.Section)
-        
+        @Html.ValidationMessageFor(model => model.NotificationType)
     </p>
 
     <div class="control-group">
         <div class="control-label">
-            @Html.LabelFor(model => model.NotificationName)
+            @Html.LabelFor(model => model.Title)
         </div>
         <div class="controls">
-            @Html.EditorFor(model => model.NotificationName)
+            @Html.EditorFor(model => model.Title)
         </div>
     </div>
 
     <div class="control-group">
         <div class="control-label">
-            @Html.LabelFor(model => model.NotificationTypeSelectList)
+            @*@using (Ajax.BeginForm("LoadTypeNotification", "Notification", Model, new AjaxOptions { UpdateTargetId = "result" }))
+            {
+                <div id="result"></div>
+                <input type="submit" value="getData" />
+            }*@
+            @Html.LabelFor(model => model.NotificationType)
         </div>
-        <div class="controls">
-            @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new {id = "NotificationType"})
-            @*@Html.DropDownList("NotificationType", Model.NotificationTypeSelectList, "Seleccione", new { id = "NotificationType" })*@
+        <div class="controls" id="NotificationTypeDropDown">
+            @using (Html.BeginForm("LoadTypeNotification", "Notification"))
+            {
+                @Html.Hidden("model", Model.DestinationSelectModel)
+                @Html.DropDownList("notificationType", (SelectList)ViewBag.NotificationTypes, new {onchange = "this.form.submit();"})
+            }
         </div>
     </div>
 
@@ -81,45 +90,20 @@
 
     </div>
 
-
-        @*<p>
-        <input type="submit" value="Create" id="SubmitId" />
-    </p>*@
-
     <div class="control-group">
         <div class="control-label">
-            @Html.LabelFor(model => model.SendingEmail)
+            @Html.LabelFor(model => model.SendEmail)
         </div>
         <div class="controls">
-            @Html.CheckBoxFor(model => model.SendingEmail)
+            @Html.CheckBoxFor(model => model.SendEmail)
         </div>
     </div>
-
     <div id="htmlMessage"></div>
-
     @Html.HiddenFor(model => model.Message)
-
     <div class="space"></div>
-
-
-    @*<div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.Message)
-        </div>
-        <div class="controls">
-            @Html.TextAreaFor(model => model.Message)
-        </div>
-    </div>*@
-
     <div class="space"></div>
-
     <div class="modal-footer">
         @Html.ActionLink("Cancelar", "Index", "Notification", null, new {@class = "btn btn-small icon-remove"}) 
-        @* <button data-dismiss="modal" class="btn btn-small" onclick="">
-                <i class="icon-remove"></i>
-                Cancelar
-            </button>*@
-
         <button type="submit" class="btn btn-small btn-primary">
             <i class="icon-ok"></i>
             Crear
@@ -214,7 +198,9 @@
             });
         }
     });
-
+      //$("#NotificationTypeDropDown").on("change", function () {
+       //   @Model.DestinationSelectModel = $("form").submit();
+      //});
 </script>
 
 

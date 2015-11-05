@@ -9,7 +9,7 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    class AcademicYearGradeRepository : IAcademicYearGradeRepository
+    public class AcademicYearGradeRepository : IAcademicYearGradeRepository
     {
         private readonly MhotivoContext _context;
         public AcademicYearGradeRepository(MhotivoContext context)

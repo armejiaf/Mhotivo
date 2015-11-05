@@ -46,10 +46,11 @@ namespace Mhotivo.Implement.Migrations
             _academicYearGradeRepository = new AcademicYearGradeRepository(context);
             _academicYearCourseRepository = new AcademicYearCourseRepository(context);
 
-            _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), Id = 0 });
-            _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), Id = 1 });
-            _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), Id = 2 });
-            _roleRepository.Create(new Role { Name = "Director", Privileges = new HashSet<Privilege>(), Id = 3 });
+            _roleRepository.Create(new Role { Name = "Administrador", Id = 0 });
+            _roleRepository.Create(new Role { Name = "Padre", Id = 1 });
+            _roleRepository.Create(new Role { Name = "Maestro", Id = 2 });
+            _roleRepository.Create(new Role { Name = "Director", Id = 3 });
+            _roleRepository.Create(new Role { Name = "Maestro de Seccion", Id = 4 });
 
             var admin = new User
             {
@@ -162,7 +163,7 @@ namespace Mhotivo.Implement.Migrations
                     }
                     academicYear.Grades.Add(newGrade);
                     _academicYearRepository.Update(academicYear);
-                } while (!Boolean.Parse(rnd.Next(0, 1).ToString(CultureInfo.InvariantCulture)));
+                } while (rnd.Next(0, 1) == 1);
             }
             var genericParent = new User
             {
@@ -173,7 +174,7 @@ namespace Mhotivo.Implement.Migrations
                 Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
             };
             _userRepository.Create(genericParent);
-            _parentRepository.Create(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, User = genericParent });
+            _parentRepository.Create(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, User = genericParent, BirthDate = new DateTime(1956, 11, 23)});
         }
     }
 }

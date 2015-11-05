@@ -81,7 +81,7 @@ namespace Mhotivo
             kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearCourseRepository>().To<AcademicYearCourseRepository>().InRequestScope();
+            kernel.Bind<IAcademicYearGradeRepository>().To<AcademicYearGradeRepository>().InRequestScope();
             kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
         }        
     }

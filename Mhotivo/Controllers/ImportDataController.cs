@@ -39,19 +39,10 @@ namespace Mhotivo.Controllers
              return View(importModel);
         }
 
-        public class DdlItems
-        {
-            public DdlItems()
-            {
-                Items = new List<SelectListItem>();
-            }
-            public List<SelectListItem> Items { get; set; }
-        }
-
-        [AuthorizeAdmin]
+        /*[AuthorizeAdmin]
         public ActionResult DynamicDropDownList(long gradeId)
         {
-            var model = new DdlItems();
+            var model = new DynamicListModel();
             var items = _academicYearGradeRepository.Filter(x => x.Grade.Id == gradeId).Select(x => x.Section);
             foreach (var item in items)
             {
@@ -62,7 +53,7 @@ namespace Mhotivo.Controllers
                 });
             }
             return View(model);
-        }
+        }*/
 
         [HttpPost]
         [AuthorizeAdmin]
@@ -80,7 +71,7 @@ namespace Mhotivo.Controllers
             if(errorExcel)
                 ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
             var academicYear = _academicYearRepository.Filter(x => x.Year == importModel.Year
-            && x.Grades.Any(n => n.Grade.Id == importModel.GradeImport && n.Section == importModel.Section));
+            && x.Grades.Any(n => n.Grade.Id == importModel.GradeImport && n.Section == importModel.Section)).FirstOrDefault();
             if (academicYear == null)
                 ModelState.AddModelError("Year", "No existe ese año academico");
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
@@ -102,7 +93,7 @@ namespace Mhotivo.Controllers
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
-                                        , academicYear.Grade.Name // 1
+                                        , academicYear.Grades.ElementAt(0).Name // 1
                                         , importModel.Section // 2
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

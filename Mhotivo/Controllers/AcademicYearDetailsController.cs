@@ -36,7 +36,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index(long id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var allAcademicYears = _academicYearCourseRepository.GetAllAcademicYearsDetails(id);
+            var allAcademicYears = _academicYearCourseRepository.GetAllAcademicYearDetails();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "teacher_desc" : "";
             ViewBag.ScheduleSortParm = sortOrder == "Schedule" ? "schedule_desc" : "Schedule";
@@ -52,16 +52,13 @@ namespace Mhotivo.Controllers
             {
                 allAcademicYears = _academicYearCourseRepository.Filter(x => x.Teacher.FullName.Contains(searchString)).ToList();
             }
-            var academicYearsDetails = allAcademicYears.Select(academicYearD =>  academicYearD.Schedule != null ? (academicYearD.TeacherEndDate != null ? (academicYearD.TeacherStartDate != null ? new DisplayAcademicYearDetailsModel
+            var academicYearsDetails = allAcademicYears.Select(academicYearD =>  academicYearD.Schedule != null ?  new DisplayAcademicYearDetailsModel
             {
                 Id = academicYearD.Id,
-                TeacherStartDate = academicYearD.TeacherStartDate.Value,
-                TeacherEndDate = academicYearD.TeacherEndDate.Value,
-                Schedule = academicYearD.Schedule.Value,
-                Room = academicYearD.Room,
+                //Schedule = academicYearD.Schedule,
                 Course = academicYearD.Course.Name,
                 Teacher = academicYearD.Teacher.FullName
-            } : null) : null) : null).ToList();
+            } : null).ToList();
             ViewBag.IdAcademicYear = id;
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
@@ -92,10 +89,7 @@ namespace Mhotivo.Controllers
             var academicYearModel = new AcademicYearDetailsEditModel
             {
                 Id = academicYearDetails.Id,
-                TeacherStartDate = academicYearDetails.TeacherStartDate.ToString(),
-                TeacherEndDate = academicYearDetails.TeacherEndDate.ToString(),
                 Schedule = academicYearDetails.Schedule.ToString(),
-                Room = academicYearDetails.Room,
                 Course = academicYearDetails.Course,
                 Teacher = academicYearDetails.Teacher
             };
@@ -109,10 +103,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(AcademicYearDetailsEditModel academicYearDetailsModel)
         {
             var myAcademicYearDetails = _academicYearCourseRepository.GetById(academicYearDetailsModel.Id);
-            myAcademicYearDetails.TeacherStartDate = academicYearDetailsModel.TeacherStartDate.AsDateTime();
-            myAcademicYearDetails.TeacherEndDate = academicYearDetailsModel.TeacherEndDate.AsDateTime();
-            myAcademicYearDetails.Schedule = academicYearDetailsModel.Schedule.AsDateTime();
-            myAcademicYearDetails.Room = academicYearDetailsModel.Room;
+            myAcademicYearDetails.Schedule = academicYearDetailsModel.Schedule.AsDateTime().TimeOfDay;
             myAcademicYearDetails.Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id);
             myAcademicYearDetails.Teacher = _teacherRepository.GetById(academicYearDetailsModel.Teacher.Id);
             _academicYearCourseRepository.Update(myAcademicYearDetails);
@@ -150,13 +141,10 @@ namespace Mhotivo.Controllers
 
             var academicYearDetails = new AcademicYearCourse
             {
-                TeacherStartDate = ParseToHonduranDateTime.Parse(academicYearDetailsModel.TeacherStartDate),
-                TeacherEndDate = ParseToHonduranDateTime.Parse(academicYearDetailsModel.TeacherEndDate),
-                Schedule = ParseToHonduranDateTime.Parse(academicYearDetailsModel.Schedule),
-                Room = academicYearDetailsModel.Room,
+                Schedule = ParseToHonduranDateTime.Parse(academicYearDetailsModel.Schedule).TimeOfDay,
                 Course = _courseRepository.GetById(academicYearDetailsModel.Course.Id),
                 Teacher = _teacherRepository.GetById(academicYearDetailsModel.Teacher.Id),
-                AcademicYearGrade = _academicYearRepository.GetById(academicYearDetailsModel.AcademicYearId)
+                //AcademicYearGrade = _academicYearRepository.GetById(academicYearDetailsModel.AcademicYearId)
             };
 
            

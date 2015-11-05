@@ -11,6 +11,7 @@ namespace Mhotivo.Data.Entities
         }
 
         public long Id { get; set; }
+        public string Name { get; set; }
         public virtual AcademicYear AcademicYear { get; set; }
         public virtual Grade Grade { get; set; }
         public string Section { get; set; }
