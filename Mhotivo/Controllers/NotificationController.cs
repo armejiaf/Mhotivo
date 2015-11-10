@@ -258,9 +258,9 @@ namespace Mhotivo.Controllers
                             notificationIdentity.Users.Add(notificationParentId.MyUser);
                         }
                     }
-                    notificationParentId = _studentRepository.GetAllStudents().Where(x => x.Id == student.Id
+                    notificationParentId = _studentRepository.Query(x => x).Where(x => x.Id == student.Id
                                                                 && x.Tutor2 != null && x.Tutor2 != x.Tutor1)
-                                                                .Select(x => x.Tutor2).FirstOrDefault();
+                                                                .Select(x => x.Tutor2).Include(x => x.MyUser).FirstOrDefault();
                     if (notificationParentId != null)
                     {
                         User parents = _userRepository.GetById(notificationParentId.MyUser.Id);
