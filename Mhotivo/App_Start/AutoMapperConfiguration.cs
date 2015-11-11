@@ -13,6 +13,7 @@ namespace Mhotivo
             Mapper.CreateMap<CourseRegisterModel, Course>();
             Mapper.CreateMap<GradeRegisterModel, Grade>();
             Mapper.CreateMap<CreateHomeworkModel, Homework>();
+            Mapper.CreateMap<EducationLevelRegisterModel, EducationLevel>();
             Mapper.CreateMap<ParentRegisterModel, Parent>().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
             Mapper.CreateMap<StudentRegisterModel, Student>().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
             Mapper.CreateMap<TeacherRegisterModel, Teacher>().ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
@@ -21,7 +22,7 @@ namespace Mhotivo
             Mapper.CreateMap<Grade, DisplayGradeModel>().ForMember(p => p.EducationLevel, o => o.MapFrom(src => src.EducationLevel.Name));
             Mapper.CreateMap<Course, DisplayCourseModel>();
             Mapper.CreateMap<Notification, NotificationDisplayModel>();
-            Mapper.CreateMap<EducationLevel, DisplayEducationLevelModel>();
+            Mapper.CreateMap<EducationLevel, DisplayEducationLevelModel>().ForMember(p => p.Director, o => o.MapFrom(src => src.Director.DisplayName ?? "No Asignado"));
             Mapper.CreateMap<Homework, DisplayHomeworkModel>();
             Mapper.CreateMap<Parent, DisplayParentModel>().ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
             Mapper.CreateMap<Pensum, DisplayPensumModel>();
@@ -32,6 +33,7 @@ namespace Mhotivo
             Mapper.CreateMap<User, DisplayNewUserModel>().ForMember(p => p.RoleName, o => o.MapFrom(src => src.Role.Name));
             Mapper.CreateMap<User, DisplayNewUserDefaultPasswordModel>();
             //EditModels: Map Entity to Model and ReverseMap
+            Mapper.CreateMap<EducationLevel, EducationLevelDirectorAssignModel>().ReverseMap();
             Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
             Mapper.CreateMap<EducationLevel, EducationLevelEditModel>().ReverseMap();
             Mapper.CreateMap<Grade, GradeEditModel>().ReverseMap();

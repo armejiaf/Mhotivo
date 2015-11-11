@@ -1,0 +1,47 @@
+﻿@model Mhotivo.Models.EducationLevelDirectorAssignModel
+
+@{
+    ViewBag.Title = "Asignar Director a Nivel de Educacion";
+    Layout = "";
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm("EditDirector", "EducationLevel", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Asignar Director</legend>
+
+            <p class="text-error">
+                @Html.ValidationMessageFor(model => model.Director)
+            </p>
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Director)
+                </div>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Director, (SelectList)ViewBag.Directors);
+                </div>
+            </div>
+
+            <div class="space"></div>
+
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-small">
+                    <i class="icon-remove"></i>
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-small btn-primary">
+                    <i class="icon-ok"></i>
+                    Actualizar
+                </button>
+            </div>
+        </fieldset>
+    }
+</div>

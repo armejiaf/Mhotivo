@@ -375,6 +375,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="Scripts\listCollapse.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\selectize.js" />
     <Content Include="Scripts\summernote.min.js" />
@@ -501,8 +502,7 @@
     <Content Include="Views\NewUser\Index.cshtml" />
     <Content Include="Views\NewUser\Details.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Notification\AddPartial.cshtml" />
-    <Content Include="Views\Notification\LoadTypeNotification.cshtml" />
+    <Content Include="Views\EducationLevel\EditDirector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
