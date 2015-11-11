@@ -89,9 +89,9 @@ namespace Mhotivo.Implement.Migrations
                 p = _pensumRepository.Create(p);
                 grade.Pensums.Add(p);
                 _gradeRepository.Update(grade);
-                var c1 = new Course {Name = "Ingles para " + grade.Name + "grado", Pensum = p};
-                var c2 = new Course { Name = "Matematicas para " + grade.Name + "grado", Pensum = p };
-                var c3 = new Course { Name = "Ciencias para " + grade.Name + "grado", Pensum = p };
+                var c1 = new Course {Name = "Ingles para " + grade.Name, Pensum = p};
+                var c2 = new Course { Name = "Matematicas para " + grade.Name, Pensum = p };
+                var c3 = new Course { Name = "Ciencias para " + grade.Name, Pensum = p };
                 _courseRepository.Create(c1);
                 _courseRepository.Create(c2);
                 _courseRepository.Create(c3);
@@ -163,7 +163,7 @@ namespace Mhotivo.Implement.Migrations
                     }
                     academicYear.Grades.Add(newGrade);
                     _academicYearRepository.Update(academicYear);
-                } while (rnd.Next(0, 1) == 1);
+                } while (rnd.Next(0, 2) == 0);
             }
             var genericParent = new User
             {

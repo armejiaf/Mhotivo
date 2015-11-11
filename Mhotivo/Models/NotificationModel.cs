@@ -5,14 +5,20 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
-    public class NotificationMainModel
+    public class NotificationRegisterModel
     {
+        public NotificationRegisterModel()
+        {
+            Id1 = -1;
+            Id2 = -1;
+        }
         [Required(ErrorMessage = "Debe Ingresar un Titulo")]
         [Display(Name = "Titulo")]
         public string Title { get; set; }
-
+        
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        [AllowHtml]
+        [Display(Name = "Mensaje")]
+        //[AllowHtml]
         public string Message { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
@@ -21,63 +27,25 @@ namespace Mhotivo.Models
 
         [Display(Name = "Enviar Notificacion por correo?")]
         public bool SendEmail { get; set; }
+        
+        [Required(ErrorMessage = "Debe selecionar una opcion.")]
+        public long Id1 { get; set; }
 
-        public SelectListNotificationRegisterModel DestinationSelectModel { get; set; }
-    }
+        [Required(ErrorMessage = "Debe selecionar una opcion.")]
+        public long Id2 { get; set; }
 
-    public class SelectListNotificationRegisterModel
-    {
+        [Required(ErrorMessage = "Debe selecionar una opcion.")]
         public long DestinationId { get; set; }
     }
-    public class EducationLevelNotificationRegisterModel : SelectListNotificationRegisterModel
-    {
-        public SelectList EducationLevelSelectList { get; set; }
-    }
 
-    public class GradeNotificationRegisterModel : SelectListNotificationRegisterModel
+    public class NotificationSelectListsModel
     {
-        public SelectList GradeSelectList { get; set; }
+        public SelectList EducationLevels { get; set; }
+        public SelectList Grades { get; set; }
+        public SelectList AcademicGrades { get; set; }
+        public SelectList AcademicCourses { get; set; }
+        public SelectList Personals { get; set; }
     }
-
-    public class AcademicGradeNotificationRegisterModel : SelectListNotificationRegisterModel
-    {
-        public AcademicGradeNotificationRegisterModel()
-        {
-            GradeId = -1;
-        }
-        public long GradeId { get; set; }
-        public SelectList GradeSelectList { get; set; }
-        public SelectList AcademicGradeSelectList { get; set; }
-    }
-
-    public class AcademicCourseNotificationRegisterModel : SelectListNotificationRegisterModel
-    {
-        public AcademicCourseNotificationRegisterModel()
-        {
-            GradeId = -1;
-            AcademicGradeId = -1;
-        }
-        public long GradeId { get; set; }
-        public long AcademicGradeId { get; set; }
-        public SelectList GradeSelectList { get; set; }
-        public SelectList AcademicGradeSelectList { get; set; }
-        public SelectList AcademicCourseSelectList { get; set; }
-    }
-
-    public class PersonalNotificationRegisterModel : SelectListNotificationRegisterModel
-    {
-        public PersonalNotificationRegisterModel()
-        {
-            GradeId = -1;
-            AcademicGradeId = -1;
-        }
-        public long GradeId { get; set; }
-        public long AcademicGradeId { get; set; }
-        public SelectList GradeSelectList { get; set; }
-        public SelectList AcademicGradeSelectList { get; set; }
-        public SelectList PersonalSelectList { get; set; }
-    }
-
     public class NotificationEditModel
     {
         
@@ -85,7 +53,15 @@ namespace Mhotivo.Models
 
     public class NotificationDisplayModel
     {
-        
+        public long Id { get; set; }
+        [Display(Name = "Titulo")]
+        public string Title { get; set; }
+
+        [Display(Name = "Tipo de Notificacion")]
+        public NotificationType NotificationType { get; set; }
+
+        [Display(Name = "Aprobada?")]
+        public bool Approved { get; set; }
     }
 
     public class NotificationModel
@@ -99,7 +75,8 @@ namespace Mhotivo.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        [AllowHtml]
+        [Display(Name="Mensaje")]
+        //[AllowHtml]
         public string Message { get; set; }
 
         [Editable(false)]

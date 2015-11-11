@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
@@ -65,7 +64,7 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult UpdateEmail(UpdateParentMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
-            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
+            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).FirstOrDefault();
             
             if (parentUser != null)
             {

@@ -65,7 +65,7 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Teacher> GetAllTeachers()
         {
-            return Query(x => x).Include(x => x.User).Include(x => x.MyCourses).Include(x => x.MyPreviousCourses).ToList();
+            return Query(x => x).ToList();
         }
     }
 }

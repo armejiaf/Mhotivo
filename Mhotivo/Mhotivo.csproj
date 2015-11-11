@@ -501,6 +501,8 @@
     <Content Include="Views\NewUser\Index.cshtml" />
     <Content Include="Views\NewUser\Details.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Notification\AddPartial.cshtml" />
+    <Content Include="Views\Notification\LoadTypeNotification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

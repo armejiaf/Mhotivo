@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Logic.ViewMessage;
@@ -66,29 +67,34 @@ namespace Mhotivo.Controllers
             if (searchName != null)
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
-            var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+            var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
             return View(notificationsModel);
         }
 
         [HttpGet]
         public ActionResult Add()
         {
-            var notification = new NotificationMainModel();
+            var notification = new NotificationRegisterModel();
             var items = ((NotificationType[])Enum.GetValues(typeof(NotificationType))).Select(c => new SelectListItem
             {
                 Text = c.ToString("G"),
                 Value = c.ToString("D")
             }).ToList();
 
-            ViewBag.NotificationTypes = new SelectList(items, "Value", "Text", notification.NotificationType);
+            ViewBag.NotificationTypes = new List<SelectListItem>(items);
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            ViewBag.List1 = new List<SelectListItem>(list);
+            ViewBag.List2 = new List<SelectListItem>(list);
+            ViewBag.DestinationList = new List<SelectListItem>(list);
             return View("Add", notification);
         }
 
         [HttpPost]
-        public ActionResult Add(NotificationMainModel eventNotification)
+        public ActionResult Add(NotificationRegisterModel eventNotification)
         {
             var notificationIdentity = Mapper.Map<Notification>(eventNotification);
-            var user = _userRepository.Filter(x => x.Email == _sessionManagement.GetUserLoggedEmail()).FirstOrDefault();
+            var email = _sessionManagement.GetUserLoggedEmail();
+            var user = _userRepository.Filter(x => x.Email == email).FirstOrDefault();
             notificationIdentity.NotificationCreator = user;
             notificationIdentity.AcademicYear = _academicYearRepository.GetCurrentAcademicYear();
             notificationIdentity.Approved = _sessionManagement.GetUserLoggedRole().Equals("Administrador");
@@ -147,7 +153,6 @@ namespace Mhotivo.Controllers
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var notifications = _notificationRepository.Query(x => x)
-                .Include(c => c.NotificationType)
                 .Where(x => x.Approved == false)
                 .OrderByDescending(i => i.CreationDate)
                 .Take(10);
@@ -180,140 +185,244 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Approve");
         }
 
-        private SelectListNotificationRegisterModel LoadEducationLevels(SelectListNotificationRegisterModel model)
+        private NotificationSelectListsModel LoadEducationLevels(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            var toReturn = model as EducationLevelNotificationRegisterModel;
-            if (toReturn == null) return model;
-            toReturn.EducationLevelSelectList = new SelectList(_areaReporsitory.GetAllAreas(), "Id", "Name",
-                model.DestinationId);
+            toReturn.EducationLevels = new SelectList(_areaReporsitory.GetAllAreas(), "Id", "Name");
             return toReturn;
         }
 
-        private SelectListNotificationRegisterModel LoadGrades(SelectListNotificationRegisterModel model)
+        private NotificationSelectListsModel LoadGrades(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            var toReturn = model as GradeNotificationRegisterModel;
-            if (toReturn == null) return model;
-            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", model.DestinationId);
+            toReturn.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
             return toReturn;
         }
 
-        private SelectListNotificationRegisterModel LoadAcademicGrades(SelectListNotificationRegisterModel model)
+        private NotificationSelectListsModel LoadAcademicGrades(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var toReturn = model as AcademicGradeNotificationRegisterModel;
-            if (toReturn == null) return model;
-            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
-            if (toReturn.GradeId != -1)
+            var items = _gradeRepository.GetAllGrade().ToList();
+            toReturn.Grades = new SelectList(items, "Id", "Name");
+            if (items.Any())
             {
-                toReturn.AcademicGradeSelectList =
-                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
-                        "Name", model.DestinationId);
+                var first = items.First();
+                var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == first.Id).ToList();
+                toReturn.AcademicGrades =
+                    new SelectList(sList
+                        , "Id", "Section");
             }
             else
             {
-                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
+                toReturn.AcademicGrades = new SelectList(list, "Value", "Text");
             }
             return toReturn;
         }
 
-        private SelectListNotificationRegisterModel LoadAcademicCourses(SelectListNotificationRegisterModel model)
+        private NotificationSelectListsModel LoadAcademicCourses(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var toReturn = model as AcademicCourseNotificationRegisterModel;
-            if (toReturn == null) return model;
-            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
-            if (toReturn.GradeId != -1)
+            var items = _gradeRepository.GetAllGrade().ToList();
+            toReturn.Grades = new SelectList(items, "Id", "Name");
+            if (items.Any())
             {
-                toReturn.AcademicGradeSelectList =
-                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
-                        "Name", toReturn.AcademicGradeId);
-            }
-            else
-            {
-                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
-            }
-            if (toReturn.AcademicGradeId != -1)
-            {
-                toReturn.AcademicCourseSelectList =
+                var first = items.First();
+                var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == first.Id).ToList();
+                toReturn.AcademicGrades =
                     new SelectList(
-                        _academicYearCourseRepository.Filter(x => x.AcademicYearGrade.Id == toReturn.AcademicGradeId),
-                        "Id", "Name", toReturn.DestinationId);
+                        sList, "Id", "Section");
+                if (sList.Any())
+                {
+                    var first2 = sList.First();
+                    var sList2 = _academicYearCourseRepository.Filter(
+                        x => x.AcademicYearGrade.Id == first2.Id).ToList();
+                    toReturn.AcademicCourses = new SelectList(
+                        sList2, "Id", "Course.Name");
+                }
+                else
+                {
+                    toReturn.AcademicCourses = new SelectList(list, "Value", "Text");
+                }
             }
             else
             {
-                toReturn.AcademicCourseSelectList = new SelectList(list, "Value", "Text");
+                toReturn.AcademicGrades = new SelectList(list, "Value", "Text");
             }
             return toReturn;
         }
 
-        private SelectListNotificationRegisterModel LoadStudents(SelectListNotificationRegisterModel model)
+        private NotificationSelectListsModel LoadStudents(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var toReturn = model as PersonalNotificationRegisterModel;
-            if (toReturn == null) return model;
-            toReturn.GradeSelectList = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", toReturn.GradeId);
-            if (toReturn.GradeId != -1)
+            var items = _gradeRepository.GetAllGrade().ToList();
+            toReturn.Grades = new SelectList(items, "Id", "Name");
+            if (items.Any())
             {
-                toReturn.AcademicGradeSelectList =
-                    new SelectList(_academicYearGradeRepository.Filter(x => x.Grade.Id == toReturn.GradeId), "Id",
-                        "Name", toReturn.AcademicGradeId);
+                var first = items.First();
+                var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == first.Id).ToList();
+                toReturn.AcademicGrades =
+                    new SelectList(
+                        sList, "Id", "Section");
+                if (sList.Any())
+                {
+                    var first2 = sList.First();
+                    var sList2 = _studentRepository.Filter(
+                        x => x.MyGrade.Id == first2.Id).ToList();
+                    toReturn.Personals = new SelectList(
+                        sList2, "Id", "FullName");
+                }
+                else
+                {
+                    toReturn.Personals = new SelectList(list, "Value", "Text");
+                }
             }
             else
             {
-                toReturn.AcademicGradeSelectList = new SelectList(list, "Value", "Text");
-            }
-            if (toReturn.AcademicGradeId != -1)
-            {
-                toReturn.PersonalSelectList =
-                    new SelectList(_studentRepository.Filter(x => x.MyGrade.Id == toReturn.AcademicGradeId), "Id",
-                        "FullName", toReturn.DestinationId);
-            }
-            else
-            {
-                toReturn.PersonalSelectList = new SelectList(list, "Value", "Text");
+                toReturn.AcademicGrades = new SelectList(list, "Value", "Text");
             }
             return toReturn;
         }
 
-        public JsonResult LoadTypeNotification(SelectListNotificationRegisterModel model, long notificationType)
+        private NotificationSelectListsModel LoadAcademicGradesFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            var dictType = new Dictionary<Type, NotificationType>
-            {
-                {typeof (EducationLevelNotificationRegisterModel), NotificationType.EducationLevel},
-                {typeof (GradeNotificationRegisterModel), NotificationType.Grade},
-                {typeof (AcademicGradeNotificationRegisterModel), NotificationType.Section},
-                {typeof (AcademicCourseNotificationRegisterModel), NotificationType.Course},
-                {typeof (PersonalNotificationRegisterModel), NotificationType.Personal}
-            };
-            if (model == null || dictType[model.GetType()] != (NotificationType)notificationType)
-            {
-                var dictModel = new Dictionary<NotificationType, SelectListNotificationRegisterModel>
-                {
-                    {NotificationType.EducationLevel, new EducationLevelNotificationRegisterModel()},
-                    {NotificationType.Grade, new GradeNotificationRegisterModel()},
-                    {NotificationType.Section, new AcademicGradeNotificationRegisterModel()},
-                    {NotificationType.Course, new AcademicCourseNotificationRegisterModel()},
-                    {NotificationType.Personal, new PersonalNotificationRegisterModel()}
-                };
-                model = dictModel[(NotificationType) notificationType];
-            }
-            var dict =
-                new Dictionary<Type, Func<SelectListNotificationRegisterModel, SelectListNotificationRegisterModel>>
-                {
-                    {typeof(EducationLevelNotificationRegisterModel), LoadEducationLevels},
-                    {typeof(GradeNotificationRegisterModel), LoadGrades},
-                    {typeof(AcademicGradeNotificationRegisterModel), LoadAcademicGrades},
-                    {typeof(AcademicCourseNotificationRegisterModel), LoadAcademicCourses},
-                    {typeof(PersonalNotificationRegisterModel), LoadStudents}
-                };
-            return Json(dict[model.GetType()](model), JsonRequestBehavior.AllowGet);
+            var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == model.Id1).ToList();
+            toReturn.AcademicGrades =
+                new SelectList(
+                    sList, "Id", "Section");
+            return toReturn;
         }
 
-        public JsonResult GetGroupsAndEmails(string filter)
+        private NotificationSelectListsModel LoadAcademicCoursesFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            List<string> mails =
-                _userRepository.Filter(x => x.DisplayName == filter || x.Email == filter).Select(x => x.Email).ToList();
-            return Json(mails, JsonRequestBehavior.AllowGet);
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == model.Id1).ToList();
+            toReturn.AcademicGrades =
+                new SelectList(
+                    sList, "Id", "Section");
+            if (sList.Any())
+            {
+                var first2 = sList.First();
+                var sList2 = _academicYearCourseRepository.Filter(
+                    x => x.AcademicYearGrade.Id == first2.Id).ToList();
+                toReturn.AcademicCourses = new SelectList(
+                    sList2, "Id", "Course.Name");
+            }
+            else
+            {
+                toReturn.AcademicCourses = new SelectList(list, "Value", "Text");
+            }
+            return toReturn;
+        }
+
+        private NotificationSelectListsModel LoadStudentsFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var sList = _academicYearGradeRepository.Filter(
+                    x => x.Grade.Id == model.Id1).ToList();
+            toReturn.AcademicGrades =
+                new SelectList(
+                    sList, "Id", "Section");
+            if (sList.Any())
+            {
+                var first2 = sList.First();
+                var sList2 = _studentRepository.Filter(
+                    x => x.MyGrade.Id == first2.Id).ToList();
+                toReturn.Personals = new SelectList(
+                    sList2, "Id", "FullName");
+            }
+            else
+            {
+                toReturn.Personals = new SelectList(list, "Value", "Text");
+            }
+            return toReturn;
+        }
+
+        private NotificationSelectListsModel LoadAcademicCoursesFromList2(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
+        {
+            var sList = _academicYearCourseRepository.Filter(
+                    x => x.AcademicYearGrade.Id == model.Id2).ToList();
+            toReturn.AcademicCourses =
+                new SelectList(
+                    sList, "Id", "Course.Name");
+            return toReturn;
+        }
+
+        private NotificationSelectListsModel LoadStudentsFromList2(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
+        {
+            var sList = _studentRepository.Filter(
+                    x => x.MyGrade.Id == model.Id2).ToList();
+            toReturn.Personals =
+                new SelectList(
+                    sList, "Id", "FullName");
+            return toReturn;
+        }
+
+        public JsonResult LoadFromNotificationTypeList(NotificationRegisterModel registerModel)
+        {
+            var list = new List<SelectListItem> {new SelectListItem {Value = "-1", Text = "N/A"}};
+            var selectListsModel = new NotificationSelectListsModel
+            {
+                EducationLevels = new SelectList(list, "Value", "Text"),
+                Grades = new SelectList(list, "Value", "Text"),
+                AcademicGrades = new SelectList(list, "Value", "Text"),
+                AcademicCourses = new SelectList(list, "Value", "Text"),
+                Personals = new SelectList(list, "Value", "Text")
+            };
+            var dict = new Dictionary<NotificationType, Func<NotificationRegisterModel, NotificationSelectListsModel, NotificationSelectListsModel>>
+            {
+                {NotificationType.General, LoadEducationLevels},
+                {NotificationType.EducationLevel, LoadEducationLevels},
+                {NotificationType.Grade, LoadGrades},
+                {NotificationType.Section, LoadAcademicGrades},
+                {NotificationType.Course, LoadAcademicCourses},
+                {NotificationType.Personal, LoadStudents}
+            };
+            selectListsModel = dict[registerModel.NotificationType](registerModel, selectListsModel);
+            return Json(selectListsModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadFromList1(NotificationRegisterModel registerModel)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var selectListsModel = new NotificationSelectListsModel
+            {
+                EducationLevels = new SelectList(list, "Value", "Text"),
+                Grades = new SelectList(list, "Value", "Text"),
+                AcademicGrades = new SelectList(list, "Value", "Text"),
+                AcademicCourses = new SelectList(list, "Value", "Text"),
+                Personals = new SelectList(list, "Value", "Text")
+            };
+            var dict = new Dictionary<NotificationType, Func<NotificationRegisterModel, NotificationSelectListsModel, NotificationSelectListsModel>>
+            {
+                {NotificationType.Section, LoadAcademicGradesFromList1},
+                {NotificationType.Course, LoadAcademicCoursesFromList1},
+                {NotificationType.Personal, LoadStudentsFromList1}
+            };
+            selectListsModel = dict[registerModel.NotificationType](registerModel, selectListsModel);
+            return Json(selectListsModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadFromList2(NotificationRegisterModel registerModel)
+        {
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            var selectListsModel = new NotificationSelectListsModel
+            {
+                EducationLevels = new SelectList(list, "Value", "Text"),
+                Grades = new SelectList(list, "Value", "Text"),
+                AcademicGrades = new SelectList(list, "Value", "Text"),
+                AcademicCourses = new SelectList(list, "Value", "Text"),
+                Personals = new SelectList(list, "Value", "Text")
+            };
+            var dict = new Dictionary<NotificationType, Func<NotificationRegisterModel, NotificationSelectListsModel, NotificationSelectListsModel>>
+            {
+                {NotificationType.Course, LoadAcademicCoursesFromList2},
+                {NotificationType.Personal, LoadStudentsFromList2}
+            };
+            selectListsModel = dict[registerModel.NotificationType](registerModel, selectListsModel);
+            return Json(selectListsModel, JsonRequestBehavior.AllowGet);
         }
     }
 }

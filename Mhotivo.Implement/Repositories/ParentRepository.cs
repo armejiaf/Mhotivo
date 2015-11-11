@@ -40,12 +40,12 @@ namespace Mhotivo.Implement.Repositories
 
         public IQueryable<Parent> Query(Expression<Func<Parent, Parent>> expression)
         {
-            return _context.Parents.Select(expression).Include(x => x.User);
+            return _context.Parents.Select(expression);
         }
 
         public IQueryable<Parent> Filter(Expression<Func<Parent, bool>> expression)
         {
-            return _context.Parents.Where(expression).Include(x => x.User);
+            return _context.Parents.Where(expression);
         }
 
         public Parent Update(Parent itemToUpdate)

@@ -28,16 +28,6 @@ namespace Mhotivo.Implement.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<Notification>().
-              HasMany(c => c.Users).
-              WithMany(p => p.Notifications).
-              Map(
-               m =>
-               {
-                   m.MapLeftKey("NotificationId"); //Campo asociado con Notifications
-                   m.MapRightKey("UserId"); //Campo asociado con Users
-                   m.ToTable("UserNotifications");
-               });*/
 
         }
     }
