@@ -210,7 +210,7 @@ namespace Mhotivo.Implement.Migrations
             {
                 Id = 1,
                 DeliverDate = DateTime.Today,
-                Description = "<p>Heil Hydra</p>",
+                Description = "<p>Testing Homeworks!</p>",
                 Points = 15,
                 Title = "HW Test",
                 AcademicYearDetail = detail
