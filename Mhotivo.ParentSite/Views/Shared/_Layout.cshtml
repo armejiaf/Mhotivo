@@ -33,10 +33,31 @@
     <link rel="apple-touch-icon" sizes="72x72" href="~/Content/img/favicon/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="~/Content/img/favicon/apple-touch-icon-114x114.png">
     <!--END FAVICONS-->
+    <link rel="stylesheet"
+          href="@Url.Content("~/Content/bootstrap.min.css")"></link>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     
 </head>
 <body id="start_nicdark_framework">
-
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>This is a small modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="nicdark_site">
         <div class="nicdark_site_fullwidth nicdark_clearfix">
             <div class="nicdark_overlay"></div>
@@ -236,8 +257,9 @@
 
                                 <div class="nicdark_logo nicdark_marginleft10">
                                     @*<a href="index-2.html"><img alt="" src="~/Content/img/logo.png"></a>*@
-                                    <p style="font-size: 30px; font-weight: bold">MHOTIVO</p> 
+                                    <p style="font-size: 30px; font-weight: bold">MHOTIVO</p>
                                 </div>
+
 
                                 <a class="nicdark_btn_icon nicdark_zoom nicdark_bg_yellow_hover nicdark_right_sidebar_btn_open nicdark_marginright10 nicdark_bg_orange extrasmall nicdark_radius white right"><i class="icon-basket-1"></i></a>
 
@@ -261,7 +283,7 @@
                                                     <ul class="sub-menu">
                                                         <li><a href="teachers.html">All Teachers</a></li>
                                                         <li><a href="single-teacher.html">Single Teacher</a></li>
-                                                        <li>@Html.ActionLink("Enviar Mensaje","Index","MessageToTeacher")</li>
+                                                        <li>@Html.ActionLink("Enviar Mensaje", "Index", "MessageToTeacher")</li>
                                                     </ul>
                                                 </li>
                                                 <li>
@@ -297,72 +319,42 @@
                                             </ul>
                                         </li>
                                         <li class="yellow nicdark_megamenu">
-                                            <a href="#">MEGA MENU</a>
-                                            <ul class="sub-menu">
-                                                <li class="mm_grid mm_grid_3">
-                                                    <a href="#">Lorem Ipsum Dolor</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mm_grid mm_grid_3">
-                                                    <a href="#">Lorem Ipsum Dolor</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mm_grid mm_grid_3">
-                                                    <a href="#">Lorem Ipsum Dolor</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mm_grid mm_grid_3">
-                                                    <a href="#">Lorem Ipsum Dolor</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                        <li><a href="#">Lorem Ipsum Dolor</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="green">
-                                            <a href="blog-masonry.html">BLOG</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="blog-masonry.html">Masonry Layout</a></li>
-                                                <li>
-                                                    <a href="single-post-right-sidebar.html">Single Post</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="single-post-left-sidebar.html">Left Sidebar</a></li>
-                                                        <li><a href="single-post-right-sidebar.html">Right Sidebar</a></li>
-                                                        <li><a href="single-post-full-width.html">Full Width</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="orange">
-                                            <a href="events.html">EVENTS</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="events.html">All Events</a></li>
-                                                <li><a href="single-event.html">Single Event</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="grey">
-                                            <a href="contact-1.html">CONTACTS</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                            <a href="#myModal"
+                                               data-toggle="modal">Login</a>
+                                            
+                           
 
-                                <div class="nicdark_space20"></div>
+                            </li>
+                            <li class="green">
+                                <a href="blog-masonry.html">BLOG</a>
+                                <ul class="sub-menu">
+                                    <li><a href="blog-masonry.html">Masonry Layout</a></li>
+                                    <li>
+                                        <a href="single-post-right-sidebar.html">Single Post</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="single-post-left-sidebar.html">Left Sidebar</a></li>
+                                            <li><a href="single-post-right-sidebar.html">Right Sidebar</a></li>
+                                            <li><a href="single-post-full-width.html">Full Width</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="orange">
+                                <a href="events.html">EVENTS</a>
+                                <ul class="sub-menu">
+                                    <li><a href="events.html">All Events</a></li>
+                                    <li><a href="single-event.html">Single Event</a></li>
+                                </ul>
+                            </li>
+                            <li class="grey">
+                                <a href="contact-1.html">CONTACTS</a>
+                            </li>
+                            </ul>
+                            </nav>
 
-                            </div>
+                            <div class="nicdark_space20"></div>
+
+                        </div>
 
                         </div>
                         <!--end container-->
