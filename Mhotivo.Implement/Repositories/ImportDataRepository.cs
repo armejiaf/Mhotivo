@@ -107,12 +107,12 @@ namespace Mhotivo.Implement.Repositories
             var allEnrolls = _enrollRepository.GetAllsEnrolls();
             var enrls = allEnrolls.Where(x => x.AcademicYear.Id == academicYear.Id);
             if (enrls.Any())
-                throw new Exception("Ya hay alumos en este grado, borrelos e ingreselos denuevo");
+                throw new Exception("Ya hay alumos en este grado, borrelos e ingreselos de nuevo");
 
             var allParents = _parentRepository.GetAllParents();
             var allStudents = _studentRepository.GetAllStudents();
             
-            if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((ParentRepository)_parentRepository).GeContext())))
+            if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((ParentRepository)_parentRepository).GetContext())))
                 return;
             if (!(((EnrollRepository)_enrollRepository).GeContext().Equals(((StudentRepository)_studentRepository).GeContext())))
                 return;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
@@ -16,6 +17,8 @@ namespace Mhotivo.Implement.Migrations
         private IPensumRepository _pensumRepository;
         private IAcademicYearRepository _academicYearRepository;
         private IRoleRepository _roleRepository;
+        private ITeacherRepository _teacherRepository;
+        private INotificationTypeRepository _notificationTypeRepository;
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
@@ -32,6 +35,8 @@ namespace Mhotivo.Implement.Migrations
             _pensumRepository = new PensumRepository(context);
             _academicYearRepository = new AcademicYearRepository(context);
             _roleRepository = new RoleRepository(context);
+            _teacherRepository = new TeacherRepository(context);
+            _notificationTypeRepository = new NotificationTypeRepository(context);
             _roleRepository.Create(new Role { Name = "Administrador", Privileges = new HashSet<Privilege>(), RoleId = 0 });
             _roleRepository.Create(new Role { Name = "Padre", Privileges = new HashSet<Privilege>(), RoleId = 1 });
             _roleRepository.Create(new Role { Name = "Maestro", Privileges = new HashSet<Privilege>(), RoleId = 2 });
@@ -125,9 +130,19 @@ namespace Mhotivo.Implement.Migrations
                 Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
             };
             genericParent.HashPassword();
+            var genericMom = new User
+            {
+                DisplayName = "Madre Generica",
+                Email = "mom@mhotivo.org",
+                Password = "password",
+                IsActive = true,
+                Role = _roleRepository.FirstOrDefault(x => x.Name == "Padre")
+            };
+            genericMom.HashPassword();
             context.Users.AddOrUpdate(genericTeacher);
             context.Users.AddOrUpdate(genericParent);
             context.SaveChanges();
+
             var maestroDefault = context.Teachers.FirstOrDefault(x => x.FullName == "Maestro Generico");
             if (maestroDefault == null)
             {
@@ -136,8 +151,158 @@ namespace Mhotivo.Implement.Migrations
             var padreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico");
             if (padreDefault == null)
             {
-                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender =  Gender.Femenino, MyUser = genericParent });
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567890", FirstName = "Padre", LastName = "Generico", FullName = "Padre Generico", Disable = false, MyGender = Gender.Masculino, MyUser = genericParent });
             }
+            var madreDefault = context.Parents.FirstOrDefault(x => x.FullName == "Madre Generica");
+            if (madreDefault == null)
+            {
+                context.Parents.AddOrUpdate(new Parent { IdNumber = "1234567133", FirstName = "Madre", LastName = "Generica", FullName = "Madre Generica", Disable = false, MyGender = Gender.Femenino, MyUser = genericMom });
+            }
+            context.SaveChanges();
+            var student = new Student()
+            {
+                Id = 4,
+                IdNumber = "8153-7946-98768",
+                FirstName = "Hans",
+                LastName = "Landa",
+                AccountNumber = "21241103",
+                Address = "Address No One Cares about",
+                Biography = "none",
+                BirthDate = "11/4/2015",
+                BloodType = "O+",
+                City = "Frankfurt",
+                FullName = "Hans Landa",
+                Nationality = "Aleman",
+                State = "Frankfurt",
+                Country = "Germany",
+                MyGender = Gender.Masculino,
+                StartDate = "11-11-2015",
+                Tutor1 = context.Parents.FirstOrDefault(x => x.FullName == "Padre Generico"),
+                Tutor2 = context.Parents.FirstOrDefault(x => x.FullName == "Madre Generica")
+            };
+            context.Students.Add(student);
+            context.SaveChanges();
+
+            var enroll = new Enroll()
+            {
+                Id = 1,
+                AcademicYear = _academicYearRepository.GetById(25),
+                Student = student
+            };
+            context.Enrolls.Add(enroll);
+            context.SaveChanges();
+
+            var detail = new AcademicYearDetail()
+            {
+                Id = 1,
+                TeacherStartDate = DateTime.Today,
+                TeacherEndDate = DateTime.Today,
+                Schedule = DateTime.Today,
+                Room = "445",
+                AcademicYear = _academicYearRepository.GetById(25),
+                Course = _courseRepository.GetById(8),
+                Teacher = _teacherRepository.GetById(1)
+            };
+            context.AcademicYearDetails.Add(detail);
+            context.SaveChanges();
+
+            var hw = new Homework()
+            {
+                Id = 1,
+                DeliverDate = DateTime.Today,
+                Description = "<p>Testing Homeworks!</p>",
+                Points = 15,
+                Title = "HW Test",
+                AcademicYearDetail = detail
+            };
+            context.Homeworks.Add(hw);
+            context.SaveChanges();
+
+            var testNotification = new Notification()
+            {
+                Id = 1,
+                Approved = true,
+                Created = DateTime.Today,
+                GradeIdifNotificationTypePersonal = 0,
+                IdGradeAreaUserGeneralSelected = 0,
+                Message = "Hi, Im Glen!",
+                NotificationComments = null,
+                NotificationCreator = genericTeacher,
+                NotificationName = "Testing Notifications",
+                NotificationType = _notificationTypeRepository.GetById(3),
+                Section = "A",
+                SendingEmail = false,
+                TargetStudent = null,
+                UserCreatorId = genericTeacher.Id,
+                UserCreatorName = genericTeacher.DisplayName,
+                Users = new List<User>()
+            };
+            context.Notifications.Add(testNotification);
+
+            var testgeneralNotification = new Notification()
+            {
+                Id = 2,
+                Approved = true,
+                Created = DateTime.Today,
+                GradeIdifNotificationTypePersonal = 0,
+                IdGradeAreaUserGeneralSelected = 0,
+                Message = "<p>Testing General Notifications</p>!",
+                NotificationComments = null,
+                NotificationCreator = genericTeacher,
+                NotificationName = "Testing General Notifications",
+                NotificationType = _notificationTypeRepository.GetById(1),
+                Section = "Todos",
+                SendingEmail = false,
+                TargetStudent = null,
+                UserCreatorId = genericTeacher.Id,
+                UserCreatorName = genericTeacher.DisplayName,
+                Users = new List<User>()
+            };
+            context.Notifications.Add(testgeneralNotification);
+
+
+            var testLevelNotification = new Notification()
+            {
+                Id = 3,
+                Approved = true,
+                Created = DateTime.Today,
+                GradeIdifNotificationTypePersonal = 0,
+                IdGradeAreaUserGeneralSelected = 3,
+                Message = "<p>Testing Level Notification<br></p>",
+                NotificationComments = null,
+                NotificationCreator = genericTeacher,
+                NotificationName = "Testing Level Notification",
+                NotificationType = _notificationTypeRepository.GetById(2),
+                Section = "Todos",
+                SendingEmail = false,
+                TargetStudent = null,
+                UserCreatorId = genericTeacher.Id,
+                UserCreatorName = genericTeacher.DisplayName,
+                Users = new List<User>()
+            };
+            context.Notifications.Add(testLevelNotification);
+
+            var testPersonalNotification = new Notification()
+            {
+                Id = 4,
+                Approved = true,
+                Created = DateTime.Today,
+                GradeIdifNotificationTypePersonal = 0,
+                IdGradeAreaUserGeneralSelected = 4,
+                Message = "Testing Personal Notification",
+                NotificationComments = null,
+                NotificationCreator = genericTeacher,
+                NotificationName = "Testing Personal Notification",
+                NotificationType = _notificationTypeRepository.GetById(4),
+                Section = "A",
+                SendingEmail = false,
+                TargetStudent = student,
+                UserCreatorId = genericTeacher.Id,
+                UserCreatorName = genericTeacher.DisplayName,
+                Users = new List<User>()
+            };
+
+            context.Notifications.Add(testPersonalNotification);
             context.SaveChanges();
         }
     }
