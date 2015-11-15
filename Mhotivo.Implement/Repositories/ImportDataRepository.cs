@@ -19,9 +19,8 @@ namespace Mhotivo.Implement.Repositories
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        private readonly IPrivilegeRepository _privilegeRepository;
 
-        public ImportDataRepository(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository, IPrivilegeRepository privilegeRepository)
+        public ImportDataRepository(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _passwordGenerationService = passwordGenerationService;
             _parentRepository = parentRepository;
@@ -30,7 +29,6 @@ namespace Mhotivo.Implement.Repositories
             _academicYearRepository = academicYearRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
-            _privilegeRepository = privilegeRepository;
         }
 
         public void Import(DataSet oDataSet, AcademicYear academicYearGrade)

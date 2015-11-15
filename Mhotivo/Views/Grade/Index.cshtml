@@ -2,6 +2,7 @@
 @*model IEnumerable<Mhotivo.Models.DisplayGradeModel>*@
 @using System.Web.Mvc.Html
 @model PagedList.IPagedList<Mhotivo.Models.DisplayGradeModel>
+@using System.Web.UI.WebControls
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -37,7 +38,9 @@ else
 												
                 <th>@Html.ActionLink("Grado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
 		        <th>@Html.DisplayNameFor(model => model.First().EducationLevel)</th>
-                <th></th>
+		        <th>Pensums</th>
+                <th>Modificar</th>
+                <th>Borrar</th>
 		    </tr>
 	    </thead>
         <tbody>
@@ -47,7 +50,12 @@ else
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>@Html.DisplayFor(modelItem => item.EducationLevel)</td>
                     <td>
+                        <a href="/Grade/Details/@item.Id"><i class="icon-edit bigger-120"></i></a>
+                    </td>
+                    <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Grade/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                    </td>
+                    <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Grade", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
