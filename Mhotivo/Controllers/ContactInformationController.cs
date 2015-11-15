@@ -53,7 +53,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
                         {
-                            Id = (int) id
+                            Id = id
                         };
             return View("ContactAdd", model);
         }

@@ -2,17 +2,17 @@
 
 namespace Mhotivo.Models
 {
-    public class DisplayEnrollStudents
+    public class EnrollDisplayModel
     {
         public long Id { get; set; }
 
-        [Display(Name = "Nombre Completo")]
+        [Display(Name = "Nombre")]
         public string FullName { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
 
-        [Display(Name = "Sexo")]
+        [Display(Name = "Genero")]
         public string MyGender { get; set; }
 
         [Display(Name = "Numero de Cuenta")]
@@ -30,25 +30,42 @@ namespace Mhotivo.Models
     {
         [Required(ErrorMessage = "Debe elegir un grado.")]
         [Display(Name = "Grado")]
-        public long GradeId { get; set; }
-
-        [Required(ErrorMessage = "Debe elegir un estudiante.")]
-        [Display(Name = "Estudiante")]
-        public long Id { get; set; }
+        public long Grade { get; set; }
 
         [Required(ErrorMessage = "Debe elegir una seccion.")]
         [Display(Name = "Seccion")]
-        public string Section { get; set; }
+        public long AcademicGrade { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir un estudiante.")]
+        [Display(Name = "Estudiante")]
+        public long Student { get; set; }
+    }
+
+    public class EnrollEditModel
+    {
+        public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir un grado.")]
+        [Display(Name = "Grado")]
+        public long Grade { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir una seccion.")]
+        [Display(Name = "Seccion")]
+        public long AcademicGrade { get; set; }
+
+        [Required(ErrorMessage = "Debe elegir un estudiante.")]
+        [Display(Name = "Estudiante")]
+        public long Student { get; set; }
     }
 
     public class EnrollDeleteModel
     {
         [Required(ErrorMessage = "Debe elegir un grado.")]
         [Display(Name = "Grado")]
-        public long GradeId { get; set; }
+        public long Grade { get; set; }
 
         [Required(ErrorMessage = "Debe elegir una seccion.")]
         [Display(Name = "Seccion")]
-        public string Section { get; set; }
+        public long AcademicGrade { get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace Mhotivo.Implement.Repositories
 
         public Teacher Create(Teacher itemToCreate)
         {
-            _context.Users.Attach(itemToCreate.User);
             var teacher = _context.Teachers.Add(itemToCreate);
             _context.SaveChanges();
             return teacher;

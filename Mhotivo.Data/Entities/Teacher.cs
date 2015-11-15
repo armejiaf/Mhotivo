@@ -6,11 +6,11 @@ namespace Mhotivo.Data.Entities
     {
         public Teacher()
         {
-            MyCourses = new HashSet<AcademicYearCourse>();
-            MyPreviousCourses = new HashSet<AcademicYearCourse>();
+            MyCourses = new HashSet<AcademicCourse>();
+            MySections = new HashSet<AcademicGrade>();
         }
 
-        public virtual ICollection<AcademicYearCourse> MyCourses { get; set; }
-        public virtual ICollection<AcademicYearCourse> MyPreviousCourses { get; set; }
+        public virtual ICollection<AcademicCourse> MyCourses { get; set; }
+        public virtual ICollection<AcademicGrade> MySections { get; set; }
     }
 }

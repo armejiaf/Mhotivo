@@ -9,17 +9,17 @@ namespace Mhotivo.Implement.Services
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly IStudentRepository _suStudentRepository;
-        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
-        private readonly IAcademicYearCourseRepository _academicYearCourseRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly IUserRepository _userRepository;
 
         public NotificationHandlerService(INotificationRepository notificationRepository, IStudentRepository suStudentRepository, 
-            IAcademicYearGradeRepository academicYearGradeRepository, IAcademicYearCourseRepository academicYearCourseRepository, IUserRepository userRepository)
+            IAcademicGradeRepository academicGradeRepository, IAcademicCourseRepository academicCourseRepository, IUserRepository userRepository)
         {
             _notificationRepository = notificationRepository;
             _suStudentRepository = suStudentRepository;
-            _academicYearGradeRepository = academicYearGradeRepository;
-            _academicYearCourseRepository = academicYearCourseRepository;
+            _academicGradeRepository = academicGradeRepository;
+            _academicCourseRepository = academicCourseRepository;
             _userRepository = userRepository;
         }
 
@@ -40,7 +40,7 @@ namespace Mhotivo.Implement.Services
             switch (notification.NotificationType)
             {
                 case NotificationType.General:
-                    var allGrades = _academicYearGradeRepository.Filter(x => x.AcademicYear == notification.AcademicYear);
+                    var allGrades = _academicGradeRepository.Filter(x => x.AcademicYear == notification.AcademicYear);
                     foreach (var grade in allGrades)
                     {
                         SendToStudents(grade.Students, notification);
@@ -49,7 +49,7 @@ namespace Mhotivo.Implement.Services
                     break;
                 case NotificationType.EducationLevel:
                     var gradesForLevel =
-                        _academicYearGradeRepository.Filter(
+                        _academicGradeRepository.Filter(
                             x => x.Grade.EducationLevel.Id == notification.DestinationId &&
                                  x.AcademicYear == notification.AcademicYear);
                     foreach (var grade in gradesForLevel)
@@ -60,7 +60,7 @@ namespace Mhotivo.Implement.Services
                     break;
                 case NotificationType.Grade:
                     var grades =
-                        _academicYearGradeRepository.Filter(x => x.Grade.Id == notification.DestinationId &&
+                        _academicGradeRepository.Filter(x => x.Grade.Id == notification.DestinationId &&
                                                                  x.AcademicYear == notification.AcademicYear);
                     foreach (var grade in grades)
                     {
@@ -70,7 +70,7 @@ namespace Mhotivo.Implement.Services
                     break;
                 case NotificationType.Section:
                     var singleGrade =
-                        _academicYearGradeRepository.Filter(x => x.Id == notification.DestinationId &&
+                        _academicGradeRepository.Filter(x => x.Id == notification.DestinationId &&
                                                                  x.AcademicYear == notification.AcademicYear).FirstOrDefault();
                     if (singleGrade != null)
                     {
@@ -79,12 +79,12 @@ namespace Mhotivo.Implement.Services
                     }
                     break;
                 case NotificationType.Course:
-                    var course = _academicYearCourseRepository.Filter(x => x.Id == notification.DestinationId &&
-                                                                           x.AcademicYearGrade.AcademicYear ==
+                    var course = _academicCourseRepository.Filter(x => x.Id == notification.DestinationId &&
+                                                                           x.AcademicGrade.AcademicYear ==
                                                                            notification.AcademicYear).FirstOrDefault();
                     if (course != null)
                     {
-                        SendToStudents(course.AcademicYearGrade.Students, notification);
+                        SendToStudents(course.AcademicGrade.Students, notification);
                         notification.Sent = true;
                     }
                     break;

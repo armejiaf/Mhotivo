@@ -1,5 +1,5 @@
 ﻿@using System.Web.Mvc.Html
-@model Mhotivo.Models.AcademicYearDetailsRegisterModel
+@model Mhotivo.Models.AcademicCourseRegisterModel
 
 @{
     ViewBag.Title = "Agregar Detalles Año Académico";
@@ -24,7 +24,7 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-@using (Html.BeginForm("Add", "AcademicYearDetails", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+@using (Html.BeginForm("Add", "AcademicCourse", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
     @Html.ValidationSummary(true)
     <h2>Agregar Detalles de Año Académico</h2>

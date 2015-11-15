@@ -9,57 +9,57 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    public class AcademicYearCourseRepository : IAcademicYearCourseRepository
+    public class AcademicCourseRepository : IAcademicCourseRepository
     {
         private readonly MhotivoContext _context;
 
-        public AcademicYearCourseRepository(MhotivoContext ctx)
+        public AcademicCourseRepository(MhotivoContext ctx)
         {
             _context = ctx;
         }
 
-        public IEnumerable<AcademicYearCourse> GetAllAcademicYearDetails()
+        public IEnumerable<AcademicCourse> GetAllAcademicYearDetails()
         {
             return Query(x => x).ToList();
         }
 
-        public AcademicYearCourse GetById(long id)
+        public AcademicCourse GetById(long id)
         {
             return _context.AcademicYearCourses.FirstOrDefault(x => x.Id == id);
         }
 
-        public AcademicYearCourse Create(AcademicYearCourse academicYearToCreate)
+        public AcademicCourse Create(AcademicCourse itemToCreate)
         {
-            var academicYearDetails = _context.AcademicYearCourses.Add(academicYearToCreate);
-            _context.Entry(academicYearToCreate.Course).State = EntityState.Modified;
-            _context.Entry(academicYearToCreate.Teacher).State = EntityState.Modified;
+            var academicYearDetails = _context.AcademicYearCourses.Add(itemToCreate);
+            _context.Entry(itemToCreate.Course).State = EntityState.Modified;
+            _context.Entry(itemToCreate.Teacher).State = EntityState.Modified;
             _context.SaveChanges();
             return academicYearDetails;
         }
 
-        public IQueryable<AcademicYearCourse> Query(Expression<Func<AcademicYearCourse, AcademicYearCourse>> expression)
+        public IQueryable<AcademicCourse> Query(Expression<Func<AcademicCourse, AcademicCourse>> expression)
         {
             return _context.AcademicYearCourses.Select(expression);
         }
 
-        public IQueryable<AcademicYearCourse> Filter(Expression<Func<AcademicYearCourse, bool>> expression)
+        public IQueryable<AcademicCourse> Filter(Expression<Func<AcademicCourse, bool>> expression)
         {
             return _context.AcademicYearCourses.Where(expression);
         }
 
-        public AcademicYearCourse Update(AcademicYearCourse itemToUpdate)
+        public AcademicCourse Update(AcademicCourse itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;
         }
 
-        public IEnumerable<AcademicYearCourse> GetAllAcademicYearsDetails(long academicYearId)
+        public IEnumerable<AcademicCourse> GetAllAcademicYearsDetails(long academicYearId)
         {
             return Query(x => x).ToList();
         }
 
-        public AcademicYearCourse Delete(long id)
+        public AcademicCourse Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.AcademicYearCourses.Remove(itemToDelete);
@@ -67,7 +67,7 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public AcademicYearCourse Delete(AcademicYearCourse itemToDelete)
+        public AcademicCourse Delete(AcademicCourse itemToDelete)
         {
             _context.AcademicYearCourses.Remove(itemToDelete);
             _context.SaveChanges();

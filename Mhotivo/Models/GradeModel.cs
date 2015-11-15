@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
-    public class DisplayGradeModel
+    public class GradeDisplayModel
     {
         public long Id { get; set; }
 
@@ -24,7 +23,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Nivel Educativo")]
         [Display(Name = "Nivel Educativo")]
-        public EducationLevel EducationLevel { get; set; }
+        public long EducationLevel { get; set; }
     }
 
     public class GradeRegisterModel

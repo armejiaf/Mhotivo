@@ -54,7 +54,7 @@ namespace Mhotivo.Controllers
             {
                 allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
-            var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, DisplayParentModel>).ToList();
+            var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, ParentDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -163,7 +163,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
                         {
-                            Id = (int) id,
+                            Id = id,
                             Controller = "Parent"
                         };
             return View("ContactAdd", model);
@@ -193,7 +193,7 @@ namespace Mhotivo.Controllers
             }
             var newUser = new User
             {
-                DisplayName = parentModel.FirstName,
+                UserOwner = parentModel,
                 Email = modelParent.Email,
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
@@ -214,7 +214,7 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             var parent = _parentRepository.GetById(id);
-            var parentModel = Mapper.Map<Parent, DisplayParentModel>(parent);
+            var parentModel = Mapper.Map<Parent, ParentDisplayModel>(parent);
             parentModel.MyGender = parent.MyGender.ToString("G");
             return View("Details", parentModel);
         }

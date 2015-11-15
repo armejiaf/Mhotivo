@@ -24,8 +24,8 @@ namespace Mhotivo.Controllers
         private readonly IParentRepository _parentRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
-        private readonly IAcademicYearCourseRepository _academicYearCourseRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly IEnrollRepository _enrollRepository;
         private readonly IEducationLevelRepository _areaReporsitory;
@@ -34,17 +34,17 @@ namespace Mhotivo.Controllers
         public NotificationController(ISessionManagementService sessionManagement, IUserRepository userRepository,
             INotificationRepository notificationRepository, IPeopleRepository peopleRepository,
             ITeacherRepository teacherRepository,
-            IAcademicYearCourseRepository academicYearCourseRepository, IStudentRepository studentRepository,
+            IAcademicCourseRepository academicCourseRepository, IStudentRepository studentRepository,
             IParentRepository parentRepository, IGradeRepository gradeRepository,
             IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository,
-            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicYearGradeRepository academicYearGradeRepository)
+            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicGradeRepository academicGradeRepository)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
             _notificationRepository = notificationRepository;
             _peopleRepository = peopleRepository;
             _teacherRepository = teacherRepository;
-            _academicYearCourseRepository = academicYearCourseRepository;
+            _academicCourseRepository = academicCourseRepository;
             _parentRepository = parentRepository;
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
@@ -52,7 +52,7 @@ namespace Mhotivo.Controllers
             _enrollRepository = enrollRepository;
             _areaReporsitory = areaReporsitory;
             _notificationHandlerService = notificationHandlerService;
-            _academicYearGradeRepository = academicYearGradeRepository;
+            _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -109,17 +109,17 @@ namespace Mhotivo.Controllers
         {
             var toEdit =
                 _notificationRepository.GetById(id);
-            var toEditModel = Mapper.Map<NotificationEditModel>(toEdit);
+            var toEditModel = Mapper.Map<NotificationPreApproveEditModel>(toEdit);
             return View(toEditModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(long id, NotificationModel eventNotification)
+        public ActionResult Edit(long id, NotificationPreApproveEditModel eventNotificationEdit)
         {
             try
             {
-                var toEdit = _notificationRepository.GetById(eventNotification.Id);
-                Mapper.Map(eventNotification, toEdit);
+                var toEdit = _notificationRepository.GetById(eventNotificationEdit.Id);
+                Mapper.Map(eventNotificationEdit, toEdit);
                 _notificationRepository.Update(toEdit);
                 _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.",
                     ViewMessageType.SuccessMessage);
@@ -156,7 +156,7 @@ namespace Mhotivo.Controllers
                 .Where(x => x.Approved == false)
                 .OrderByDescending(i => i.CreationDate)
                 .Take(10);
-            var notificationsModel = notifications.Select(Mapper.Map<NotificationModel>);
+            var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
             return View("Approve", notificationsModel);
         }
 
@@ -205,7 +205,7 @@ namespace Mhotivo.Controllers
             if (items.Any())
             {
                 var first = items.First();
-                var sList = _academicYearGradeRepository.Filter(
+                var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == first.Id).ToList();
                 toReturn.AcademicGrades =
                     new SelectList(sList
@@ -226,7 +226,7 @@ namespace Mhotivo.Controllers
             if (items.Any())
             {
                 var first = items.First();
-                var sList = _academicYearGradeRepository.Filter(
+                var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == first.Id).ToList();
                 toReturn.AcademicGrades =
                     new SelectList(
@@ -234,8 +234,8 @@ namespace Mhotivo.Controllers
                 if (sList.Any())
                 {
                     var first2 = sList.First();
-                    var sList2 = _academicYearCourseRepository.Filter(
-                        x => x.AcademicYearGrade.Id == first2.Id).ToList();
+                    var sList2 = _academicCourseRepository.Filter(
+                        x => x.AcademicGrade.Id == first2.Id).ToList();
                     toReturn.AcademicCourses = new SelectList(
                         sList2, "Id", "Course.Name");
                 }
@@ -259,7 +259,7 @@ namespace Mhotivo.Controllers
             if (items.Any())
             {
                 var first = items.First();
-                var sList = _academicYearGradeRepository.Filter(
+                var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == first.Id).ToList();
                 toReturn.AcademicGrades =
                     new SelectList(
@@ -286,7 +286,7 @@ namespace Mhotivo.Controllers
 
         private NotificationSelectListsModel LoadAcademicGradesFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            var sList = _academicYearGradeRepository.Filter(
+            var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == model.Id1).ToList();
             toReturn.AcademicGrades =
                 new SelectList(
@@ -297,7 +297,7 @@ namespace Mhotivo.Controllers
         private NotificationSelectListsModel LoadAcademicCoursesFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var sList = _academicYearGradeRepository.Filter(
+            var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == model.Id1).ToList();
             toReturn.AcademicGrades =
                 new SelectList(
@@ -305,8 +305,8 @@ namespace Mhotivo.Controllers
             if (sList.Any())
             {
                 var first2 = sList.First();
-                var sList2 = _academicYearCourseRepository.Filter(
-                    x => x.AcademicYearGrade.Id == first2.Id).ToList();
+                var sList2 = _academicCourseRepository.Filter(
+                    x => x.AcademicGrade.Id == first2.Id).ToList();
                 toReturn.AcademicCourses = new SelectList(
                     sList2, "Id", "Course.Name");
             }
@@ -320,7 +320,7 @@ namespace Mhotivo.Controllers
         private NotificationSelectListsModel LoadStudentsFromList1(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var sList = _academicYearGradeRepository.Filter(
+            var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == model.Id1).ToList();
             toReturn.AcademicGrades =
                 new SelectList(
@@ -342,8 +342,8 @@ namespace Mhotivo.Controllers
 
         private NotificationSelectListsModel LoadAcademicCoursesFromList2(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            var sList = _academicYearCourseRepository.Filter(
-                    x => x.AcademicYearGrade.Id == model.Id2).ToList();
+            var sList = _academicCourseRepository.Filter(
+                    x => x.AcademicGrade.Id == model.Id2).ToList();
             toReturn.AcademicCourses =
                 new SelectList(
                     sList, "Id", "Course.Name");

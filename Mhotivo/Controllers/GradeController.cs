@@ -16,14 +16,14 @@ namespace Mhotivo.Controllers
     {
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly IPensumRepository _pensumRepository;
         private readonly IEducationLevelRepository _educationLevelRepository;
 
-        public GradeController(IGradeRepository gradeRepository, IAcademicYearGradeRepository academicYearGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository)
         {
             _gradeRepository = gradeRepository;
-            _academicYearGradeRepository = academicYearGradeRepository;
+            _academicGradeRepository = academicGradeRepository;
             _pensumRepository = pensumRepository;
             _educationLevelRepository = educationLevelRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
@@ -49,7 +49,7 @@ namespace Mhotivo.Controllers
             {
                 grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
+            var displayGradeModels = grades.Select(Mapper.Map<Grade, GradeDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -105,7 +105,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            if (!_academicYearGradeRepository.Filter(x => x.Grade.Id == id).Any())
+            if (!_academicGradeRepository.Filter(x => x.Grade.Id == id).Any())
             {
                 var grade = _gradeRepository.Delete(id);
                 const string title = "Grado ha sido Eliminado";
@@ -157,7 +157,7 @@ namespace Mhotivo.Controllers
 
         public ActionResult Details(long id)
         {
-            var pensums = _pensumRepository.Filter(x => x.Grade.Id == id).Select(Mapper.Map<DisplayPensumModel>);
+            var pensums = _pensumRepository.Filter(x => x.Grade.Id == id).Select(Mapper.Map<PensumDisplayModel>);
             return View(pensums);
         }
     }

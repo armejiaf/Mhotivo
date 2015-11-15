@@ -65,7 +65,7 @@
 
                     @Html.ActionLink("Todas", "index", new { param = "", date = Request.Params["date"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
-                    @foreach (var item in Model.GroupBy(lo => lo.AcademicYearCourse.Course).ToList())
+                    @foreach (var item in Model.GroupBy(lo => lo.AcademicCourse.Course).ToList())
                     {
                         @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id, date = Request.Params["date"], student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     }
@@ -138,16 +138,16 @@
                 }
 
 
-                foreach (var item in Models.Where(x => x.AcademicYearCourse.Course.Id == @var))
+                foreach (var item in Models.Where(x => x.AcademicCourse.Course.Id == @var))
                 {
 
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearCourse.AcademicYearGrade.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.Id);
 
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
                             <p class="white">
                                 <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
                                 <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
 
                         </div>
@@ -195,12 +195,12 @@
             {
                 foreach (var item in Model)
                 {
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearCourse.AcademicYearGrade.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.Id);
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
                             <p class="white">
                                 <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
 
                                 <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
 

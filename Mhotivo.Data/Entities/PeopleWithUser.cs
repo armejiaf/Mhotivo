@@ -2,6 +2,6 @@
 {
     public class PeopleWithUser : People
     {
-        public virtual User  User { get; set; }
+        public virtual User User { get; set; }
     }
 }

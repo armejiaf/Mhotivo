@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IAcademicYearCourseRepository.cs" />
-    <Compile Include="Interfaces\IAcademicYearGradeRepository.cs" />
+    <Compile Include="Interfaces\IAcademicCourseRepository.cs" />
+    <Compile Include="Interfaces\IAcademicGradeRepository.cs" />
     <Compile Include="Interfaces\IAcademicYearRepository.cs" />
     <Compile Include="Interfaces\IEducationLevelRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />

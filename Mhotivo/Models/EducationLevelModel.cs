@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.IO;
-using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
-    public class DisplayEducationLevelModel
+    public class EducationLevelDisplayModel
     {
         public long Id { get; set; }
 
@@ -35,6 +33,6 @@ namespace Mhotivo.Models
         public long Id { get; set; }
         [Required(ErrorMessage = "Debe seleccionar un Director")]
         [Display(Name = "Director(a)")]
-        public User Director { get; set; }
+        public long Director { get; set; }
     }
 }

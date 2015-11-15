@@ -14,17 +14,17 @@ namespace Mhotivo.Controllers
         private readonly IImportDataRepository _importDataRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IAcademicYearGradeRepository _academicYearGradeRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
         public ImportDataController(IImportDataRepository importDataRepository
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository, IAcademicYearGradeRepository academicYearGradeRepository)
+                                    ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
         {
             _importDataRepository = importDataRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
-            _academicYearGradeRepository = academicYearGradeRepository;
+            _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
         
@@ -93,7 +93,7 @@ namespace Mhotivo.Controllers
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
-                                        , academicYear.Grades.ElementAt(0).Name // 1
+                                        , academicYear.Grades.ElementAt(0).Grade.Name // 1
                                         , importModel.Section // 2
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);

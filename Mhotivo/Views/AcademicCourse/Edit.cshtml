@@ -1,5 +1,5 @@
 ﻿@using AutoMapper.Internal
-@model Mhotivo.Models.AcademicYearDetailsEditModel
+@model Mhotivo.Models.AcademicCourseEditModel
 
 @{
     ViewBag.Title = "Editar Año Académico";
@@ -14,7 +14,7 @@
 <script src="~/Scripts/jquery.maskedinput.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Edit", "AcademicYearDetails", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Edit", "AcademicCourse", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {@Html.ValidationSummary(true)
 
         <fieldset>

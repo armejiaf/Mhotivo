@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -49,7 +48,7 @@ namespace Mhotivo.Controllers
             {
                 listaArea = _areaReposity.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<EducationLevel, DisplayEducationLevelModel>).ToList();
+            var listaAreaDisplaysModel = listaArea.Select(Mapper.Map<EducationLevel, EducationLevelDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -159,9 +158,9 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult EditDirector(EducationLevelDirectorAssignModel model)
         {
-            if (_areaReposity.Filter(x => x.Director.Id == model.Director.Id).Any())
+            if (_areaReposity.Filter(x => x.Director.Id == model.Director).Any())
             {
-                const string titulo = "Errir!";
+                const string titulo = "Error!";
                 const string contenido = "No se pueden asignar varios niveles educativos a un director.";
                 _viewMessageLogic.SetNewMessage(titulo, contenido, ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");

@@ -16,7 +16,7 @@ namespace Mhotivo.Controllers
     public class HomeworkController : Controller
     {
 
-        private readonly IAcademicYearCourseRepository _academicYearCourseRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly ITeacherRepository _teacherRepository;
@@ -24,12 +24,12 @@ namespace Mhotivo.Controllers
         public long TeacherId = -1;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearCourseRepository academicYearCourseRepository, ICourseRepository courseRepository, ITeacherRepository teacherRepository)
+            IAcademicCourseRepository academicCourseRepository, ICourseRepository courseRepository, ITeacherRepository teacherRepository)
         {
             _homeworkRepository = homeworkRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
             _courseRepository = courseRepository;
-            _academicYearCourseRepository = academicYearCourseRepository;
+            _academicCourseRepository = academicCourseRepository;
             _teacherRepository = teacherRepository;
         }
 
@@ -40,14 +40,14 @@ namespace Mhotivo.Controllers
             TeacherId = GetTeacherId();
             var allAcademicYearsDetails = GetAllAcademicYearsDetail(TeacherId);
             var academicY = new List<long>();
-            var academicYearsDetails = allAcademicYearsDetails as AcademicYearCourse[] ?? allAcademicYearsDetails.ToArray();
+            var academicYearsDetails = allAcademicYearsDetails as AcademicCourse[] ?? allAcademicYearsDetails.ToArray();
             for (int a = 0; a < academicYearsDetails.Count(); a++)
             {
                 academicY.Add(academicYearsDetails.ElementAt(a).Id);
             }
-            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => academicY.Contains(x.AcademicYearCourse.Id));
-            IEnumerable<DisplayHomeworkModel> allHomeworkDisplaysModel =
-                allHomeworks.Select(Mapper.Map<Homework, DisplayHomeworkModel>).ToList();
+            IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => academicY.Contains(x.AcademicCourse.Id));
+            IEnumerable<HomeworkDisplayModel> allHomeworkDisplaysModel =
+                allHomeworks.Select(Mapper.Map<Homework, HomeworkDisplayModel>).ToList();
             return View(allHomeworkDisplaysModel);
         }
 
@@ -65,38 +65,29 @@ namespace Mhotivo.Controllers
         public ActionResult Create()
         {
             var teacherId = GetTeacherId();
-            var detalleAnhosAcademicosActivos = _academicYearCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicYearGrade.AcademicYear.IsActive);
+            var detalleAnhosAcademicosActivos = _academicCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicGrade.AcademicYear.IsActive);
             var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher.Id == teacherId);
             var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
             ViewBag.course = new SelectList(query, "Id", "Name");
-            var modelRegister = new CreateHomeworkModel();
+            var modelRegister = new HomeworkRegisterModel();
             return View(modelRegister);
         }
 
-        private IEnumerable<AcademicYearCourse> GetAllAcademicYearsDetail(long id)
+        private IEnumerable<AcademicCourse> GetAllAcademicYearsDetail(long id)
         {
-            IEnumerable<AcademicYearCourse> allAcademicYearsDetail =
-                _academicYearCourseRepository.GetAllAcademicYearDetails().Where(x => x.Teacher.Id.Equals(id));
+            IEnumerable<AcademicCourse> allAcademicYearsDetail =
+                _academicCourseRepository.GetAllAcademicYearDetails().Where(x => x.Teacher.Id.Equals(id));
             return allAcademicYearsDetail;
         }
 
         [HttpPost]
         [AuthorizeTeacher]
-        public ActionResult Create(CreateHomeworkModel modelHomework)
+        public ActionResult Create(HomeworkRegisterModel registerModelHomework)
         {
-            
-            var myHomework = new Homework
-            {
-                Title = modelHomework.Title,
-                Description = modelHomework.Description,
-                DeliverDate = ParseToHonduranDateTime.Parse(modelHomework.DeliverDate),
-                Points = modelHomework.Points,
-                AcademicYearCourse = _academicYearCourseRepository.Filter(x => x.Course.Id == _courseRepository.GetById(modelHomework.Course).Id &&x.Teacher.Id == GetTeacherId()).FirstOrDefault()
-            };
-
-            _homeworkRepository.Create(myHomework);
+            var toCreate = Mapper.Map<Homework>(registerModelHomework);
+            _homeworkRepository.Create(toCreate);
             const string title = "Tarea agregada";
-            string content = "La tarea " + myHomework.Title + " ha sido agregado exitosamente.";
+            string content = "La tarea " + toCreate.Title + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -106,7 +97,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
-            var homework = Mapper.Map<CreateHomeworkModel>(thisHomework);
+            var homework = Mapper.Map<HomeworkRegisterModel>(thisHomework);
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
             return View("Edit", homework);
         }
@@ -114,7 +105,7 @@ namespace Mhotivo.Controllers
         // POST: /Homework/Edit/5
         [HttpPost]
         [AuthorizeTeacher]
-        public ActionResult Edit(EditHomeworkModel modelHomework)
+        public ActionResult Edit(HomeworkEditModel modelHomework)
         {
             Homework myStudent = _homeworkRepository.GetById(modelHomework.Id);
             Mapper.Map(modelHomework, myStudent);

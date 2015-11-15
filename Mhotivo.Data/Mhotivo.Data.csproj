@@ -58,8 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AcademicYear.cs" />
-    <Compile Include="Entities\AcademicYearCourse.cs" />
-    <Compile Include="Entities\AcademicYearGrade.cs" />
+    <Compile Include="Entities\AcademicCourse.cs" />
+    <Compile Include="Entities\AcademicGrade.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />

@@ -5,11 +5,9 @@ namespace Mhotivo.Models
 {
     public class ImportDataModel
     {
-        public long Id { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar el año")]
         [Display(Name = "Año")]
-        public int Year { get; set; }
+        public long Year { get; set; }
 
         [Required(ErrorMessage = "Debe ingresar el grado")]
         [Display(Name = "Grado")]

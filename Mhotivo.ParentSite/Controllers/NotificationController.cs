@@ -80,15 +80,7 @@ namespace Mhotivo.ParentSite.Controllers
             }
            
 
-            var notificationsModel = new List<NotificationModel>();
-
-            foreach (var notification in notifications)
-            {
-                var noti = Mapper.Map<Notification, NotificationModel>(notification);
-                noti.CommentsAmount = notification.NotificationComments.Count;
-                noti.NotificationCreator = notification.NotificationCreator.DisplayName;
-                notificationsModel.Add(noti);
-            }
+            var notificationsModel = notifications.Select(Mapper.Map<Notification, NotificationModel>).ToList();
 
 
             notificationsModel = notificationsModel.OrderByDescending(x => x.Created).ToList();
@@ -131,7 +123,7 @@ namespace Mhotivo.ParentSite.Controllers
         public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
         {
             IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYearGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
+                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
             return allEnrolls;
         }
 
@@ -167,7 +159,7 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 CommentText = commentText,
                 CreationDate = DateTime.Now,
-                Parent = _loggedParent
+                Commenter = _loggedParent.User
             });
             _notificationRepository.Update(selectedNotification);
             return RedirectToAction("Index");

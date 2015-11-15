@@ -48,7 +48,7 @@ namespace Mhotivo.Controllers
             {
                 allStudents = _studentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
-            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, DisplayStudentModel>).ToList();
+            var allStudentDisplaysModel = allStudents.Select(Mapper.Map<Student, StudentDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -181,7 +181,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
                         {
-                            Id = (int) id,
+                            Id = id,
                             Controller = "Student"
                         };
             return View("ContactAdd", model);
@@ -215,13 +215,13 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             var student = _studentRepository.GetById(id);
-            var studentModel = Mapper.Map<Student, DisplayStudentModel>(student);
+            var studentModel = Mapper.Map<Student, StudentDisplayModel>(student);
             return View("Details", studentModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Details(DisplayStudentModel modelStudent)
+        public ActionResult Details(StudentDisplayModel modelStudent)
         {
             return RedirectToAction("Index");
         }

@@ -9,44 +9,44 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    public class AcademicYearGradeRepository : IAcademicYearGradeRepository
+    public class AcademicGradeRepository : IAcademicGradeRepository
     {
         private readonly MhotivoContext _context;
-        public AcademicYearGradeRepository(MhotivoContext context)
+        public AcademicGradeRepository(MhotivoContext context)
         {
             _context = context;
         }
 
-        public AcademicYearGrade GetById(long id)
+        public AcademicGrade GetById(long id)
         {
             return _context.AcademicYearGrades.FirstOrDefault(x => x.Id == id);
         }
 
-        public AcademicYearGrade Create(AcademicYearGrade itemToCreate)
+        public AcademicGrade Create(AcademicGrade itemToCreate)
         {
             itemToCreate = _context.AcademicYearGrades.Add(itemToCreate);
             _context.SaveChanges();
             return itemToCreate;
         }
 
-        public IQueryable<AcademicYearGrade> Query(Expression<Func<AcademicYearGrade, AcademicYearGrade>> expression)
+        public IQueryable<AcademicGrade> Query(Expression<Func<AcademicGrade, AcademicGrade>> expression)
         {
             return _context.AcademicYearGrades.Select(expression);
         }
 
-        public IQueryable<AcademicYearGrade> Filter(Expression<Func<AcademicYearGrade, bool>> expression)
+        public IQueryable<AcademicGrade> Filter(Expression<Func<AcademicGrade, bool>> expression)
         {
             return _context.AcademicYearGrades.Where(expression);
         }
 
-        public AcademicYearGrade Update(AcademicYearGrade itemToUpdate)
+        public AcademicGrade Update(AcademicGrade itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;
         }
 
-        public AcademicYearGrade Delete(long id)
+        public AcademicGrade Delete(long id)
         {
             var item = GetById(id);
             _context.AcademicYearGrades.Remove(item);
@@ -54,14 +54,14 @@ namespace Mhotivo.Implement.Repositories
             return item;
         }
 
-        public AcademicYearGrade Delete(AcademicYearGrade grade)
+        public AcademicGrade Delete(AcademicGrade grade)
         {
             _context.AcademicYearGrades.Remove(grade);
             _context.SaveChanges();
             return grade;
         }
 
-        public IEnumerable<AcademicYearGrade> GetAllGrades()
+        public IEnumerable<AcademicGrade> GetAllGrades()
         {
             return Query(x => x).ToList();
         }

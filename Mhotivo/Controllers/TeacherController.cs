@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(Mapper.Map<IEnumerable<Teacher>, IEnumerable<DisplayTeacherModel> >(_teacherRepository.GetAllTeachers()));
+            return View(Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDisplayModel> >(_teacherRepository.GetAllTeachers()));
         }
 
         [HttpGet]
@@ -128,7 +128,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
                         {
-                            Id = (int) id,
+                            Id = id,
                             Controller = "Teacher"
                         };
             return View("ContactAdd", model);
@@ -148,7 +148,7 @@ namespace Mhotivo.Controllers
             var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
             if (_teacherRepository.Filter(x => x.IdNumber == modelTeacher.IdNumber).Any())
             {
-                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe un maestro con ese numero de Identidad", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
             if (_teacherRepository.Filter(x => x.User.Email == modelTeacher.Email).Any())
@@ -156,14 +156,15 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
+
             var newUser = new User
             {
-                DisplayName = modelTeacher.FirstName,
                 Email = modelTeacher.Email,
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault()
+                Role = _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault(),
+                UserOwner = teacherModel
             };
             newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
@@ -180,7 +181,7 @@ namespace Mhotivo.Controllers
         public ActionResult Details(long id)
         {
             var teacher = _teacherRepository.GetById(id);
-            var teacherModel = Mapper.Map<Teacher, DisplayTeacherModel>(teacher);
+            var teacherModel = Mapper.Map<Teacher, TeacherDisplayModel>(teacher);
             return View("Details", teacherModel);
         }
 

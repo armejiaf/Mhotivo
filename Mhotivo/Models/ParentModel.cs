@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Mhotivo.Models
 {
-    public class DisplayParentModel
+    public class ParentDisplayModel
     {
         public long Id { get; set; }
 

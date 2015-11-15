@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Attributes;
 
 namespace Mhotivo.Models
 {
-    public class DisplayUserModel
+    public class UserDisplayModel
     {
         public long Id { get; set; }
 
@@ -12,18 +11,16 @@ namespace Mhotivo.Models
         public string Email { get; set; }
 
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string UserOwner { get; set; }
 
         [Display(Name = "Activo")]
-        public string Status { get; set; }
+        public string IsActive { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
-        public Role Role { get; set; }
-
-        public string RoleName { get; set; }
+        public string Role { get; set; }
     }
 
-    public class DisplayNewUserModel
+    public class NewUserDisplayModel
     {
         public long Id { get; set; }
 
@@ -31,25 +28,24 @@ namespace Mhotivo.Models
         public string Email { get; set; }
 
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string UserOwner { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
-        public Role Role { get; set; }
-
-        public string RoleName { get; set; }
+        public string Role { get; set; }
     }
 
-    public class DisplayNewUserDefaultPasswordModel
+    public class NewUserDefaultPasswordDisplayModel
     {
         public long Id { get; set; }
 
         [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        public string UserOwner { get; set; }
 
         [Display(Name = "Contraseña Temporal")]
         public string DefaultPassword { get; set; }
 
     }
+
     public class ChangePasswordModel
     {
         [Required(ErrorMessage = "Debe Ingresar Contraseña actual")]
@@ -88,13 +84,12 @@ namespace Mhotivo.Models
 
     public class UserRegisterModel
     {
-        [Required(ErrorMessage = "Debe Ingresar Nombre")]
-        [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar el Dueño de la Cuenta")]
+        [Display(Name = "Dueño de Cuenta")]
+        public long UserOwner { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Email")]
         [Display(Name = "Email")]
-        //[RemoteAttribute("DoesUserNameExist", "UserController", ErrorMessage = "El Correo ya existe!")]
         public string Email { get; set; }
 
         [Display(Name = "Estado")]
@@ -102,26 +97,26 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
-        public int RoleId { get; set; }
+        public int Role { get; set; }
     }
 
     public class UserEditModel
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Nombre")]
-        [Display(Name = "Nombre")]
-        public string DisplayName { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar el Dueño de la Cuenta")]
+        [Display(Name = "Dueño de Cuenta")]
+        public long UserOwner { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Email")]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Debe Ingresar Correo")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
 
-        [Display(Name = "Activo")]
+        [Display(Name = "Activo?")]
         public bool IsActive { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
         [Display(Name = "Tipo de Usuario")]
-        public long RoleId { get; set; }
+        public long Role { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Mhotivo.Models
 {
-    public class DisplayStudentModel
+    public class StudentDisplayModel
     {
         public long Id { get; set; }
 
@@ -153,16 +153,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Madre o Segundo Tutor")]
         public long SecondParent { get; set; }
-    }
-
-    public class StudentBenefactorEditModel
-    {
-        public long Id { get; set; }
-
-        public long OldId { get; set; }
-
-        [Display(Name = "Estudiante")]
-        public long NewId { get; set; }
     }
 
     public class StudentRegisterModel

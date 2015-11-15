@@ -20,14 +20,14 @@
         <legend>Matricula</legend>
         
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.GradeId)
-            @Html.ValidationMessageFor(model => model.Id)
-            @Html.ValidationMessageFor(model => model.Section)
+            @Html.ValidationMessageFor(model => model.Grade)
+            @Html.ValidationMessageFor(model => model.Student)
+            @Html.ValidationMessageFor(model => model.AcademicGrade)
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Id)
+                @Html.LabelFor(model => model.Student)
             </div>
             <div class="controls">
                 @Html.DropDownList("Id")
@@ -36,7 +36,7 @@
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.GradeId)
+                @Html.LabelFor(model => model.Grade)
             </div>
             <div class="controls">
                 @Html.DropDownList("GradeId")
@@ -45,7 +45,7 @@
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Section)
+                @Html.LabelFor(model => model.AcademicGrade)
             </div>
             <div class="controls">
                 @Html.DropDownList("Section")

@@ -13,6 +13,6 @@ namespace Mhotivo.Data.Entities
         public string Description { get; set; }
         public DateTime DeliverDate { get; set; }
         public float Points { get; set; }
-        public virtual AcademicYearCourse AcademicYearCourse { get; set; }
+        public virtual AcademicCourse AcademicCourse { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using AutoMapper;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
 
@@ -24,11 +25,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index(long notificationId)
         {
             var notification = _notificationRepository.GetById(notificationId);
-            var commentsForNotifications = notification.NotificationComments.Select(comment => new NotificationCommentsModel()
-            {
-               NotificationId = notificationId, CommentId = comment.Id, Comment = comment.CommentText, CreationDate = comment.CreationDate, Username = comment.Parent.FullName
-            }).ToList();
-
+            var commentsForNotifications = notification.NotificationComments.Select(Mapper.Map<NotificationCommentDisplayModel>);
             return View(commentsForNotifications);
         }
 
@@ -36,19 +33,7 @@ namespace Mhotivo.Controllers
         {
             var comments = _notificationCommentRepository.GetById(commentId);
             _notificationCommentRepository.Delete(comments);
-
-            var notification = _notificationRepository.GetById(notificationId);
-
-            var commentsForNotifications = notification.NotificationComments.Select(comment => new NotificationCommentsModel()
-            {
-                NotificationId = notificationId,
-                CommentId = comment.Id,
-                Comment = comment.CommentText,
-                CreationDate = comment.CreationDate,
-                Username = comment.Parent.FullName
-            }).ToList();
-
-            return View("Index",commentsForNotifications);
+            return RedirectToAction("Index",notificationId);
         }
 
     }

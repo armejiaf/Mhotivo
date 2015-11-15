@@ -62,7 +62,7 @@ namespace Mhotivo
             kernel.Bind<MhotivoContext>().ToSelf().InRequestScope();
             kernel.Bind<ISessionManagementService>().To<SessionManagementService>().InRequestScope();
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearCourseRepository>().To<AcademicYearCourseRepository>().InRequestScope();
+            kernel.Bind<IAcademicCourseRepository>().To<AcademicCourseRepository>().InRequestScope();
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<INotificationRepository>().To<NotificationRepository>().InRequestScope();
@@ -81,7 +81,7 @@ namespace Mhotivo
             kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearGradeRepository>().To<AcademicYearGradeRepository>().InRequestScope();
+            kernel.Bind<IAcademicGradeRepository>().To<AcademicGradeRepository>().InRequestScope();
             kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
         }        
     }

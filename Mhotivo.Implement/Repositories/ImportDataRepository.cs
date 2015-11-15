@@ -103,7 +103,7 @@ namespace Mhotivo.Implement.Repositories
         private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Parent> listParents, AcademicYear academicYearGrade, List<string> emails)
         {
             var allEnrolls = _enrollRepository.GetAllsEnrolls();
-            var enrls = allEnrolls.Where(x => x.AcademicYearGrade.Id == academicYearGrade.Id);
+            var enrls = allEnrolls.Where(x => x.AcademicGrade.Id == academicYearGrade.Id);
             if (enrls.Any())
                 throw new Exception("Ya hay alumos en este grado, borrelos e ingreselos denuevo");
 
@@ -117,7 +117,7 @@ namespace Mhotivo.Implement.Repositories
                 {
                     var newUser = new User
                     {
-                        DisplayName = pare.FirstName,
+                        UserOwner = pare,
                         Email = emails[iterator],//TODO: Possibly deprecated.
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsUsingDefaultPassword = true,
@@ -145,7 +145,7 @@ namespace Mhotivo.Implement.Repositories
                 }
                 else
                     stu.Id = temp.First().Id;
-                var enr = allEnrolls.Where(x => x.AcademicYearGrade.Id == academicYearGrade.Id && x.Student.Id == stu.Id);
+                var enr = allEnrolls.Where(x => x.AcademicGrade.Id == academicYearGrade.Id && x.Student.Id == stu.Id);
                 if (enr.Any()) continue;
                 var te = new Enroll();
                 var academicYearTemp = _academicYearRepository.GetById(academicYearGrade.Id);

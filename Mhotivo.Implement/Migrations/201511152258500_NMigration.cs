@@ -8,46 +8,41 @@ namespace Mhotivo.Implement.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.AcademicYearCourses",
+                "dbo.AcademicCourses",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
                         Schedule = c.Time(nullable: false, precision: 7),
                         Teacher_Id = c.Long(),
-                        Teacher_Id1 = c.Long(),
-                        AcademicYearGrade_Id = c.Long(),
+                        AcademicGrade_Id = c.Long(),
                         Course_Id = c.Long(),
-                        Teacher_Id2 = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.People", t => t.Teacher_Id)
-                .ForeignKey("dbo.People", t => t.Teacher_Id1)
-                .ForeignKey("dbo.AcademicYearGrades", t => t.AcademicYearGrade_Id)
+                .ForeignKey("dbo.AcademicGrades", t => t.AcademicGrade_Id)
                 .ForeignKey("dbo.Courses", t => t.Course_Id)
-                .ForeignKey("dbo.People", t => t.Teacher_Id2)
                 .Index(t => t.Teacher_Id)
-                .Index(t => t.Teacher_Id1)
-                .Index(t => t.AcademicYearGrade_Id)
-                .Index(t => t.Course_Id)
-                .Index(t => t.Teacher_Id2);
+                .Index(t => t.AcademicGrade_Id)
+                .Index(t => t.Course_Id);
             
             CreateTable(
-                "dbo.AcademicYearGrades",
+                "dbo.AcademicGrades",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
                         Section = c.String(),
                         AcademicYear_Id = c.Long(),
+                        SectionTeacher_Id = c.Long(),
                         ActivePensum_Id = c.Long(),
                         Grade_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AcademicYears", t => t.AcademicYear_Id)
+                .ForeignKey("dbo.People", t => t.SectionTeacher_Id)
                 .ForeignKey("dbo.Pensums", t => t.ActivePensum_Id)
                 .ForeignKey("dbo.Grades", t => t.Grade_Id)
                 .Index(t => t.AcademicYear_Id)
+                .Index(t => t.SectionTeacher_Id)
                 .Index(t => t.ActivePensum_Id)
                 .Index(t => t.Grade_Id);
             
@@ -118,17 +113,19 @@ namespace Mhotivo.Implement.Migrations
                     {
                         Id = c.Long(nullable: false, identity: true),
                         Email = c.String(),
-                        DisplayName = c.String(),
                         Password = c.String(),
                         DefaultPassword = c.String(),
                         IsUsingDefaultPassword = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         Salt = c.String(),
                         Role_Id = c.Long(),
+                        UserOwner_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Roles", t => t.Role_Id)
-                .Index(t => t.Role_Id);
+                .ForeignKey("dbo.People", t => t.UserOwner_Id)
+                .Index(t => t.Role_Id)
+                .Index(t => t.UserOwner_Id);
             
             CreateTable(
                 "dbo.Notifications",
@@ -159,14 +156,34 @@ namespace Mhotivo.Implement.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         CommentText = c.String(),
                         CreationDate = c.DateTime(nullable: false),
-                        Parent_Id = c.Long(),
+                        Commenter_Id = c.Long(),
                         Notification_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.People", t => t.Parent_Id)
+                .ForeignKey("dbo.Users", t => t.Commenter_Id)
                 .ForeignKey("dbo.Notifications", t => t.Notification_Id)
-                .Index(t => t.Parent_Id)
+                .Index(t => t.Commenter_Id)
                 .Index(t => t.Notification_Id);
+            
+            CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Name = c.String(),
+                        Value = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Privileges",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.People",
@@ -196,7 +213,7 @@ namespace Mhotivo.Implement.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Users", t => t.User_Id)
-                .ForeignKey("dbo.AcademicYearGrades", t => t.MyGrade_Id)
+                .ForeignKey("dbo.AcademicGrades", t => t.MyGrade_Id)
                 .ForeignKey("dbo.People", t => t.Tutor1_Id)
                 .ForeignKey("dbo.People", t => t.Tutor2_Id)
                 .Index(t => t.User_Id)
@@ -218,40 +235,6 @@ namespace Mhotivo.Implement.Migrations
                 .Index(t => t.People_Id);
             
             CreateTable(
-                "dbo.Roles",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
-                        Value = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Privileges",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Enrolls",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        AcademicYearGrade_Id = c.Long(),
-                        Student_Id = c.Long(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AcademicYearGrades", t => t.AcademicYearGrade_Id)
-                .ForeignKey("dbo.People", t => t.Student_Id)
-                .Index(t => t.AcademicYearGrade_Id)
-                .Index(t => t.Student_Id);
-            
-            CreateTable(
                 "dbo.Homework",
                 c => new
                     {
@@ -260,11 +243,25 @@ namespace Mhotivo.Implement.Migrations
                         Description = c.String(),
                         DeliverDate = c.DateTime(nullable: false),
                         Points = c.Single(nullable: false),
-                        AcademicYearCourse_Id = c.Long(),
+                        AcademicCourse_Id = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AcademicYearCourses", t => t.AcademicYearCourse_Id)
-                .Index(t => t.AcademicYearCourse_Id);
+                .ForeignKey("dbo.AcademicCourses", t => t.AcademicCourse_Id)
+                .Index(t => t.AcademicCourse_Id);
+            
+            CreateTable(
+                "dbo.Enrolls",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        AcademicGrade_Id = c.Long(),
+                        Student_Id = c.Long(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AcademicGrades", t => t.AcademicGrade_Id)
+                .ForeignKey("dbo.People", t => t.Student_Id)
+                .Index(t => t.AcademicGrade_Id)
+                .Index(t => t.Student_Id);
             
             CreateTable(
                 "dbo.PrivilegeRoles",
@@ -283,69 +280,69 @@ namespace Mhotivo.Implement.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Homework", "AcademicYearCourse_Id", "dbo.AcademicYearCourses");
             DropForeignKey("dbo.Enrolls", "Student_Id", "dbo.People");
-            DropForeignKey("dbo.Enrolls", "AcademicYearGrade_Id", "dbo.AcademicYearGrades");
-            DropForeignKey("dbo.AcademicYearCourses", "Teacher_Id2", "dbo.People");
-            DropForeignKey("dbo.AcademicYearCourses", "Course_Id", "dbo.Courses");
-            DropForeignKey("dbo.AcademicYearGrades", "Grade_Id", "dbo.Grades");
-            DropForeignKey("dbo.AcademicYearCourses", "AcademicYearGrade_Id", "dbo.AcademicYearGrades");
-            DropForeignKey("dbo.AcademicYearGrades", "ActivePensum_Id", "dbo.Pensums");
+            DropForeignKey("dbo.Enrolls", "AcademicGrade_Id", "dbo.AcademicGrades");
+            DropForeignKey("dbo.Homework", "AcademicCourse_Id", "dbo.AcademicCourses");
+            DropForeignKey("dbo.AcademicCourses", "Course_Id", "dbo.Courses");
+            DropForeignKey("dbo.AcademicGrades", "Grade_Id", "dbo.Grades");
+            DropForeignKey("dbo.AcademicCourses", "AcademicGrade_Id", "dbo.AcademicGrades");
+            DropForeignKey("dbo.AcademicGrades", "ActivePensum_Id", "dbo.Pensums");
             DropForeignKey("dbo.Pensums", "Grade_Id", "dbo.Grades");
             DropForeignKey("dbo.Grades", "EducationLevel_Id", "dbo.EducationLevels");
             DropForeignKey("dbo.EducationLevels", "Director_Id", "dbo.Users");
+            DropForeignKey("dbo.Users", "UserOwner_Id", "dbo.People");
+            DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
+            DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
+            DropForeignKey("dbo.People", "MyGrade_Id", "dbo.AcademicGrades");
+            DropForeignKey("dbo.Grades", "Student_Id", "dbo.People");
+            DropForeignKey("dbo.AcademicGrades", "SectionTeacher_Id", "dbo.People");
+            DropForeignKey("dbo.AcademicCourses", "Teacher_Id", "dbo.People");
+            DropForeignKey("dbo.People", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.ContactInformations", "People_Id", "dbo.People");
             DropForeignKey("dbo.Users", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.PrivilegeRoles", "Role_Id", "dbo.Roles");
             DropForeignKey("dbo.PrivilegeRoles", "Privilege_Id", "dbo.Privileges");
             DropForeignKey("dbo.Notifications", "NotificationCreator_Id", "dbo.Users");
             DropForeignKey("dbo.NotificationComments", "Notification_Id", "dbo.Notifications");
-            DropForeignKey("dbo.NotificationComments", "Parent_Id", "dbo.People");
-            DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
-            DropForeignKey("dbo.People", "Tutor1_Id", "dbo.People");
-            DropForeignKey("dbo.People", "MyGrade_Id", "dbo.AcademicYearGrades");
-            DropForeignKey("dbo.Grades", "Student_Id", "dbo.People");
-            DropForeignKey("dbo.AcademicYearCourses", "Teacher_Id1", "dbo.People");
-            DropForeignKey("dbo.AcademicYearCourses", "Teacher_Id", "dbo.People");
-            DropForeignKey("dbo.People", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.ContactInformations", "People_Id", "dbo.People");
+            DropForeignKey("dbo.NotificationComments", "Commenter_Id", "dbo.Users");
             DropForeignKey("dbo.Notifications", "AcademicYear_Id", "dbo.AcademicYears");
             DropForeignKey("dbo.Courses", "Pensum_Id", "dbo.Pensums");
-            DropForeignKey("dbo.AcademicYearGrades", "AcademicYear_Id", "dbo.AcademicYears");
+            DropForeignKey("dbo.AcademicGrades", "AcademicYear_Id", "dbo.AcademicYears");
             DropIndex("dbo.PrivilegeRoles", new[] { "Role_Id" });
             DropIndex("dbo.PrivilegeRoles", new[] { "Privilege_Id" });
-            DropIndex("dbo.Homework", new[] { "AcademicYearCourse_Id" });
             DropIndex("dbo.Enrolls", new[] { "Student_Id" });
-            DropIndex("dbo.Enrolls", new[] { "AcademicYearGrade_Id" });
+            DropIndex("dbo.Enrolls", new[] { "AcademicGrade_Id" });
+            DropIndex("dbo.Homework", new[] { "AcademicCourse_Id" });
             DropIndex("dbo.ContactInformations", new[] { "People_Id" });
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
             DropIndex("dbo.People", new[] { "Tutor1_Id" });
             DropIndex("dbo.People", new[] { "MyGrade_Id" });
             DropIndex("dbo.People", new[] { "User_Id" });
             DropIndex("dbo.NotificationComments", new[] { "Notification_Id" });
-            DropIndex("dbo.NotificationComments", new[] { "Parent_Id" });
+            DropIndex("dbo.NotificationComments", new[] { "Commenter_Id" });
             DropIndex("dbo.Notifications", new[] { "NotificationCreator_Id" });
             DropIndex("dbo.Notifications", new[] { "AcademicYear_Id" });
+            DropIndex("dbo.Users", new[] { "UserOwner_Id" });
             DropIndex("dbo.Users", new[] { "Role_Id" });
             DropIndex("dbo.EducationLevels", new[] { "Director_Id" });
             DropIndex("dbo.Grades", new[] { "EducationLevel_Id" });
             DropIndex("dbo.Grades", new[] { "Student_Id" });
             DropIndex("dbo.Courses", new[] { "Pensum_Id" });
             DropIndex("dbo.Pensums", new[] { "Grade_Id" });
-            DropIndex("dbo.AcademicYearGrades", new[] { "Grade_Id" });
-            DropIndex("dbo.AcademicYearGrades", new[] { "ActivePensum_Id" });
-            DropIndex("dbo.AcademicYearGrades", new[] { "AcademicYear_Id" });
-            DropIndex("dbo.AcademicYearCourses", new[] { "Teacher_Id2" });
-            DropIndex("dbo.AcademicYearCourses", new[] { "Course_Id" });
-            DropIndex("dbo.AcademicYearCourses", new[] { "AcademicYearGrade_Id" });
-            DropIndex("dbo.AcademicYearCourses", new[] { "Teacher_Id1" });
-            DropIndex("dbo.AcademicYearCourses", new[] { "Teacher_Id" });
+            DropIndex("dbo.AcademicGrades", new[] { "Grade_Id" });
+            DropIndex("dbo.AcademicGrades", new[] { "ActivePensum_Id" });
+            DropIndex("dbo.AcademicGrades", new[] { "SectionTeacher_Id" });
+            DropIndex("dbo.AcademicGrades", new[] { "AcademicYear_Id" });
+            DropIndex("dbo.AcademicCourses", new[] { "Course_Id" });
+            DropIndex("dbo.AcademicCourses", new[] { "AcademicGrade_Id" });
+            DropIndex("dbo.AcademicCourses", new[] { "Teacher_Id" });
             DropTable("dbo.PrivilegeRoles");
-            DropTable("dbo.Homework");
             DropTable("dbo.Enrolls");
-            DropTable("dbo.Privileges");
-            DropTable("dbo.Roles");
+            DropTable("dbo.Homework");
             DropTable("dbo.ContactInformations");
             DropTable("dbo.People");
+            DropTable("dbo.Privileges");
+            DropTable("dbo.Roles");
             DropTable("dbo.NotificationComments");
             DropTable("dbo.Notifications");
             DropTable("dbo.Users");
@@ -354,8 +351,8 @@ namespace Mhotivo.Implement.Migrations
             DropTable("dbo.Courses");
             DropTable("dbo.Pensums");
             DropTable("dbo.AcademicYears");
-            DropTable("dbo.AcademicYearGrades");
-            DropTable("dbo.AcademicYearCourses");
+            DropTable("dbo.AcademicGrades");
+            DropTable("dbo.AcademicCourses");
         }
     }
 }

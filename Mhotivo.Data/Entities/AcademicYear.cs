@@ -8,13 +8,13 @@ namespace Mhotivo.Data.Entities
     {
         public AcademicYear()
         {
-            Grades = new HashSet<AcademicYearGrade>();
+            Grades = new HashSet<AcademicGrade>();
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public virtual ICollection<AcademicYearGrade> Grades { get; set; }
+        public virtual ICollection<AcademicGrade> Grades { get; set; }
         public int Year { get; set; }
         public bool IsActive { get; set; }
     }

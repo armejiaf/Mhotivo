@@ -8,8 +8,8 @@ namespace Mhotivo.Implement.Context
         public MhotivoContext() : base("MhotivoContext") {}
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<AcademicYear> AcademicYears { get; set; }
-        public DbSet<AcademicYearGrade> AcademicYearGrades { get; set; }
-        public DbSet<AcademicYearCourse> AcademicYearCourses { get; set; }
+        public DbSet<AcademicGrade> AcademicYearGrades { get; set; }
+        public DbSet<AcademicCourse> AcademicYearCourses { get; set; }
         public DbSet<EducationLevel> EducationLevels { get; set; }
         public DbSet<ContactInformation> ContactInformations { get; set; }
         public DbSet<Course> Courses { get; set; }

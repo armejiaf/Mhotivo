@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.DisplayUserModel
+﻿@model Mhotivo.Models.UserDisplayModel
 
 <fieldset>
     <legend>User</legend>
@@ -11,16 +11,16 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.DisplayName)
+         @Html.DisplayNameFor(model => model.UserOwner)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.DisplayName)
+        @Html.DisplayFor(model => model.UserOwner)
     </div>
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
+         @Html.DisplayNameFor(model => model.IsActive)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
+        @Html.DisplayFor(model => model.IsActive)
     </div>
 </fieldset>
 <p>

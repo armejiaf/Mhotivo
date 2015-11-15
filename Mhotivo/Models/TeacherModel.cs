@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
 {
-    public class DisplayTeacherModel
+    public class TeacherDisplayModel
     {
         public long Id { get; set; }
 

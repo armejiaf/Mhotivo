@@ -73,7 +73,7 @@ namespace Mhotivo.Implement.Services
             if (val != null) return true;
             var myUser = _userRepository.GetById(idUser);
             HttpContext.Current.Session[_userIdIdentifier] = myUser.Id;
-            HttpContext.Current.Session[_userNameIdentifier] = myUser.DisplayName;
+            HttpContext.Current.Session[_userNameIdentifier] = myUser.UserOwner.FirstName;
             HttpContext.Current.Session[_userEmailIdentifier] = myUser.Email;
             HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(idUser).Name;
             return true;

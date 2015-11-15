@@ -10,19 +10,19 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.DisplayNameFor(model => model.GradeId)
+                @Html.DisplayNameFor(model => model.Grade)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.GradeId, new SelectList(ViewBag.GradeId, "Value", "Text"), " -- Grado --")
+                @Html.DropDownListFor(model => model.Grade, new SelectList(ViewBag.GradeId, "Value", "Text"), " -- Grado --")
             </div>
         </div>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.DisplayNameFor(model => model.Section)
+                @Html.DisplayNameFor(model => model.AcademicGrade)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.Section, (SelectList)ViewBag.Section, "  -- Seccion --")
+                @Html.DropDownListFor(model => model.AcademicGrade, (SelectList)ViewBag.Section, "  -- Seccion --")
             </div>
         </div>
 

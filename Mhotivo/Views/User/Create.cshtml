@@ -22,7 +22,7 @@
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.DisplayName)
             @Html.ValidationMessageFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.RoleId)  
+            @Html.ValidationMessageFor(model => model.Role)  
         </p>
         
         <div class="control-group">
@@ -45,7 +45,7 @@
         <!--  
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.RoleId)
+                @Html.LabelFor(model => model.Role)
             </div>
             <div class="controls">
                 @Html.DropDownList("Id")

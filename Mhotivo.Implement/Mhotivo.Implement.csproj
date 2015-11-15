@@ -57,15 +57,15 @@
   <ItemGroup>
     <Compile Include="Attributes\NotEqualToAttribute.cs" />
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201511050350290_NMigration.cs" />
-    <Compile Include="Migrations\201511050350290_NMigration.Designer.cs">
-      <DependentUpon>201511050350290_NMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201511152258500_NMigration.cs" />
+    <Compile Include="Migrations\201511152258500_NMigration.Designer.cs">
+      <DependentUpon>201511152258500_NMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\AcademicYearCourseRepository.cs" />
-    <Compile Include="Repositories\AcademicYearGradeRepository.cs" />
+    <Compile Include="Repositories\AcademicCourseRepository.cs" />
+    <Compile Include="Repositories\AcademicGradeRepository.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
     <Compile Include="Repositories\EducationLevelRepository.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
@@ -105,8 +105,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511050350290_NMigration.resx">
-      <DependentUpon>201511050350290_NMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511152258500_NMigration.resx">
+      <DependentUpon>201511152258500_NMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

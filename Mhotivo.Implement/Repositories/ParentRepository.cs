@@ -32,7 +32,6 @@ namespace Mhotivo.Implement.Repositories
         public Parent Create(Parent itemToCreate)
         {
             itemToCreate.Disable = false;
-            _context.Users.Attach(itemToCreate.User);
             var parent = _context.Parents.Add(itemToCreate);
             _context.SaveChanges();
             return parent;

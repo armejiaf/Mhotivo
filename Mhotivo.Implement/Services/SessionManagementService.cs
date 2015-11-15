@@ -60,7 +60,7 @@ namespace Mhotivo.Implement.Services
         private void UpdateSessionFromUser(User user)
         {
             HttpContext.Current.Session[_userEmailIdentifier] = user.Email;
-            HttpContext.Current.Session[_userNameIdentifier] = user.DisplayName;
+            HttpContext.Current.Session[_userNameIdentifier] = user.UserOwner.FirstName;
             HttpContext.Current.Session[_userRoleIdentifier] = _userRepository.GetUserRole(user.Id).Name;
             HttpContext.Current.Session[_userIdIdentifier] = user.Id;
         }

@@ -26,8 +26,8 @@ namespace Mhotivo.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+        public virtual People UserOwner { get; set; }
         public string Email { get; set; }
-        public string DisplayName { get; set; }
         public string Password { get; set; }
         public string DefaultPassword { get; set; }
         public bool IsUsingDefaultPassword { get; set; }
@@ -53,7 +53,7 @@ namespace Mhotivo.Data.Entities
             var hashtool = SHA512.Create();
             if (String.IsNullOrEmpty(Salt))
             {
-                var stringSalt = hashtool.ComputeHash(Encoding.UTF8.GetBytes(Email + DisplayName));
+                var stringSalt = hashtool.ComputeHash(Encoding.UTF8.GetBytes(Email + UserOwner.FirstName));
                 var hashedSalt = BitConverter.ToString(stringSalt).Replace("-", "");
                 Salt = hashedSalt;
             }
