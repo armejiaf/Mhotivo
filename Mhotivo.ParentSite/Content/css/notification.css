@@ -2,6 +2,12 @@
     font-size:25px;
 }
 
+.font22{
+    font-size:19px;
+    font-family:'Trebuchet MS';
+    font-weight: bold;
+}
+
 .notify {
   display: inline-block;
   border-radius: 10px;

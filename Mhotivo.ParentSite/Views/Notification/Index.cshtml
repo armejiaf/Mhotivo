@@ -101,32 +101,34 @@
                                        <div class="nicdark_textevidence">
                                            <div class="nicdark_textevidence nicdark_bg_white nicdark_radius nicdark_shadow" style="border: 2px solid black;">
                                                <div class="nicdark_size_small">
-                                                   <p style="color: black">
-                                                       <i class="icon-md icon-calendar-1 nicdark_marginright10" style="color:red"></i> @item.Created.ToShortDateString() <span class="nicdark_margin010">·</span>
-                                                       <i class="icon-md icon-user-1 nicdark_marginright10" style="color: cornflowerblue"></i> @item.NotificationCreator <span class="nicdark_margin010">·</span>
+                                                   <p class="font22" style="color: black">
+                                                       <i class="icon-md icon-calendar" style="color:orange"></i> @item.Created.ToShortDateString() <span class="nicdark_margin020">·</span>
+                                                       <i class="icon-md icon-user" style="color: cornflowerblue"></i> @item.NotificationCreator <span class="nicdark_margin020">·</span>
                                                        <a href="NotificationComments?notificationId=@item.Id" class="notify">
                                                            <span class="notification-label notification-label-red">@item.CommentsAmount</span>
-                                                           <i class="icon-chat nicdark_marginright10" style="color:burlywood"></i>
+                                                           <i class="icon-chat" style="color:tan"></i>
                                                        </a>
                                                    </p>
                                                </div>
                                            </div>
                                            <br />
-                                           <div class="nicdark_bg_grey nicdark_radius nicdark_shadow grey small subtitle">
+                                           <div class="nicdark_bg_greydark">
                                                <div class="nicdark_space20"></div>
-                                               <h2 class="subtitle greydark nicdark_marginleft10">@item.NotificationName</h2>
+                                               <h2 class="subtitle nicdark_marginleft10" style="color:white; text-decoration:underline">@item.NotificationName</h2>
                                                <div class="nicdark_space20"></div>
-                                               <div class="nicdark_marginleft10" style="font-size: 16px">
-                                                   @Html.Raw(@item.Message)
+                                               <div class="nicdark_marginleft10" style="font-size: 16px; color:white; font-family:Calibri">
+                                                   @item.Message
                                                </div>
                                                <br />
                                                <br />
                                                <div class="nicdark_space10 "></div>
                                            </div>
                                            <a onclick="addcomment(@item.Id); " href=" #AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
+                                           <div class="nicdark_space20"></div>
 
-                                           <div class="nicdark_space50"></div>
-
+                                   </div>
+                                   <div class="nicdark_divider left big">
+                                       <span class="nicdark_bg_reddark nicdark_radius"></span>
                                    </div>
                                    @*
                         <ul class="nicdark_list border">
