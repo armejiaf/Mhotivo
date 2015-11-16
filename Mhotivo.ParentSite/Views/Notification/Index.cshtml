@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 
 }
-              
+               <link rel="stylesheet" href="~/Content/css/notification.css"> <!--revslider-->
+
                <section id="nicdark_parallax_title" class="nicdark_section nicdark_imgparallax nicdark_parallaxx_img7">
                    <div class="nicdark_filter greydark">
                        <div class="nicdark_container nicdark_clearfix">
@@ -26,25 +27,37 @@
                </section>
 
                <section class="nicdark_section">
+                   <div>
+                       <div class="nicdark_space20"></div>
+                       <div class="grid grid_3">
+                       </div>
+                       <div class="grid grid_8">
+                           <div class="nicdark_textevidence nicdark_bg_greendark nicdark_radius nicdark_shadow">
+                               <div class="nicdark_size_small">
+                                   <h2 style="text-align:center; color:white" class="nicdark_textevidence">Notificaciones Personales</h2>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
 
                    <!--start nicdark_container-->
                    <div class="nicdark_container nicdark_clearfix">
 
-                       <div class="nicdark_space50"></div>
+                       <div class="nicdark_space30"></div>
                        
                        <!--sidebar-->
                        <div class="grid grid_4">
                           
                            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
-                               <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
-                                   <h4 class="white nicdark_margin20">Filtros</h4>
-                                   <i class="icon-doc-text nicdark_iconbg right medium orange"></i>
+                               <div class="nicdark_textevidence nicdark_bg_bluedark nicdark_radius_top">
+                                   <h4 class="nicdark_margin20" style="color:white; font-size:20px; font-weight:bold">Filtros</h4>
+                                   <i class="icon-doc-text nicdark_iconbg right medium white"></i>
                                </div>
                                <ul class="nicdark_list border">
 
                                    <li class="nicdark_border_grey">
                                        <div class="nicdark_margin10 nicdark_relative">
-                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-bookmark"></i></a>
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-bookmark" style="color:forestgreen"></i></a>
                                            <div class="nicdark_activity nicdark_marginleft60">
                                                @Html.ActionLink("Nivel De Educacion", "index", new { filter = "NDE" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })                                        
                                            </div>
@@ -52,7 +65,7 @@
                                    </li>
                                    <li class="nicdark_border_grey">
                                        <div class="nicdark_margin10 nicdark_relative">
-                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-book"></i></a>
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-book" style="color:cornflowerblue"></i></a>
                                            <div class="nicdark_activity nicdark_marginleft60">
                                                @Html.ActionLink("Grado", "index", new { filter = "Grado" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
                                            </div>
@@ -60,7 +73,7 @@
                                    </li>
                                    <li class="nicdark_border_grey">
                                        <div class="nicdark_margin10 nicdark_relative">
-                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-briefcase"></i></a>
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-briefcase" style="color:saddlebrown"></i></a>
                                            <div class="nicdark_activity nicdark_marginleft60">
                                                @Html.ActionLink("General", "index", new { filter = "General" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
                                            </div>
@@ -68,7 +81,7 @@
                                    </li>
                                    <li class="nicdark_border_grey">
                                        <div class="nicdark_margin10 nicdark_relative">
-                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-vcard"></i></a>
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-vcard" style="color:darkorange"></i></a>
                                            <div class="nicdark_activity nicdark_marginleft60">
                                                @Html.ActionLink("Personal", "index", new { filter = "Personal" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
                                            </div>
@@ -79,25 +92,22 @@
                            </div>
                        </div>
 
-
-
+                      
                        <div class="grid grid_8">
                            @if (Model.Count > 0)
                            {
-                               <h2 style="margin-left: 100px; margin-right: 100px" class="nicdark_textevidence">Notificaciones Personales</h2>
-                               <div class="nicdark_space20"></div>
                                foreach (var item in Model)
                                {
                                        <div class="nicdark_textevidence">
-                                           <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                                               <div class="nicdark_size_big">
-                                                   <p class="white">
-                                                       <i class="icon-calendar-1 nicdark_marginright10"></i> @item.Created.ToShortDateString() <span class="nicdark_margin010">·</span>
-                                                       <i class="icon-user-1 nicdark_marginright10"></i> @item.NotificationCreator <span class="nicdark_margin010">·</span>
-
-                                                       <i class="icon-chat nicdark_marginright10"></i>
-                                                       @Html.ActionLink(" " + item.CommentsAmount + "  COMENTARIO(S)", "Index", "NotificationComments", new { @notificationId = item.Id }, new { @class = "white" })
-                                                       <span class="nicdark_margin010">·</span>
+                                           <div class="nicdark_textevidence nicdark_bg_white nicdark_radius nicdark_shadow" style="border: 2px solid black;">
+                                               <div class="nicdark_size_small">
+                                                   <p style="color: black">
+                                                       <i class="icon-md icon-calendar-1 nicdark_marginright10" style="color:red"></i> @item.Created.ToShortDateString() <span class="nicdark_margin010">·</span>
+                                                       <i class="icon-md icon-user-1 nicdark_marginright10" style="color: cornflowerblue"></i> @item.NotificationCreator <span class="nicdark_margin010">·</span>
+                                                       <a href="NotificationComments?notificationId=@item.Id" class="notify">
+                                                           <span class="notification-label notification-label-red">@item.CommentsAmount</span>
+                                                           <i class="icon-chat nicdark_marginright10" style="color:burlywood"></i>
+                                                       </a>
                                                    </p>
                                                </div>
                                            </div>
@@ -142,6 +152,19 @@
                         </ul>*@
                                }
 
+                           }
+                           else
+                           {
+                                <section class="nicdark_section">
+                                    <div class="nicdark_container nicdark_clearfix">
+                                        <div class="grid grid_8">
+                                            <div class="nicdark_alerts nicdark_bg_red nicdark_radius nicdark_shadow">
+                                                <p class="white nicdark_size_medium"><i class="icon-cancel-circled-outline iconclose"></i>&nbsp;&nbsp;&nbsp;<strong>ATENCIÓN:</strong>&nbsp;&nbsp;&nbsp;NO HAY NOTIFICACIONES.</p>
+                                                <i class="icon-warning-empty nicdark_iconbg right medium red"></i>
+                                            </div>
+                                        </div>
+                                    </div>          
+                                </section>
                            }
 
 

@@ -111,18 +111,6 @@ JQUERY UI
 }
 /*END NICDARKBG*/
 
-.black_border{ 
-	background: #404547; /* Old browsers */
-	background: -moz-linear-gradient(left,  #404547 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#404547), color-stop(16%,#404547), color-stop(32%,#404547), color-stop(49%,#404547), color-stop(65%,#404547), color-stop(83%,#404547), color-stop(100%,#404547)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left,  #404547 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(left, #404547 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(left, #404547 100%); /* IE10+ */
-	background: linear-gradient(to right,  #404547 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#74cee4', endColorstr='#edbf47',GradientType=1 ); /* IE6-9 */
-}
-
-
 /* 2- START NICDARKBORDER: applica l'ombra del colore selezionato*/
 .nicdark_border_white, .nicdark_border_white td, .nicdark_border_white th{ border: 2px solid #ffffff; }
 .nicdark_border_grey, .nicdark_border_grey td, .nicdark_border_grey th{ border: 2px solid #f1f1f1; }

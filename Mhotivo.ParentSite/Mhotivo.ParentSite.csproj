@@ -225,6 +225,7 @@
     <Content Include="Content\css\nicdark_responsive.css" />
     <Content Include="Content\css\nicdark_shortcodes.css" />
     <Content Include="Content\css\nicdark_style.css" />
+    <Content Include="Content\css\notification.css" />
     <Content Include="Content\css\revslider\settings.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font\fontello\fontello.svg" />
