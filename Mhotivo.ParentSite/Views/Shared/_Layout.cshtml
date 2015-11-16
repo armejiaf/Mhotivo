@@ -32,6 +32,9 @@
     <link rel="apple-touch-icon" href="~/Content/img/favicon/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="~/Content/img/favicon/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="~/Content/img/favicon/apple-touch-icon-114x114.png">
+    <link href="../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/Login/login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
     <!--END FAVICONS-->
     <link rel="stylesheet"
           href="@Url.Content("~/Content/bootstrap.min.css")"></link>
@@ -50,7 +53,40 @@
                     <h4 class="modal-title">Modal Header</h4>
                 </div>
                 <div class="modal-body">
-                    <p>This is a small modal.</p>
+               
+                        <div class="pen-title">
+                            <h1>MHOTIVO | Sitio de Padres</h1>
+                        </div>
+                        <div class="container">
+                            <div class="card"></div>
+                            <div class="card">
+                                <h1 class="title">Ingresar</h1>
+                                @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
+            {
+                                    @Html.ValidationSummary(true)
+                                    <div class="input-container">
+                                        <input id="email" name="Email" type="email" required />
+                                        <label>Correo</label>
+                                        <div class="bar"></div>
+                                    </div>
+                                    <div class="input-container">
+                                        <input type="password" id="pass" name="Password" required />
+                                        <label>Contraseña</label>
+                                        <div class="bar"></div>
+                                    </div>
+
+                                    <div class="button-container">
+                                        <button><span>Ingresar</span></button>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="card alt">
+                                <div class="toggle"></div>
+                            </div>
+
+                        </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

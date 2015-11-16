@@ -20,6 +20,13 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -220,6 +227,7 @@
     <Content Include="Content\css\nicdark_shortcodes.css" />
     <Content Include="Content\css\nicdark_style.css" />
     <Content Include="Content\css\revslider\settings.css" />
+    <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font\fontello\fontello.svg" />
     <Content Include="Content\img\blog\img1.jpg" />
     <Content Include="Content\img\blog\img2.jpg" />
