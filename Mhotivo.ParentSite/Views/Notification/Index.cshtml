@@ -29,14 +29,13 @@
                <section class="nicdark_section">
                    <div>
                        <div class="nicdark_space20"></div>
-                       <div class="grid grid_3">
-                       </div>
+                       <div class="grid grid_3"></div>
                        <div class="grid grid_8">
-                           <div class="nicdark_textevidence nicdark_bg_greendark nicdark_radius nicdark_shadow">
-                               <div class="nicdark_size_small">
-                                   <h2 style="text-align:center; color:white" class="nicdark_textevidence">Notificaciones Personales</h2>
-                               </div>
-                           </div>
+                           @*<div class="nicdark_textevidence nicdark_bg_greydark nicdark_radius nicdark_shadow">
+                                <div class="nicdark_size_small">
+                                    <h2 style="text-align:center; color:white" class="nicdark_textevidence">Notificaciones Personales</h2>
+                                </div>
+                            </div>*@
                        </div>
                    </div>
 
@@ -49,7 +48,7 @@
                        <div class="grid grid_4">
                           
                            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
-                               <div class="nicdark_textevidence nicdark_bg_bluedark nicdark_radius_top">
+                               <div class="nicdark_textevidence nicdark_bg_greendark nicdark_radius_top">
                                    <h4 class="nicdark_margin20" style="color:white; font-size:20px; font-weight:bold">Filtros</h4>
                                    <i class="icon-doc-text nicdark_iconbg right medium white"></i>
                                </div>
@@ -83,7 +82,7 @@
                                        <div class="nicdark_margin10 nicdark_relative">
                                            <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-vcard" style="color:darkorange"></i></a>
                                            <div class="nicdark_activity nicdark_marginleft60">
-                                               @Html.ActionLink("Personal", "index", new { filter = "Personal" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
+                                               @Html.ActionLink("Personal", "index", new { filter = "Personal" }, new { @class = "nicdark_btn nicdark_bg_greydark small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
                                            </div>
                                        </div>
                                    </li>
@@ -112,11 +111,11 @@
                                                </div>
                                            </div>
                                            <br />
-                                           <div class="nicdark_bg_greydark">
+                                           <div class="nicdark_bg_bluedark">
                                                <div class="nicdark_space20"></div>
                                                <h2 class="subtitle nicdark_marginleft10" style="color:white; text-decoration:underline">@item.NotificationName</h2>
                                                <div class="nicdark_space20"></div>
-                                               <div class="nicdark_marginleft10" style="font-size: 16px; color:white; font-family:Calibri">
+                                               <div class="nicdark_marginleft10" style="font-size: 18px; color:white; font-family:Calibri">
                                                    @item.Message
                                                </div>
                                                <br />
