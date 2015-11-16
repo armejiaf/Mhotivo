@@ -2,10 +2,28 @@
 
 @{
     ViewBag.Title = "Notificaciones";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 
 }
-<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+              
+               <section id="nicdark_parallax_title" class="nicdark_section nicdark_imgparallax nicdark_parallaxx_img7">
+                   <div class="nicdark_filter greydark">
+                       <div class="nicdark_container nicdark_clearfix">
+                           <div class="grid grid_12">
+                               <div class="nicdark_space100"></div>
+                               <div class="nicdark_space100"></div>
+                               <h1 class="white subtitle">NOTIFICACIONES</h1>
+                               <div class="nicdark_space10"></div>
+                               <h3 class="subtitle white">Avisos Importantes</h3>
+                               <div class="nicdark_space20"></div>
+                               <div class="nicdark_divider left big"><span class="nicdark_bg_white nicdark_radius"></span></div>
+                               <div class="nicdark_space40"></div>
+                               <div class="nicdark_space50"></div>
+                           </div>
+
+                       </div>
+                   </div>
+               </section>
 
                <section class="nicdark_section">
 
@@ -16,19 +34,48 @@
                        
                        <!--sidebar-->
                        <div class="grid grid_4">
+                          
                            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
-                               <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius_top">
+                               <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
                                    <h4 class="white nicdark_margin20">Filtros</h4>
-                                   <i class="icon-doc-1 nicdark_iconbg right medium white"></i>
+                                   <i class="icon-doc-text nicdark_iconbg right medium orange"></i>
+                               </div>
+                               <ul class="nicdark_list border">
 
-                               </div>
-                               <br />
-                               <div class="nicdark_margin10">
-                                   @Html.ActionLink("Nivel De Educacion", "index", new { filter = "NDE" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                                   @Html.ActionLink("Grado", "index", new { filter = "Grado" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                                   @Html.ActionLink("General", "index", new { filter = "General" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                                   @Html.ActionLink("Personal", "index", new { filter = "Personal" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                               </div>
+                                   <li class="nicdark_border_grey">
+                                       <div class="nicdark_margin10 nicdark_relative">
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-bookmark"></i></a>
+                                           <div class="nicdark_activity nicdark_marginleft60">
+                                               @Html.ActionLink("Nivel De Educacion", "index", new { filter = "NDE" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })                                        
+                                           </div>
+                                       </div>
+                                   </li>
+                                   <li class="nicdark_border_grey">
+                                       <div class="nicdark_margin10 nicdark_relative">
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-book"></i></a>
+                                           <div class="nicdark_activity nicdark_marginleft60">
+                                               @Html.ActionLink("Grado", "index", new { filter = "Grado" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
+                                           </div>
+                                       </div>
+                                   </li>
+                                   <li class="nicdark_border_grey">
+                                       <div class="nicdark_margin10 nicdark_relative">
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-briefcase"></i></a>
+                                           <div class="nicdark_activity nicdark_marginleft60">
+                                               @Html.ActionLink("General", "index", new { filter = "General" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
+                                           </div>
+                                       </div>
+                                   </li>
+                                   <li class="nicdark_border_grey">
+                                       <div class="nicdark_margin10 nicdark_relative">
+                                           <a href="#" class="nicdark_btn_icon small nicdark_radius_circle grey nicdark_absolute nicdark_border_grey2"><i class="icon-vcard"></i></a>
+                                           <div class="nicdark_activity nicdark_marginleft60">
+                                               @Html.ActionLink("Personal", "index", new { filter = "Personal" }, new { @class = "nicdark_btn nicdark_bg_greydark2 small nicdark_shadow nicdark_radius white subtitle nicdark_margin10" })
+                                           </div>
+                                       </div>
+                                   </li>
+
+                               </ul>
                            </div>
                        </div>
 
@@ -121,7 +168,8 @@
                        </div>
                        </div>
                </section>
-
+               
+               <script src="~/Scripts/jquery-1.9.1.min.js"></script>
                <script type="text/javascript">
                     function AddComment(notificationId) {
 
