@@ -41,7 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
                     {
                         return RedirectToAction("ChangePassword");
                     }
-                    return parent.MyUser.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
+                    return parent.MyUser.Email.Equals("") ? RedirectToAction("EmailConfirmation") : RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
@@ -56,13 +56,14 @@ namespace Mhotivo.ParentSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous]
-        public ActionResult ConfirmEmail()
+ 
+        public ActionResult EmailConfirmation()
         {
-            return View("EmailConfirmation");
+            return View();
         }
 
-        public ActionResult UpdateEmail(UpdateParentMailModel model)
+        [HttpPost]
+        public ActionResult EmailConfirmation(EmailConfirmationModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementRepository.GetUserLoggedId());
             var parentUser = _parentRepository.Filter(x => x.MyUser.Id == userId).Include(x => x.MyUser).FirstOrDefault();
@@ -75,7 +76,7 @@ namespace Mhotivo.ParentSite.Controllers
                 return RedirectToAction("Index", "Notification");
             }
 
-            return RedirectToAction("ConfirmEmail");
+            return RedirectToAction("EmailConfirmation");
         }
 
         public ActionResult ChangePassword()
@@ -97,5 +98,9 @@ namespace Mhotivo.ParentSite.Controllers
             _userRepository.Update(user);
             return RedirectToAction("Index", "Home");
         }
+
+      
     }
+
+    
 }
