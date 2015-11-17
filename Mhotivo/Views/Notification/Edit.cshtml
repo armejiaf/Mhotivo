@@ -82,14 +82,16 @@
             </div>
         </div>
     }
-    <div class="control-group">
+    @*<div class="control-group">
         <div class="control-label">
             @Html.LabelFor(model => ((NotificationPreApproveEditModel)model).Message)
         </div>
         <div class="controls">
             @Html.TextAreaFor(model => ((NotificationPreApproveEditModel)model).Message, new { style = "width: 600px; height: 150px;" })
         </div>
-    </div>
+    </div>*@
+    <div id="htmlMessage"></div> 
+    @Html.HiddenFor(model =>((NotificationPreApproveEditModel)model).Message)
     <div class="space"></div>
     <div class="space"></div>
     <div class="modal-footer">
@@ -100,6 +102,19 @@
         </button>
     </div>
 }
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#htmlMessage').summernote();
+    });
+
+    $("#Form").submit(function (event) {
+        var sHTML = $('#htmlMessage').code();
+        $('#Message').val(sHTML);
+        // alert("Handler for .submit() called. : <br />" + $('#Message').val());
+        //event.preventDefault();
+    });
+</script>
 
 <script type="text/javascript">
     function updateSelectLists() {
