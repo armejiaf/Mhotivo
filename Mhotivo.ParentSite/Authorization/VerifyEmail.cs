@@ -19,7 +19,7 @@ namespace Mhotivo.ParentSite.Authorization
          protected override void HandleUnauthorizedRequest(AuthorizationContext context)
          {
              var urlHelper = new UrlHelper(context.RequestContext);
-             context.Result = new RedirectResult(urlHelper.Action("ConfirmEmail", "Account"));
+             context.Result = new RedirectResult(urlHelper.Action("EmailConfirmation", "Account"));
          }
     }
 }

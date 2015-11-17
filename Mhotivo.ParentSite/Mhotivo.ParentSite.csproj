@@ -200,10 +200,10 @@
     <Compile Include="Controllers\MessageToTeacherController.cs" />
     <Compile Include="Controllers\NotificationCommentsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Models\UpdateParentMailModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailConfirmationModel.cs" />
     <Compile Include="Models\HomeworkDateModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\MessageToTeacherModel.cs" />
@@ -479,10 +479,10 @@
     <Content Include="Views\Homework\Index.cshtml" />
     <Content Include="Views\Shared\NotificationComments_layout.cshtml" />
     <Content Include="Views\NotificationComments\Index.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\MessageToTeacher\Index.cshtml" />
     <Content Include="Views\Account\EmailConfirmation.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

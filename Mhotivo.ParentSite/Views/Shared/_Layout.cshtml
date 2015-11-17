@@ -154,7 +154,7 @@
                                             <ul class="sub-menu">
                                                 <li><a href="index-2.html">Home Default</a></li>
                                                 <li><a href="index-3.html">Color Sections</a></li>
-                                                <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Account")</li>
+                                               
                                             </ul>
                                         </li>
                                         <li class="red">
@@ -214,10 +214,12 @@
                                         </li>
                                     </ul>
                                 </nav>*@
-                                        <li class="yellow nicdark_megamenu">
-                                            <a href="#myModal"
-                                               data-toggle="modal">Login</a>
-
+                                        <li class="yellow ">
+                                            <a href="#myModal" data-toggle="modal">LOGIN</a>
+                                            <ul class="sub-menu">
+                                                <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Account")</li>
+                                                <li>@Html.ActionLink("Confimar Correo", "EmailConfirmation", "Account")</li>
+                                            </ul>
                             </li>
                             <li class="green">
                                 <a href="blog-masonry.html">BLOG</a>
@@ -490,7 +492,7 @@
             $(".nicdark_countdown").countdown({
                 date: endDate,
                 render: function (data) {
-                    $(this.el).html("<div class=\"grid " + grid + " " + display_years + " \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.years, 4) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">YEARS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_days + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.days, 3) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">DAYS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_hours + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.hours, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_yellow small nicdark_shadow nicdark_radius white\">HOURS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_minutes + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.min, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white\">MINUTES</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_seconds + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.sec, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_violet small nicdark_shadow nicdark_radius white\">SECONDS</a><div class=\"nicdark_space5\"></div></div></div>");
+                    $(this.el).html("<div class=\"grid " + grid + " " + display_years + " \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.years, 4) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">YEARS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_days + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.days, 3) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nic  dark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">DAYS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_hours + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.hours, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_yellow small nicdark_shadow nicdark_radius white\">HOURS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_minutes + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.min, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white\">MINUTES</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_seconds + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.sec, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_violet small nicdark_shadow nicdark_radius white\">SECONDS</a><div class=\"nicdark_space5\"></div></div></div>");
                 }
             });
             //END COUNTDOWN GRID SECTION
