@@ -167,6 +167,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorizations\AuthorizeAdmin.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
+    <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicCourseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -499,6 +500,7 @@
     <Content Include="Views\NewUser\Details.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\EducationLevel\EditDirector.cshtml" />
+    <Content Include="Views\AcademicGrade\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

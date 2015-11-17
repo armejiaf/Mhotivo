@@ -29,28 +29,14 @@
     @Html.ValidationSummary(true)
     <h2>Agregar Año Académico</h2>
 
-    <p>
-        <a href="../AcademicYear/Index" data-dismiss="modal" class="btn btn-small">
-            <i class="icon-remove"></i>
-            Cancel
-        </a>
-
-        <button type="submit" class="btn btn-small btn-primary">
-            <i class="icon-ok"></i>
-            Agregar
-        </button>
-    </p>
-    <div>
-        
-    </div>
     <div id="address" style="width: 500px;">
         <div id="mainAddress">
-            <input type="number" value="2000" min="1980" step="1" form="@Model.Year"/>
+            @Html.EditorFor(x => x.Year)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Year)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Year)</p>
         </div>
     </div>
-    <br style="clear: left;" />
+
     <div>
         <p>
             <a href="../AcademicYear/Index" data-dismiss="modal" class="btn btn-small">

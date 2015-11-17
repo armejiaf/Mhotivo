@@ -29,15 +29,16 @@
                     @Html.LabelFor(model => model.Year)
                 </div>
                 <div class="controls">
-                    <input type="number" value="2000" min="1980" step="1" form="@Model.Year" />
+                    @Html.EditorFor(model => model.Year)
                 </div>
+                
             </div>
             <div class="control-group">
                 <div class="control-label">
                     @Html.LabelFor(model => model.IsActive)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
+                    @Html.CheckBoxFor(model => model.IsActive)
                 </div>
             </div>
             <div class="space"></div>
