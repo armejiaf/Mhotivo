@@ -89,6 +89,7 @@
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\SessionManagementService.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Utils\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

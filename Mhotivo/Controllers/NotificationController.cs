@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Implement.Utils;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Mhotivo.Data.Entities;
@@ -77,7 +78,7 @@ namespace Mhotivo.Controllers
             var notification = new NotificationRegisterModel();
             var items = ((NotificationType[])Enum.GetValues(typeof(NotificationType))).Select(c => new SelectListItem
             {
-                Text = c.ToString("G"),
+                Text = c.GetEnumDescription(),
                 Value = c.ToString("D")
             }).ToList();
 
@@ -108,17 +109,27 @@ namespace Mhotivo.Controllers
         {
             var toEdit =
                 _notificationRepository.GetById(id);
-            var toEditModel = Mapper.Map<NotificationPreApproveEditModel>(toEdit);
+            var toEditModel = Mapper.Map<NotificationEditModel>(toEdit);
+            var items = ((NotificationType[])Enum.GetValues(typeof(NotificationType))).Select(c => new SelectListItem
+            {
+                Text = c.GetEnumDescription(),
+                Value = c.ToString("D")
+            }).ToList();
+            ViewBag.NotificationTypes = new List<SelectListItem>(items);
+            var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
+            ViewBag.List1 = new List<SelectListItem>(list);
+            ViewBag.List2 = new List<SelectListItem>(list);
+            ViewBag.DestinationList = new List<SelectListItem>(list);
             return View(toEditModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(long id, NotificationPreApproveEditModel eventNotificationEdit)
+        public ActionResult Edit(long id, NotificationEditModel eventNotificationEdit)
         {
             try
             {
                 var toEdit = _notificationRepository.GetById(eventNotificationEdit.Id);
-                Mapper.Map(eventNotificationEdit, toEdit);
+                toEdit = Mapper.Map(eventNotificationEdit, toEdit);
                 _notificationRepository.Update(toEdit);
                 _viewMessageLogic.SetNewMessage("Notificación Editada", "La notificación fue editada exitosamente.",
                     ViewMessageType.SuccessMessage);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,11 +8,17 @@ namespace Mhotivo.Data.Entities
 {
     public enum NotificationType
     {
+        [Description("General")]
         General = 1, //No destination ID needed
+        [Description("Nivel de Educacion")]
         EducationLevel = 2, //EducationLevel ID needed
+        [Description("Grado")]
         Grade = 3, //Grade ID needed
+        [Description("Seccion")]
         Section= 4, //AcademicGrade ID needed
+        [Description("Materia")]
         Course = 5, //AcademicCourse ID needed
+        [Description("Estudiante")]
         Personal = 6 //Student ID needed
     }
 

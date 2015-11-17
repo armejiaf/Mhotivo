@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement;
+using Mhotivo.Implement.Utils;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
 
@@ -199,7 +200,7 @@ namespace Mhotivo
                 o => o.MapFrom(src => ((IAcademicYearRepository)DependencyResolver.Current.GetService(
                         typeof(IAcademicYearRepository))).GetById(src.AcademicYear)));
             Mapper.CreateMap<Notification, NotificationDisplayModel>()
-                .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.ToString("G")))
+                .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.GetEnumDescription()))
                 .ForMember(p => p.NotificationCreator,
                     o => o.MapFrom(src => src.NotificationCreator.UserOwner.FirstName))
                 .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToString()))
@@ -224,8 +225,7 @@ namespace Mhotivo
                         ? ((IStudentRepository) DependencyResolver.Current.GetService(
                             typeof (IStudentRepository))).GetById(src.DestinationId).FullName
                         : ""));
-            Mapper.CreateMap<Notification, NotificationPostApproveEditModel>().ReverseMap();
-            Mapper.CreateMap<Notification, NotificationPreApproveEditModel>()
+            Mapper.CreateMap<Notification, NotificationEditModel>()
                 .ForMember(p => p.Id1, o => o.MapFrom(src =>
                     src.NotificationType == NotificationType.Section || 
                     src.NotificationType == NotificationType.Course || 

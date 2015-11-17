@@ -52,7 +52,7 @@ namespace Mhotivo.Models
         public string Title { get; set; }
 
         [Display(Name = "Tipo de Notificacion")]
-        public NotificationType NotificationType { get; set; }
+        public string NotificationType { get; set; }
 
         [Display(Name="Destinatario")]
         public string DestinationId { get; set; }
@@ -77,29 +77,15 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
         public bool Approved { get; set; }
-    }
-    public class NotificationPostApproveEditModel : NotificationEditModel
-    {
-        [Display(Name = "Titulo")]
-        public string Title { get; set; }
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
         [Display(Name = "Mensaje")]
         [AllowHtml]
         public string Message { get; set; }
-    }
-
-    public class NotificationPreApproveEditModel : NotificationEditModel
-    {
 
         [Required(ErrorMessage = "Debe Ingresar un Titulo")]
         [Display(Name = "Titulo")]
         public string Title { get; set; }
-
-        [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
-        [Display(Name = "Mensaje")]
-        [AllowHtml]
-        public string Message { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
         [Display(Name = "Tipo de Notificacion")]
