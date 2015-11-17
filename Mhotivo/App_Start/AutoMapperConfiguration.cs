@@ -269,16 +269,25 @@ namespace Mhotivo
                 .ForMember(p => p.Courses, o => o.MapFrom(src => src.Courses.Select(Mapper.Map<Course>)));
         }
 
-        //TODO: Not done with the ones below just yet.
         private static void MapUserModels()
         {
             Mapper.CreateMap<User, UserDisplayModel>()
-                .ForMember(p => p.IsActive, o => o.MapFrom(src => src.IsActive ? "Activo" : "No Activo"));
-            Mapper.CreateMap<User, NewUserDisplayModel>();
-            Mapper.CreateMap<User, NewUserDefaultPasswordDisplayModel>();
-            Mapper.CreateMap<User, UserEditModel>().ReverseMap().ForMember(p => p.Role, o => o.MapFrom(src => src.Role));
+                .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName))
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name));
+            Mapper.CreateMap<User, NewUserDisplayModel>()
+                .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName))
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name));
+            Mapper.CreateMap<User, NewUserDefaultPasswordDisplayModel>()
+                .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName));
+            Mapper.CreateMap<User, UserEditModel>()
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Id))
+                .ReverseMap()
+                .ForMember(p => p.Role,
+                    o => o.MapFrom(src => ((IRoleRepository)DependencyResolver.Current.GetService(
+                        typeof(IRoleRepository))).GetById(src.Role)));
         }
 
+        //TODO: Not done with the ones below just yet.
         private static void MapParentModels()
         {
             Mapper.CreateMap<ParentRegisterModel, Parent>()

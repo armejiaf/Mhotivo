@@ -18,9 +18,6 @@
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
             @Html.ValidationMessageFor(model => model.Email)
-            @Html.ValidationMessageFor(model => model.UserOwner)
-            @*@Html.ValidationMessageFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)*@
             @Html.ValidationMessageFor(model => model.Role)
         </p>
 
@@ -32,33 +29,6 @@
                 @Html.EditorFor(model => model.Email)
             </div>
         </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.UserOwner)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.UserOwner)
-            </div>
-        </div>
-           
-        @*<div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Password)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Password)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.ConfirmPassword)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.ConfirmPassword)
-            </div>
-        </div>*@
         <div class="control-group">
             <div class="control-label">
                 @Html.LabelFor(model => model.Role)

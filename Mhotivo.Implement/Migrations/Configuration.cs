@@ -101,7 +101,7 @@ namespace Mhotivo.Implement.Migrations
 
             foreach (var grade in _gradeRepository.GetAllGrade())
             {
-                var p = new Pensum{ Grade = grade };
+                var p = new Pensum{ Grade = grade, Name = "Pensum para " + grade.Name};
                 p = _pensumRepository.Create(p);
                 grade.Pensums.Add(p);
                 _gradeRepository.Update(grade);

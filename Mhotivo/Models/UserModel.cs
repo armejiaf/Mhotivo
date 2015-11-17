@@ -14,7 +14,7 @@ namespace Mhotivo.Models
         public string UserOwner { get; set; }
 
         [Display(Name = "Activo")]
-        public string IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         [Display(Name = "Tipo de Usuario")]
         public string Role { get; set; }
@@ -43,7 +43,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Contraseña Temporal")]
         public string DefaultPassword { get; set; }
-
     }
 
     public class ChangePasswordModel
@@ -82,31 +81,9 @@ namespace Mhotivo.Models
         public bool RememberMe { get; set; }
     }
 
-    public class UserRegisterModel
-    {
-        [Required(ErrorMessage = "Debe Ingresar el Dueño de la Cuenta")]
-        [Display(Name = "Dueño de Cuenta")]
-        public long UserOwner { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Email")]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Display(Name = "Estado")]
-        public bool Status { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Tipo de Usuario")]
-        [Display(Name = "Tipo de Usuario")]
-        public int Role { get; set; }
-    }
-
     public class UserEditModel
     {
         public long Id { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar el Dueño de la Cuenta")]
-        [Display(Name = "Dueño de Cuenta")]
-        public long UserOwner { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Correo")]
         [Display(Name = "Correo")]
