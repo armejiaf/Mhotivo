@@ -48,7 +48,7 @@
                         <td>@Html.DisplayFor(modelItem => item.Year)</td>
                         <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
                         <td>
-                            <a href="~/AcademicYearDetails/Index/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
+                            <a href="~/AcademicGrade/Index/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
                             <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                             <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                             @using (Html.BeginForm("Delete", "AcademicYear", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
