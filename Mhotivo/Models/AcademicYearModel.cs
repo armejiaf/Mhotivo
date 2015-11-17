@@ -29,6 +29,6 @@ namespace Mhotivo.Models
         public int Year { get; set; }
 
         [Display(Name = "Activo")]
-        public string IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

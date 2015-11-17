@@ -37,7 +37,7 @@
                     @Html.LabelFor(model => model.IsActive)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
+                    @Html.CheckBoxFor(model => model.IsActive);
                 </div>
             </div>
             <div class="space"></div>
