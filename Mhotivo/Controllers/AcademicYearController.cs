@@ -111,7 +111,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
-            return View("Create");
+            return View("Create", new AcademicYearRegisterModel());
         }
 
         [HttpPost]
