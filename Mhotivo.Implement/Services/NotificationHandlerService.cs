@@ -40,7 +40,7 @@ namespace Mhotivo.Implement.Services
             switch (notification.NotificationType)
             {
                 case NotificationType.General:
-                    var allGrades = _academicGradeRepository.Filter(x => x.AcademicYear == notification.AcademicYear);
+                    var allGrades = _academicGradeRepository.Filter(x => x.AcademicYear.Id == notification.AcademicYear.Id).ToList();
                     foreach (var grade in allGrades)
                     {
                         SendToStudents(grade.Students, notification);
@@ -51,7 +51,7 @@ namespace Mhotivo.Implement.Services
                     var gradesForLevel =
                         _academicGradeRepository.Filter(
                             x => x.Grade.EducationLevel.Id == notification.DestinationId &&
-                                 x.AcademicYear == notification.AcademicYear);
+                                 x.AcademicYear.Id == notification.AcademicYear.Id).ToList();
                     foreach (var grade in gradesForLevel)
                     {
                         SendToStudents(grade.Students, notification);
@@ -61,7 +61,7 @@ namespace Mhotivo.Implement.Services
                 case NotificationType.Grade:
                     var grades =
                         _academicGradeRepository.Filter(x => x.Grade.Id == notification.DestinationId &&
-                                                                 x.AcademicYear == notification.AcademicYear);
+                                                                 x.AcademicYear.Id == notification.AcademicYear.Id).ToList();
                     foreach (var grade in grades)
                     {
                         SendToStudents(grade.Students, notification);
@@ -71,7 +71,7 @@ namespace Mhotivo.Implement.Services
                 case NotificationType.Section:
                     var singleGrade =
                         _academicGradeRepository.Filter(x => x.Id == notification.DestinationId &&
-                                                                 x.AcademicYear == notification.AcademicYear).FirstOrDefault();
+                                                                 x.AcademicYear.Id == notification.AcademicYear.Id).FirstOrDefault();
                     if (singleGrade != null)
                     {
                         SendToStudents(singleGrade.Students, notification);
@@ -80,8 +80,8 @@ namespace Mhotivo.Implement.Services
                     break;
                 case NotificationType.Course:
                     var course = _academicCourseRepository.Filter(x => x.Id == notification.DestinationId &&
-                                                                           x.AcademicGrade.AcademicYear ==
-                                                                           notification.AcademicYear).FirstOrDefault();
+                                                                           x.AcademicGrade.AcademicYear.Id ==
+                                                                           notification.AcademicYear.Id).FirstOrDefault();
                     if (course != null)
                     {
                         SendToStudents(course.AcademicGrade.Students, notification);

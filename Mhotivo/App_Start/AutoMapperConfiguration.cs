@@ -194,7 +194,10 @@ namespace Mhotivo
             Mapper.CreateMap<NotificationRegisterModel, Notification>()
                 .ForMember(p => p.NotificationCreator,
                 o => o.MapFrom(src => ((IUserRepository)DependencyResolver.Current.GetService(
-                        typeof(IUserRepository))).GetById(src.NotificationCreator)));
+                        typeof(IUserRepository))).GetById(src.NotificationCreator)))
+                .ForMember(p => p.AcademicYear,
+                o => o.MapFrom(src => ((IAcademicYearRepository)DependencyResolver.Current.GetService(
+                        typeof(IAcademicYearRepository))).GetById(src.AcademicYear)));
             Mapper.CreateMap<Notification, NotificationDisplayModel>()
                 .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.ToString("G")))
                 .ForMember(p => p.NotificationCreator,
