@@ -92,14 +92,16 @@
         @Html.HiddenFor(model => model.Id1)
     }
     @Html.HiddenFor(model => model.Approved)
-    <div class="control-group">
+    @*<div class="control-group">
         <div class="control-label">
             @Html.LabelFor(model => model.Message)
         </div>
         <div class="controls">
             @Html.TextAreaFor(model => model.Message, new { style = "width: 600px; height: 150px;" })
         </div>
-    </div>
+    </div>*@
+    <div id="htmlMessage"></div> 
+    @Html.HiddenFor(model =>(model).Message)
     <div class="space"></div>
     <div class="space"></div>
     <div class="modal-footer">
@@ -110,6 +112,19 @@
         </button>
     </div>
 }
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#htmlMessage').summernote();
+    });
+
+    $("#Form").submit(function (event) {
+        var sHTML = $('#htmlMessage').code();
+        $('#Message').val(sHTML);
+        // alert("Handler for .submit() called. : <br />" + $('#Message').val());
+        //event.preventDefault();
+    });
+</script>
 
 <script type="text/javascript">
     function updateSelectLists() {
