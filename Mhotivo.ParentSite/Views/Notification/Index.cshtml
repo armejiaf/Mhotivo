@@ -42,11 +42,10 @@
                    <!--start nicdark_container-->
                    <div class="nicdark_container nicdark_clearfix">
 
-                       <div class="nicdark_space30"></div>
+                       <div class="nicdark_space20"></div>
                        
                        <!--sidebar-->
                        <div class="grid grid_4">
-                          
                            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
                                <div class="nicdark_textevidence nicdark_bg_greendark nicdark_radius_top">
                                    <h4 class="nicdark_margin20" style="color:white; font-size:20px; font-weight:bold">Filtros</h4>
@@ -98,7 +97,7 @@
                                foreach (var item in Model)
                                {
                                        <div class="nicdark_textevidence">
-                                           <div class="nicdark_textevidence nicdark_bg_white nicdark_radius nicdark_shadow" style="border: 2px solid black;">
+                                           <div class="nicdark_textevidence nicdark_bg_grey2 nicdark_radius nicdark_shadow">
                                                <div class="nicdark_size_small">
                                                    <p class="font22" style="color: black">
                                                        <i class="icon-md icon-calendar" style="color:orange"></i> @item.Created.ToShortDateString() <span class="nicdark_margin020">·</span>
@@ -111,46 +110,24 @@
                                                </div>
                                            </div>
                                            <br />
-                                           <div class="nicdark_bg_bluedark">
+                                           <div class="nicdark_bg_white" style="border: 1px ridge black;">
+                                               <div class="nicdark_space10"></div>
+                                               <h2 class="subtitle nicdark_marginleft10" style="color: black; text-decoration:underline">@item.NotificationName</h2>
                                                <div class="nicdark_space20"></div>
-                                               <h2 class="subtitle nicdark_marginleft10" style="color:white; text-decoration:underline">@item.NotificationName</h2>
-                                               <div class="nicdark_space20"></div>
-                                               <div class="nicdark_marginleft10" style="font-size: 18px; color:white; font-family:Calibri">
-                                                   @item.Message
+                                               <div class="nicdark_marginleft10" style="font-size: 18px; color:white;">
+                                                   @Html.Raw(@item.Message)
                                                </div>
                                                <br />
                                                <br />
                                                <div class="nicdark_space10 "></div>
                                            </div>
-                                           <a onclick="addcomment(@item.Id); " href=" #AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
+                                           <a onclick="addcomment(@item.Id); " href="#AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
                                            <div class="nicdark_space20"></div>
 
                                    </div>
                                    <div class="nicdark_divider left big">
                                        <span class="nicdark_bg_reddark nicdark_radius"></span>
                                    </div>
-                                   @*
-                        <ul class="nicdark_list border">
-                            <li class="nicdark_border_grey">
-                                <!--comment-->
-                                <div class="nicdark_archive1 nicdark_relative">
-                                    <div class="nicdark_margin100 nicdark_relative">
-                                        <img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src="img/team/img2.jpg">
-                                        <div class="nicdark_activity nicdark_marginleft70 nicdark_disable_marginleft_ipadpotr">
-                                            <div class="nicdark_space20"></div>
-                                            <h4 class="subtitle greydark">@item.NotificationCreator : @item.Created.ToShortDateString()</h4>
-                                            @Html.ActionLink(" " + item.CommentsAmount + "  COMENTARIO(S)", "Index", "NotificationComments", new { @notificationId = item.Id }, new { @class = "white" })
-                                            <div class="nicdark_space20"></div>
-                                        </div>
-                                    </div>
-                                    <p>@Html.Raw(@item.Message)</p>
-                                    <div class="nicdark_space20"></div>
-                                    <a href="#" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white"><i class="icon-reply-outline"></i>&nbsp;&nbsp;&nbsp;REPLY</a>
-                                    <div class="nicdark_space20"></div>
-                                </div>
-                                <!--comment-->
-                            </li>
-                        </ul>*@
                                }
 
                            }
