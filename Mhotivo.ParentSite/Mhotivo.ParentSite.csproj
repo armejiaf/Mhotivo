@@ -26,6 +26,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>12.0</OldToolsVersion>
+    <OldToolsVersion>12.0</OldToolsVersion>
+    <UpgradeBackupLocation />
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -226,6 +228,7 @@
     <Content Include="Content\css\nicdark_responsive.css" />
     <Content Include="Content\css\nicdark_shortcodes.css" />
     <Content Include="Content\css\nicdark_style.css" />
+    <Content Include="Content\css\notification.css" />
     <Content Include="Content\css\revslider\settings.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font\fontello\fontello.svg" />
@@ -308,7 +311,6 @@
     <Content Include="Content\img\team\img8.jpg" />
     <Content Include="Content\img\team\img9.jpg" />
     <Content Include="Content\img\team\user-icon.png" />
-    <Content Include="Content\img\videos\video1.mp4" />
     <Content Include="Content\img\woocommerce\small\img1.jpg" />
     <Content Include="Content\img\woocommerce\small\img2.jpg" />
     <Content Include="Content\img\woocommerce\small\img3.jpg" />
@@ -411,7 +413,6 @@
     <Content Include="Content\img\prices\Descr.WD3" />
     <Content Include="Content\img\slide\Descr.WD3" />
     <Content Include="Content\img\team\Descr.WD3" />
-    <Content Include="Content\img\videos\Descr.WD3" />
     <Content Include="Content\img\woocommerce\small\Descr.WD3" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -483,6 +484,7 @@
     <Content Include="Views\Account\EmailConfirmation.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutSmall.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

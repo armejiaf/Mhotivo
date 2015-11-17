@@ -18,7 +18,7 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public MhotivoContext GeContext()
+        public MhotivoContext GetContext()
         {
             return _context;
         }

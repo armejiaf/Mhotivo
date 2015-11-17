@@ -95,6 +95,7 @@ JQUERY UI
 .nicdark_bg_yellow{ background-color: #edbf47; }
 .nicdark_bg_greendark{ background-color: #6ab78a; }
 .nicdark_bg_bluedark{ background-color: #6fc4d9; }
+.darkblue{ background-color: #0d1f8e; }
 .nicdark_bg_violetdark{ background-color: #ac7ab5; }
 .nicdark_bg_orangedark{ background-color: #df764e; }
 .nicdark_bg_reddark{ background-color: #c86969; }
@@ -110,8 +111,6 @@ JQUERY UI
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#74cee4', endColorstr='#edbf47',GradientType=1 ); /* IE6-9 */
 }
 /*END NICDARKBG*/
-
-
 
 /* 2- START NICDARKBORDER: applica l'ombra del colore selezionato*/
 .nicdark_border_white, .nicdark_border_white td, .nicdark_border_white th{ border: 2px solid #ffffff; }
@@ -204,8 +203,8 @@ JQUERY UI
 .nicdark_btn_icon.subtitle{ font-family: 'Raleway', sans-serif !important; }
 .nicdark_btn_icon > i{ display: inline-block; width: 20px; height: 20px; }
 .nicdark_btn_icon > i:before{ margin: 0px; padding:0px; }
-.nicdark_btn_icon.left{ float: left;}
-.nicdark_btn_icon.right{ float: right;}
+.nicdark_btn_icon.left{ float: left; }
+.nicdark_btn_icon.right{ float: right; }
 /*size*/
 .nicdark_btn_icon.extrasmall{ padding: 5px; font-size: 14px; }
 .nicdark_btn_icon.small{ padding: 10px; font-size: 15px; }
