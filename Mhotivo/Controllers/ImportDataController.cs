@@ -16,7 +16,8 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-
+        //academicGradeRepository.filter(x.grade.id = grade.import)
+        //me da un queriable
         public ImportDataController(IImportDataRepository importDataRepository
                                     ,IGradeRepository gradeRepository
                                     ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
@@ -35,7 +36,7 @@ namespace Mhotivo.Controllers
              var importModel = new ImportDataModel();
              ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
              ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
-             ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+            ViewBag.Section = new List<SelectListItem>();
              return View(importModel);
         }
 
@@ -99,5 +100,17 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
+
+
+        public JsonResult LoadByGrade(ImportDataModel importModel)
+        {
+            var sList = _academicGradeRepository.Filter(
+                    x => x.Grade.Id == importModel.GradeImport).ToList();
+            var toReturn =
+                new SelectList(
+                    sList, "Id", "Section");
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

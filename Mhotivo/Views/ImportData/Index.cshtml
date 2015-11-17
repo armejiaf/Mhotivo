@@ -52,14 +52,16 @@
         <p class="text-error">@Html.ValidationMessageFor(model => model.Year)</p>
     </div>
     <br style="clear: left;" />
-    <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.GradeImport, new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
+    <div style="float: left; width: 250px;" id="gradeList">
+        @Html.DropDownList("GradeImport", new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.GradeImport)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.GradeImport)</p>
     </div>
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.Section, (SelectList)ViewBag.Section, "  -- Seccion --")
+        <div id="sectionList">
+            @Html.DropDownList("Section", (List<SelectListItem>)ViewBag.Section, "  -- Seccion --")
+        </div>
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Section)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Section)</p>
     </div>
@@ -78,3 +80,22 @@
 </p>
     
 }
+
+<script type ="text/javascript">
+    $('#gradeList').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("LoadByGrade")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                $('#sectionList').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#sectionList').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>
