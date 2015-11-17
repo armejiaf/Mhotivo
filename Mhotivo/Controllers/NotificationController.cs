@@ -92,13 +92,12 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(NotificationRegisterModel eventNotification)
         {
+            eventNotification.NotificationCreator = Convert.ToInt64(_sessionManagement.GetUserLoggedId());
+            eventNotification.AcademicYear = _academicYearRepository.GetCurrentAcademicYear().Id;
             var notificationIdentity = Mapper.Map<Notification>(eventNotification);
-            var email = _sessionManagement.GetUserLoggedEmail();
-            var user = _userRepository.Filter(x => x.Email == email).FirstOrDefault();
-            notificationIdentity.NotificationCreator = user;
-            notificationIdentity.AcademicYear = _academicYearRepository.GetCurrentAcademicYear();
             notificationIdentity.Approved = _sessionManagement.GetUserLoggedRole().Equals("Administrador");
             _notificationRepository.Create(notificationIdentity);
+            _notificationHandlerService.SendAllPending();
             const string title = "Notificación Agregado";
             var content = "El evento " + eventNotification.Title + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);

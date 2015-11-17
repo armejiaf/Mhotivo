@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement;
@@ -110,7 +111,9 @@ namespace Mhotivo
             Mapper.CreateMap<CourseRegisterModel, Course>()
                 .ForMember(g => g.Pensum,
                     o => o.MapFrom(src => ((IPensumRepository) DependencyResolver.Current.GetService(
-                        typeof (IPensumRepository))).GetById(src.Pensum)));
+                        typeof (IPensumRepository))).GetById(src.Pensum)))
+                .ReverseMap()
+                .ForMember(p => p.Pensum, o => o.MapFrom(src => src.Pensum.Id));
             Mapper.CreateMap<Course, CourseDisplayModel>();
             Mapper.CreateMap<Course, CourseEditModel>().ReverseMap();
         }
@@ -168,7 +171,7 @@ namespace Mhotivo
             Mapper.CreateMap<Grade, GradeDisplayModel>()
                 .ForMember(p => p.EducationLevel, o => o.MapFrom(src => src.EducationLevel.Name));
             Mapper.CreateMap<Grade, GradeEditModel>()
-                .ForMember(p => p.EducationLevel, o => o.MapFrom(src => src.EducationLevel.Name))
+                .ForMember(p => p.EducationLevel, o => o.MapFrom(src => src.EducationLevel.Id))
                 .ReverseMap()
                 .ForMember(p => p.EducationLevel,
                     o => o.MapFrom(src => ((IEducationLevelRepository)DependencyResolver.Current.GetService(
@@ -257,6 +260,10 @@ namespace Mhotivo
                         typeof (IGradeRepository))).GetById(src.Grade)));
             Mapper.CreateMap<Pensum, PensumDisplayModel>();
             Mapper.CreateMap<Pensum, PensumEditModel>().ReverseMap();
+            Mapper.CreateMap<Pensum, PensumCourseModel>()
+                .ForMember(p => p.Courses, o => o.MapFrom(src => src.Courses.Select(Mapper.Map<CourseRegisterModel>)))
+                .ReverseMap()
+                .ForMember(p => p.Courses, o => o.MapFrom(src => src.Courses.Select(Mapper.Map<Course>)));
         }
 
         //TODO: Not done with the ones below just yet.

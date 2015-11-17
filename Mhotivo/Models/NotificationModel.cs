@@ -12,6 +12,7 @@ namespace Mhotivo.Models
         
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
         [Display(Name = "Mensaje")]
+        [AllowHtml]
         public string Message { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]
@@ -31,6 +32,7 @@ namespace Mhotivo.Models
         public long DestinationId { get; set; }
 
         public long NotificationCreator { get; set; }
+        public long AcademicYear { get; set; }
     }
 
     public class NotificationSelectListsModel
@@ -78,8 +80,12 @@ namespace Mhotivo.Models
     }
     public class NotificationPostApproveEditModel : NotificationEditModel
     {
+        [Display(Name = "Titulo")]
+        public string Title { get; set; }
+
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
         [Display(Name = "Mensaje")]
+        [AllowHtml]
         public string Message { get; set; }
     }
 
@@ -92,6 +98,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Requiere un mensaje para la Notificacion")]
         [Display(Name = "Mensaje")]
+        [AllowHtml]
         public string Message { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo de Notificacion")]

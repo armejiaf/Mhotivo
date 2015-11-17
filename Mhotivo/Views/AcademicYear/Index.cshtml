@@ -36,9 +36,6 @@
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.First().Year)</th>
                     <th>@Html.ActionLink("Grado", "Index", new { sortOrder = ViewBag.GradeSortParm }) </th>
-                    <th>@Html.DisplayNameFor(model => model.First().Section)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().EducationLevel)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().Approved)</th>
                     <th>@Html.DisplayNameFor(model => model.First().IsActive)</th>
                     <th></th>
                 </tr>
@@ -49,10 +46,6 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Year)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Grade)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Section)</td>
-                        <td>@Html.DisplayFor(modelItem => item.EducationLevel)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Approved)</td>
                         <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
                         <td>
                             <a href="~/AcademicYearDetails/Index/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>

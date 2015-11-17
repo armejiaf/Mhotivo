@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -103,5 +104,27 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
+
+        /*[HttpGet]
+        public ActionResult Details(int pensumId)
+        {
+            var pensum = _pensumRepository.GetById(pensumId);
+            var pensumModel = Mapper.Map<PensumCourseModel>(pensum);
+            ViewBag.Title = "Detalles para el pensum: " + pensumModel.Name;
+            ViewBag.PensumId = pensumId;
+            return View(pensumModel);
+        }*/
+
+        /*[HttpPost]
+        public ActionResult Details(PensumCourseModel model)
+        {
+            var pensum = _pensumRepository.GetById(model.Id);
+            pensum = Mapper.Map(model, pensum);
+            _pensumRepository.Update(pensum);
+            const string title = "Detalles de Pensum Actualizados";
+            string message = "Los detalles del pensum " + model.Name + " han sido actualizados exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, message, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index");
+        }*/
     }
 }

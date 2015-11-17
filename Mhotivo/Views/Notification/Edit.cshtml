@@ -1,5 +1,5 @@
-﻿@model Mhotivo.Models.NotificationPreApproveEditModel
-
+﻿@using Mhotivo.Models
+@model Mhotivo.Models.NotificationEditModel
 @{
     ViewBag.Title = "Notificaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,195 +16,255 @@
 <link href="~/Content/summernote-bs3.css" rel="stylesheet" />
 <script src="~/Scripts/summernote.min.js"></script>
 
-
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 @using (Html.BeginForm("Edit", "Notification", FormMethod.Post, new { id = "Form", @class = "form-horizontal" }))
 {
     @Html.ValidationSummary(true)
 
-    @Html.HiddenFor(model => model.Id)
-
     <p class="text-error">
-        @Html.ValidationMessageFor(model => model.Title)
-        @Html.ValidationMessageFor(model => model.Message)
+        @Html.ValidationMessageFor(model => ((NotificationPreApproveEditModel)model).Title)
+        @Html.ValidationMessageFor(model => ((NotificationPreApproveEditModel)model).Message)
+        @Html.ValidationMessageFor(model => ((NotificationPreApproveEditModel)model).NotificationType)
     </p>
-
+        if (!Model.Approved)
+        {
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => ((NotificationPreApproveEditModel)model).NotificationType)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("NotificationType", (List<SelectListItem>)ViewBag.NotificationTypes)
+                </div>
+            </div>
+        }
     <div class="control-group">
         <div class="control-label">
-            @Html.LabelFor(model => model.Title)
+            @Html.LabelFor(model => ((NotificationPreApproveEditModel)model).Title)
         </div>
         <div class="controls">
-            @Html.EditorFor(model => model.Title)
+            @(!Model.Approved ? Html.EditorFor(model => ((NotificationPreApproveEditModel) model).Title) : Html.DisplayFor(model => ((NotificationPreApproveEditModel) model).Title))
         </div>
     </div>
+    if (!Model.Approved)
+    {
+        <div class="control-group" id="Id1List" style="display:none">
+            <div class="control-label">
+                @Html.Label("Seleccione:")
+            </div>
+            <div class="controls">
+                @Html.DropDownList("Id1", (List<SelectListItem>)ViewBag.List1)
+            </div>
+        </div>
+        <div class="control-group" id="Id2List" style="display:none">
+            <div class="control-label">
+                @Html.Label("Seleccione:")
+            </div>
+            <div class="controls">
+                @Html.DropDownList("Id2", (List<SelectListItem>)ViewBag.List2)
+            </div>
+        </div>
+        <div class="control-group" id="DestinationIdList" style="display:none">
+            <div class="control-label">
+                @Html.Label("Seleccione:")
+            </div>
+            <div class="controls">
+                @Html.DropDownList("DestinationId", (List<SelectListItem>)ViewBag.DestinationList)
+            </div>
+        </div>
 
+        <div class="control-group">
+            <div class="control-label">
+                @Html.LabelFor(model => ((NotificationPreApproveEditModel)model).SendEmail)
+            </div>
+            <div class="controls">
+                @Html.CheckBoxFor(model => ((NotificationPreApproveEditModel)model).SendEmail)
+            </div>
+        </div>
+    }
     <div class="control-group">
         <div class="control-label">
-            @Html.LabelFor(model => model.NotificationTypeSelectList)
+            @Html.LabelFor(model => ((NotificationPreApproveEditModel)model).Message)
         </div>
         <div class="controls">
-             @Html.DropDownListFor(model => model.NotificationTypeId, Model.NotificationTypeSelectList, "Por favor Seleccione", new {id = "NotificationType"})
+            @Html.TextAreaFor(model => ((NotificationPreApproveEditModel)model).Message, new { style = "width: 600px; height: 150px;" })
         </div>
     </div>
-    
-    <div class="control-group">
-        <div class="control-label">
-            @Html.Label("Dirigido a:")
-        </div>
-        <div class="controls">
-            @Html.DropDownListFor(model => model.IdIsGradeAreaGeneralSelected, Model.NotificationTypeOpionSelectList, "Por favor Seleccione", new { id = "AddressedTo" })
-            @*<select id="AddressedTo" name="AddressedTo"></select>*@
-        </div>
-    </div>
-    
-     <div class="control-group" id="OcultarList">
-        <div class="control-label">
-            @Html.Label("Dirigido a:")
-        </div>
-        <div class="controls">
-            @Html.DropDownListFor(model => model.StudentId, Model.StudentOptionSelectList, "Seleccione Estudent", new {id = "StudentTo"})
-            @*<select id="AddressedTo" name="AddressedTo"></select>*@
-        </div>
-    </div>
-
-
-
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.SendingEmail)
-        </div>
-        <div class="controls">
-            @Html.CheckBoxFor(model => model.SendingEmail)
-        </div>
-    </div>@*
-   
-    <div class="control-group">
-        <div class="control-label">
-            @Html.LabelFor(model => model.Message)
-        </div>
-        <div class="controls">
-            @Html.TextAreaFor(model => model.Message)
-        </div>
-    </div>*@
-    
-    <div id="htmlMessage">@Html.Raw(Model.Message)</div>
-    
-    @Html.HiddenFor(model => model.Message)
-    @Html.HiddenFor(model => model.Created)
-        
     <div class="space"></div>
-
     <div class="space"></div>
-
     <div class="modal-footer">
-       
-        @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" }) 
-   
+        @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" })
         <button type="submit" class="btn btn-small btn-primary">
             <i class="icon-ok"></i>
-            Editar
+            Crear
         </button>
     </div>
-
 }
 
 <script type="text/javascript">
-    $(document).ready(function () {
-
-        $('#To').tagsinput({
-            type: "POST",
-            typeahead: {
-                source: function (query) {
-                    return $.getJSON('/NotificationModel/GetGroupsAndEmails/', { filter: query });
+    function updateSelectLists() {
+        $.ajax({
+            url: '@Url.Action("LoadFromNotificationTypeList")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                var e = document.getElementById('NotificationType');
+                var ntype = parseInt(e.options[e.selectedIndex].value);
+                //use Mhotivo/Data/Notification/NotificationType enum values
+                switch (ntype) {
+                    case 1:
+                        $('#Id1List').hide();
+                        $('#Id2List').hide();
+                        $('#DestinationIdList').hide();
+                        break;
+                    case 2:
+                        $('#Id1List').hide();
+                        $('#Id2List').hide();
+                        $('#DestinationIdList').show();
+                        $('#DestinationId').empty();
+                        $.each($(data.EducationLevels), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 3:
+                        $('#Id1List').hide();
+                        $('#Id2List').hide();
+                        $('#DestinationIdList').show();
+                        $('#DestinationId').empty();
+                        $.each($(data.Grades), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 4:
+                        $('#Id1List').show();
+                        $('#Id2List').hide();
+                        $('#DestinationIdList').show();
+                        $('#Id1').empty();
+                        $.each($(data.Grades), function (i, optionavailable) {
+                            $('#Id1').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#DestinationId').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 5:
+                        $('#Id1List').show();
+                        $('#Id2List').show();
+                        $('#DestinationIdList').show();
+                        $('#Id1').empty();
+                        $.each($(data.Grades), function (i, optionavailable) {
+                            $('#Id1').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#Id2').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#Id2').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#DestinationId').empty();
+                        $.each($(data.AcademicCourses), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 6:
+                        $('#Id1List').show();
+                        $('#Id2List').show();
+                        $('#DestinationIdList').show();
+                        $('#Id1').empty();
+                        $.each($(data.Grades), function (i, optionavailable) {
+                            $('#Id1').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#Id2').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#Id2').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#DestinationId').empty();
+                        $.each($(data.Personals), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    default:
+                        break;
                 }
             }
         });
-
-        $('#WithCopyTo').tagsinput({
-            type: "POST",
-            typeahead: {
-                source: function (query) {
-                    return $.getJSON('/NotificationModel/GetGroupsAndEmails/', { filter: query });
+    }
+    function updateFromId1() {
+        $.ajax({
+            url: '@Url.Action("LoadFromList1")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                var e = document.getElementById('NotificationType');
+                var ntype = parseInt(e.options[e.selectedIndex].value);
+                //use Mhotivo/Data/Notification/NotificationType enum values
+                switch (ntype) {
+                    case 4:
+                        $('#DestinationId').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 5:
+                        $('#Id2').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#Id2').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#DestinationId').empty();
+                        $.each($(data.AcademicCourses), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 6:
+                        $('#Id2').empty();
+                        $.each($(data.AcademicGrades), function (i, optionavailable) {
+                            $('#Id2').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        $('#DestinationId').empty();
+                        $.each($(data.Personals), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    default:
+                        break;
                 }
             }
         });
-
-        $('#WithHiddenCopyTo').tagsinput({
-            type: "POST",
-            typeahead: {
-                source: function (query) {
-
-
-                    return $.getJSON('/NotificationModel/GetGroupsAndEmails/', { filter: query });
+    }
+    function updateFromId2() {
+        $.ajax({
+            url: '@Url.Action("LoadFromList2")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                var e = document.getElementById('NotificationType');
+                var ntype = parseInt(e.options[e.selectedIndex].value);
+                //use Mhotivo/Data/Notification/NotificationType enum values
+                switch (ntype) {
+                    case 5:
+                        $('#DestinationId').empty();
+                        $.each($(data.AcademicCourses), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    case 6:
+                        $('#DestinationId').empty();
+                        $.each($(data.Personals), function (i, optionavailable) {
+                            $('#DestinationId').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                        });
+                        break;
+                    default:
+                        break;
                 }
             }
         });
-
-        $('#htmlMessage').summernote();
-
-    });
-
-    $("input[name='useMyAccount']").click(function () {
-        if ($(this).is(':checked')) {
-            $('#From').attr('value', '');
-            $('#From').attr("disabled", true);
-        }
-        else if ($(this).not(':checked')) {
-            var ok = confirm('Esta seguro que desea usar otra cuenta para enviar este correo?');
-            if (ok) {
-                $('#From').attr("disabled", false);
-            }
-        }
-    });
-
-    $("#Form").submit(function (event) {
-        var sHTML = $('#htmlMessage').code();
-        $('#Message').val(sHTML);
-        // alert("Handler for .submit() called. : <br/>" + $('#Message').val());
-        //event.preventDefault();
-    });
-
-    $('#NotificationType').change(function () {
-
-        if (this.value == 4) {
-            $('#OcultarList').css("display", "block");
-        } else {
-            $('#OcultarList').css("display", "none");
-        }
-
-        $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
-            var items = '<option>Seleccione</option>';
-            $.each(data, function (i, optionavailable) {
-                items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
-            });
-            $('#AddressedTo').html(items);
-        });
-    });
-
-    $('#AddressedTo').change(function () {
-        if ($('#NotificationType').val() == 4) {
-            $.getJSON('/Notification/ListStudent/' + $('#AddressedTo').val(), function (data) {
-                var items = '<option>Seleccione</option>';
-                $.each(data, function (i, optionavailable) {
-                    items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
-                });
-                $('#StudentTo').html(items);
-            });
-        }
-    });
+    }
+    $('#NotificationType').change(updateSelectLists);
+    $('#Id1List').change(updateFromId1);
+    $('#Id2List').change(updateFromId2);
 </script>
-
-
-@*@Scripts.Render("~/bundles/jquery")
-<script type="text/jscript">
-    $(function () {
-        $('#NotificationType').change(function () {
-            $.getJSON('/Notification/OptiontList/' + $('#NotificationType').val(), function (data) {
-                var items = '<option>Seleccione</option>';
-                $.each(data, function (i, optionavailable) {
-                    items += "<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>";
-                });
-                $('#AddressedTo').html(items);
-            });
-        });
-    });
-</script>*@

@@ -36,24 +36,29 @@ else
 	    <thead>
 		    <tr>
 												
-                <th>@Html.ActionLink("Curso", "Index", new { sortOrder = ViewBag.CourseSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-                <th>@Html.ActionLink("Grado", "Index", new { sortOrder = ViewBag.GradeSortParm }) </th>
-                <th></th>
+                <th>@Html.ActionLink("Nombre", "Index", new { sortOrder = ViewBag.CourseSortParm, currentFilter = ViewBag.CurrentFilter })</th>>
+		        <th>Mofificar</th>
+		        <th>Ver Detalles</th>
+                <th>Eliminar</th>
 		    </tr>
 	    </thead>
         <tbody>
         
             @foreach (var item in Model) {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Course)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Grade)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Pensum/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new {pensumId = item.Id})
+                    </td>
+                    <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Pensum", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar el pesum del curso: @Html.DisplayFor(modelItem => item.Course) del grado:  @Html.DisplayFor(modelItem => item.Grade)?" />
+                               value="¿Realmente desea eliminar el pesum @Html.DisplayFor(modelItem => item.Name)?" />
                     </td>
                 </tr>
             }

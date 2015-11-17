@@ -22,8 +22,7 @@ else
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.Message)</th>
-                <th>@Html.DisplayNameFor(model => model.Created)</th>
+                <th>@Html.DisplayNameFor(model => model.CreationDate)</th>
                 <th></th>
             </tr>
         </thead>
@@ -32,8 +31,7 @@ else
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Message)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreationDate)</td>
                     <td>
                         <a class="toAutorizar" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-ok-sign bigger-120"></i></a>
                         @using (Html.BeginForm("Approve", "Notification", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,

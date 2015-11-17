@@ -43,40 +43,11 @@
     <div>
         
     </div>
-    
     <div id="address" style="width: 500px;">
         <div id="mainAddress">
-            @Html.DropDownList("Year", new List<SelectListItem> { new SelectListItem { Value = "2015", Text = "2015" }, new SelectListItem { Value = "2016", Text = "2016" }, new SelectListItem { Value = "2017", Text = "2017" } })
+            <input type="number" value="2000" min="1980" step="1" form="@Model.Year"/>
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Year)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Year)</p>
-        </div>
-
-        <br style="clear: left;" />
-        <br style="clear: left;" />
-        <div style="float: left; width: 250px;">
-            @Html.DropDownListFor(model => model.Grade.Id, new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
-            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Grade)</span>
-            <p class="text-error">@Html.ValidationMessageFor(model => model.Grade)</p>
-        </div>
-
-        <div id="mainAddress">
-           @Html.DropDownList("Section", new List<SelectListItem> { new SelectListItem { Value = "A", Text = "A" }, new SelectListItem { Value = "B", Text = "B" }, new SelectListItem { Value = "C", Text = "C" } })
-            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Section)</span>
-            <p class="text-error">@Html.ValidationMessageFor(model => model.Section)</p>
-        </div>
-
-        <br style="clear: left;" />
-        <br style="clear: left;" />
-        <div style="float: left; width: 250px;">
-            @Html.DropDownList("Approved", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
-            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Approved)</span>
-        </div>
-        
-        <br style="clear: left;" />
-        <br style="clear: left;" />
-        <div style="float: left; width: 250px;">
-            @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
-            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.IsActive)</span>
         </div>
     </div>
     <br style="clear: left;" />

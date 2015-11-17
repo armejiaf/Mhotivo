@@ -18,57 +18,14 @@
     {@Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Editar Año Académico</legend>
+            <legend>Editar Curso Académico</legend>
 
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
-                @Html.ValidationMessageFor(model => model.TeacherStartDate)
-                @Html.ValidationMessageFor(model => model.TeacherEndDate)
                 @Html.ValidationMessageFor(model => model.Schedule)
-                @Html.ValidationMessageFor(model => model.Room)
                 @Html.ValidationMessageFor(model => model.Course)
                 @Html.ValidationMessageFor(model => model.Teacher)
             </p>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.DisplayNameFor(model => model.TeacherStartDate)
-                </div>
-                <div class="controls">
-                    <script type="text/javascript">
-                        $(document).ready(function () {
-                            $('.date-picker').datepicker().on('changeDate', function () {
-                                $(this).datepicker('hide');
-                            });
-                        });
-                    </script>
-
-                    @Html.TextBoxFor(model => model.TeacherStartDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
-                    <span class="add-on">
-                        <i class="icon-calendar"></i>
-                    </span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.DisplayNameFor(model => model.TeacherEndDate)
-                </div>
-                <div class="controls">
-                    <script type="text/javascript">
-                        $(document).ready(function () {
-                            $('.date-picker').datepicker().on('changeDate', function () {
-                                $(this).datepicker('hide');
-                            });
-                        });
-                    </script>
-
-                    @Html.TextBoxFor(model => model.TeacherEndDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
-                    <span class="add-on">
-                        <i class="icon-calendar"></i>
-                    </span>
-                </div>
-            </div>
 
             <div class="control-group">
                 <div class="control-label">
@@ -89,22 +46,13 @@
                     </span>
                 </div>
             </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.DisplayNameFor(model => model.Room)
-                </div>
-                <div class="controls">
-                    @Html.EditorFor(model => model.Room)
-                </div>
-            </div>
             
             <div class="control-group">
                 <div class="control-label">
                     @Html.DisplayNameFor(model => model.Course)
                 </div>
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.Course.Id, new SelectList(ViewBag.CourseId, "Value", "Text"), "  -- Curso --")
+                    @Html.DropDownListFor(model => model.Course, new SelectList(ViewBag.CourseId, "Value", "Text"), "  -- Curso --")
                 </div>
             </div>
             
@@ -113,7 +61,7 @@
                     @Html.DisplayNameFor(model => model.Teacher)
                 </div>
                 <div class="controls">
-                    @Html.DropDownListFor(model => model.Teacher.Id, new SelectList(ViewBag.TeacherId, "Value", "Text"), "  -- Maestro --")
+                    @Html.DropDownListFor(model => model.Teacher, new SelectList(ViewBag.TeacherId, "Value", "Text"), "  -- Maestro --")
                 </div>
             </div>
             <div class="space"></div>

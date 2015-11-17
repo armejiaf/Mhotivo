@@ -26,6 +26,7 @@ namespace Mhotivo.Controllers
         {
             var notification = _notificationRepository.GetById(notificationId);
             var commentsForNotifications = notification.NotificationComments.Select(Mapper.Map<NotificationCommentDisplayModel>);
+            ViewBag.NotificationId = notificationId;
             return View(commentsForNotifications);
         }
 

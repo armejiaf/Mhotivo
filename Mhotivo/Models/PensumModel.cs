@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Mhotivo.Models
 {
@@ -29,5 +31,14 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar un Nombre")]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
+    }
+
+    public class PensumCourseModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public long Id { get; set; }
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+        public List<CourseRegisterModel> Courses { get; set; } 
     }
 }
