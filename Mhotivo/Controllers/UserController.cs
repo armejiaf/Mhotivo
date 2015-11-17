@@ -112,40 +112,6 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        [AuthorizeAdmin]
-        public ActionResult Add()
-        {
-            ViewBag.Id = new SelectList(_rolesRepository.GetAll(), "Id", "Name");
-            return View("Create");
-        }
-
-        [HttpPost]
-        [AuthorizeAdmin]
-        public ActionResult Add(UserRegisterModel modelUser)
-        {
-            //TODO: Only create users through Parents, Teachers, or Administratives.
-            /*if (_userRepository.Filter(x => x.Email == modelUser.Email).Any())
-            {
-                _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
-                return RedirectToAction("Index");
-            }
-            var myUser = new User
-            {
-                Email = modelUser.Email,
-                Password = _passwordGenerationService.GenerateTemporaryPassword(),
-                IsUsingDefaultPassword = true,
-                IsActive = modelUser.Status,
-                Role = _rolesRepository.Filter(x => x.Name == "Administrador").FirstOrDefault()
-            };
-            myUser.DefaultPassword = myUser.Password;
-            var user = _userRepository.Create(myUser);
-            const string title = "Usuario Agregado";
-            var content = "El usuario " + user.DisplayName + " - " + user.Email + " ha sido agregado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);*/
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         public JsonResult DoesUserNameExist(string email)
         {
