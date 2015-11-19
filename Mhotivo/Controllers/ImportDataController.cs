@@ -11,18 +11,18 @@ namespace Mhotivo.Controllers
 {
     public class ImportDataController : Controller
     {
-        private readonly IImportDataRepository _importDataRepository;
+        private readonly IDataImportService _dataImportService;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         //academicGradeRepository.filter(x.grade.id = grade.import)
         //me da un queriable
-        public ImportDataController(IImportDataRepository importDataRepository
+        public ImportDataController(IDataImportService dataImportService
                                     ,IGradeRepository gradeRepository
                                     ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
         {
-            _importDataRepository = importDataRepository;
+            _dataImportService = dataImportService;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
             _academicGradeRepository = academicGradeRepository;
@@ -80,10 +80,10 @@ namespace Mhotivo.Controllers
             {
                 return View(importModel);
             }
-            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
+            var myDataSet = _dataImportService.GetDataSetFromExcelFile(importModel.UploadFile);
             try
             {
-                _importDataRepository.Import(myDataSet, academicYear);
+                _dataImportService.Import(myDataSet, academicYear);
             }
             catch(Exception ex)
             {

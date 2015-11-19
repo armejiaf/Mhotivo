@@ -49,7 +49,7 @@
     <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IHomeworkRepository.cs" />
-    <Compile Include="Interfaces\IImportDataRepository.cs" />
+    <Compile Include="Interfaces\IDataImportService.cs" />
     <Compile Include="Interfaces\INotificationCommentRepository.cs" />
     <Compile Include="Interfaces\INotificationHandlerService.cs" />
     <Compile Include="Interfaces\IPasswordGenerationService.cs" />

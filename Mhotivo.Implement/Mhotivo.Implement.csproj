@@ -73,7 +73,6 @@
     <Compile Include="Repositories\EnrollRepository.cs" />
     <Compile Include="Repositories\GradeRepository.cs" />
     <Compile Include="Repositories\HomeworkRepository.cs" />
-    <Compile Include="Repositories\ImportDataRepository.cs" />
     <Compile Include="Repositories\NotificationCommentRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
@@ -83,6 +82,7 @@
     <Compile Include="Repositories\PeopleRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Services\DataImportService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\NotificationHandlerService.cs" />
     <Compile Include="Services\RandomPasswordGenerationService.cs" />

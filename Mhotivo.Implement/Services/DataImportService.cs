@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using Excel;
-using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
+using Mhotivo.Interface.Interfaces;
 
-namespace Mhotivo.Implement.Repositories
+namespace Mhotivo.Implement.Services
 {
-    public class ImportDataRepository : IImportDataRepository
+    public class DataImportService : IDataImportService
     {
         private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly IParentRepository _parentRepository;
@@ -20,7 +20,7 @@ namespace Mhotivo.Implement.Repositories
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
 
-        public ImportDataRepository(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+        public DataImportService(IPasswordGenerationService passwordGenerationService, IParentRepository parentRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _passwordGenerationService = passwordGenerationService;
             _parentRepository = parentRepository;

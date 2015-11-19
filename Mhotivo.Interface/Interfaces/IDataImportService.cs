@@ -4,7 +4,7 @@ using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Interface.Interfaces
 {
-    public interface IImportDataRepository
+    public interface IDataImportService
     {
         DataSet GetDataSetFromExcelFile(HttpPostedFileBase getFile);
         void Import(DataSet myDataSet, AcademicYear academicYearGrade);

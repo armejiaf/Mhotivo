@@ -76,7 +76,7 @@ namespace Mhotivo
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
             kernel.Bind<ISecurityService>().To<SecurityService>().InRequestScope();
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
-            kernel.Bind<IImportDataRepository>().To<ImportDataRepository>().InRequestScope();
+            kernel.Bind<IDataImportService>().To<DataImportService>().InRequestScope();
             kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
             kernel.Bind<IPasswordGenerationService>().To<RandomPasswordGenerationService>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
