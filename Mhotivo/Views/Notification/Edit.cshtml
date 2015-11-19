@@ -100,15 +100,15 @@
             @Html.TextAreaFor(model => model.Message, new { style = "width: 600px; height: 150px;" })
         </div>
     </div>*@
-    <div id="htmlMessage"></div> 
-    @Html.HiddenFor(model =>(model).Message)
+    <div id="htmlMessage">@Html.Raw(Model.Message)</div>
+    @Html.HiddenFor(model =>model.Message)
     <div class="space"></div>
     <div class="space"></div>
     <div class="modal-footer">
         @Html.ActionLink("Cancelar", "Index", "Notification", null, new { @class = "btn btn-small icon-remove" })
         <button type="submit" class="btn btn-small btn-primary">
             <i class="icon-ok"></i>
-            Crear
+            Actualizar
         </button>
     </div>
 }

@@ -76,16 +76,6 @@ namespace Mhotivo
 
         private static void MapAcademicCourseModels()
         {
-            Mapper.CreateMap<AcademicCourseRegisterModel, AcademicCourse>()
-                .ForMember(g => g.AcademicGrade,
-                    o => o.MapFrom(src => ((IAcademicGradeRepository) DependencyResolver.Current.GetService(
-                        typeof(IAcademicGradeRepository))).GetById(src.AcademicGrade)))
-                .ForMember(g => g.Course,
-                    o => o.MapFrom(src => ((ICourseRepository) DependencyResolver.Current.GetService(
-                        typeof(ICourseRepository))).GetById(src.Course)))
-                .ForMember(g => g.Teacher,
-                    o => o.MapFrom(src => ((ITeacherRepository) DependencyResolver.Current.GetService(
-                        typeof(IPensumRepository))).GetById(src.Teacher)));
             Mapper.CreateMap<AcademicCourse, AcademicCourseDisplayModel>()
                 .ForMember(p => p.Course, o => o.MapFrom(src => src.Course.Name))
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.FullName))

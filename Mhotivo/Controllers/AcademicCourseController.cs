@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Authorizations;
-using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -92,39 +91,6 @@ namespace Mhotivo.Controllers
             var content = "El Curso " + toEdit.Course.Name + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", toEdit.AcademicGrade.Id));
-        }
-
-        [HttpPost]
-        [AuthorizeAdmin]
-        public ActionResult Delete(long id)
-        {
-            var academicYearDetail = _academicCourseRepository.Delete(id);
-            const string title = "Detalle Académico Eliminado";
-             var content = "El detalle de año académico " + academicYearDetail.Course.Name + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicYearDetail.AcademicGrade.Id));
-        }
-
-        [HttpGet]
-        [AuthorizeAdmin]
-        public ActionResult Add(long id)
-        {
-            ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
-            ViewBag.TeacherId = new SelectList(_teacherRepository.Query(x => x), "Id", "FullName");
-            ViewBag.AcademicGradeId = id;
-            return View("Create");
-        }
-
-        [HttpPost]
-        [AuthorizeAdmin]
-        public ActionResult Add(AcademicCourseRegisterModel academicCourseModel)
-        {
-            var course = Mapper.Map<AcademicCourse>(academicCourseModel);
-            _academicCourseRepository.Create(course);
-            const string title = "Detalles de Curso Académico Agregado";
-            const string content = "El detalle del curso académico ha sido agregado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", academicCourseModel.AcademicGrade));
         }
     }
 }
