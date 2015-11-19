@@ -1,17 +1,17 @@
-﻿@model Mhotivo.ParentSite.Models.EmailConfirmationModel
+﻿@model Mhotivo.ParentSite.Models.UpdateParentMailModel
 @{
-   Layout = "~/Views/Shared/_Layout.cshtml";
-
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-           
-                @using (Html.BeginForm("EmailConfirmation", "Account", null, FormMethod.Post, new { @class = "form-horizontal" }))
+            <div class="well well-sm">
+                @using (Html.BeginForm("UpdateEmail", "Account", null, FormMethod.Post, new { @class = "form-horizontal" }))
                 {
                     <fieldset>
-                        <legend class="text-center">Ingrese Correo para Confimar</legend>
+                        <legend class="text-center">Porfavor Ingrese Correo</legend>
 
                         <!-- Name input-->
                         <div class="form-group">
@@ -33,7 +33,7 @@
                         <!-- Form actions -->
                         <div class="form-group">
                             <div class="col-md-12 text-right">
-                                <a type="submit" class="nicdark_mpopup_ajax nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white nicdark_press">Actualizar</a>
+                                <button type="submit" class="btn btn-primary btn-lg">Actualizar</button>
                             </div>
                         </div>
                     </fieldset>
@@ -51,3 +51,4 @@
             </div>
         </div>
     </div>
+</div>

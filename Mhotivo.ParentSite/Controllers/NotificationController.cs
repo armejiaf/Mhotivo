@@ -16,7 +16,6 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IParentRepository _parentRepository;
-        private readonly ISessionManagementService _sessionManagementService; //Will this be used?
         private readonly ISecurityService _securityService;
         private Parent _loggedParent;
         public static IStudentRepository StudentRepository;
@@ -26,13 +25,12 @@ namespace Mhotivo.ParentSite.Controllers
         public static List<long> StudentsId;
 
         public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,
-            IParentRepository parentRepository, ISessionManagementService sessionManagementService, ISecurityService securityService,
+            IParentRepository parentRepository, ISecurityService securityService,
             IStudentRepository studentRepository, IEnrollRepository enrollsRepository)
         {
             _notificationRepository = notificationRepository;
             _academicYearRepository = academicYearRepository;
             _parentRepository = parentRepository;
-            _sessionManagementService = sessionManagementService;
             _securityService = securityService;
             StudentRepository = studentRepository;
             EnrollsRepository = enrollsRepository;
@@ -78,7 +76,7 @@ namespace Mhotivo.ParentSite.Controllers
                             .ToList();
                     break;
             }
-           
+
 
             var notificationsModel = notifications.Select(Mapper.Map<Notification, NotificationModel>).ToList();
 

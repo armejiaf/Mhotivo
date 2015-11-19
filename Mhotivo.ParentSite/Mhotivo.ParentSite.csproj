@@ -23,9 +23,6 @@
     <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>12.0</OldToolsVersion>
     <OldToolsVersion>12.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <UseGlobalApplicationHostFile />
@@ -202,10 +199,10 @@
     <Compile Include="Controllers\MessageToTeacherController.cs" />
     <Compile Include="Controllers\NotificationCommentsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Models\UpdateParentMailModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailConfirmationModel.cs" />
     <Compile Include="Models\HomeworkDateModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\MessageToTeacherModel.cs" />
@@ -334,7 +331,6 @@
     <Content Include="Content\js\plugins\scroolto\scroolto.js" />
     <Content Include="Content\js\settings.js" />
     <Content Include="Content\Login\login.css" />
-    <Content Include="Content\login.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -480,10 +476,10 @@
     <Content Include="Views\Homework\Index.cshtml" />
     <Content Include="Views\Shared\NotificationComments_layout.cshtml" />
     <Content Include="Views\NotificationComments\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\MessageToTeacher\Index.cshtml" />
     <Content Include="Views\Account\EmailConfirmation.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutSmall.cshtml" />
   </ItemGroup>
   <ItemGroup>

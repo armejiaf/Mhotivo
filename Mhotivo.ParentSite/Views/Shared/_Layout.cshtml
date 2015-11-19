@@ -1,5 +1,4 @@
 ﻿@using Mhotivo.Implement
-@model Mhotivo.ParentSite.Models.ParentLoginModel
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
@@ -33,65 +32,11 @@
     <link rel="apple-touch-icon" href="~/Content/img/favicon/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="~/Content/img/favicon/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="~/Content/img/favicon/apple-touch-icon-114x114.png">
-    <link href="../../Content/font-awesome.css" rel="stylesheet" />
-    <link href="../../Content/login.css" rel="stylesheet" />
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
     <!--END FAVICONS-->
-    <link rel="stylesheet"
-          href="@Url.Content("~/Content/bootstrap.min.css")"></link>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     
 </head>
 <body id="start_nicdark_framework">
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-       
-            <div class="modal-dialog modal-sm">
 
-
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="card"></div>
-                        <div class="card">
-                            <h1 class="title">Ingresar</h1>
-                            @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
-
-                            { <fieldset>
-                                @Html.ValidationSummary(true)
-                                <div class="input-container">
-
-                                    @Html.TextBoxFor(modal => modal.Email, new { @class = "form-control", placeholder = "Correo", required = "required" })
-
-                                    <div class="bar"></div>
-                                </div>
-                                <div class="input-container">
-
-                                    @Html.TextBoxFor(modal => modal.Password, new { @class = "form-control", placeholder = "Contraseña Nueva", type = "password", required = "required" })
-
-                                    <div class="bar"></div>
-                                </div>
-
-                                
-                                <div class="form-group">
-                                    <div class="col-md-12 text-right">
-                                        <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            }
-</div>
-
-
-
-                    </div>
-
-                </div>
-
-
-            </div>
-</div>
     <div class="nicdark_site">
         <div class="nicdark_site_fullwidth nicdark_clearfix">
           
@@ -140,65 +85,13 @@
 
                                 <div class="nicdark_logo nicdark_marginleft10">
                                     @*<a href="index-2.html"><img alt="" src="~/Content/img/logo.png"></a>*@
-                                    <p style="font-size: 30px;">MHOTIVO</p> 
+                                    @Html.ActionLink("MHOTIVO", "Index", "Home", null, new { @style ="font-size: 30px;"})
                                 </div>
-                                <a class="nicdark_btn_icon nicdark_zoom nicdark_bg_yellow_hover nicdark_right_sidebar_btn_open nicdark_marginright10 nicdark_bg_orange extrasmall nicdark_radius white right"><i class="icon-basket-1"></i></a>
+
                                 <nav>
                                     <ul class="nicdark_menu nicdark_margin010 nicdark_padding50">
 
                                         <li class="orange">
-                                            <a href="#">Login</a>
-                                            @*<a href="index-2.html">HOME</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="index-2.html">Home Default</a></li>
-                                                <li><a href="index-3.html">Color Sections</a></li>
-                                               
-                                            </ul>
-                                        </li>
-                                        <li class="red">
-                                            <a href="#">PAGES</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="prices.html">Prices</a></li>
-                                                <li>
-                                                    <a href="teachers.html">Teachers</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="teachers.html">All Teachers</a></li>
-                                                        <li><a href="single-teacher.html">Single Teacher</a></li>
-                                                        <li>@Html.ActionLink("Enviar Mensaje", "Index", "MessageToTeacher")</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="excursions.html">Excursion</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="excursions.html">All Excursion</a></li>
-                                                        <li><a href="single-excursion.html">Single Excursion</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="courses.html">Courses</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="courses.html">All Courses</a></li>
-                                                        <li><a href="single-course.html">Single Course</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="events.html">Events</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="events.html">All Events</a></li>
-                                                        <li><a href="single-event.html">Single Event</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="faq.html">Faq</a></li>
-                                                <li><a href="404.html">404</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="blue">
-                                            <a href="courses.html">COURSES</a>*@
-                                            <ul class="sub-menu">
-                                                <li>@Html.ActionLink("Iniciar Sesion", "Login", "Account")</li>
-                                            </ul>
-                                        </li>
-                                        @*<li class="orange">
                                             <a href="#">CUENTA</a>
                                             <ul class="sub-menu">
                                                 <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Account")</li>
@@ -211,44 +104,11 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                </nav>*@
-                                        <li class="yellow ">
-                                            <a href="#myModal" data-toggle="modal">LOGIN</a>
-                                            <ul class="sub-menu">
-                                                <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Account")</li>
-                                                <li>@Html.ActionLink("Confimar Correo", "EmailConfirmation", "Account")</li>
-                                            </ul>
-                            </li>
-                            <li class="green">
-                                <a href="blog-masonry.html">BLOG</a>
-                                <ul class="sub-menu">
-                                    <li><a href="blog-masonry.html">Masonry Layout</a></li>
-                                    <li>
-                                        <a href="single-post-right-sidebar.html">Single Post</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="single-post-left-sidebar.html">Left Sidebar</a></li>
-                                            <li><a href="single-post-right-sidebar.html">Right Sidebar</a></li>
-                                            <li><a href="single-post-full-width.html">Full Width</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="orange">
-                                <a href="events.html">EVENTS</a>
-                                <ul class="sub-menu">
-                                    <li><a href="events.html">All Events</a></li>
-                                    <li><a href="single-event.html">Single Event</a></li>
-                                </ul>
-                            </li>
-                            <li class="grey">
-                                <a href="contact-1.html">CONTACTS</a>
-                            </li>
-                            </ul>
-                            </nav>
+                                </nav>
 
-                            <div class="nicdark_space20"></div>
+                                <div class="nicdark_space20"></div>
 
-                        </div>
+                            </div>
 
                         </div>
                         <!--end container-->
@@ -490,7 +350,7 @@
             $(".nicdark_countdown").countdown({
                 date: endDate,
                 render: function (data) {
-                    $(this.el).html("<div class=\"grid " + grid + " " + display_years + " \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.years, 4) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">YEARS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_days + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.days, 3) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nic  dark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">DAYS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_hours + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.hours, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_yellow small nicdark_shadow nicdark_radius white\">HOURS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_minutes + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.min, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white\">MINUTES</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_seconds + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.sec, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_violet small nicdark_shadow nicdark_radius white\">SECONDS</a><div class=\"nicdark_space5\"></div></div></div>");
+                    $(this.el).html("<div class=\"grid " + grid + " " + display_years + " \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.years, 4) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">YEARS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_days + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.days, 3) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_blue small nicdark_shadow nicdark_radius white\">DAYS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_hours + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.hours, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_yellow small nicdark_shadow nicdark_radius white\">HOURS</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_minutes + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.min, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white\">MINUTES</a><div class=\"nicdark_space5\"></div></div></div><div class=\"grid " + grid + " " + display_seconds + "  \"><div class=\"nicdark_textevidence center\"><h1 class=\"subtitle white extrasize\">" + this.leadingZeros(data.sec, 2) + "</h1><div class=\"nicdark_space20\"></div><a class=\"nicdark_btn nicdark_bg_violet small nicdark_shadow nicdark_radius white\">SECONDS</a><div class=\"nicdark_space5\"></div></div></div>");
                 }
             });
             //END COUNTDOWN GRID SECTION

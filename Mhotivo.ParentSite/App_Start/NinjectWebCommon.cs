@@ -13,11 +13,11 @@ using Ninject.Web.Common;
 
 namespace Mhotivo.ParentSite
 {
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
@@ -28,7 +28,7 @@ namespace Mhotivo.ParentSite
         {
             Bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -75,6 +75,6 @@ namespace Mhotivo.ParentSite
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
-        }        
+        }
     }
 }

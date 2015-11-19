@@ -139,7 +139,7 @@
                 foreach (var item in Models.Where(x => x.AcademicCourse.Course.Id == @var))
                 {
 
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
 
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
@@ -193,7 +193,7 @@
             {
                 foreach (var item in Model)
                 {
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
                             <p class="white">

@@ -28,7 +28,7 @@ namespace Mhotivo.ParentSite.Controllers
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicCourseRepository academicCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
-            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService, 
+            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService,
             ISecurityService securityService, IParentRepository parentRepository)
         {
             _homeworkRepository = homeworkRepository;
@@ -43,7 +43,7 @@ namespace Mhotivo.ParentSite.Controllers
             _parentRepository = parentRepository;
         }
 
-        public ActionResult Index(string param,string student, string date)
+        public ActionResult Index(string param, string student, string date)
         {
             var students = GetAllStudents(GetParentId());
             StudentsId = GetAllStudentsId(students);
@@ -51,7 +51,7 @@ namespace Mhotivo.ParentSite.Controllers
             enrolls.AddRange(GetAllEnrolls(StudentsId));
             if (student != null)
                 enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
-           var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
+            var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             switch (date)
             {
                 case "Dia":

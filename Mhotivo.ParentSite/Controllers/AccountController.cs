@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
@@ -11,7 +12,7 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly ISessionManagementService _sessionManagementService;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
-       
+
         public AccountController(ISessionManagementService sessionManagementService, IParentRepository parentRepository, IUserRepository userRepository)
         {
             _sessionManagementService = sessionManagementService;
@@ -40,7 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
                     {
                         return RedirectToAction("ChangePassword");
                     }
-                    return parent.User.Email.Equals("") ? RedirectToAction("EmailConfirmation") : RedirectToAction("Index", "Home");
+                    return parent.User.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
@@ -55,17 +56,16 @@ namespace Mhotivo.ParentSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
- 
-        public ActionResult EmailConfirmation()
+        [AllowAnonymous]
+        public ActionResult ConfirmEmail()
         {
-            return View();
+            return View("EmailConfirmation");
         }
 
-        [HttpPost]
-        public ActionResult EmailConfirmation(EmailConfirmationModel model)
+        public ActionResult UpdateEmail(UpdateParentMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
-            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).FirstOrDefault();
+            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
             
             if (parentUser != null)
             {
@@ -75,7 +75,7 @@ namespace Mhotivo.ParentSite.Controllers
                 return RedirectToAction("Index", "Notification");
             }
 
-            return RedirectToAction("EmailConfirmation");
+            return RedirectToAction("ConfirmEmail");
         }
 
         public ActionResult ChangePassword()
@@ -97,9 +97,5 @@ namespace Mhotivo.ParentSite.Controllers
             _userRepository.Update(user);
             return RedirectToAction("Index", "Home");
         }
-
-      
     }
-
-    
 }

@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - Mhotivo Padre</title>
+    <title>@ViewBag.Title - Mhotivo Padres</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,60 +17,42 @@
     <link href="../../Content/font-awesome.css" rel="stylesheet" />
     <link href="../../Content/Login/login.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-<script src="~/Content/js/main/jquery.min.js"></script> <!--Jquery-->
-<script src="~/Content/js/main/jquery-ui.js"></script> <!--Jquery UI-->
-<script src="~/Content/js/main/excanvas.js"></script> <!--canvas need for ie-->
-<script src="~/Content/js/main/jquery.jscroll.js"></script>
-<script src="~/Content/js/main/jquery.jscroll.min.js"></script>
-<!--plugins-->
-<script src="~/Content/js/plugins/revslider/jquery.themepunch.tools.min.js"></script> <!--revslider-->
-<script src="~/Content/js/plugins/revslider/jquery.themepunch.revolution.min.js"></script> <!--revslider-->
-<!--menu-->
-<script src="~/Content/js/plugins/menu/superfish.min.js"></script> <!--superfish-->
-<script src="~/Content/js/plugins/menu/tinynav.min.js"></script> <!--tinynav-->
-<!--other-->
-<script src="~/Content/js/plugins/isotope/isotope.pkgd.min.js"></script> <!--isotope-->
-<script src="~/Content/js/plugins/mpopup/jquery.magnific-popup.min.js"></script> <!--mpopup-->
-<script src="~/Content/js/plugins/scroolto/scroolto.js"></script> <!--Scrool To-->
-<script src="~/Content/js/plugins/nicescrool/jquery.nicescroll.min.js"></script> <!--Nice Scroll-->
-<script src="~/Content/js/plugins/inview/jquery.inview.min.js"></script> <!--inview-->
-<script src="~/Content/js/plugins/parallax/jquery.parallax-1.1.3.js"></script> <!--parallax-->
-<script src="~/Content/js/plugins/countto/jquery.countTo.js"></script> <!--jquery.countTo-->
-<script src="~/Content/js/plugins/countdown/jquery.countdown.js"></script> <!--countdown-->
-<!--settings-->
-<script src="~/Content/js/settings.js"></script> <!--settings-->
 
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-
-        $('#logInRef').click();
-        return false;
-    });
-</script>
 </head>
-<div id="loginForm" class="nicdark_bg_white nicdark_radius zoom-anim-dialog mfp-hide nicdark_window " style="max-width: 350px">
-    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
-        <div style="margin: 15px">
-            <h4 class="white center">Iniciar Sesión</h4>
+
+<body>
+    <div class="pen-title">
+        <h1>MHOTIVO | Sitio de Padres</h1>
+    </div>
+    <div class="container">
+        <div class="card"></div>
+        <div class="card">
+            <h1 class="title">Ingresar</h1>
+            @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true)
+                <div class="input-container">
+                    <input id="email" name="Email" type="email" required />
+                    <label>Correo</label>
+                    <div class="bar"></div>
+                </div>
+                <div class="input-container">
+                    <input type="password" id="pass" name="Password" required />
+                    <label>Contraseña</label>
+                    <div class="bar"></div>
+                </div>
+
+                <div class="button-container">
+                    <button><span>Ingresar</span></button>
+                </div>
+            }
         </div>
+
+        <div class="card alt">
+            <div class="toggle"></div>
+        </div>
+
     </div>
-    <div class="nicdark_margin20">
-        @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
-        {
-            @Html.ValidationSummary(true)
-            <p class="greydark2 nicdark_marginleft60 ">Correo Electrónico</p>
-            <input class="nicdark_marginleft60" id="email" name="Email" required />
-            <div class="nicdark_space20"></div>
+</body>
 
-            <p class="greydark2 nicdark_marginleft60">Contraseña</p>
-            <input type="password" class="nicdark_marginleft60" id="pass" name="Password" required />
-            <div class="nicdark_space30"></div>
-
-            <input type="submit" class="nicdark_btn nicdark_bg_green small nicdark_shadow nicdark_radius white right nicdark_marginright20" value=" Iniciar " />
-            <br />
-            <br />
-
-        }
-    </div>
-</div>
 </html>

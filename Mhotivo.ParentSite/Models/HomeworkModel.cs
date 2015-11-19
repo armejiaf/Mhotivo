@@ -5,7 +5,7 @@ namespace Mhotivo.ParentSite.Models
 {
     public class HomeworkModel
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
