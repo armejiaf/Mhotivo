@@ -15,7 +15,6 @@ namespace Mhotivo.ParentSite.Controllers
         public NotificationCommentsController(INotificationRepository notificationRepository)
         {
             _notificationRepository = notificationRepository;
-
         }
 
         // GET: /NotificationComments/
@@ -24,21 +23,8 @@ namespace Mhotivo.ParentSite.Controllers
         {
             var selectedNotification = _notificationRepository.GetById(notificationId);
             var selectedNotificationModel = Mapper.Map<NotificationModel>(selectedNotification);
-            selectedNotificationModel.NotificationCreator = selectedNotification.UserCreatorName; 
-            var commentsList = selectedNotification.NotificationComments.ToList();
-            List<NotificationCommentsModel> commentsModelList = commentsList.Select(comment =>
-            {
-                var firstOrDefault = selectedNotification.NotificationComments.FirstOrDefault(x => x.Id==comment.Id);
-                return firstOrDefault != null ? new NotificationCommentsModel
-                {
-                    CommentText = comment.CommentText,
-                    CreationDate = comment.CreationDate,
-                    Parent = firstOrDefault.Parent.FullName,
-                    Photo = firstOrDefault.Parent.Photo
-                } : null;
-            }).ToList();
-            selectedNotificationModel.CommentsAmount = commentsList.Count;
-            return View(new Tuple<NotificationModel, List<NotificationCommentsModel>>(selectedNotificationModel, commentsModelList));
+            var commentsList = selectedNotification.NotificationComments.Select(Mapper.Map<NotificationCommentsModel>).ToList();
+            return View(new Tuple<NotificationModel, List<NotificationCommentsModel>>(selectedNotificationModel, commentsList));
         }
     }
 }

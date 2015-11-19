@@ -13,37 +13,37 @@ namespace Mhotivo.ParentSite.Controllers
     public class HomeworkController : Controller
     {
         //Bunch of unused repositories. Delete?
-        private readonly IAcademicYearDetailsRepository _academicYearDetailRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IHomeworkRepository _homeworkRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
         public static IStudentRepository StudentRepository;
         public static IEnrollRepository EnrollsRepository;
-        private readonly ISessionManagementRepository _sessionManagementRepository;
-        public static ISecurityRepository SecurityRepository;
+        private readonly ISessionManagementService _sessionManagementService;
+        public static ISecurityService SecurityService;
         private readonly IParentRepository _parentRepository;
         public static List<long> StudentsId;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
-            IAcademicYearDetailsRepository academicYearDetailRepository, IAcademicYearRepository academicYearRepository,
+            IAcademicCourseRepository academicCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
-            IEnrollRepository enrollsRepository, ISessionManagementRepository sessionManagementRepository, 
-            ISecurityRepository securityRepository, IParentRepository parentRepository)
+            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService,
+            ISecurityService securityService, IParentRepository parentRepository)
         {
             _homeworkRepository = homeworkRepository;
             _academicYearRepository = academicYearRepository;
             _gradeRepository = gradeRepository;
             _courseRepository = courseRepository;
-            _academicYearDetailRepository = academicYearDetailRepository;
+            _academicCourseRepository = academicCourseRepository;
             StudentRepository = studentRepository;
             EnrollsRepository = enrollsRepository;
-            _sessionManagementRepository = sessionManagementRepository;
-            SecurityRepository = securityRepository;
+            _sessionManagementService = sessionManagementService;
+            SecurityService = securityService;
             _parentRepository = parentRepository;
         }
 
-        public ActionResult Index(string param,string student, string date)
+        public ActionResult Index(string param, string student, string date)
         {
             var students = GetAllStudents(GetParentId());
             StudentsId = GetAllStudentsId(students);
@@ -51,7 +51,7 @@ namespace Mhotivo.ParentSite.Controllers
             enrolls.AddRange(GetAllEnrolls(StudentsId));
             if (student != null)
                 enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
-           var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
+            var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             switch (date)
             {
                 case "Dia":
@@ -73,12 +73,12 @@ namespace Mhotivo.ParentSite.Controllers
             var allHomeworksModel = new List<HomeworkModel>();
             foreach (var enroll in enrolls)
             {
-                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicYearDetail.AcademicYear.Id == enroll.AcademicYear.Id));
+                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
             }
 
             if (param != null)
                 allHomeworksModel =
-                    allHomeworksModel.FindAll(x => x.AcademicYearDetail.Course.Id == Convert.ToInt32(param));
+                    allHomeworksModel.FindAll(x => x.AcademicCourse.Course.Id == Convert.ToInt32(param));
 
             return View(allHomeworksModel);
         }
@@ -118,7 +118,7 @@ namespace Mhotivo.ParentSite.Controllers
         public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
         {
             IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
+                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
             return allEnrolls;
         }
 
@@ -135,7 +135,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         public static long GetParentId()
         {
-            var people = SecurityRepository.GetUserLoggedPeoples();
+            var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {

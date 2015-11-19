@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,16 +18,9 @@ namespace Mhotivo.Implement.Repositories
             _context = ctx;
         }
 
-        public EducationLevel First(Expression<Func<EducationLevel, EducationLevel>> query)
-        {
-            var areas = _context.EducationLevels.Select(query);
-            return areas.Count() != 0 ? areas.First() : null;
-        }
-
         public EducationLevel GetById(long id)
         {
-            var areas = _context.EducationLevels.Where(x => x.Id == id);
-            return areas.Count() != 0 ? areas.First() : null;
+            return _context.EducationLevels.FirstOrDefault(x => x.Id == id);
         }
 
         public EducationLevel Create(EducationLevel itemToCreate)
@@ -49,14 +43,10 @@ namespace Mhotivo.Implement.Repositories
         public EducationLevel Update(EducationLevel itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
-            SaveChanges();
+            _context.SaveChanges();
             return itemToUpdate;
         }
-        public EducationLevel UpdateAreaFromAreaEditModel(EducationLevel areaEditModel, EducationLevel area)
-        {
-            area.Name = areaEditModel.Name;
-            return Update(area);
-        }
+
         public EducationLevel Delete(long id)
         {
             var itemToDelete = GetById(id);
@@ -65,23 +55,16 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public void SaveChanges()
+        public EducationLevel Delete(EducationLevel itemToDelete)
         {
+            _context.EducationLevels.Remove(itemToDelete);
             _context.SaveChanges();
+            return itemToDelete;
         }
 
-        public System.Collections.Generic.IEnumerable<EducationLevel> GetAllAreas()
+        public IEnumerable<EducationLevel> GetAllAreas()
         {
-            return Query(x => x).ToList().Select(x => new EducationLevel
-            {
-                Name = x.Name,
-                Id = x.Id
-            });
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
+            return Query(x => x).ToList();
         }
     }
 }

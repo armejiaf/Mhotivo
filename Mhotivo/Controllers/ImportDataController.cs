@@ -11,30 +11,50 @@ namespace Mhotivo.Controllers
 {
     public class ImportDataController : Controller
     {
-        private readonly IImportDataRepository _importDataRepository;
+        private readonly IDataImportService _dataImportService;
         private readonly IGradeRepository _gradeRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-
-        public ImportDataController(IImportDataRepository importDataRepository
+        //academicGradeRepository.filter(x.grade.id = grade.import)
+        //me da un queriable
+        public ImportDataController(IDataImportService dataImportService
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository)
+                                    ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
         {
-            _importDataRepository = importDataRepository;
+            _dataImportService = dataImportService;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
+            _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-         [AuthorizeAdmin]
+        
+        [AuthorizeAdmin]
         public ActionResult Index()
         {
              _viewMessageLogic.SetViewMessageIfExist();
              var importModel = new ImportDataModel();
              ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
              ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
-             ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+            ViewBag.Section = new List<SelectListItem>();
              return View(importModel);
         }
+
+        /*[AuthorizeAdmin]
+        public ActionResult DynamicDropDownList(long gradeId)
+        {
+            var model = new DynamicListModel();
+            var items = _academicYearGradeRepository.Filter(x => x.Grade.Id == gradeId).Select(x => x.Section);
+            foreach (var item in items)
+            {
+                model.Items.Add(new SelectListItem
+                {
+                    Text = item,
+                    Value = item
+                });
+            }
+            return View(model);
+        }*/
 
         [HttpPost]
         [AuthorizeAdmin]
@@ -51,7 +71,8 @@ namespace Mhotivo.Controllers
                 errorExcel = true;
             if(errorExcel)
                 ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
-            var academicYear = _academicYearRepository.GetByFields(importModel.Year, importModel.GradeImport, importModel.Section);
+            var academicYear = _academicYearRepository.Filter(x => x.Year == importModel.Year
+            && x.Grades.Any(n => n.Grade.Id == importModel.GradeImport && n.Section == importModel.Section)).FirstOrDefault();
             if (academicYear == null)
                 ModelState.AddModelError("Year", "No existe ese año academico");
             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
@@ -59,10 +80,10 @@ namespace Mhotivo.Controllers
             {
                 return View(importModel);
             }
-            var myDataSet = _importDataRepository.GetDataSetFromExcelFile(importModel.UploadFile);
+            var myDataSet = _dataImportService.GetDataSetFromExcelFile(importModel.UploadFile);
             try
             {
-                _importDataRepository.Import(myDataSet, academicYear);
+                _dataImportService.Import(myDataSet, academicYear);
             }
             catch(Exception ex)
             {
@@ -73,11 +94,23 @@ namespace Mhotivo.Controllers
             const string title = "Importación de Datos Correcta";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
                                         , importModel.Year // 0
-                                        , academicYear.Grade.Name // 1
+                                        , academicYear.Grades.ElementAt(0).Grade.Name // 1
                                         , importModel.Section // 2
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
+
+
+        public JsonResult LoadByGrade(ImportDataModel importModel)
+        {
+            var sList = _academicGradeRepository.Filter(
+                    x => x.Grade.Id == importModel.GradeImport).ToList();
+            var toReturn =
+                new SelectList(
+                    sList, "Id", "Section");
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

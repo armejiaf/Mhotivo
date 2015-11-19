@@ -1,6 +1,6 @@
 ﻿@*model IEnumerable<Mhotivo.Models.DisplayAcademicYearModel>*@
 @using System.Web.Mvc.Html
-@model PagedList.IPagedList<Mhotivo.Models.DisplayAcademicYearModel>
+@model PagedList.IPagedList<Mhotivo.Models.AcademicYearDisplayModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
     @{
@@ -11,8 +11,7 @@
     @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
     <h2>Años Académicos Registrados  </h2>
-
-<a class="toAdd" data-toggle="modal" role="button" href="~/AcademicYear/Add"><span class="btn btn-small btn-primary">Agregar Año Académico</span></a>
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Add/"><span class="btn btn-small btn-primary">Agregar Año Académico</span></a>
 <div class="space"></div>
     @using (Html.BeginForm("Index", "AcademicYear", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
@@ -35,12 +34,10 @@
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.First().Year)</th>
-                    <th>@Html.ActionLink("Grado", "Index", new { sortOrder = ViewBag.GradeSortParm }) </th>
-                    <th>@Html.DisplayNameFor(model => model.First().Section)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().EducationLevel)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().Approved)</th>
                     <th>@Html.DisplayNameFor(model => model.First().IsActive)</th>
-                    <th></th>
+                    <th>Detalles</th>
+                    <th>Modificar</th>
+                    <th>Borrar</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,14 +46,10 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Year)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Grade)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Section)</td>
-                        <td>@Html.DisplayFor(modelItem => item.EducationLevel)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Approved)</td>
                         <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                        <td>@Html.ActionLink("Detalles", "Index", "AcademicGrade", new { yearId= item.Id }, null)</td>
+                        <td><a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                         <td>
-                            <a href="~/AcademicYearDetails/Index/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
-                            <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                             <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                             @using (Html.BeginForm("Delete", "AcademicYear", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                                 new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }

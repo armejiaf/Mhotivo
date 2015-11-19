@@ -15,13 +15,16 @@ namespace Mhotivo.Controllers
     {
         private readonly IGradeRepository _gradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-        private IAcademicYearRepository _academicYearRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IPensumRepository _pensumRepository;
+        private readonly IEducationLevelRepository _educationLevelRepository;
 
-        public GradeController(IGradeRepository gradeRepository, IAcademicYearRepository academicYearRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository)
         {
-            if (gradeRepository == null) throw new ArgumentNullException("gradeRepository");
             _gradeRepository = gradeRepository;
-            _academicYearRepository = academicYearRepository;
+            _academicGradeRepository = academicGradeRepository;
+            _pensumRepository = pensumRepository;
+            _educationLevelRepository = educationLevelRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -45,7 +48,7 @@ namespace Mhotivo.Controllers
             {
                 grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            var displayGradeModels = grades.Select(Mapper.Map<Grade, DisplayGradeModel>).ToList();
+            var displayGradeModels = grades.Select(Mapper.Map<Grade, GradeDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
@@ -66,6 +69,8 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
+            var list = _educationLevelRepository.GetAllAreas();
+            ViewBag.EducationLevels = new SelectList(list, "Id", "Name");
             return View("Create");
         }
 
@@ -77,19 +82,17 @@ namespace Mhotivo.Controllers
             string title;
             string content;
             var gradeModel = Mapper.Map<GradeRegisterModel, Grade>(modelGrade);
-            var myGrade = _gradeRepository.GenerateGradeFromRegisterModel(gradeModel);
-            var existGrade =
-                _gradeRepository.GetAllGrade()
-                    .FirstOrDefault(
-                        g => g.Name.Equals(modelGrade.Name) && g.EducationLevel.Equals(modelGrade.EducationLevel));
-            if (existGrade != null)
+            var query =
+                _gradeRepository.Filter(
+                    g => g.Name.Equals(gradeModel.Name) && g.EducationLevel.Id == gradeModel.EducationLevel.Id);
+            if (query.Any())
             {
-                title = "Grado";
-                content = "El grado " + existGrade.Name + " ya existe.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+                title = "Error!";
+                content = "El Grado ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            var grade = _gradeRepository.Create(myGrade);
+            var grade = _gradeRepository.Create(gradeModel);
             title = "Grado Agregado";
             content = grade.Name + " grado ha sido guardado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -101,8 +104,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            var check = _academicYearRepository.Filter(x => x.Grade.Id == id).FirstOrDefault();
-            if (check == null)
+            if (!_academicGradeRepository.Filter(x => x.Grade.Id == id).Any())
             {
                 var grade = _gradeRepository.Delete(id);
                 const string title = "Grado ha sido Eliminado";
@@ -113,7 +115,7 @@ namespace Mhotivo.Controllers
             else
             {
                 const string title = "Error!";
-                var content = "No se puede borrar el grado pues existe un año académico con este grado.";
+                const string content = "No se puede borrar el grado pues existe un año académico con este grado.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
@@ -122,10 +124,12 @@ namespace Mhotivo.Controllers
         /// GET: /Grade/Edit/5
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(long id)
         {
-            var grade = _gradeRepository.GetGradeEditModelById(id);
+            var grade = _gradeRepository.GetById(id);
             var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
+            var list = _educationLevelRepository.GetAllAreas();
+            ViewBag.EducationLevels = new SelectList(list, "Id", "Name", gradeModel.EducationLevel);
             return View("Edit", gradeModel);
         }
 
@@ -134,13 +138,26 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(GradeEditModel modelGrade)
         {
-            var myGrade = _gradeRepository.GetById(modelGrade.Id);
-            var gradeModel = Mapper.Map<GradeEditModel, Grade>(modelGrade);
-            _gradeRepository.UpdateGradeFromGradeEditModel(gradeModel, myGrade);
-            const string title = "Grado Actualizado";
-            var content = myGrade.Name + " grado ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            if (!_gradeRepository.Filter(x => x.Id != modelGrade.Id && x.Name == modelGrade.Name).Any())
+            {
+                var myGrade = _gradeRepository.GetById(modelGrade.Id);
+                myGrade = Mapper.Map(modelGrade, myGrade);
+                _gradeRepository.Update(myGrade);
+                const string title = "Grado Actualizado";
+                var content = myGrade.Name + " grado ha sido actualizado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+                return RedirectToAction("Index");
+            }
+            const string titulo = "Error!";
+            const string contenido = "Ya existe un grado con esa informacion.";
+            _viewMessageLogic.SetNewMessage(titulo, contenido, ViewMessageType.ErrorMessage);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(long id)
+        {
+            var pensums = _pensumRepository.Filter(x => x.Grade.Id == id).Select(Mapper.Map<PensumDisplayModel>);
+            return View(pensums);
         }
     }
 }

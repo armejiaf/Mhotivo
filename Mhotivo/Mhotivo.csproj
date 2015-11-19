@@ -173,12 +173,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorizations\AuthorizeAdmin.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
+    <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
-    <Compile Include="Controllers\AcademicYearDetailsController.cs" />
+    <Compile Include="Controllers\AcademicCourseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
-    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -188,7 +188,6 @@
     <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\NotificationTypeController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -196,35 +195,35 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logic\SendEmail.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageLogic.cs" />
     <Compile Include="Logic\ViewMessage\ViewMessageType.cs" />
-    <Compile Include="Models\AcademicYearDetailsModel.cs" />
+    <Compile Include="Models\AcademicCourseModel.cs" />
+    <Compile Include="Models\AcademicGradeModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
-    <Compile Include="Models\AreaModel.cs" />
-    <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\EducationLevelModel.cs" />
+    <Compile Include="Models\ContactInformationModel.cs" />
     <Compile Include="Models\CourseModel.cs" />
     <Compile Include="Models\EnrollModel.cs" />
     <Compile Include="Models\GradeModel.cs" />
     <Compile Include="Models\HomeworkModel.cs" />
     <Compile Include="Models\ImportDataModel.cs" />
-    <Compile Include="Models\NotificationCommentsModel.cs" />
+    <Compile Include="Models\NotificationCommentModel.cs" />
     <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
-    <Compile Include="Models\NotificationTypeModel.cs" />
     <Compile Include="Models\ParentModel.cs" />
     <Compile Include="Models\PensumModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shared.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-tagsinput.css" />
+    <Content Include="Content\font-awesome.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\Login\login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\summernote-bs3.css" />
     <Content Include="Content\summernote.css" />
@@ -347,6 +346,12 @@
     <Content Include="Content\themes\ace\font\fontawesome-webfont_aea8981c.eot" />
     <Content Include="Content\themes\ace\font\fontawesome-webfont_aea8981c.ttf" />
     <Content Include="Content\themes\ace\font\fontawesome-webfont_aea8981c.woff" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\DeployProfile.pubxml" />
     <Content Include="Scripts\ace-elements.min.js" />
     <Content Include="Scripts\ace.min.js" />
@@ -383,6 +388,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="Scripts\listCollapse.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\selectize.js" />
     <Content Include="Scripts\summernote.min.js" />
@@ -449,9 +455,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\Shared\_MessageArea.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Home\UnderConstruction.cshtml" />
@@ -469,10 +473,6 @@
     <Content Include="Views\Parent\DetailsEdit.cshtml" />
     <Content Include="Views\Parent\Edit.cshtml" />
     <Content Include="Views\Parent\Index.cshtml" />
-    <Content Include="Views\Course\Edit.cshtml" />
-    <Content Include="Views\Course\Index.cshtml" />
-    <Content Include="Views\Course\Add.cshtml" />
-    <Content Include="Views\AcademicYear\Management.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Teacher\Create.cshtml" />
     <Content Include="Views\Teacher\DetailsEdit.cshtml" />
@@ -487,23 +487,18 @@
     <Content Include="Views\Grade\Edit.cshtml" />
     <Content Include="Views\Grade\Index.cshtml" />
     <Content Include="Views\Pensum\Create.cshtml" />
-    <Content Include="Views\Pensum\Details.cshtml" />
     <Content Include="Views\Pensum\Edit.cshtml" />
     <Content Include="Views\Pensum\Index.cshtml" />
-    <Content Include="Views\NotificationType\Index.cshtml" />
-    <Content Include="Views\NotificationType\Edit.cshtml" />
-    <Content Include="Views\NotificationType\Add.cshtml" />
     <Content Include="Views\Notification\Approve.cshtml" />
     <Content Include="Views\AcademicYear\Create.cshtml" />
     <Content Include="Views\AcademicYear\Edit.cshtml" />
     <Content Include="Views\AcademicYear\Index.cshtml" />
-    <Content Include="Views\AcademicYearDetails\Create.cshtml" />
-    <Content Include="Views\AcademicYearDetails\Edit.cshtml" />
-    <Content Include="Views\AcademicYearDetails\Index.cshtml" />
+    <Content Include="Views\AcademicCourse\Create.cshtml" />
+    <Content Include="Views\AcademicCourse\Edit.cshtml" />
+    <Content Include="Views\AcademicCourse\Index.cshtml" />
     <Content Include="Views\EducationLevel\Create.cshtml" />
     <Content Include="Views\EducationLevel\Edit.cshtml" />
     <Content Include="Views\EducationLevel\Index.cshtml" />
-    <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Homework\Create.cshtml" />
     <Content Include="Views\Homework\Details.cshtml" />
     <Content Include="Views\Homework\Edit.cshtml" />
@@ -516,6 +511,8 @@
     <Content Include="Views\NewUser\Index.cshtml" />
     <Content Include="Views\NewUser\Details.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\EducationLevel\EditDirector.cshtml" />
+    <Content Include="Views\AcademicGrade\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

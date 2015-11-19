@@ -10,11 +10,28 @@
     public IEnumerable<HomeworkModel> Models { get; set; }
 }
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Homework";
+    Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 }
 
+<section id="nicdark_parallax_title" class="nicdark_section nicdark_imgparallax nicdark_parallaxx_img7">
+    <div class="nicdark_filter greydark">
+        <div class="nicdark_container nicdark_clearfix">
+            <div class="grid grid_12">
+                <div class="nicdark_space100"></div>
+                <div class="nicdark_space100"></div>
+                <h1 class="white subtitle">Tareas</h1>
+                <div class="nicdark_space10"></div>
+                <h3 class="subtitle white">Todas las Tareas</h3>
+                <div class="nicdark_space20"></div>
+                <div class="nicdark_divider left big"><span class="nicdark_bg_white nicdark_radius"></span></div>
+                <div class="nicdark_space40"></div>
+                <div class="nicdark_space50"></div>
+            </div>
 
+        </div>
+    </div>
+</section>
 
 <!--start section-->
 <section class="nicdark_section">
@@ -28,13 +45,10 @@
 
         <!--sidebar-->
         <div class="grid grid_4">
-
-
             <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
                 <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
                     <h4 class="white nicdark_margin20">HIJOS</h4>
                     <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
-
                 </div>
 
                 @{
@@ -65,7 +79,7 @@
 
                     @Html.ActionLink("Todas", "index", new { param = "", date = Request.Params["date"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
-                    @foreach (var item in Model.GroupBy(lo => lo.AcademicYearDetail.Course).ToList())
+                    @foreach (var item in Model.GroupBy(lo => lo.AcademicCourse.Course).ToList())
                     {
                         @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id, date = Request.Params["date"], student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     }
@@ -88,22 +102,6 @@
 
 
             </div>
-
-
-
-
-
-            <div class="nicdark_space20"></div>
-
-
-            <div class="nicdark_space20"></div>
-
-
-            <div class="nicdark_space20"></div>
-
-
-
-
         </div>
         <!--sidebar-->
 
@@ -138,16 +136,16 @@
                 }
 
 
-                foreach (var item in Models.Where(x => x.AcademicYearDetail.Course.Id == @var))
+                foreach (var item in Models.Where(x => x.AcademicCourse.Course.Id == @var))
                 {
 
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearDetail.AcademicYear.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
 
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
                             <p class="white">
                                 <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
                                 <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
 
                         </div>
@@ -195,12 +193,12 @@
             {
                 foreach (var item in Model)
                 {
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicYearDetail.AcademicYear.Id);
+                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
                     <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
                         <div class="nicdark_size_big">
                             <p class="white">
                                 <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicYearDetail.Course.Name </i> <span class="nicdark_margin010">·</span>
+                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
 
                                 <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
 
@@ -246,11 +244,7 @@
                 }
             }
         </div>
-
-        <div class="nicdark_space50"></div>
-
     </div>
     <!--end nicdark_container-->
-
 </section>
 <!--end section-->

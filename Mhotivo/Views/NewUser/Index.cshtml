@@ -1,6 +1,6 @@
 ﻿@using System.Web.UI.WebControls
 @using Mhotivo.Controllers
-@model IEnumerable<Mhotivo.Models.DisplayNewUserModel>
+@model IEnumerable<Mhotivo.Models.NewUserDisplayModel>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
@@ -23,7 +23,7 @@ else
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DisplayName)
+                @Html.DisplayNameFor(model => model.UserOwner)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Role)
@@ -40,10 +40,10 @@ else
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DisplayName)
+                    @Html.DisplayFor(modelItem => item.UserOwner)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RoleName)
+                    @Html.DisplayFor(modelItem => item.Role)
                 </td>
                 <td>
                     <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/NewUser/Details/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>

@@ -22,9 +22,6 @@
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Year)
-                @Html.ValidationMessageFor(model => model.Grade)
-                @Html.ValidationMessageFor(model => model.Section)
-                @Html.ValidationMessageFor(model => model.Approved)
             </p>
 
             <div class="control-group">
@@ -32,46 +29,16 @@
                     @Html.LabelFor(model => model.Year)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("Year", new List<SelectListItem> { new SelectListItem { Value = "2015", Text = "2015" }, new SelectListItem { Value = "2016", Text = "2016" }, new SelectListItem { Value = "2017", Text = "2017" } })
+                    @Html.EditorFor(model => model.Year)
                 </div>
+                
             </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.Grade)
-                </div>
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Grade.Id, new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
-                </div>
-                <div class="controls">
-                    @Html.DisplayFor(model => model.EducationLevel)
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.Section)
-                </div>
-                <div class="controls">
-                    @Html.DropDownList("Section", new List<SelectListItem> { new SelectListItem { Value = "A", Text = "A" }, new SelectListItem { Value = "B", Text = "B" }, new SelectListItem { Value = "C", Text = "C" } })
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.Approved)
-                </div>
-                <div class="controls">
-                    @Html.DropDownList("Approved", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
-                </div>
-            </div>
-            
             <div class="control-group">
                 <div class="control-label">
                     @Html.LabelFor(model => model.IsActive)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Value = "1", Text = "Sí" }, new SelectListItem { Value = "0", Text = "No" } })
+                    @Html.CheckBoxFor(model => model.IsActive)
                 </div>
             </div>
             <div class="space"></div>

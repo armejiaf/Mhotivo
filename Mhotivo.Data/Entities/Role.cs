@@ -13,7 +13,7 @@ namespace Mhotivo.Data.Entities
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleId { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public int Value { get; set; }
         public virtual ICollection<Privilege> Privileges { get; set; }

@@ -1,5 +1,6 @@
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
+using Mhotivo.Implement.Services;
 using Mhotivo.Interface.Interfaces;
 using System;
 using System.Web;
@@ -12,11 +13,11 @@ using Ninject.Web.Common;
 
 namespace Mhotivo.ParentSite
 {
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
@@ -27,7 +28,7 @@ namespace Mhotivo.ParentSite
         {
             Bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -60,20 +61,20 @@ namespace Mhotivo.ParentSite
             kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>().InRequestScope();
             kernel.Bind<INotificationRepository>().To<NotificationRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
-            kernel.Bind<ISessionManagementRepository>().To<SessionManagementRepository>().InRequestScope();
+            kernel.Bind<ISessionManagementService>().To<SessionManagementService>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
-            kernel.Bind<ISecurityRepository>().To<SecurityRepository>().InRequestScope();
+            kernel.Bind<ISecurityService>().To<SecurityService>().InRequestScope();
             kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
             kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
-            kernel.Bind<IAcademicYearDetailsRepository>().To<AcademicYearDetailsRepository>().InRequestScope();
+            kernel.Bind<IAcademicCourseRepository>().To<AcademicCourseRepository>().InRequestScope();
             kernel.Bind<IHomeworkRepository>().To<HomeworkRepository>().InRequestScope();
             kernel.Bind<INotificationCommentRepository>().To<NotificationCommentRepository>().InRequestScope();
             kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
-        }        
+        }
     }
 }

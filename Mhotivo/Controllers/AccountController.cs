@@ -10,13 +10,13 @@ namespace Mhotivo.Controllers
     public class AccountController : Controller
     {
         //private readonly ISessionManagement _sessionManagement;
-        private readonly ISessionManagementRepository _sessionManagementRepository;
+        private readonly ISessionManagementService _sessionManagementService;
         private readonly IParentRepository _parentRepository;
         private readonly IUserRepository _userRepository;
 
-        public AccountController(ISessionManagementRepository sessionManagementRepository, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementService sessionManagementService, IParentRepository parentRepository, IUserRepository userRepository)
         {
-            _sessionManagementRepository = sessionManagementRepository;
+            _sessionManagementService = sessionManagementService;
             _parentRepository = parentRepository;
             _userRepository = userRepository;
         }
@@ -35,12 +35,12 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            var parent = _parentRepository.Filter(y => y.MyUser.Email == model.UserEmail).FirstOrDefault();
+            var parent = _parentRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
             if (parent == null)
             {
-                if (_sessionManagementRepository.LogIn(model.UserEmail, model.Password, model.RememberMe))
+                if (_sessionManagementService.LogIn(model.UserEmail, model.Password, model.RememberMe))
                 {
-                    var user = _userRepository.FirstOrDefault(x => x.Email == model.UserEmail);
+                    var user = _userRepository.Filter(x => x.Email == model.UserEmail).FirstOrDefault();
                     return user.IsUsingDefaultPassword ? RedirectToAction("ChangePassword") : RedirectToLocal(returnUrl);
                 }
             }
@@ -57,7 +57,7 @@ namespace Mhotivo.Controllers
         // GET: /Account/Logout
         public ActionResult Logout(string returnUrl)
         {
-            _sessionManagementRepository.LogOut();
+            _sessionManagementService.LogOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -66,7 +66,7 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            _sessionManagementRepository.LogOut();
+            _sessionManagementService.LogOut();
             return RedirectToAction("Index", "Home");
         }
         public ActionResult ChangePassword()
@@ -79,7 +79,7 @@ namespace Mhotivo.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            var userId = Convert.ToInt32(_sessionManagementRepository.GetUserLoggedId());
+            var userId = Convert.ToInt32(_sessionManagementService.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;
             user.HashPassword();

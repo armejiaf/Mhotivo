@@ -1,16 +1,16 @@
-﻿using System.Web.Mvc;
-using Mhotivo.Data.Entities;
+﻿using System;
+using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mhotivo.Models
 {
-    public class DisplayHomeworkModel
+    public class HomeworkDisplayModel
     {
         public long Id { get; set; }
 
         [Display(Name = "Título")]
         public string Title { get; set; }
-        [AllowHtml]
+
         [Display(Name = "Descripción")]
         public string Description { get; set; }
 
@@ -18,39 +18,32 @@ namespace Mhotivo.Models
         public string DeliverDate { get; set; }
 
         [Display(Name = "Puntaje")]
-        public float Points { get; set; }
-
-        [Display(Name = "Clase")]
-        public int AcademicYearId { get; set; }
-
-        [Display(Name = "Materia")]
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+        public string Points { get; set; }
     }
 
-    public class CreateHomeworkModel
+    public class HomeworkRegisterModel
     {
         [Required(ErrorMessage = "Debe Ingresar título de la tarea.")]
         [Display(Name = "Título")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar una descripción.")]
-        [AllowHtml]
+
         [Display(Name = "Descripción")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]
         [Display(Name = "Día de entrega")]
-        public string DeliverDate { get; set; }
+        public DateTime DeliverDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
         [Display(Name = "Puntaje")]
         public float Points { get; set; }
 
-        [Display(Name = "Materia")]
-        public int Course { get; set; }
+        public long AcademicCourse { get; set; }
     }
 
-    public class EditHomeworkModel
+    public class HomeworkEditModel
     {
         public long Id { get; set; }
         [Required(ErrorMessage = "Debe Ingresar título de la tarea.")]
@@ -58,19 +51,16 @@ namespace Mhotivo.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar una descripción.")]
-        [AllowHtml]
+
         [Display(Name = "Descripcion")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]
         [Display(Name = "Dia de entrega")]
-        public string DeliverDate { get; set; }
+        public DateTime DeliverDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
         [Display(Name = "puntaje")]
         public float Points { get; set; }
-
-        [Display(Name = "Materia")]
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
     }
 }

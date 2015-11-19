@@ -1,9 +1,9 @@
-﻿@model Mhotivo.Models.DisplayNewUserDefaultPasswordModel
+﻿@model Mhotivo.Models.NewUserDefaultPasswordDisplayModel
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <div id="body" class="modal-body" style="max-height: 500px;">
     <fieldset>
-        <legend>Contraseña para @Html.DisplayFor(model => model.DisplayName)</legend>
+        <legend>Contraseña para @Html.DisplayFor(model => model.UserOwner)</legend>
         <div class="control-group">
             <div class="control-label">
                 @Html.DisplayNameFor(model => model.DefaultPassword):

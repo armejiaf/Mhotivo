@@ -1,6 +1,6 @@
 ﻿namespace Mhotivo.Data.Entities
 {
-    public class Parent : People
+    public class Parent : PeopleWithUser
     {
     }
 }

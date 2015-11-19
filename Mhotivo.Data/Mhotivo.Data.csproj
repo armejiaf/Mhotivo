@@ -58,20 +58,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AcademicYear.cs" />
-    <Compile Include="Entities\AcademicYearDetail.cs" />
+    <Compile Include="Entities\AcademicCourse.cs" />
+    <Compile Include="Entities\AcademicGrade.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Enroll.cs" />
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Homework.cs" />
-    <Compile Include="Entities\PeopleWithBiography.cs" />
+    <Compile Include="Entities\PeopleWithUser.cs" />
     <Compile Include="Entities\Privilege.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\Notification.cs" />
-    <Compile Include="Entities\NotificationComments.cs" />
-    <Compile Include="Entities\NotificationType.cs" />
+    <Compile Include="Entities\NotificationComment.cs" />
     <Compile Include="Entities\Parent.cs" />
     <Compile Include="Entities\Pensum.cs" />
     <Compile Include="Entities\People.cs" />

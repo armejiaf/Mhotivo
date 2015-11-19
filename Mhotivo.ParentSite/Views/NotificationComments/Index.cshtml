@@ -3,66 +3,94 @@
 
 @{
     ViewBag.Title = "COMENTARIOS";
-    Layout = "~/Views/Shared/NotificationComments_layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 }
 
-<div class="nicdark_space50"></div>
+    <section id="nicdark_parallax_title" class="nicdark_section nicdark_imgparallax nicdark_parallaxx_img7">
+        <div class="nicdark_filter greydark">
+            <div class="nicdark_container nicdark_clearfix">
+                <div class="grid grid_12">
+                    <div class="nicdark_space100"></div>
+                    <div class="nicdark_space100"></div>
+                    <h1 class="white subtitle">Comentarios</h1>
+                    <div class="nicdark_space10"></div>
+                    <h3 class="subtitle white">Detalles de Notificacion</h3>
+                    <div class="nicdark_space20"></div>
+                    <div class="nicdark_divider left big"><span class="nicdark_bg_white nicdark_radius"></span></div>
+                    <div class="nicdark_space40"></div>
+                    <div class="nicdark_space50"></div>
+                </div>
 
-<div style="margin-left: 100px; margin-right: 100px" >
-    <div class="nicdark_textevidence" >
-        <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius nicdark_shadow">
-            <div class="nicdark_size_big">
-                <p class="white">
-                    <i class="icon-calendar-1 nicdark_marginright10"></i> @Model.Item1.Created.ToShortDateString() <span class="nicdark_margin010">·</span> 
-                    <i class="icon-user-1 nicdark_marginright10"></i> @Model.Item1.NotificationCreator <span class="nicdark_margin010">·</span> 
-                         
-                    <i class="icon-chat nicdark_marginright10"></i> @Model.Item1.CommentsAmount COMENTARIO(S)<span class="nicdark_margin010">·</span>
-                </p>
             </div>
-            <i class="icon-info-outline nicdark_iconbg right medium grey"></i>
         </div>
-        <br/>
-        <div class="nicdark_bg_grey nicdark_radius nicdark_shadow grey small subtitle">
-            <div class="nicdark_space20"></div>
-            <h2 class="subtitle greydark nicdark_marginleft10">@Model.Item1.NotificationName</h2>
-            <div class="nicdark_space20"></div>
-            <div class="nicdark_marginleft10" style="font-size: 16px">
-                @Html.Raw(@Model.Item1.Message)
+    </section>
+    <div class="nicdark_space50"></div>
+    
+    <section class="nicdark_section">
+        <div class="grid grid_4">
+            <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
+                <div class="nicdark_margin20 nicdark_relative">
+                    <a href="#" class="nicdark_displaynone_ipadpotr nicdark_btn_icon nicdark_bg_blue extrabig nicdark_radius_circle white nicdark_absolute nicdark_shadow"><i class="icon-location-outline"></i></a>
+                    <div class="nicdark_activity nicdark_marginleft100 nicdark_disable_marginleft_ipadpotr">
+                        <h4>Mhotivo Alertas</h4>
+                        <div class="nicdark_space20"></div>
+                        <p>Esta vista solo muestra una notificacion a la vez con sus respectivos comentarios.</p>
+                    </div>
+                </div>
             </div>
-            <br/>
-            <br/>   
         </div>
-    </div>  
+       
+        <div class="grid grid_8">
+            <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
+                <div class="nicdark_size_big">
+                    <p class="white"><i class="icon-calendar-1 nicdark_marginright10"></i>@Model.Item1.Created.ToShortDateString() <span class="nicdark_margin010">·</span> <i class="icon-user-1 nicdark_marginright10"></i>ADMIN <span class="nicdark_margin010">·</span> </p>
+                </div>
+                <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
+            </div>
 
-</div>
+            <div class="nicdark_space20"></div>
+            <h1 class="subtitle greydark">@Model.Item1.NotificationCreator</h1>
+            <div class="nicdark_space10"></div>
+            <div class="nicdark_divider left big"><span class="nicdark_bg_yellow nicdark_radius"></span></div>
+            <div class="nicdark_space10"></div>
+            <p><span class="white nicdark_dropcap nicdark_bg_yellow nicdark_radius nicdark_shadow">></span>@Html.Raw(@Model.Item1.Message)</p>
+        </div>
+    </section>
 
-@foreach (var item in Model.Item2) 
+@foreach (var item in Model.Item2)
 {
-    <div style="margin-left: 100px; margin-right: 100px" >
-        <div class="nicdark_textevidence " >
-            <div class="nicdark_border_grey ">
+    <div class="grid grid_8">
+        <div class="nicdark_space50"></div>
+
+        <h3 class="subtitle greydark">@Model.Item1.CommentsAmount COMENTARIO(S)</h3>
+        <div class="nicdark_space20"></div>
+        <div class="nicdark_divider left small"><span class="nicdark_bg_orange nicdark_radius"></span></div>
+        <div class="nicdark_space20"></div>
+
+        <ul class="nicdark_list border">
+
+            <li class="nicdark_border_grey">
                 <!--comment-->
                 <div class="nicdark_archive1 nicdark_relative">
                     <div class="nicdark_margin100 nicdark_relative">
-                        @*<img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src="/Content/img/team/user-icon.png">*@
-                        <div class="nicdark_activity nicdark_marginleft10 nicdark_disable_marginleft_ipadpotr chzn-results-scroll-down">
-                            <div class="nicdark_space10"></div>
-                            <h4 class="subtitle black"> @item.Parent: </h4>
-                            <div class="nicdark_space10"></div>                       
+                        <img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src="~/Content/img/team/img2.jpg">
+                        <div class="nicdark_activity nicdark_marginleft70 nicdark_disable_marginleft_ipadpotr">
+                            <div class="nicdark_space20"></div>
+                            <h4 class="subtitle greydark">@item.Parent: @item.CreationDate.ToShortDateString() a las @item.CreationDate.ToShortTimeString()</h4>
+                            <div class="nicdark_space20"></div>
                         </div>
                     </div>
-                    <p class="nicdark_marginleft20">@item.CommentText</p>
-                    <br/>
-                     <p class="right nicdark_marginright10">@item.CreationDate.ToShortDateString() a las @item.CreationDate.ToShortTimeString()</p>
+                    <p>@item.CommentText</p>
+                    <div class="nicdark_space20"></div>
+                    <a href="#" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white"><i class="icon-reply-outline"></i>&nbsp;&nbsp;&nbsp;REPLY</a>
+                    <div class="nicdark_space20"></div>
                 </div>
                 <!--comment-->
-            </div>
-        </div>  
+            </li>
+
+        </ul>
+
+        <div class="nicdark_space50"></div>
     </div>
 }
-
-<div class="nicdark_space100"></div>
-
-
-
-
+<div class="nicdark_space50"></div>

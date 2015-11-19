@@ -1,4 +1,7 @@
-﻿@{
+﻿
+<style type="text/css">.nav-listchild {background-color: #333 }</style>
+<script type="text/javascript" src="~/Scripts/listCollapse.js"></script>
+@{
     var valSession = HttpContext.Current.Session["loggedUserRole"];
     var rolName = "";
     if (valSession != null)
@@ -12,131 +15,139 @@
 
 @if (rolName == "Administrador")
 {
-    <ul class="nav nav-list">
-        <li>
-            <a href="/AcademicYear/Index">
-                <i class="icon-asterisk"></i>
-                <span class="menu-text"> Año Académico </span>
-            </a>
+    <ul class="nav nav-list" id="MainMenu">
+        <li id="Accounts">
+            <i class="icon-group"></i>
+            <span class="menu-text">Cuentas y Personas</span>
+            <ul class="nav nav-list">
+                <li></li>
+                <li>
+                    <a href="/Teacher">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Administrativos </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Teacher">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Maestros </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Parent">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Padres/Tutores </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Student">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Estudiantes </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/User">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Usuarios </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/NewUser">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Usuarios Nuevos</span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li>
-            <a href="/Pensum">
-                <i class=" icon-asterisk"></i>
-                <span class="menu-text"> Pensum </span>
-            </a>
+        <li id="EducationScheme">
+            <i class="icon-asterisk"></i>
+            <span class="menu-text">Esquema Educativo</span>
+            <ul class="nav nav-list">
+                <li></li>
+                <li>
+                    <a href="/EducationLevel">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Niveles de Educacion </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Grade">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Grados </span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li></li>
-        <li>
-            <a href="/User">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Usuarios </span>
-            </a>
+        <li id="AcademicYearScheme">
+            <i class="icon-calendar"></i>
+            <span class="menu-text">Equema de Matricula</span>
+            <ul class="nav nav-list">
+                <li></li>
+                <li>
+                    <a href="/AcademicYear/Index">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Años Académicos </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Enroll">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Matricula </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Enroll">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Promociones </span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li>
-            <a href="/NewUser">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Usuarios Nuevos</span>
-            </a>
+        <li id="Notifications">
+            <i class="icon-bell"></i>
+            <span class="menu-text">Notificaciones</span>
+            <ul class="nav nav-list">
+                <li></li>
+                <li>
+                    <a href="/Notification">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Inbox </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Notification">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Notificaciones </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Notification/Approve">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Autorizar Notificaciones</span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li>
-            <a href="/Student">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Estudiantes </span>
-            </a>
+        
+        <li id="DataImport">
+            <i class="icon-archive"></i>
+            <span class="menu-text">Importador de Datos</span>
+            <ul class="nav nav-list">
+                <li></li>
+                <li>
+                    <a href="/ImportData">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text">Configuracion </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/ImportData">
+                        <i class="icon-blank"></i>
+                        <span class="menu-text"> Importar Datos </span>
+                    </a>
+                </li>
+            </ul>
         </li>
-
-        <li>
-            <a href="/Parent">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Padres/Tutores </span>
-            </a>
-        </li>
-
-        @*<li>
-                <a href="/Benefactor">
-                    <i class="icon-circle"></i>
-                    <span class="menu-text"> Benefactor </span>
-                </a>
-            </li>*@
-
-        <li>
-            <a href="/Teacher">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Maestros </span>
-            </a>
-        </li>
-
-        @*<li>
-                <a href="/Role">
-                    <i class="icon-key"></i>
-                    <span class="menu-text"> Roles de Usuario </span>
-                </a>
-            </li>*@
-
-        <li></li>
-
-        <li>
-            <a href="/Notification">
-                <i class="icon-bell-alt"></i>
-                <span class="menu-text"> Notificaciones </span>
-            </a>
-        </li>
-        <li>
-            <a href="/Notification/Approve">
-                <i class="icon-bell-alt"></i>
-                <span class="menu-text"> Autorización</span>
-            </a>
-        </li>
-        <li></li>
-
-
-
-        @*<li>
-                <a href="/Event">
-                    <i class=" icon-calendar "></i>
-                    <span class="menu-text"> Eventos </span>
-                </a>
-            </li>*@
-
-        <li>
-            <a href="/Grade">
-                <i class=" icon-circle "></i>
-                <span class="menu-text"> Grados </span>
-            </a>
-        </li>
-        <li>
-            <a href="/EducationLevel">
-                <i class="icon-circle"></i>
-                <span class="menu-text"> Niveles de Educacion </span>
-            </a>
-        </li>
-        <li>
-            <a href="/Course">
-                <i class=" icon-circle "></i>
-                <span class="menu-text"> Agregar Materia </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="/Enroll">
-                <i class=" icon-circle "></i>
-                <span class="menu-text"> Matricular </span>
-            </a>
-        </li>
-        <li></li>
-        <li>
-            <a href="/ImportData">
-                <i class=" icon-calendar "></i>
-                <span class="menu-text"> Importar Datos </span>
-            </a>
-        </li>
-
-        @* <li>
-                <a href="/Homework">
-                    <i class=" icon-circle "></i>
-                    <span class="menu-text"> Tareas </span>
-                </a>
-            </li>*@
     </ul>
 }
 else
@@ -156,4 +167,16 @@ else
         </li>
     </ul>
 }
+<script type="text/javascript">
+window.onload = function () {
 
+  //choose one of these options
+
+  //option 1 - no auto-child-collapse
+  //compactMenu('someID',false,'&plusmn; ');
+
+    //option 2 - auto-child-collapse
+    compactMenu('MainMenu', true, '');
+    
+}
+</script>

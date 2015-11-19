@@ -15,7 +15,7 @@ namespace Mhotivo.ParentSite.Models
 
         public float Points { get; set; }
 
-        public virtual AcademicYearDetail AcademicYearDetail { get; set; }
+        public virtual AcademicCourse AcademicCourse { get; set; }
 
         public DateTime CompareDate { get; set; }
     }

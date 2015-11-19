@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
@@ -19,13 +20,13 @@ namespace Mhotivo.Controllers
 
         public ActionResult Index()
         {
-            var newUsers = Mapper.Map<IEnumerable<User>, IEnumerable<DisplayNewUserModel>>(_userRepository.Filter(x => x.IsUsingDefaultPassword));
+            var newUsers = Mapper.Map<IEnumerable<User>, IEnumerable<NewUserDisplayModel>>(_userRepository.Filter(x => x.IsUsingDefaultPassword));
             return View(newUsers);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(long id)
         {
-            var toReturn = Mapper.Map<User, DisplayNewUserDefaultPasswordModel>(_userRepository.FirstOrDefault(x => x.Id == id));
+            var toReturn = Mapper.Map<User, NewUserDefaultPasswordDisplayModel>(_userRepository.Filter(x => x.Id == id).FirstOrDefault());
             return PartialView(toReturn);
         }
     }

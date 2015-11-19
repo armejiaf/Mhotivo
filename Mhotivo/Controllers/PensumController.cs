@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using PagedList;
 
@@ -16,62 +18,33 @@ namespace Mhotivo.Controllers
         private readonly IPensumRepository _pensumRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ViewMessageLogic _viewMessageLogic;
 
         public PensumController(IPensumRepository pensumRepository, IGradeRepository gradeRepository, ICourseRepository courseRepository)
         {
             _pensumRepository = pensumRepository;
             _gradeRepository = gradeRepository;
             _courseRepository = courseRepository;
+            _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-         [AuthorizeAdmin]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        [AuthorizeAdmin]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int gradeId)
         {
-            var message = (MessageModel)TempData["MessageInfo"];
-            if (message != null)
-            {
-                ViewBag.MessageType = message.Type;
-                ViewBag.MessageTitle = message.Title;
-                ViewBag.MessageContent = message.Content;
-            }
-            var temp = _pensumRepository.GetAllPesums();
+            _viewMessageLogic.SetViewMessageIfExist();
+            var temp = _pensumRepository.Filter(x => x.Grade.Id == gradeId).ToList();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CourseSortParm = String.IsNullOrEmpty(sortOrder) ? "course_desc" : "";
-            ViewBag.GradeSortParm = sortOrder == "Grade" ? "grade_desc" : "Grade";
             if (searchString != null)
-            {
                 page = 1;
-            }
             else
-            {
                 searchString = currentFilter;
-            }
             if (!String.IsNullOrEmpty(searchString))
             {
-                temp = _pensumRepository.Filter(x => x.Course.Name.Contains(searchString)).ToList();
+                temp = _pensumRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
-            var list = temp.Select(item => item.Course != null ? new DisplayPensumModel
-            {
-                Id = item.Id,
-                Course = item.Course.Name,
-                Grade = item.Grade.Name
-            } : null).ToList();
+            var list = temp.Select(Mapper.Map<PensumDisplayModel>).OrderBy(s => s.Name).ToList();
             ViewBag.CurrentFilter = searchString;
-            switch (sortOrder)
-            {
-                case "course_desc":
-                    list = list.OrderByDescending(s => s.Course).ToList();
-                    break;
-                case "Grade":
-                    list = list.OrderBy(s => s.Grade).ToList();
-                    break;
-                case "grade_desc":
-                    list = list.OrderByDescending(s => s.Grade).ToList();
-                    break;
-                default:  // Name ascending 
-                    list = list.OrderBy(s => s.Course).ToList();
-                    break;
-            }
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
             return View(list.ToPagedList(pageNumber, pageSize));
@@ -83,15 +56,8 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             Pensum thisPensum = _pensumRepository.GetById(id);
-            var pensum = new PensumEditModel
-            {
-                IdCourse = thisPensum.Course.Id,
-                Id = thisPensum.Id,
-                IdGrade = thisPensum.Grade.Id
-            };
-            ViewBag.IdCourse = new SelectList(_courseRepository.Query(x => x), "Id", "Name", thisPensum.Course.Id);
-            ViewBag.IdGrade = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", thisPensum.Grade.Id);
-            return View("Edit", pensum);
+            var model = Mapper.Map<PensumEditModel>(thisPensum);
+            return View("Edit", model);
         }
 
 
@@ -99,29 +65,13 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(PensumEditModel modelPensum)
         {
-            bool updateCourse = false;
-            bool updateGrade = false;
             Pensum myPensum = _pensumRepository.GetById(modelPensum.Id);
-            if (myPensum.Grade.Id != modelPensum.IdGrade)
-            {
-                myPensum.Grade = _gradeRepository.GetById(modelPensum.IdGrade);
-                updateGrade = true;
-            }
-            if (myPensum.Course.Id != modelPensum.IdCourse)
-            {
-                myPensum.Course = _courseRepository.GetById(modelPensum.IdCourse);
-                updateCourse = true;
-            }
-            Pensum pensum = _pensumRepository.Update(myPensum, updateCourse,updateGrade);
+            myPensum = Mapper.Map(modelPensum, myPensum);
+            Pensum pensum = _pensumRepository.Update(myPensum);
             const string title = "Pensum Actualizado";
-            string content = "El Pensum " + pensum.Id +
+            string content = "El Pensum " + pensum.Name +
                              " ha sido actualizado exitosamente.";
-            TempData["MessageInfo"] = new MessageModel
-            {
-                Type = "INFO",
-                Title = title,
-                Content = content
-            };
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -131,13 +81,8 @@ namespace Mhotivo.Controllers
         {
             Pensum pensum = _pensumRepository.Delete(id);
             const string title = "Pensum Eliminado";
-            string content = "El Pesum de "+pensum.Course+" para el grado " + pensum.Grade + " ha sido eliminado exitosamente.";
-            TempData["MessageInfo"] = new MessageModel
-            {
-                Type = "INFO",
-                Title = title,
-                Content = content
-            };
+            string content = "El Pesum " + pensum.Name + " ha sido eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -145,8 +90,6 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
-            ViewBag.IdGrade = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
-            ViewBag.IdCourse = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
             return View("Create");
         }
 
@@ -154,21 +97,34 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(PensumRegisterModel modelPensum)
         {
-            var myPensum = new Pensum
-            {
-                Grade = _gradeRepository.GetById(modelPensum.IdGrade),
-                Course = _courseRepository.GetById(modelPensum.IdCourse)
-            };
-            Pensum user = _pensumRepository.Create(myPensum);
+            var myPensum = Mapper.Map<Pensum>(modelPensum);
+            myPensum = _pensumRepository.Create(myPensum);
             const string title = "Pensum Agregado";
-            string content = "El pensum " + user.Id +  " ha sido agregado exitosamente.";
-            TempData["MessageInfo"] = new MessageModel
-            {
-                Type = "SUCCESS",
-                Title = title,
-                Content = content
-            };
+            string content = "El pensum " + myPensum.Name +  " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
+
+        /*[HttpGet]
+        public ActionResult Details(int pensumId)
+        {
+            var pensum = _pensumRepository.GetById(pensumId);
+            var pensumModel = Mapper.Map<PensumCourseModel>(pensum);
+            ViewBag.Title = "Detalles para el pensum: " + pensumModel.Name;
+            ViewBag.PensumId = pensumId;
+            return View(pensumModel);
+        }*/
+
+        /*[HttpPost]
+        public ActionResult Details(PensumCourseModel model)
+        {
+            var pensum = _pensumRepository.GetById(model.Id);
+            pensum = Mapper.Map(model, pensum);
+            _pensumRepository.Update(pensum);
+            const string title = "Detalles de Pensum Actualizados";
+            string message = "Los detalles del pensum " + model.Name + " han sido actualizados exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, message, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index");
+        }*/
     }
 }
