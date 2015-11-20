@@ -1,66 +1,160 @@
 ﻿@model Mhotivo.Models.LoginModel
 
 @{
-    ViewBag.Title = "Iniciar Sesión";
+    ViewBag.Title = "Iniciar sesión";
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Mhotivo</title>
 
-    <head>
-		<meta charset="utf-8" />
-		<title>@ViewBag.Title - Mhotivo</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!--basic styles-->
 
-        <link href="../../Content/font-awesome.css" rel="stylesheet"/>
-        <link href="../../Content/Login/login.css" rel="stylesheet" />
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300"/>
 
-    </head>
+    <link href="~/Content/themes/ace/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/ace/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/ace/font-awesome.min.css" rel="stylesheet" />
 
-<body>
-    <div class="pen-title">
-        <h1>MHOTIVO | Administradores</h1>
-    </div>
-    <div class="container">
-        <div class="card"></div>
-        <div class="card">
-            <h1 class="title">Ingresar</h1>
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "Form" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
-                <div class="input-container">
-                    <input id="UserEmail" name="UserEmail" type="email" required/>
-                    <label>Correo</label>
-                    <div class="bar"></div>
-                </div>
-                <div class="input-container">
-                    <input type="password" id="Password" name="Password" required/>
-                    <label>Contraseña</label>
-                    <div class="bar"></div>
-                </div>
-                
-                <div class="remember">
-                    <label class="inline">
-                        @Html.CheckBoxFor(model => model.RememberMe)
-                        @Html.DisplayNameFor(model => model.RememberMe)
-                    </label>
-                </div>
-                
-                <div class="button-container">
-                    <button><span>Ingresar</span></button>
-                </div>
-            }
+    <!--[if IE 7]>
+      <link rel="stylesheet" href="~/Content/themes/ace/font-awesome-ie7.min.css" />
+    <![endif]-->
+    <!--page specific plugin styles-->
+    <!--fonts-->
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+    <!--ace styles-->
+
+    <link rel="stylesheet" href="~/Content/themes/ace/ace.min.css" />
+    <link rel="stylesheet" href="~/Content/themes/ace/ace-responsive.min.css" />
+    <link rel="stylesheet" href="~/Content/themes/ace/ace-skins.min.css" />
+
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="~/Content/themes/ace/ace-ie.min.css" />
+    <![endif]-->
+    <!--inline styles related to this page-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body class="login-layout">
+    <div class="main-container container-fluid">
+        <div class="main-content">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="login-container">
+                        <div class="row-fluid">
+                            <div class="center">
+                                <h1>
+                                    <span class="red">Mhotivo</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="space-6"></div>
+                        <div class="row-fluid">
+                            <div class="position-relative">
+                                <div id="login-box" class="login-box visible widget-box no-border">
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <h4 class="header blue lighter bigger">
+                                                Ingrese la información de su cuenta
+                                            </h4>
+
+                                            <div class="space-6"></div>
+                                            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "Form" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary(true)
+                                                <fieldset>
+                                                    <label>
+                                                        <span class="block input-icon input-icon-right">
+                                                            <input class="span12" placeholder="Correo" id="UserEmail" name="UserEmail" type="email" required />
+                                                            @*<input id="email" class="required email error" remote="emails.action" maxlength="40" name="email" size="20" type="text" tabindex="11" value="" aria-required="true" aria-invalid="true">*@
+                                                            <i class="icon-user"></i>
+                                                        </span>
+                                                    </label>
+
+                                                    <label>
+                                                        <span class="block input-icon input-icon-right">
+                                                            <input type="password" class="span12" placeholder="Password" id="Password" name="Password" required />
+                                                            <i class="icon-lock"></i>
+                                                        </span>
+                                                    </label>
+
+                                                    <div class="space"></div>
+
+                                                    <div class="clearfix">
+                                                        <label class="inline">
+                                                            @Html.CheckBoxFor(model => model.RememberMe)
+                                                            @Html.DisplayNameFor(model => model.RememberMe)
+                                                        </label>
+
+                                                        <button onclick="" class="width-35 pull-right btn btn-small btn-primary">
+                                                            <i class="icon-key"></i>
+                                                            Login
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="space-4"></div>
+                                                </fieldset>
+                                            }
+                                        </div><!--/widget-main-->
+                                    </div><!--/widget-body-->
+                                </div><!--/login-box-->
+                            </div><!--/position-relative-->
+                        </div>
+                    </div>
+                </div><!--/.span-->
+            </div><!--/.row-fluid-->
         </div>
+    </div><!--/.main-container-->
+    <!--basic scripts-->
+    <!--[if !IE]>-->
 
-        <div class="card alt">
-            <div class="toggle"></div>
-        </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-    </div>
+    <!--<![endif]-->
+    <!--[if IE]>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]>-->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='cjquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!--<![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='~/Scripts/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='~/Scripts/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!--page specific plugin scripts-->
+    <!--ace scripts-->
+    <script src="~/Scripts/ace-elements.min.js"></script>
+    <script src="~/Scripts/ace.min.js"></script>
+
+    <!--inline scripts related to this page-->
+
+    <script type="text/javascript">
+        function show_box(id) {
+            $('.widget-box.visible').removeClass('visible');
+            $('#' + id).addClass('visible');
+        }
+    </script>
+    <script>
+        $("#loginForm").validate();
+    </script>
 </body>
-
 </html>
