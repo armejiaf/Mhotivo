@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
@@ -17,11 +16,21 @@ namespace Mhotivo.Controllers
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly IGradeRepository _gradeRepository;
+        private readonly IPensumRepository _pensumRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
+        private readonly ICourseRepository _courseRepository;
 
-        public AcademicGradeController(IAcademicGradeRepository academicGradeRepository, IAcademicYearRepository academicYearRepository)
+        public AcademicGradeController(IAcademicGradeRepository academicGradeRepository, IAcademicYearRepository academicYearRepository, ITeacherRepository teacherRepository, IGradeRepository gradeRepository, IPensumRepository pensumRepository, IAcademicCourseRepository academicCourseRepository, ICourseRepository courseRepository)
         {
             _academicGradeRepository = academicGradeRepository;
             _academicYearRepository = academicYearRepository;
+            _teacherRepository = teacherRepository;
+            _gradeRepository = gradeRepository;
+            _pensumRepository = pensumRepository;
+            _academicCourseRepository = academicCourseRepository;
+            _courseRepository = courseRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -53,5 +62,145 @@ namespace Mhotivo.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
+        public ActionResult Add(long yearId)
+        {
+            ViewBag.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
+            ViewBag.Pensums = new List<SelectListItem>();
+            return View("Create",new AcademicGradeRegisterModel {AcademicYear = yearId});
+        }
+
+        [HttpPost]
+        public ActionResult Add(AcademicGradeRegisterModel model)
+        {
+            string title;
+            string content;
+            var toCreate = Mapper.Map<AcademicGrade>(model);
+            var toCheck = _academicGradeRepository.Filter(x => x.Grade.Id == model.Grade && x.Section.Equals(model.Section));
+            if (toCheck.Any())
+            {
+                title = "Error!";
+                content = "El Grado Academico ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { yearId = model.AcademicYear });
+            }
+            toCreate = _academicGradeRepository.Create(toCreate);
+            foreach (var course in toCreate.ActivePensum.Courses)
+            {
+                var academicCourse = new AcademicCourse
+                {
+                    AcademicGrade = toCreate,
+                    Course = course
+                };
+                _academicCourseRepository.Create(academicCourse);
+            }
+            title = "Grado Academico Agregado";
+            content = "El Grado Academico " + toCreate.Grade.Name + " " +toCreate.Section + " ha sido guardado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index", new { yearId = model.AcademicYear });
+        }
+
+        public ActionResult EditTeacher(long id)
+        {
+            var item = _academicGradeRepository.GetById(id);
+            ViewBag.SectionTeacher = new SelectList(_teacherRepository.GetAllTeachers(), "Id", "FullName", item.SectionTeacher);
+            var toReturn = Mapper.Map<AcademicGradeTeacherAssignModel>(item);
+            return View(toReturn);
+        }
+
+        [HttpPost]
+        public ActionResult EditTeacher(AcademicGradeTeacherAssignModel model)
+        {
+            var grade = _academicGradeRepository.GetById(model.Id);
+            grade = Mapper.Map(model, grade);
+            grade = _academicGradeRepository.Update(grade);
+            const string title = "Maestro de Seccion Asignado";
+            var content = "Se ha asignado el maestro de seccion de " + grade.Grade.Name + " " + grade.Section + ".";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index", new{yearId = grade.AcademicYear.Id});
+        }
+
+        public ActionResult Edit(long id)
+        {
+            var item = _academicGradeRepository.GetById(id);
+            var toReturn = Mapper.Map<AcademicGradeEditModel>(item);
+            ViewBag.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", item.Grade);
+            ViewBag.Pensums = new SelectList(_pensumRepository.Filter(x => x.Grade.Id == item.Grade.Id), "Id", "Name", item.ActivePensum).ToList();
+            return View(toReturn);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(AcademicGradeEditModel model)
+        {
+            var item = _academicGradeRepository.GetById(model.Id);
+            var list = _academicGradeRepository.Filter(x => x.Grade.Id == model.Grade && x.Section == model.Section &&  x.Id == model.Id);
+            var list2 = _academicGradeRepository.Filter(x => x.Grade.Id == model.Grade && x.Section == model.Section && x.Id != model.Id);
+            string title;
+            string content;
+            if (list2.Any())
+            {
+                title = "Error!";
+                content = "Ese grado academico ya existe.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+            }
+            else if (!list.Any())
+            {
+                var pensumId = item.ActivePensum.Id;
+                var newPensumId = model.ActivePensum;
+                if (pensumId != newPensumId)
+                {
+                    var courses = _academicCourseRepository.Filter(x => x.AcademicGrade.Id == model.Id).ToList();
+                    foreach (var academicCourse in courses)
+                    {
+                        _academicCourseRepository.Delete(academicCourse);
+                    }
+                }
+                item = Mapper.Map(model, item);
+                item = _academicGradeRepository.Update(item);
+                if (pensumId != newPensumId)
+                {
+                    foreach (var course in item.ActivePensum.Courses)
+                    {
+                        var academicCourse = new AcademicCourse
+                        {
+                            AcademicGrade = item,
+                            Course = course
+                        };
+                        _academicCourseRepository.Create(academicCourse);
+                    }
+                }
+                title = "Grado Academico Actualizado!";
+                content = "El Grado Academico " + item.Grade.Name + " "+ item.Section + " fue actualizado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            }
+            return RedirectToAction("Index", new { yearId = item.AcademicYear.Id });
+        }
+
+        [HttpPost]
+        public ActionResult Delete(long id)
+        {
+            var item = _academicGradeRepository.GetById(id);
+            var yearId = item.AcademicYear.Id;
+            var gradeName = item.Grade.Name;
+            var details = item.CoursesDetails.ToList();
+            foreach (var academicCourse in details)
+            {
+                _academicCourseRepository.Delete(academicCourse);
+            }
+            item = _academicGradeRepository.Delete(item);
+            const string title = "Grado Academico Eliminado!";
+            var content = "El Grado Academico " + gradeName + " " + item.Section + " fue eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index", new { yearId });
+        }
+
+        public JsonResult GetPensumsForGrade(AcademicGradeRegisterModel model)
+        {
+            var sList = _pensumRepository.Filter(
+                    x => x.Grade.Id == model.Grade).ToList();
+            var toReturn =
+                new SelectList(
+                    sList, "Id", "Name");
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
+        }
     }
 }

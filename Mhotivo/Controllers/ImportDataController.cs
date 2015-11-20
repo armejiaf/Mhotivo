@@ -16,8 +16,7 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
-        //academicGradeRepository.filter(x.grade.id = grade.import)
-        //me da un queriable
+
         public ImportDataController(IDataImportService dataImportService
                                     ,IGradeRepository gradeRepository
                                     ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
@@ -32,29 +31,13 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Index()
         {
-             _viewMessageLogic.SetViewMessageIfExist();
-             var importModel = new ImportDataModel();
-             ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
-             ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
+            _viewMessageLogic.SetViewMessageIfExist();
+            var importModel = new ImportDataModel();
+            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
+            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
             ViewBag.Section = new List<SelectListItem>();
-             return View(importModel);
+            return View(importModel);
         }
-
-        /*[AuthorizeAdmin]
-        public ActionResult DynamicDropDownList(long gradeId)
-        {
-            var model = new DynamicListModel();
-            var items = _academicYearGradeRepository.Filter(x => x.Grade.Id == gradeId).Select(x => x.Section);
-            foreach (var item in items)
-            {
-                model.Items.Add(new SelectListItem
-                {
-                    Text = item,
-                    Value = item
-                });
-            }
-            return View(model);
-        }*/
 
         [HttpPost]
         [AuthorizeAdmin]
@@ -104,13 +87,24 @@ namespace Mhotivo.Controllers
 
         public JsonResult LoadByGrade(ImportDataModel importModel)
         {
-            var sList = _academicGradeRepository.Filter(
+            if (importModel.Year == 0)
+            {
+                var sList = _academicGradeRepository.Filter(
                     x => x.Grade.Id == importModel.GradeImport).ToList();
-            var toReturn =
-                new SelectList(
-                    sList, "Id", "Section");
-            return Json(toReturn, JsonRequestBehavior.AllowGet);
+                var toReturn =
+                    new SelectList(
+                        sList, "Id", "Section");
+                return Json(toReturn, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var sList = _academicGradeRepository.Filter(
+                    x => x.Grade.Id == importModel.GradeImport && x.AcademicYear.Id == importModel.Year).ToList();
+                var toReturn =
+                    new SelectList(
+                        sList, "Id", "Section");
+                return Json(toReturn, JsonRequestBehavior.AllowGet);
+            }
         }
-
     }
 }

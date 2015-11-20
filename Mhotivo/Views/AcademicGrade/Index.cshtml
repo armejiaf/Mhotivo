@@ -13,9 +13,16 @@
 
 <h2>Grados Academicos Registrados  para el Año Académico @Html.ViewBag.Year</h2>
 
-<a class="toAdd" data-toggle="modal" role="button" href="~/AcademicGrade/Add/@Html.ViewBag.IdAcademicYear"><span class="btn btn-small btn-primary">Agregar Grado al Año Académico</span></a>
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="~/AcademicGrade/Add?yearId=@ViewBag.IdAcademicYear"><span class="btn btn-small btn-primary">Agregar Grado al Año Académico</span></a>
 <div class="space"></div>
-
+@using (Html.BeginForm("Index", "AcademicGrade", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+{
+    <p>
+        @Html.Hidden("yearId", (long)ViewBag.IdAcademicYear)
+        Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
 @if (!Model.Any())
 {
     <div class="well well-large">
@@ -35,6 +42,7 @@ else
                 <th>@Html.LabelFor(model => model.First().SectionTeacher)</th>
                 <th>@Html.LabelFor(model => model.First().ActivePensum)</th>
                 <th>Ver Cursos</th>
+                <th>Asignar Maestro de Seccion</th>
                 <th>Editar</th>
                 <th>Borrar</th>
             </tr>
@@ -52,14 +60,17 @@ else
                         @Html.ActionLink("Cursos","Index","AcademicCourse",new {id = item.Id}, null)
                     </td>
                     <td>
+                        <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicGrade/EditTeacher/@Html.DisplayFor(modelItem => item.Id)">Asignar Maestro</a>
+                    </td>
+                    <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicGrade/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                     </td>
                     <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                        @using (Html.BeginForm("Delete", "AcademicCourse", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                        @using (Html.BeginForm("Delete", "AcademicGrade", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
-                               value="¿Realmente desea eliminar los detalles del año académico?" />
+                               value="¿Realmente desea eliminar este grado academico?" />
                     </td>
                 </tr>
             }
