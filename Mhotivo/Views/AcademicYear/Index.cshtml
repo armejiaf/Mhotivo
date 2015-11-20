@@ -35,7 +35,7 @@
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.First().Year)</th>
                     <th>@Html.DisplayNameFor(model => model.First().IsActive)</th>
-                    <th>Detalles</th>
+                    <th>Grados y Secciones</th>
                     <th>Modificar</th>
                     <th>Borrar</th>
                 </tr>
@@ -47,7 +47,7 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Year)</td>
                         <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
-                        <td>@Html.ActionLink("Detalles", "Index", "AcademicGrade", new { yearId= item.Id }, null)</td>
+                        <td>@Html.ActionLink("Ver Grados", "Index", "AcademicGrade", new { yearId= item.Id }, null)</td>
                         <td><a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                         <td>
                             <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
