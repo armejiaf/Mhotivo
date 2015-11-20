@@ -55,23 +55,26 @@ namespace Mhotivo
                 .ForMember(p => p.ActivePensum, o => o.MapFrom(src => src.ActivePensum.Name))
                 .ForMember(p => p.Grade, o => o.MapFrom(src => src.Grade.Name))
                 .ForMember(p => p.SectionTeacher,
-                    o => o.MapFrom(src => src.SectionTeacher != null ? src.SectionTeacher.FullName : ""));
+                    o => o.MapFrom(src => src.SectionTeacher != null ? src.SectionTeacher.FullName : "Maestro No Asignado"));
             Mapper.CreateMap<AcademicGrade, AcademicGradeEditModel>()
                 .ForMember(p => p.ActivePensum, o => o.MapFrom(src => src.ActivePensum.Id))
                 .ForMember(p => p.Grade, o => o.MapFrom(src => src.Grade.Id))
-                .ForMember(p => p.SectionTeacher,
-                    o => o.MapFrom(src => src.SectionTeacher != null ? src.SectionTeacher.Id : -1))
                 .ReverseMap()
                 .ForMember(g => g.ActivePensum,
                     o => o.MapFrom(src => ((IPensumRepository) DependencyResolver.Current.GetService(
                         typeof (IPensumRepository))).GetById(src.ActivePensum)))
                 .ForMember(g => g.Grade,
                     o => o.MapFrom(src => ((IGradeRepository) DependencyResolver.Current.GetService(
-                        typeof (IGradeRepository))).GetById(src.Grade)))
+                        typeof (IGradeRepository))).GetById(src.Grade)));
+            Mapper.CreateMap<AcademicGrade, AcademicGradeTeacherAssignModel>()
+                .ForMember(p => p.SectionTeacher,
+                    o => o.MapFrom(src => src.SectionTeacher != null ? src.SectionTeacher.Id : -1))
+                .ReverseMap()
                 .ForMember(g => g.SectionTeacher,
                     o => o.MapFrom(src => src.SectionTeacher != -1
-                        ? ((ITeacherRepository) DependencyResolver.Current.GetService(
-                        typeof (ITeacherRepository))).GetById(src.SectionTeacher) : null));
+                        ? ((ITeacherRepository)DependencyResolver.Current.GetService(
+                        typeof(ITeacherRepository))).GetById(src.SectionTeacher) : null));
+
         }
 
         private static void MapAcademicCourseModels()
@@ -113,7 +116,7 @@ namespace Mhotivo
         {
             Mapper.CreateMap<EducationLevelRegisterModel, EducationLevel>();
             Mapper.CreateMap<EducationLevel, EducationLevelDisplayModel>()
-                .ForMember(p => p.Director, o => o.MapFrom(src => src.Director.UserOwner.FullName));
+                .ForMember(p => p.Director, o => o.MapFrom(src => src.Director != null ? src.Director.UserOwner.FullName : "Director No Asignado"));
             Mapper.CreateMap<EducationLevel, EducationLevelEditModel>().ReverseMap();
             Mapper.CreateMap<EducationLevel, EducationLevelDirectorAssignModel>()
                 .ForMember(p => p.Director, o => o.MapFrom(src => src.Director.Id))
