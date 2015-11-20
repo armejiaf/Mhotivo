@@ -84,12 +84,8 @@ namespace Mhotivo
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.FullName))
                 .ForMember(p => p.Schedule, o => o.MapFrom(src => src.Schedule.ToString()));
             Mapper.CreateMap<AcademicCourse, AcademicCourseEditModel>()
-                .ForMember(p => p.Course, o => o.MapFrom(src => src.Course.Id))
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.Id))
                 .ReverseMap()
-                .ForMember(g => g.Course,
-                    o => o.MapFrom(src => ((ICourseRepository) DependencyResolver.Current.GetService(
-                        typeof (ICourseRepository))).GetById(src.Course)))
                 .ForMember(g => g.Teacher,
                     o => o.MapFrom(src => ((ITeacherRepository) DependencyResolver.Current.GetService(
                         typeof (ITeacherRepository))).GetById(src.Teacher)));
