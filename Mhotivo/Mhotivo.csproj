@@ -223,7 +223,6 @@
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.css" />
-    <Content Include="Content\Login\login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\summernote-bs3.css" />
     <Content Include="Content\summernote.css" />
