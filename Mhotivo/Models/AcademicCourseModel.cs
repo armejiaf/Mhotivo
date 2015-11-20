@@ -25,10 +25,6 @@ namespace Mhotivo.Models
         [Display(Name = "Horario")]
         public TimeSpan Schedule { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar un Curso")]
-        [Display(Name = "Curso")]
-        public long Course { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]
         [Display(Name = "Maestro/a")]
         public long Teacher { get; set; }

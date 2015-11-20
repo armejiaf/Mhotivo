@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using AutoMapper;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
@@ -30,7 +31,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index(long id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var allAcademicYears = _academicCourseRepository.GetAllAcademicYearDetails();
+            var allAcademicYears = _academicCourseRepository.Filter(x => x.AcademicGrade.Id == id).ToList();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "teacher_desc" : "";
             ViewBag.ScheduleSortParm = sortOrder == "Schedule" ? "schedule_desc" : "Schedule";
@@ -75,7 +76,6 @@ namespace Mhotivo.Controllers
         {
             var academicYearDetails = _academicCourseRepository.GetById(id);
             var academicYearModel = Mapper.Map<AcademicCourseEditModel>(academicYearDetails);
-            ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name", academicYearModel.Course);
             ViewBag.TeacherId = new SelectList(_teacherRepository.Query(x => x), "Id", "FullName", academicYearModel.Teacher);
             return View("Edit", academicYearModel);
         }
@@ -90,7 +90,7 @@ namespace Mhotivo.Controllers
             const string title = "Curso Académico Actualizado ";
             var content = "El Curso " + toEdit.Course.Name + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return Redirect(string.Format("~/AcademicYearDetails/Index/{0}", toEdit.AcademicGrade.Id));
+            return RedirectToAction("Index", new {id = toEdit.AcademicGrade.Id});
         }
     }
 }
