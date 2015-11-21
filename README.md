@@ -15,6 +15,7 @@ sqllocaldb info
 ```
 
 It would show something like this:
+
 ![Running instances](images/CaptureInfoCommand.PNG)
 
 If the instance name the program needs is not there you can create like with the following:
@@ -23,6 +24,6 @@ If the instance name the program needs is not there you can create like with the
 sqllocaldb create Projects -s
 ```
 
-Where `Projects' is the name of the instance you need. The `-s` flag starts the instance upon creating it.
+Where `Projects` is the name of the instance you need. The `-s` flag starts the instance upon creating it.
 
 ![Newly created Instance](images/CaptureInstanceCreation.PNG)
