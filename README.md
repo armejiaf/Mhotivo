@@ -4,7 +4,7 @@
 
 In case you're getting this error when running the Web projects:
 
-![Error due to non existent instance](images/CaptureErrorDueToMissingInstance.png)
+![Error due to non existent instance](images/CaptureErrorDueToMissingInstance.PNG)
 
 It means EntityFramework could not find the instance name specified in the Web.config file. The solution is to create the instance in our machine instead of modifying the Web.config
 
@@ -15,7 +15,7 @@ sqllocaldb info
 ```
 
 It would show something like this:
-![Running instances](images/CaptureInfoCommand.png)
+![Running instances](images/CaptureInfoCommand.PNG)
 
 If the instance name the program needs is not there you can create like with the following:
 
@@ -25,4 +25,4 @@ sqllocaldb create Projects -s
 
 Where `Projects' is the name of the instance you need. The `-s` flag starts the instance upon creating it.
 
-![Newly created Instance](images/CaptureInstanceCreation.png)
+![Newly created Instance](images/CaptureInstanceCreation.PNG)
