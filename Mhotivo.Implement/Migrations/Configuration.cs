@@ -143,7 +143,7 @@ namespace Mhotivo.Implement.Migrations
             genericTeacher = _userRepository.Create(genericTeacher);
             generTeacher.User = genericTeacher;
             generTeacher = _teacherRepository.Update(generTeacher);
-            var academicYear = new AcademicYear { IsActive = true, Year = 2015 };
+            var academicYear = new AcademicYear { IsActive = true, Year = 2015, EnrollsOpen = true};
             academicYear = _academicYearRepository.Create(academicYear);
             for (int i = 1; i <= 13; i++)
             {

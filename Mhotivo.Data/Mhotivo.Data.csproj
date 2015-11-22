@@ -63,7 +63,6 @@
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />
-    <Compile Include="Entities\Enroll.cs" />
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\PeopleWithUser.cs" />

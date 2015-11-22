@@ -61,7 +61,6 @@ namespace Mhotivo.Controllers
             return View(academicYears.ToPagedList(pageNumber,pageSize));
         }
 
-
         [HttpGet]
         [AuthorizeAdmin]
         public ActionResult Edit(long id)

@@ -28,7 +28,6 @@ namespace Mhotivo.Controllers
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly INotificationRepository _notificationRepository;
-        private readonly IEnrollRepository _enrollRepository;
         private readonly IEducationLevelRepository _areaReporsitory;
         private readonly INotificationHandlerService _notificationHandlerService;
 
@@ -37,7 +36,7 @@ namespace Mhotivo.Controllers
             ITeacherRepository teacherRepository,
             IAcademicCourseRepository academicCourseRepository, IStudentRepository studentRepository,
             ITutorRepository tutorRepository, IGradeRepository gradeRepository,
-            IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository,
+            IAcademicYearRepository academicYearRepository,
             IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicGradeRepository academicGradeRepository)
         {
             _sessionManagement = sessionManagement;
@@ -50,7 +49,6 @@ namespace Mhotivo.Controllers
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
-            _enrollRepository = enrollRepository;
             _areaReporsitory = areaReporsitory;
             _notificationHandlerService = notificationHandlerService;
             _academicGradeRepository = academicGradeRepository;

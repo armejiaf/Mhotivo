@@ -34,7 +34,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var importModel = new DataImportModel();
             ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
-            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => !x.IsActive), "Id", "Year");
+            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.EnrollsOpen), "Id", "Year");
             ViewBag.Section = new List<SelectListItem>();
             return View(importModel);
         }
@@ -58,11 +58,16 @@ namespace Mhotivo.Controllers
             && x.Grade.Id == dataImportModel.Grade && x.Section.Equals(dataImportModel.Section)).FirstOrDefault();
             if (academicGrade == null)
                 ModelState.AddModelError("Year", "No existe ese grado academico");
+            else if(academicGrade.Students.Any())
+                ModelState.AddModelError("Year", "Ya hay alumos en este grado, borrelos e ingreselos de nuevo.");
             ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
             ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => !x.IsActive), "Id", "Year");
             ViewBag.Section = new List<SelectListItem>();
             if (!ModelState.IsValid)
             {
+                ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
+                ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.EnrollsOpen), "Id", "Year");
+                ViewBag.Section = new List<SelectListItem>();
                 return View(dataImportModel);
             }
             var myDataSet = _dataImportService.GetDataSetFromExcelFile(dataImportModel.UploadFile);
@@ -94,7 +99,7 @@ namespace Mhotivo.Controllers
                     x => x.Grade.Id == dataImportModel.Grade).ToList();
                 var toReturn =
                     new SelectList(
-                        sList, "Id", "Section");
+                        sList, "Section", "Section");
                 return Json(toReturn, JsonRequestBehavior.AllowGet);
             }
             else
@@ -103,7 +108,7 @@ namespace Mhotivo.Controllers
                     x => x.Grade.Id == dataImportModel.Grade && x.AcademicYear.Id == dataImportModel.Year).ToList();
                 var toReturn =
                     new SelectList(
-                        sList, "Id", "Section");
+                        sList, "Section", "Section");
                 return Json(toReturn, JsonRequestBehavior.AllowGet);
             }
         }

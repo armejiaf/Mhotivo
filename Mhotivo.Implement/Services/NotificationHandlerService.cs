@@ -103,15 +103,17 @@ namespace Mhotivo.Implement.Services
         {
             if (student.Tutor1 != null && !student.Tutor1.User.Notifications.Contains(notification))
             {
-                student.Tutor1.User.Notifications.Add(notification);
-                _userRepository.Update(student.Tutor1.User);
+                var user = student.Tutor1.User;
+                user.Notifications.Add(notification);
+                _userRepository.Update(user);
                 if (notification.SendEmail)
                     EmailService.SendEmailToUser(student.Tutor1.User, notification);
             }
             if (student.Tutor2 != null && !student.Tutor2.User.Notifications.Contains(notification))
             {
-                student.Tutor2.User.Notifications.Add(notification);
-                _userRepository.Update(student.Tutor2.User);
+                var user = student.Tutor2.User;
+                user.Notifications.Add(notification);
+                _userRepository.Update(user);
                 if (notification.SendEmail)
                     EmailService.SendEmailToUser(student.Tutor2.User, notification);
             }
@@ -119,7 +121,7 @@ namespace Mhotivo.Implement.Services
 
         private void SendToStudents(IEnumerable<Student> students, Notification notification)
         {
-            foreach (var student in students)
+            foreach (var student in students.ToList())
             {
                 SendToStudent(student, notification);
             }
@@ -129,7 +131,7 @@ namespace Mhotivo.Implement.Services
         {
             var notifications =
                 _notificationRepository.Filter(x => x.Approved && !x.Sent && x.AcademicYear.IsActive);
-            foreach (var notification in notifications)
+            foreach (var notification in notifications.ToList())
             {
                 SendNotification(notification);
             }

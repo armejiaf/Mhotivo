@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using Mhotivo.Data.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,12 +27,6 @@ namespace Mhotivo.Models
         [Display(Name = "Numero de Identidad")]
         public string IdNumber { get; set; }
 
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
-
-        [Display(Name = "País")]
-        public string Country { get; set; }
-
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
@@ -46,15 +41,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Sexo")]
         public string MyGender { get; set; }
-
-        [Display(Name = "Fecha de Inicio")]
-        public string StartDate { get; set; }
-
-        [Display(Name = "Fecha de Finalización")]
-        public string EndDate { get; set; }
-
-        [Display(Name = "Biografía")]
-        public string Biography { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
@@ -71,12 +57,6 @@ namespace Mhotivo.Models
 
         public string FullName { get; set; }
 
-        [Display(Name = "Fecha de Finalización")]
-        public string EndDate { get; set; }
-
-        [Display(Name = "Biografía")]
-        public string Biography { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -91,11 +71,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
-        public string BirthDate { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Nacionalidad")]
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -105,10 +81,6 @@ namespace Mhotivo.Models
         [Display(Name = "Estado")]
         public string State { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar País")]
-        [Display(Name = "País")]
-        public string Country { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Dirección")]
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
@@ -116,10 +88,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string MyGender { get; set; }
-        
-        [Display(Name = "Fecha de Inicio")]
-        public string StartDate { get; set; }
+        public Gender MyGender { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public string UrlPicture { get; set; }
@@ -135,14 +104,6 @@ namespace Mhotivo.Models
         [Display(Name = "Foto Perfil")]
         public string UrlPicture { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Finalización")]
-        [Display(Name = "Fecha de Finalización")]
-        public string EndDate { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Biografía")]
-        [Display(Name = "Biografía")]
-        public string Biography { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -157,11 +118,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
-        public string BirthDate { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Nacionalidad")]
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -170,10 +127,6 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Estado")]
         [Display(Name = "Estado")]
         public string State { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar País")]
-        [Display(Name = "País")]
-        public string Country { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Dirección")]
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
@@ -187,10 +140,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string MyGender { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Inicio")]
-        [Display(Name = "Fecha de Inicio")]
-        public string StartDate { get; set; }
+        public Gender MyGender { get; set; }
     }
 }

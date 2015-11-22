@@ -19,21 +19,19 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly ISecurityService _securityService;
         private Tutor _loggedTutor;
         public static IStudentRepository StudentRepository;
-        public static IEnrollRepository EnrollsRepository;
         public static ISecurityService SecurityService;
 
         public static List<long> StudentsId;
 
         public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,
             ITutorRepository tutorRepository, ISecurityService securityService,
-            IStudentRepository studentRepository, IEnrollRepository enrollsRepository)
+            IStudentRepository studentRepository)
         {
             _notificationRepository = notificationRepository;
             _academicYearRepository = academicYearRepository;
             _tutorRepository = tutorRepository;
             _securityService = securityService;
             StudentRepository = studentRepository;
-            EnrollsRepository = enrollsRepository;
             SecurityService = securityService;
         }
 
@@ -102,33 +100,6 @@ namespace Mhotivo.ParentSite.Controllers
                 studentsId.Add(enumerable.ElementAt(i).Id);
             }
             return studentsId;
-        }
-
-        public static IEnumerable<Enroll> GetAllEnrolls(long studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.Student.Id == studentId);
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetAllEnrolls(List<long> studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => studentId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
-
-        public static List<string> GetStudentName(long academicyearId)
-        {
-            var enroll = GetEnrollsbyAcademicYear(academicyearId);
-            return enroll.Select(e => e.Student.FirstName).ToList();
         }
 
         public static string GetStudenById(long studentId)

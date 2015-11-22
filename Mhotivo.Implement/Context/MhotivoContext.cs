@@ -13,7 +13,6 @@ namespace Mhotivo.Implement.Context
         public DbSet<EducationLevel> EducationLevels { get; set; }
         public DbSet<ContactInformation> ContactInformations { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Enroll> Enrolls { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Teacher> Teachers{ get; set; }
         public DbSet<Notification> Notifications { get; set; }

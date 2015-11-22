@@ -1,12 +1,12 @@
 ﻿using System;
-using Mhotivo.Data.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
-    public class TutorDisplayModel
+    public class AdministrativeDisplayModel
     {
         public long Id { get; set; }
 
@@ -37,25 +37,25 @@ namespace Mhotivo.Models
         public string Address { get; set; }
 
         [Display(Name = "Foto Perfil")]
-        public byte[] Photo { get; set; }
+        public string UrlPicture { get; set; }
 
         [Display(Name = "Sexo")]
         public string MyGender { get; set; }
+
+        [Display(Name = "Foto Perfil")]
+        public byte[] Photo { get; set; }
     }
 
-    public class TutorEditModel
+    public class AdministrativeEditModel
     {
         public long Id { get; set; }
 
         public ICollection<ContactInformation> Contacts { get; set; }
 
-        public string FullName { get; set; }
-
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
 
-        [DataType(DataType.Upload)]
-        public HttpPostedFileBase UploadPhoto { get; set; }
+        public string FullName { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -89,16 +89,20 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
         public Gender MyGender { get; set; }
+
+        [Display(Name = "Foto Perfil")]
+        public string UrlPicture { get; set; }
+
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase UploadPhoto { get; set; }
     }
 
-    public class TutorRegisterModel
+    public class AdministrativeRegisterModel
     {
         public string FullName { get; set; }
 
-        [Required]
         [Display(Name = "Foto Perfil")]
-        [DataType(DataType.Upload)]
-        public byte[] FilePicture { get; set; }
+        public string UrlPicture { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -120,19 +124,23 @@ namespace Mhotivo.Models
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Correo Electronico")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Estado o Departamento")]
-        [Display(Name = "Estado o Departamento")]
+        [Required(ErrorMessage = "Debe Ingresar Estado")]
+        [Display(Name = "Estado")]
         public string State { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Dirección")]
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
         public string Address { get; set; }
+
+        [Required(ErrorMessage = "Debe Ingresar Un Correo Electronico")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Correo Electronico")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Debe especificar el rol del usuario.")]
+        [Display(Name = "Rol de Usuario")]
+        public long Role { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]

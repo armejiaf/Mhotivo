@@ -60,7 +60,6 @@ namespace Mhotivo.Controllers
         {
             var teacher = _teacherRepository.GetById(id);
             var teacherModel = Mapper.Map<Teacher, TeacherEditModel>(teacher);
-            teacherModel.MyGender = teacher.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", teacherModel);
         }
 

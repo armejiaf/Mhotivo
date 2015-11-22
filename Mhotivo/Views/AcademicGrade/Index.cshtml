@@ -42,6 +42,7 @@ else
                 <th>@Html.LabelFor(model => model.First().SectionTeacher)</th>
                 <th>@Html.LabelFor(model => model.First().ActivePensum)</th>
                 <th>Ver Cursos</th>
+                <th>Ver Alumnos Matriculados</th>
                 <th>Asignar Maestro de Seccion</th>
                 <th>Editar</th>
                 <th>Borrar</th>
@@ -58,6 +59,9 @@ else
                     <td>@Html.DisplayFor(model => item.ActivePensum)</td>
                     <td>
                         @Html.ActionLink("Cursos","Index","AcademicCourse",new {id = item.Id}, null)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Alumnos", "GeneralEnrollsFromAcademicGrades", "Enroll", new { gradeId = item.Id }, null)
                     </td>
                     <td>
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicGrade/EditTeacher/@Html.DisplayFor(modelItem => item.Id)">Asignar Maestro</a>

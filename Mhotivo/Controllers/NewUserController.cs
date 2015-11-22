@@ -6,6 +6,7 @@ using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -18,10 +19,29 @@ namespace Mhotivo.Controllers
             _userRepository = userRepository;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter, string searchString, int? page)
         {
-            var newUsers = Mapper.Map<IEnumerable<User>, IEnumerable<NewUserDisplayModel>>(_userRepository.Filter(x => x.IsUsingDefaultPassword));
-            return View(newUsers);
+            var newUsers = _userRepository.Filter(x => x.IsUsingDefaultPassword);
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                try
+                {
+                    newUsers = _userRepository.Filter(x => x.IsUsingDefaultPassword && (x.UserOwner.FullName.Contains(searchString) || x.Email.Contains(searchString)));
+                }
+                catch (Exception)
+                {
+                    newUsers = _userRepository.Filter(x => x.IsUsingDefaultPassword);
+                }
+            }
+            ViewBag.CurrentFilter = searchString;
+            var model = Mapper.Map<IEnumerable<User>, IEnumerable<NewUserDisplayModel>>(newUsers);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(model.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(long id)

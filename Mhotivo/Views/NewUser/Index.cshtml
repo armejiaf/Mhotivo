@@ -1,6 +1,7 @@
 ﻿@using System.Web.UI.WebControls
 @using Mhotivo.Controllers
-@model IEnumerable<Mhotivo.Models.NewUserDisplayModel>
+@using PagedList.Mvc
+@model PagedList.IPagedList<Mhotivo.Models.NewUserDisplayModel>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
@@ -8,6 +9,13 @@
 }
 
 <h2>Usuarios No Reclamados</h2>
+@using (Html.BeginForm("Index", "NewUser", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+{
+    <p>
+        Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
 @if (!Model.Any())
 {
     <div class="well well-large">
@@ -20,13 +28,13 @@ else
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.First().Email))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserOwner)
+                @Html.DisplayNameFor(model => model.First().UserOwner)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                @Html.DisplayNameFor(model => model.First().Role)
             </th>
             <th>
                 Mostrar Contraseña
@@ -50,8 +58,12 @@ else
                 </td>
             </tr>
         }
-
     </table>
+    <p>
+        Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    </p>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page, currentFilter = ViewBag.CurrentFilter, yearId = ViewBag.IdAcademicYear }));
 }
 <div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
     <div id="body" class="modal-body">

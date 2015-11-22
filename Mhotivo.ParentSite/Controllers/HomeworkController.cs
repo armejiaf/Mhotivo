@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
@@ -19,7 +18,6 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
         public static IStudentRepository StudentRepository;
-        public static IEnrollRepository EnrollsRepository;
         private readonly ISessionManagementService _sessionManagementService;
         public static ISecurityService SecurityService;
         private readonly ITutorRepository _tutorRepository;
@@ -28,7 +26,7 @@ namespace Mhotivo.ParentSite.Controllers
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicCourseRepository academicCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
-            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService,
+            ISessionManagementService sessionManagementService,
             ISecurityService securityService, ITutorRepository tutorRepository)
         {
             _homeworkRepository = homeworkRepository;
@@ -37,7 +35,6 @@ namespace Mhotivo.ParentSite.Controllers
             _courseRepository = courseRepository;
             _academicCourseRepository = academicCourseRepository;
             StudentRepository = studentRepository;
-            EnrollsRepository = enrollsRepository;
             _sessionManagementService = sessionManagementService;
             SecurityService = securityService;
             _tutorRepository = tutorRepository;
@@ -47,10 +44,10 @@ namespace Mhotivo.ParentSite.Controllers
         {
             var students = GetAllStudents(GetTutorId());
             StudentsId = GetAllStudentsId(students);
-            var enrolls = new List<Enroll>();
-            enrolls.AddRange(GetAllEnrolls(StudentsId));
-            if (student != null)
-                enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
+           // var enrolls = new List<Enroll>();
+            //enrolls.AddRange(GetAllEnrolls(StudentsId));
+            //if (student != null)
+            //    enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
             var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             switch (date)
             {
@@ -71,10 +68,10 @@ namespace Mhotivo.ParentSite.Controllers
 
             var mappedHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
             var allHomeworksModel = new List<HomeworkModel>();
-            foreach (var enroll in enrolls)
-            {
-                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
-            }
+            //foreach (var enroll in enrolls)
+            //{
+            //    allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
+            //}
 
             if (param != null)
                 allHomeworksModel =
@@ -101,31 +98,12 @@ namespace Mhotivo.ParentSite.Controllers
             return allStudents;
         }
 
-        public static IEnumerable<Enroll> GetAllEnrolls(long studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.Student.Id == studentId);
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetAllEnrolls(List<long> studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => studentId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
 
         public static List<string> GetStudentName(long academicyearId)
         {
-            var enroll = GetEnrollsbyAcademicYear(academicyearId);
-            return enroll.Select(e => e.Student.FirstName).ToList();
+            //var enroll = GetEnrollsbyAcademicYear(academicyearId);
+            //return enroll.Select(e => e.Student.FirstName).ToList();
+            return null;
         }
 
         public static string GetStudenById(long studentId)

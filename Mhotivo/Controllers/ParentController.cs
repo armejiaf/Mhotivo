@@ -96,7 +96,6 @@ namespace Mhotivo.Controllers
         {
             var tutor = _tutorRepository.GetById(id);
             var tutorModel = Mapper.Map<Tutor, TutorEditModel>(tutor);
-            tutorModel.MyGender = tutor.MyGender.ToString("G").Substring(0, 1);
             return View("Edit", tutorModel);
         }
 
@@ -224,7 +223,6 @@ namespace Mhotivo.Controllers
         {
             var tutor = _tutorRepository.GetById(id);
             var tutorModel = Mapper.Map<Tutor, TutorEditModel>(tutor);
-            tutorModel.MyGender = tutor.MyGender.ToString("G");
             return View("DetailsEdit", tutorModel);
         }
 

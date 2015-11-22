@@ -17,5 +17,6 @@ namespace Mhotivo.Data.Entities
         public virtual ICollection<AcademicGrade> Grades { get; set; }
         public int Year { get; set; }
         public bool IsActive { get; set; }
+        public bool EnrollsOpen { get; set; }
     }
 }

@@ -38,10 +38,8 @@ else
 		        <th>@Html.DisplayNameFor(model => model.First().Photo)</th>
                 <th>@Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.ActionLink("Numero de Identidad", "Index", new { sortOrder = ViewBag.IdNumberSortParm }) </th>
-				<th>@Html.DisplayNameFor(model => model.First().Address)</th>
 				<th>@Html.DisplayNameFor(model => model.First().City)</th>
 				<th>@Html.DisplayNameFor(model => model.First().State)</th>
-				<th>@Html.DisplayNameFor(model => model.First().Country)</th>
                 <th></th>
 		    </tr>
 	    </thead>
@@ -65,12 +63,10 @@ else
                             <div class="text">
 							</div>
                     </td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Address)</td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.City)</td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.State)</td>
-				    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Country)</td>
+				    <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+				    <td>@Html.DisplayFor(modelItem => item.IdNumber)</td>
+				    <td>@Html.DisplayFor(modelItem => item.City)</td>
+				    <td>@Html.DisplayFor(modelItem => item.State)</td>
                     <td>
                         <a href="~/Tutor/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         @*<a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>*@

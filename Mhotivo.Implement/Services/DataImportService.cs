@@ -15,24 +15,33 @@ namespace Mhotivo.Implement.Services
         private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly ITutorRepository _tutorRepository;
         private readonly IStudentRepository _studentRepository;
-        private readonly IEnrollRepository _enrollRepository;
-        private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
 
-        public DataImportService(IPasswordGenerationService passwordGenerationService, ITutorRepository tutorRepository, IStudentRepository studentRepository, IEnrollRepository enrollRepository, IAcademicYearRepository academicYearRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+        public DataImportService(IPasswordGenerationService passwordGenerationService, ITutorRepository tutorRepository,
+            IStudentRepository studentRepository, IUserRepository userRepository,
+            IRoleRepository roleRepository, IAcademicGradeRepository academicGradeRepository)
         {
             _passwordGenerationService = passwordGenerationService;
             _tutorRepository = tutorRepository;
             _studentRepository = studentRepository;
-            _enrollRepository = enrollRepository;
-            _academicYearRepository = academicYearRepository;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _academicGradeRepository = academicGradeRepository;
         }
 
         public void Import(DataSet oDataSet, AcademicGrade academicYearGrade)
         {
+            var parentageString = new Dictionary<string, Parentage>
+            {
+                {"Madre", Parentage.Mother},
+                {"Padre", Parentage.Father},
+                {"Abuela (a)", Parentage.Grandfather},
+                {"Tía (a)", Parentage.Uncle},
+                {"Hermano (a)", Parentage.Brother},
+                {"Otro", Parentage.Other}
+            };
             var emails = new List<string>();
             if(oDataSet.Tables.Count == 0)
                 return;
@@ -52,18 +61,20 @@ namespace Mhotivo.Implement.Services
                     FirstName = dtDatos.Rows[indice][6].ToString(),
                     MyGender = Utilities.DefineGender(dtDatos.Rows[indice][8].ToString()),
                     BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][9].ToString())),
+                    City = dtDatos.Rows[indice][26].ToString(),
                     State = dtDatos.Rows[indice][15].ToString(),
                 };
                 newStudent.FullName = (newStudent.FirstName + " " + newStudent.LastName).Trim();
                 var newTutor = new Tutor
                 {
-                    IdNumber = dtDatos.Rows[indice][18].ToString()
-                    ,LastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][20]).Trim()
-                    ,FirstName = dtDatos.Rows[indice][21].ToString()
-                    ,MyGender = Utilities.DefineGender(dtDatos.Rows[indice][22].ToString())
-                    ,BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][24].ToString()))
-                    ,State = dtDatos.Rows[indice][25].ToString()
-                    ,City = dtDatos.Rows[indice][26].ToString()
+                    IdNumber = dtDatos.Rows[indice][18].ToString(),
+                    LastName = (dtDatos.Rows[indice][19] + " " + dtDatos.Rows[indice][20]).Trim(),
+                    FirstName = dtDatos.Rows[indice][21].ToString(),
+                    MyGender = Utilities.DefineGender(dtDatos.Rows[indice][22].ToString()),
+                    Parentage = parentageString[dtDatos.Rows[indice][23].ToString()],
+                    BirthDate = DateTime.FromOADate(Double.Parse(dtDatos.Rows[indice][24].ToString())),
+                    State = dtDatos.Rows[indice][25].ToString(),
+                    City = dtDatos.Rows[indice][26].ToString()
                 };
                 newTutor.FullName = (newTutor.FirstName + " " + newTutor.LastName).Trim();
                 var newContactInformation = new ContactInformation
@@ -95,20 +106,16 @@ namespace Mhotivo.Implement.Services
 
         private void SaveData(IEnumerable<Student> listStudents, IEnumerable<Tutor> listTutors, AcademicGrade academicYearGrade, IReadOnlyList<string> emails)
         {
-            var enrolls = _enrollRepository.Filter(x => x.AcademicGrade.Id == academicYearGrade.Id);
-            if (enrolls.Any())
-                throw new Exception("Ya hay alumos en este grado, borrelos e ingreselos de nuevo");
-            var allTutors = _tutorRepository.GetAllTutors();
-            var allStudents = _studentRepository.GetAllStudents();
-            int iterator = 0;
-            foreach (var pare in listTutors)
+            var iterator = 0;
+            foreach (var tutor in listTutors)
             {
-                var temp = allTutors.Where(x => x.IdNumber == pare.IdNumber);
+                var temp = _tutorRepository.Filter(x => x.IdNumber == tutor.IdNumber);
                 if (!temp.Any())
                 {
+                    _tutorRepository.Create(tutor);
                     var newUser = new User
                     {
-                        UserOwner = pare,
+                        UserOwner = tutor,
                         Email = emails[iterator],//TODO: Possibly deprecated.
                         Password = _passwordGenerationService.GenerateTemporaryPassword(),
                         IsUsingDefaultPassword = true,
@@ -117,33 +124,32 @@ namespace Mhotivo.Implement.Services
                     };
                     newUser.DefaultPassword = newUser.Password;
                     newUser = _userRepository.Create(newUser);
-                    
-                    pare.User = newUser;
-                    _tutorRepository.Create(pare);
-                }
-                else
-                {
-                    pare.Id = temp.First().Id;
+                    tutor.User = newUser;
+                    _tutorRepository.Update(tutor);
                 }
                 iterator++;
             }
             foreach (var stu in listStudents)
             {
-                var temp = allStudents.Where(x => x.IdNumber == stu.IdNumber);
+                var temp = _studentRepository.Filter(x => x.IdNumber == stu.IdNumber);
                 if (!temp.Any())
                 {
-                    _studentRepository.Create(stu);   
+                    _studentRepository.Create(stu);
+                    var studentTemp = _studentRepository.GetById(stu.Id);
+                    academicYearGrade.Students.Add(studentTemp);
+                    studentTemp.MyGrade = academicYearGrade;
+                    _studentRepository.Update(studentTemp);
+                    _academicGradeRepository.Update(academicYearGrade);
                 }
                 else
-                    stu.Id = temp.First().Id;
-                //var enr = allEnrolls.Where(x => x.AcademicGrade.Id == academicYearGrade.Id && x.Student.Id == stu.Id);
-                //if (enr.Any()) continue;
-                var te = new Enroll();
-                var academicYearTemp = _academicYearRepository.GetById(academicYearGrade.Id);
-                var studentTemp = _studentRepository.GetById(stu.Id);
-                //te.AcademicYear = academicYearTemp;
-                te.Student = studentTemp;
-                _enrollRepository.Create(te);
+                {
+                    var studentTemp = temp.FirstOrDefault();
+                    if (studentTemp.MyGrade != null) throw new Exception("Uno o mas de los estudiantes esta actualmente matriculado en otra seccion.");
+                    academicYearGrade.Students.Add(studentTemp);
+                    studentTemp.MyGrade = academicYearGrade;
+                    _studentRepository.Update(studentTemp);
+                    _academicGradeRepository.Update(academicYearGrade);
+                }
             }
         }
     }

@@ -39,19 +39,11 @@ else
 	    <thead>
 		    <tr>
 		        <th>@Html.DisplayNameFor(model => model.First().UrlPicture)</th>
-                
                 <th>@Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-
-                @*<th>@Html.DisplayNameFor(model => model.First().FullName)</th>*@
-		        
-                <th>@Html.ActionLink("Fecha de Inicio", "Index", new { sortOrder = ViewBag.DateSortParm }) </th>
-
-                @*<th>@Html.DisplayNameFor(model => model.First().StartDate)</th>*@
                 <th>@Html.DisplayNameFor(model => model.First().BloodType)</th>
                 <th>@Html.DisplayNameFor(model => model.First().AccountNumber)</th>
 			    <th>@Html.DisplayNameFor(model => model.First().Tutor1)</th>
-			    <th>@Html.DisplayNameFor(model => model.First().Tutor2)</th>
-		        <th></th>
+		        <th>Ver Detalles</th>
                 <th>Modificar</th>
 		    </tr>
 	    </thead>
@@ -75,13 +67,10 @@ else
                         <div class="text">
                         </div>
                     </td>
-
                     <td  >@Html.DisplayFor(modelItem => item.FullName)</td>
-			        <td  >@Html.DisplayFor(modelItem => item.StartDate)</td>
                     <td  >@Html.DisplayFor(modelItem => item.BloodType)</td>
                     <td  >@Html.DisplayFor(modelItem => item.AccountNumber)</td>
 			        <td  >@Html.DisplayFor(modelItem => item.Tutor1.FullName)</td>
-			        <td  >@Html.DisplayFor(modelItem => item.Tutor2.FullName)</td>
                     <td>
                         <a data-id="Student/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
                         @*<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Student/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>*@
@@ -101,9 +90,6 @@ else
     <p>
         Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
     </p>
-        
-    //Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}));
 

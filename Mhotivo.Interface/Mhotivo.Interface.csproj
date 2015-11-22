@@ -46,7 +46,6 @@
     <Compile Include="Interfaces\IEducationLevelRepository.cs" />
     <Compile Include="Interfaces\IContactInformationRepository.cs" />
     <Compile Include="Interfaces\ICourseRepository.cs" />
-    <Compile Include="Interfaces\IEnrollRepository.cs" />
     <Compile Include="Interfaces\IGradeRepository.cs" />
     <Compile Include="Interfaces\IHomeworkRepository.cs" />
     <Compile Include="Interfaces\IDataImportService.cs" />

@@ -1,100 +1,149 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace Mhotivo.Controllers
 {
     public class EnrollController : Controller
     {
-        private readonly IEnrollRepository _enrollRepository;
         private readonly IGradeRepository _gradeRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicGradeRepository _academicGradeRepository;
 
-        public EnrollController(IStudentRepository studentRepository, IEnrollRepository enrollRepository, 
+        public EnrollController(IStudentRepository studentRepository,
             IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository)
         {
             _studentRepository = studentRepository;
-            _enrollRepository = enrollRepository;
             _gradeRepository = gradeRepository;
             _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-       [AuthorizeAdmin]
+        [AuthorizeAdmin]
+        [ActionName("GeneralEnrollsFromAcademicGrades")]
+        public ActionResult Index(long gradeId)
+        {
+            ViewBag.GradeId = gradeId;
+            _viewMessageLogic.SetViewMessageIfExist();
+            var grade = _academicGradeRepository.GetById(gradeId);
+            return grade == null ? View("Index") : View("Index", grade.Students.Select(n => new EnrollDisplayModel
+            {
+                AcademicGradeId = grade.Id,
+                StudentId = n.Id,
+                FullName = n.FullName,
+                Photo = n.Photo,
+                MyGender = n.MyGender.ToString("G"),
+                AccountNumber = n.AccountNumber,
+                Grade = grade.Grade.Name,
+                Section = grade.Section
+            }));
+        }
+
+        [AuthorizeAdmin]
         public ActionResult Index()
         {
+            ViewBag.GradeId = -1;
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(_enrollRepository.Filter(x => x.AcademicGrade.AcademicYear.IsActive).ToList()
-                .Select(x => new EnrollDisplayModel
+            var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+            if (!grades.Any())
+                return View();
+            var model = new List<EnrollDisplayModel>();
+            foreach (var academicGrade in grades)
+            {
+                model.AddRange(academicGrade.Students.Select(n => new EnrollDisplayModel
                 {
-                    Id = x.Id,
-                    FullName = x.Student.FullName,
-                    Photo = x.Student.Photo,
-                    MyGender = x.Student.MyGender.ToString("G"),
-                    AccountNumber = x.Student.AccountNumber,
-                    Grade = x.AcademicGrade.Grade.Name,
-                    Section = x.AcademicGrade.Section
+                    AcademicGradeId = academicGrade.Id,
+                    StudentId = n.Id,
+                    FullName = n.FullName,
+                    Photo = n.Photo,
+                    MyGender = n.MyGender.ToString("G"),
+                    AccountNumber = n.AccountNumber,
+                    Grade = academicGrade.Grade.Name,
+                    Section = academicGrade.Section
                 }));
+            }
+            return View(model);
         }
 
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Search(string id)
+        public ActionResult Search(string searchString, long gradeId)
         {
+            if (searchString.IsNullOrWhiteSpace())
+                return gradeId == -1 ? RedirectToAction("Index") : RedirectToAction("Index", new {gradeId});
             _viewMessageLogic.SetViewMessageIfExist();
-            IEnumerable<EnrollDisplayModel> model = _enrollRepository.Filter(x => x.Student.FullName.Contains(id))
-                .ToList()
-                .Select(x => new EnrollDisplayModel
+            if (gradeId == -1)
+            {
+                var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+                if (!grades.Any())
+                    return View("Index");
+                var toReturn = new List<EnrollDisplayModel>();
+                foreach (var academicGrade in grades)
                 {
-                    Id = x.Id,
-                    FullName = x.Student.FullName,
-                    Photo = x.Student.Photo,
-                    MyGender = x.Student.MyGender.ToString("G"),
-                    AccountNumber = x.Student.AccountNumber,
-                    Grade = x.AcademicGrade.Grade.Name,
-                    Section = x.AcademicGrade.Section
-                });
-            return View("Index", model);
+                    toReturn.AddRange(Mapper.Map<IEnumerable<EnrollDisplayModel>>(academicGrade));
+                }
+                return View("Index",toReturn.Where(x => x.FullName.Contains(searchString)));
+            }
+            var grade = _academicGradeRepository.GetById(gradeId);
+            return grade == null ? View("Index") : View("Index", Mapper.Map<IEnumerable<EnrollDisplayModel>>(grade).Where(x => x.FullName.Contains(searchString)));
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Delete(long id)
+        public ActionResult Delete(long id, long gradeId, long academicGradeId)
         {
-            _enrollRepository.Delete(id);
+            var grade = _academicGradeRepository.GetById(gradeId);
+            ((List<Student>)grade.Students).RemoveAll(x => x.Id == id);
+            var student = _studentRepository.GetById(id);
+            student.MyGrade = null;
             const string title = "Matricula Borrada";
             const string content = "El estudiante ha sido eliminado exitosamente de la lista de matriculados.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Index");
+            return academicGradeId == -1 ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = academicGradeId });
+        }
+
+        [HttpPost]
+        [AuthorizeAdmin]
+        [ActionName("DeleteAllFromCurrentAcademicGrade")]
+        public ActionResult DeleteAll(long gradeId)
+        {
+            var grade = _academicGradeRepository.GetById(gradeId);
+            foreach (var student in grade.Students)
+            {
+                student.MyGrade = null;
+            }
+            grade.Students.Clear();
+            const string title = "Matricula Borrada";
+            const string content = "Todos los estudiantes de esta seccion han sido eliminados exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            return RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId });
         }
 
         [HttpPost]
         [AuthorizeAdmin]
         public ActionResult DeleteAll(EnrollDeleteModel model)
         {
-            var year =
-                _academicGradeRepository.Filter(x => x.Grade.Id == model.Grade && x.Section.Equals(model.AcademicGrade))
-                    .FirstOrDefault();
-            if (year == null)
+            var grade = _academicGradeRepository.GetById(model.AcademicGrade);
+            if (grade == null)
             {
                 const string title = "Error";
                 const string content = "No  hay un año academico con ese grado y seccion";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            var enrolls = _enrollRepository.Filter(x => x.AcademicGrade.AcademicYear.Id == year.Id).ToList();
-            
-            foreach (var enroll in enrolls)
+            foreach (var student in grade.Students)
             {
-                _enrollRepository.Delete(enroll.Id);
+                student.MyGrade = null;
             }
+            grade.Students.Clear();
             const string title2 = "Matricula Borrada";
             const string content2 = "Todos los estudiantes de ese grado y seccion han sido eliminados exitosamente.";
             _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.InformationMessage);
@@ -104,56 +153,56 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult DeleteAll()
         {
-        var model = new EnrollDeleteModel();
-        ViewBag.GradeId = new SelectList(_gradeRepository.Query(a => a), "Id", "Name",
-        model.Grade);
-            ViewBag.Section = new SelectList(new List<string> { "A", "B", "C" }, "A");
+            var model = new EnrollDeleteModel();
+            var grades = _gradeRepository.GetAllGrade().ToList();
+            ViewBag.Grades = new SelectList(grades, "Id", "Name");
+            var firstGradeId = grades.First().Id;
+            ViewBag.Sections = new List<SelectListItem>();
+            ((List<SelectListItem>) ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
+                x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
+                .Select(n => new SelectListItem {Value = n.Section, Text = n.Id.ToString()}));
             return PartialView(model);
         }
 
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Add()
+        public ActionResult Add(long gradeId)
         {
-            var allStudents = _studentRepository.GetAllStudents().ToList();
-            var availableStudents = (from student in allStudents 
-                                     where !_enrollRepository.Filter(x => x.Student.Id == student.Id && x.AcademicGrade.AcademicYear.IsActive).Any() 
-                                     select student).ToList();
+            var availableStudents = _studentRepository.Filter(x => x.MyGrade == null);
             ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name");
-            ViewBag.Section = new SelectList(new List<string> {"A", "B", "C"}, "A");
-            return View("Create");
+            var grades = _gradeRepository.GetAllGrade().ToList();
+            ViewBag.Grades = new SelectList(grades, "Id", "Name");
+            var firstGradeId = grades.First().Id;
+            ViewBag.Sections = new List<SelectListItem>();
+            ((List<SelectListItem>)ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
+                x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
+                .Select(n => new SelectListItem { Value = n.Section, Text = n.Id.ToString() }));
+            return View("Create", new EnrollRegisterModel{Id = gradeId});
         }
 
         [HttpPost]
         [AuthorizeAdmin]
         public ActionResult Add(EnrollRegisterModel modelEnroll)
         {
-            Student student = _studentRepository.GetById(modelEnroll.Student);
-            List<AcademicGrade> collection =
-                _academicGradeRepository.Filter(x => x.Grade.Id == modelEnroll.Grade && x.Section.Equals(modelEnroll.AcademicGrade)).ToList();
-            if (collection.Count > 0 && student != null)
-            {
-                foreach (AcademicGrade academicYear in collection)
-                {
-                    var myEnroll = new Enroll
-                    {
-                        AcademicGrade = academicYear,
-                        Student = student
-                    };
-                    _enrollRepository.Create(myEnroll);
-                }
-                const string title = "Estudiante Agregado";
-                const string content = "El estudiante ha sido matriculado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            }
-            else
+            var student = _studentRepository.GetById(modelEnroll.Student);
+            var academicGrade = _academicGradeRepository.GetById(modelEnroll.AcademicGrade);
+            if (student.MyGrade != null)
             {
                 const string title = "Estudiante No Agregado";
                 const string content = "El estudiante no se logro matricular.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
             }
-            return RedirectToAction("Index");
+            else
+            {
+                academicGrade.Students.Add(student);
+                student.MyGrade = academicGrade;
+                _academicGradeRepository.Update(academicGrade);
+                _studentRepository.Update(student);
+                const string title = "Estudiante Agregado";
+                const string content = "El estudiante ha sido matriculado exitosamente.";
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            }
+            return (academicGrade.Id != -1) ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = modelEnroll.Id });
         }
     }
 }
