@@ -1,10 +1,5 @@
-﻿
-@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-* {
-  margin: 0px;
-  padding: 0px;
+﻿* {
   font-family: verdana, arial, sans-serif;
-  background-color: #fafafa;
 }
 
 .ful {
@@ -142,7 +137,7 @@
   margin-top: 5px;
 }
 
-.info> #task-discription {
+.info> #task-description {
   padding: 5px;
   font-size: 13px;
 }
@@ -152,13 +147,13 @@
   color: #666;
 }
 
-#task-discription,
+#task-description,
 #TaskHeading {
   border: none;
   border-bottom: 1px solid #666;
 }
 
-#task-discription.readonly,
+#task-description.readonly,
 #TaskHeading.readonly {
   border: none !important;
   box-shadow: none !important;
@@ -204,13 +199,13 @@ input[type="text"]:focus ~ .titl {
   color: #36A7FA;
 }
 
-.info textarea:focus ~ .disc {
+.info textarea:focus ~ .desc {
   top: -9px;
   color: #36A7FA;
 }
 
 input[type="text"]:valid ~ .titl,
-textarea:valid ~ .disc {
+textarea:valid ~ .desc {
   top: -9px;
   color: #36A7FA;
 }
@@ -269,8 +264,8 @@ textarea:valid ~ .disc {
 }
 
 #complete .time,
-#complete #task-discription {
-  color: color: #089143;
+#complete #task-description {
+  color: #089143;
 }
 
 #complete .remove {
