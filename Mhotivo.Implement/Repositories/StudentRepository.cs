@@ -64,7 +64,7 @@ namespace Mhotivo.Implement.Repositories
 
         public IEnumerable<Student> GetAllStudents()
         {
-            return Query(x => x).Where(x => !x.Disable).ToList();
+            return Query(x => x).ToList();
         }
     }
 }

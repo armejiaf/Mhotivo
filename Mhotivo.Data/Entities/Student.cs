@@ -10,8 +10,8 @@ namespace Mhotivo.Data.Entities
         }
         public string BloodType { get; set; }
         public string AccountNumber { get; set; }
-        public virtual Parent Tutor1 { get; set; }
-        public virtual Parent Tutor2 { get; set; }
+        public virtual Tutor Tutor1 { get; set; }
+        public virtual Tutor Tutor2 { get; set; }
         public virtual AcademicGrade MyGrade { get; set; }
         public virtual ICollection<Grade> MyCompletedGrades { get; set; }
     }

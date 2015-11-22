@@ -1,7 +1,7 @@
-﻿@model Mhotivo.Models.ParentEditModel
+﻿@model Mhotivo.Models.TutorEditModel
 
 @{
-    ViewBag.Title = "Editar Padres y Tutores";
+    ViewBag.Title = "Editar Tutores y Tutores";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
 <script src="~/Scripts/jquery.maskedinput.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-@using (Html.BeginForm("Edit", "Parent", FormMethod.Post, new { id = "Form"
+@using (Html.BeginForm("Edit", "Tutor", FormMethod.Post, new { id = "Form"
                                                                 , @class = "form-horizontal"
                                                                 , @Style = "margin:0;"
                                                                 , enctype = "multipart/form-data" 
@@ -23,7 +23,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Editar Padre o Tutor</legend>
+        <legend>Editar Tutor o Tutor</legend>
 
         @Html.HiddenFor(model => model.Id)
         <p class="text-error">
@@ -174,7 +174,7 @@
 
         <div class="modal-footer"></div>
         <p>
-            <a href="~/Parent/Index" data-dismiss="modal" class="btn btn-small">
+            <a href="~/Tutor/Index" data-dismiss="modal" class="btn btn-small">
                 <i class="icon-remove"></i>
                 Cancel
             </a>

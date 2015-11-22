@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.ParentEditModel
+﻿@model Mhotivo.Models.TutorEditModel
 
 @{
     ViewBag.Title = "Editar " + @Html.DisplayFor(model => model.FullName);
@@ -16,7 +16,7 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-@using (Html.BeginForm("DetailsEdit", "parent", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"})){
+@using (Html.BeginForm("DetailsEdit", "tutor", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"})){
     @Html.ValidationSummary(true)
 <h2>Detalles de @Html.DisplayFor(model => model.FullName)</h2>
 

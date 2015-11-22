@@ -64,7 +64,7 @@ namespace Mhotivo.ParentSite
             kernel.Bind<ISessionManagementService>().To<SessionManagementService>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<ISecurityService>().To<SecurityService>().InRequestScope();
-            kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
+            kernel.Bind<ITutorRepository>().To<TutorRepository>().InRequestScope();
             kernel.Bind<IEducationLevelRepository>().To<EducationLevelRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();

@@ -27,7 +27,7 @@ namespace Mhotivo
             MapNotificationCommentModels();
             MapPensumModels();
             MapUserModels();
-            MapParentModels();
+            MapTutorModels();
             MapStudentModels();
             MapTeacherModels();
         }
@@ -277,13 +277,13 @@ namespace Mhotivo
         }
 
         //TODO: Not done with the ones below just yet.
-        private static void MapParentModels()
+        private static void MapTutorModels()
         {
-            Mapper.CreateMap<ParentRegisterModel, Parent>()
+            Mapper.CreateMap<TutorRegisterModel, Tutor>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
-            Mapper.CreateMap<Parent, ParentDisplayModel>()
+            Mapper.CreateMap<Tutor, TutorDisplayModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
-            Mapper.CreateMap<Parent, ParentEditModel>()
+            Mapper.CreateMap<Tutor, TutorEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
                 .ReverseMap()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));

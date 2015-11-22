@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Mhotivo.Models
 {
-    public class ParentDisplayModel
+    public class TutorDisplayModel
     {
         public long Id { get; set; }
 
@@ -48,7 +48,7 @@ namespace Mhotivo.Models
         public string MyGender { get; set; }
     }
 
-    public class ParentEditModel
+    public class TutorEditModel
     {
         public long Id { get; set; }
 
@@ -104,7 +104,7 @@ namespace Mhotivo.Models
         public string MyGender { get; set; }
     }
 
-    public class ParentRegisterModel
+    public class TutorRegisterModel
     {
         public string FullName { get; set; }
 

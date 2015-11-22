@@ -132,12 +132,12 @@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.Tutor1.Id, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Padre o Tutor --")
+        @Html.DropDownListFor(model => model.Tutor1.Id, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Tutor o Tutor --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Tutor1)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Tutor1)</p>
     </div>
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.Tutor2.Id, new SelectList(ViewBag.Tutor2Id, "Value", "Text"), "  -- Padre o Tutor --")
+        @Html.DropDownListFor(model => model.Tutor2.Id, new SelectList(ViewBag.Tutor2Id, "Value", "Text"), "  -- Tutor o Tutor --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Tutor2)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Tutor2)</p>
     </div>

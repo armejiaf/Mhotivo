@@ -59,11 +59,11 @@ namespace Mhotivo.Models
         [Display(Name = "Biografía")]
         public string Biography { get; set; }
 
-        [Display(Name = "Tutor o Padre")]
-        public Parent Tutor1 { get; set; }
+        [Display(Name = "Tutor o Tutor")]
+        public Tutor Tutor1 { get; set; }
 
         [Display(Name = "Segundo Tutor o Madre")]
-        public Parent Tutor2 { get; set; }
+        public Tutor Tutor2 { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
@@ -141,18 +141,18 @@ namespace Mhotivo.Models
         [Display(Name = "Biografía")]
         public string Biography { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
-        [Display(Name = "Padre o Tutor")]
-        public Parent Tutor1 { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar Tutor o Tutor")]
+        [Display(Name = "Tutor o Tutor")]
+        public Tutor Tutor1 { get; set; }
 
         [Display(Name = "Madre o Segundo Tutor")]
-        public Parent Tutor2 { get; set; }
+        public Tutor Tutor2 { get; set; }
 
-        [Display(Name = "Padre o Tutor")]
-        public long FirstParent { get; set; }
+        [Display(Name = "Tutor o Tutor")]
+        public long FirstTutor { get; set; }
 
         [Display(Name = "Madre o Segundo Tutor")]
-        public long SecondParent { get; set; }
+        public long SecondTutor { get; set; }
     }
 
     public class StudentRegisterModel
@@ -220,11 +220,11 @@ namespace Mhotivo.Models
         [Display(Name = "Biografía")]
         public string Biography { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Padre o Tutor")]
-        [Display(Name = "Padre o Tutor")]
-        public long FirstParent { get; set; }
+        [Required(ErrorMessage = "Debe Ingresar Tutor o Tutor")]
+        [Display(Name = "Tutor o Tutor")]
+        public long FirstTutor { get; set; }
 
         [Display(Name = "Madre o Segundo Tutor")]
-        public long SecondParent { get; set; }
+        public long SecondTutor { get; set; }
     }
 }

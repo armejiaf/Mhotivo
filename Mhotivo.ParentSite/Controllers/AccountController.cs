@@ -10,13 +10,13 @@ namespace Mhotivo.ParentSite.Controllers
     public class AccountController : Controller
     {
         private readonly ISessionManagementService _sessionManagementService;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly IUserRepository _userRepository;
 
-        public AccountController(ISessionManagementService sessionManagementService, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementService sessionManagementService, ITutorRepository tutorRepository, IUserRepository userRepository)
         {
             _sessionManagementService = sessionManagementService;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _userRepository = userRepository;
         }
 
@@ -28,25 +28,25 @@ namespace Mhotivo.ParentSite.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult LogIn(ParentLoginModel model, string returnUrl)
+        public ActionResult LogIn(TutorLoginModel model, string returnUrl)
         {
-            var parent = model.Email.Contains("@") ? _parentRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault()
-                : _parentRepository.Filter(y => y.IdNumber == model.Email).FirstOrDefault();
+            var tutor = model.Email.Contains("@") ? _tutorRepository.Filter(y => y.User.Email == model.Email).FirstOrDefault()
+                : _tutorRepository.Filter(y => y.IdNumber == model.Email).FirstOrDefault();
 
-            if (parent != null)
+            if (tutor != null)
             {
                 if (_sessionManagementService.LogIn(model.Email, model.Password))
                 {
-                    if (parent.User.IsUsingDefaultPassword)
+                    if (tutor.User.IsUsingDefaultPassword)
                     {
                         return RedirectToAction("ChangePassword");
                     }
-                    return parent.User.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
+                    return tutor.User.Email.Equals("") ? RedirectToAction("ConfirmEmail") : RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
             }
-            ModelState.AddModelError("", "El usuario ingresado no es un padre");
+            ModelState.AddModelError("", "El usuario ingresado no es un tutor");
             return View(model);
         }
 
@@ -62,14 +62,14 @@ namespace Mhotivo.ParentSite.Controllers
             return View("EmailConfirmation");
         }
 
-        public ActionResult UpdateEmail(UpdateParentMailModel model)
+        public ActionResult UpdateEmail(UpdateTutorMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
-            var parentUser = _parentRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
+            var tutorUser = _tutorRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
             
-            if (parentUser != null)
+            if (tutorUser != null)
             {
-                var user = parentUser.User;
+                var user = tutorUser.User;
                 user.Email = model.Email;
                 _userRepository.Update(user);
                 return RedirectToAction("Index", "Notification");

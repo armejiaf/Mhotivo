@@ -15,9 +15,9 @@ namespace Mhotivo.ParentSite.Controllers
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly ISecurityService _securityService;
-        private Parent _loggedParent;
+        private Tutor _loggedTutor;
         public static IStudentRepository StudentRepository;
         public static IEnrollRepository EnrollsRepository;
         public static ISecurityService SecurityService;
@@ -25,12 +25,12 @@ namespace Mhotivo.ParentSite.Controllers
         public static List<long> StudentsId;
 
         public NotificationController(INotificationRepository notificationRepository, IAcademicYearRepository academicYearRepository,
-            IParentRepository parentRepository, ISecurityService securityService,
+            ITutorRepository tutorRepository, ISecurityService securityService,
             IStudentRepository studentRepository, IEnrollRepository enrollsRepository)
         {
             _notificationRepository = notificationRepository;
             _academicYearRepository = academicYearRepository;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _securityService = securityService;
             StudentRepository = studentRepository;
             EnrollsRepository = enrollsRepository;
@@ -42,8 +42,8 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult Index(string filter)
         {
             var loggedUserEmail = _securityService.GetUserLoggedEmail();
-            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
-            if (_loggedParent == null)
+            _loggedTutor = _tutorRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+            if (_loggedTutor == null)
                 return RedirectToAction("Index", "Home");
 
             List<Notification> notifications;
@@ -52,26 +52,26 @@ namespace Mhotivo.ParentSite.Controllers
             {
                 case "NDE":
                     notifications =
-                        _loggedParent
+                        _loggedTutor
                             .User.Notifications.Where(x => x.NotificationType == NotificationType.EducationLevel && x.AcademicYear.IsActive)
                             .ToList();
                     break;
                 case "Grado":
                     notifications =
-                        _loggedParent
+                        _loggedTutor
                             .User.Notifications.Where(x => x.NotificationType == NotificationType.Grade && x.AcademicYear.IsActive)
                             .ToList();
                     break;
 
                 case "Personal":
                     notifications =
-                        _loggedParent
+                        _loggedTutor
                             .User.Notifications.Where(x => x.NotificationType == NotificationType.Personal && x.AcademicYear.IsActive)
                             .ToList();
                     break;
                 default:
                     notifications =
-                        _loggedParent
+                        _loggedTutor
                             .User.Notifications.Where(x => x.NotificationType == NotificationType.General && x.AcademicYear.IsActive)
                             .ToList();
                     break;
@@ -86,10 +86,10 @@ namespace Mhotivo.ParentSite.Controllers
             return View(notificationsModel);
         }
 
-        public static IEnumerable<Student> GetAllStudents(long parentId)
+        public static IEnumerable<Student> GetAllStudents(long tutorId)
         {
             IEnumerable<Student> allStudents =
-                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(parentId));
+                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(tutorId));
             return allStudents;
         }
 
@@ -136,13 +136,13 @@ namespace Mhotivo.ParentSite.Controllers
             return StudentRepository.GetById(studentId).FirstName;
         }
 
-        public static long GetParentId()
+        public static long GetTutorId()
         {
             var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {
-                if (p is Parent)
+                if (p is Tutor)
                     id = p.Id;
             }
             return id;
@@ -151,13 +151,13 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult AddCommentToNotification(int notificationId, string commentText)
         {
             var loggedUserEmail = System.Web.HttpContext.Current.Session["loggedUserEmail"].ToString();
-            _loggedParent = _parentRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
+            _loggedTutor = _tutorRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
             var selectedNotification = _notificationRepository.GetById(notificationId);
             selectedNotification.NotificationComments.Add(new NotificationComment
             {
                 CommentText = commentText,
                 CreationDate = DateTime.Now,
-                Commenter = _loggedParent.User
+                Commenter = _loggedTutor.User
             });
             _notificationRepository.Update(selectedNotification);
             return RedirectToAction("Index");

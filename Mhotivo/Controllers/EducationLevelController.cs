@@ -151,7 +151,7 @@ namespace Mhotivo.Controllers
             var model = Mapper.Map<EducationLevelDirectorAssignModel>(_areaReposity.GetById(id));
             var role = _roleRepository.Filter(n => n.Name.Equals("Director")).FirstOrDefault();
             var directors = _userRepository.Filter(x => x.Role.Id == role.Id).ToList();
-            ViewBag.Directors = new SelectList(directors, "Id", "DisplayName", model.Director);
+            ViewBag.Directors = new SelectList(directors, "Id", "UserOwner.FullName", model.Director);
             return View("EditDirector", model);
         }
 

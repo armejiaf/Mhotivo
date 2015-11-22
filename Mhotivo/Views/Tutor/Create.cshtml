@@ -1,7 +1,7 @@
-﻿@model Mhotivo.Models.ParentRegisterModel
+﻿@model Mhotivo.Models.TutorRegisterModel
 
 @{
-    ViewBag.Title = "Agregar Padre o Tutor";
+    ViewBag.Title = "Agregar Tutor o Tutor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,12 +16,12 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-@using (Html.BeginForm("Create", "Parent", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"})){
+@using (Html.BeginForm("Create", "Tutor", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"})){
     @Html.ValidationSummary(true)
-<h2>Agregar Padre o Tutor</h2>
+<h2>Agregar Tutor o Tutor</h2>
 
 <p>
-    <a href="../Parent/Index" data-dismiss="modal" class="btn btn-small">
+    <a href="../Tutor/Index" data-dismiss="modal" class="btn btn-small">
         <i class="icon-remove"></i>
         Cancel
     </a>
@@ -118,7 +118,7 @@
 </div>
 
 <p>
-    <a href="../Parent/Index" data-dismiss="modal" class="btn btn-small">
+    <a href="../Tutor/Index" data-dismiss="modal" class="btn btn-small">
         <i class="icon-remove"></i>
         Cancel
     </a>

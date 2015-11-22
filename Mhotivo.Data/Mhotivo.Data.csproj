@@ -72,7 +72,7 @@
     <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationComment.cs" />
-    <Compile Include="Entities\Parent.cs" />
+    <Compile Include="Entities\Tutor.cs" />
     <Compile Include="Entities\Pensum.cs" />
     <Compile Include="Entities\People.cs" />
     <Compile Include="Entities\Student.cs" />

@@ -9,7 +9,7 @@ using Mhotivo.Models;
 
 namespace Mhotivo.Controllers
 {
-    public class ImportDataController : Controller
+    public class DataImportController : Controller
     {
         private readonly IDataImportService _dataImportService;
         private readonly IGradeRepository _gradeRepository;
@@ -17,7 +17,7 @@ namespace Mhotivo.Controllers
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public ImportDataController(IDataImportService dataImportService
+        public DataImportController(IDataImportService dataImportService
                                     ,IGradeRepository gradeRepository
                                     ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
         {
@@ -32,41 +32,43 @@ namespace Mhotivo.Controllers
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var importModel = new ImportDataModel();
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
-            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.IsActive).Select(x => x.Year).Distinct().ToList());
+            var importModel = new DataImportModel();
+            ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
+            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => !x.IsActive), "Id", "Year");
             ViewBag.Section = new List<SelectListItem>();
             return View(importModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Index(ImportDataModel importModel)
+        public ActionResult Index(DataImportModel dataImportModel)
         {
             var validImageTypes = new []
             {
                 "application/vnd.ms-excel"
             };
             bool errorExcel;
-            if (importModel.UploadFile != null && importModel.UploadFile.ContentLength > 0)
-                errorExcel = !validImageTypes.Contains(importModel.UploadFile.ContentType);
+            if (dataImportModel.UploadFile != null && dataImportModel.UploadFile.ContentLength > 0)
+                errorExcel = !validImageTypes.Contains(dataImportModel.UploadFile.ContentType);
             else
                 errorExcel = true;
             if(errorExcel)
                 ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
-            var academicYear = _academicYearRepository.Filter(x => x.Year == importModel.Year
-            && x.Grades.Any(n => n.Grade.Id == importModel.GradeImport && n.Section == importModel.Section)).FirstOrDefault();
-            if (academicYear == null)
-                ModelState.AddModelError("Year", "No existe ese año academico");
-            ViewBag.GradeId = new SelectList(_gradeRepository.Query(x => x), "Id", "Name", 0);
+            var academicGrade = _academicGradeRepository.Filter(x => x.AcademicYear.Id == dataImportModel.Year
+            && x.Grade.Id == dataImportModel.Grade && x.Section.Equals(dataImportModel.Section)).FirstOrDefault();
+            if (academicGrade == null)
+                ModelState.AddModelError("Year", "No existe ese grado academico");
+            ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
+            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => !x.IsActive), "Id", "Year");
+            ViewBag.Section = new List<SelectListItem>();
             if (!ModelState.IsValid)
             {
-                return View(importModel);
+                return View(dataImportModel);
             }
-            var myDataSet = _dataImportService.GetDataSetFromExcelFile(importModel.UploadFile);
+            var myDataSet = _dataImportService.GetDataSetFromExcelFile(dataImportModel.UploadFile);
             try
             {
-                _dataImportService.Import(myDataSet, academicYear);
+                _dataImportService.Import(myDataSet, academicGrade);
             }
             catch(Exception ex)
             {
@@ -74,23 +76,22 @@ namespace Mhotivo.Controllers
                 return RedirectToAction("Index");
             }
             
-            const string title = "Importación de Datos Correcta";
+            const string title = "Importación de Datos Exitosa";
             var content = string.Format("Se importaron datos para el año: {0}, grado: {1} y sección: {2}"
-                                        , importModel.Year // 0
-                                        , academicYear.Grades.ElementAt(0).Grade.Name // 1
-                                        , importModel.Section // 2
+                                        , academicGrade.AcademicYear.Year // 0
+                                        , academicGrade.Grade.Name // 1
+                                        , dataImportModel.Section // 2
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
 
-
-        public JsonResult LoadByGrade(ImportDataModel importModel)
+        public JsonResult LoadByGrade(DataImportModel dataImportModel)
         {
-            if (importModel.Year == 0)
+            if (dataImportModel.Year == 0)
             {
                 var sList = _academicGradeRepository.Filter(
-                    x => x.Grade.Id == importModel.GradeImport).ToList();
+                    x => x.Grade.Id == dataImportModel.Grade).ToList();
                 var toReturn =
                     new SelectList(
                         sList, "Id", "Section");
@@ -99,7 +100,7 @@ namespace Mhotivo.Controllers
             else
             {
                 var sList = _academicGradeRepository.Filter(
-                    x => x.Grade.Id == importModel.GradeImport && x.AcademicYear.Id == importModel.Year).ToList();
+                    x => x.Grade.Id == dataImportModel.Grade && x.AcademicYear.Id == dataImportModel.Year).ToList();
                 var toReturn =
                     new SelectList(
                         sList, "Id", "Section");

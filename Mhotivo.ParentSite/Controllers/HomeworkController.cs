@@ -22,14 +22,14 @@ namespace Mhotivo.ParentSite.Controllers
         public static IEnrollRepository EnrollsRepository;
         private readonly ISessionManagementService _sessionManagementService;
         public static ISecurityService SecurityService;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         public static List<long> StudentsId;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicCourseRepository academicCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
             IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService,
-            ISecurityService securityService, IParentRepository parentRepository)
+            ISecurityService securityService, ITutorRepository tutorRepository)
         {
             _homeworkRepository = homeworkRepository;
             _academicYearRepository = academicYearRepository;
@@ -40,12 +40,12 @@ namespace Mhotivo.ParentSite.Controllers
             EnrollsRepository = enrollsRepository;
             _sessionManagementService = sessionManagementService;
             SecurityService = securityService;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
         }
 
         public ActionResult Index(string param, string student, string date)
         {
-            var students = GetAllStudents(GetParentId());
+            var students = GetAllStudents(GetTutorId());
             StudentsId = GetAllStudentsId(students);
             var enrolls = new List<Enroll>();
             enrolls.AddRange(GetAllEnrolls(StudentsId));
@@ -94,10 +94,10 @@ namespace Mhotivo.ParentSite.Controllers
             return studentsId;
         }
 
-        public static IEnumerable<Student> GetAllStudents(long parentId)
+        public static IEnumerable<Student> GetAllStudents(long tutorId)
         {
             IEnumerable<Student> allStudents =
-                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(parentId));
+                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(tutorId));
             return allStudents;
         }
 
@@ -133,13 +133,13 @@ namespace Mhotivo.ParentSite.Controllers
             return StudentRepository.GetById(studentId).FirstName;
         }
 
-        public static long GetParentId()
+        public static long GetTutorId()
         {
             var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {
-                if (p is Parent)
+                if (p is Tutor)
                     id = p.Id;
             }
             return id;

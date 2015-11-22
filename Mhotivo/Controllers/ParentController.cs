@@ -12,21 +12,21 @@ using PagedList;
 
 namespace Mhotivo.Controllers
 {
-    public class ParentController : Controller
+    public class TutorController : Controller
     {
         private readonly IContactInformationRepository _contactInformationRepository;
         private readonly IPasswordGenerationService _passwordGenerationService;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly IUserRepository _userRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IRoleRepository _roleRepository;
 
-        public ParentController(IParentRepository parentRepository,
+        public TutorController(ITutorRepository tutorRepository,
             IContactInformationRepository contactInformationRepository,
             IUserRepository userRepository, IPasswordGenerationService passwordGenerationService,
             IRoleRepository roleRepository)
         {
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
             _passwordGenerationService = passwordGenerationService;
@@ -38,7 +38,7 @@ namespace Mhotivo.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var allParents = _parentRepository.GetAllParents();
+            var allTutors = _tutorRepository.GetAllTutors();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.IdNumberSortParm = sortOrder == "IdNumber" ? "idNumber_desc" : "IdNumber";
@@ -52,28 +52,28 @@ namespace Mhotivo.Controllers
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                allParents = _parentRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+                allTutors = _tutorRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
             }
-            var allParentDisplaysModel = allParents.Select(Mapper.Map<Parent, ParentDisplayModel>).ToList();
+            var allTutorDisplaysModel = allTutors.Select(Mapper.Map<Tutor, TutorDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
                 case "name_desc":
-                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
+                    allTutorDisplaysModel = allTutorDisplaysModel.OrderByDescending(s => s.FullName).ToList();
                     break;
                 case "IdNumber":
-                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.IdNumber).ToList();
+                    allTutorDisplaysModel = allTutorDisplaysModel.OrderBy(s => s.IdNumber).ToList();
                     break;
                 case "idNumber_desc":
-                    allParentDisplaysModel = allParentDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
+                    allTutorDisplaysModel = allTutorDisplaysModel.OrderByDescending(s => s.IdNumber).ToList();
                     break;
                 default:  // Name ascending 
-                    allParentDisplaysModel = allParentDisplaysModel.OrderBy(s => s.FullName).ToList();
+                    allTutorDisplaysModel = allTutorDisplaysModel.OrderBy(s => s.FullName).ToList();
                     break;
             }
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
-            return View(allParentDisplaysModel.ToPagedList(pageNumber, pageSize));
+            return View(allTutorDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
          [AuthorizeAdmin]
@@ -86,7 +86,7 @@ namespace Mhotivo.Controllers
                                          Value = thisContactInformation.Value,
                                          Id = thisContactInformation.Id,
                                          People = thisContactInformation.People,
-                                         Controller = "Parent"
+                                         Controller = "Tutor"
                                      };
             return View("ContactEdit", contactInformation);
         }
@@ -94,15 +94,15 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Edit(long id)
         {
-            var parent = _parentRepository.GetById(id);
-            var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.MyGender = parent.MyGender.ToString("G").Substring(0, 1);
-            return View("Edit", parentModel);
+            var tutor = _tutorRepository.GetById(id);
+            var tutorModel = Mapper.Map<Tutor, TutorEditModel>(tutor);
+            tutorModel.MyGender = tutor.MyGender.ToString("G").Substring(0, 1);
+            return View("Edit", tutorModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Edit(ParentEditModel modelParent)
+        public ActionResult Edit(TutorEditModel modelTutor)
         {
             var validImageTypes = new []
             {
@@ -111,9 +111,9 @@ namespace Mhotivo.Controllers
                 "image/pjpeg",
                 "image/png"
             };
-            if (modelParent.UploadPhoto != null && modelParent.UploadPhoto.ContentLength > 0)
+            if (modelTutor.UploadPhoto != null && modelTutor.UploadPhoto.ContentLength > 0)
             {
-                if (!validImageTypes.Contains(modelParent.UploadPhoto.ContentType))
+                if (!validImageTypes.Contains(modelTutor.UploadPhoto.ContentType))
                 {
                     ModelState.AddModelError("UploadPhoto", "Por favor seleccione entre una imagen GIF, JPG o PNG");
                 }
@@ -123,37 +123,37 @@ namespace Mhotivo.Controllers
                 try
                 {
                     byte[] fileBytes = null;
-                    if (modelParent.UploadPhoto != null)
+                    if (modelTutor.UploadPhoto != null)
                     {
-                        using (var binaryReader = new BinaryReader(modelParent.UploadPhoto.InputStream))
+                        using (var binaryReader = new BinaryReader(modelTutor.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelParent.UploadPhoto.ContentLength);
+                            fileBytes = binaryReader.ReadBytes(modelTutor.UploadPhoto.ContentLength);
                         }
                     }
-                    var myParent = _parentRepository.GetById(modelParent.Id);
-                    Mapper.Map(modelParent, myParent);
-                    myParent.Photo = fileBytes ?? myParent.Photo;
-                    _parentRepository.Update(myParent);
-                    const string title = "Padre o Tutor Actualizado";
-                    var content = "El Padre o Tutor " + myParent.FullName + " ha sido actualizado exitosamente.";
+                    var myTutor = _tutorRepository.GetById(modelTutor.Id);
+                    Mapper.Map(modelTutor, myTutor);
+                    myTutor.Photo = fileBytes ?? myTutor.Photo;
+                    _tutorRepository.Update(myTutor);
+                    const string title = "Tutor o Tutor Actualizado";
+                    var content = "El Tutor o Tutor " + myTutor.FullName + " ha sido actualizado exitosamente.";
                     _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
                     return RedirectToAction("Index");
                 }
                 catch
                 {
-                    return View(modelParent);
+                    return View(modelTutor);
                 }
             }
-            return View(modelParent);
+            return View(modelTutor);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            Parent parent = _parentRepository.Delete(id);
-            const string title = "Padre o Tutor Eliminado";
-            var content = "El Padre o Tutor " + parent.FullName + " ha sido eliminado exitosamente.";
+            Tutor tutor = _tutorRepository.Delete(id);
+            const string title = "Tutor o Tutor Eliminado";
+            var content = "El Tutor o Tutor " + tutor.FullName + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
         }
@@ -164,7 +164,7 @@ namespace Mhotivo.Controllers
             var model = new ContactInformationRegisterModel
                         {
                             Id = id,
-                            Controller = "Parent"
+                            Controller = "Tutor"
                         };
             return View("ContactAdd", model);
         }
@@ -172,40 +172,40 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Create()
         {
-            var modelRegister = new ParentRegisterModel();
+            var modelRegister = new TutorRegisterModel();
             return View(modelRegister);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult Create(ParentRegisterModel modelParent)
+        public ActionResult Create(TutorRegisterModel modelTutor)
         {
-            var parentModel = Mapper.Map<ParentRegisterModel, Parent>(modelParent);
-            if (_parentRepository.Filter(x => x.IdNumber == modelParent.IdNumber).Any())
+            var tutorModel = Mapper.Map<TutorRegisterModel, Tutor>(modelTutor);
+            if (_tutorRepository.Filter(x => x.IdNumber == modelTutor.IdNumber).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe el numero de Identidad ya existe", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            if (_parentRepository.Filter(x => x.User.Email == modelParent.Email).Any())
+            if (_tutorRepository.Filter(x => x.User.Email == modelTutor.Email).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
             var newUser = new User
             {
-                UserOwner = parentModel,
-                Email = modelParent.Email,
+                UserOwner = tutorModel,
+                Email = modelTutor.Email,
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
+                Role = _roleRepository.Filter(x => x.Name == "Tutor").FirstOrDefault()
             };
             newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
-            parentModel.User = newUser;
-             _parentRepository.Create(parentModel);
-            const string title = "Padre o Tutor Agregado";
-            var content = "El Padre o Tutor " + parentModel.FullName + " ha sido agregado exitosamente.";
+            tutorModel.User = newUser;
+             _tutorRepository.Create(tutorModel);
+            const string title = "Tutor o Tutor Agregado";
+            var content = "El Tutor o Tutor " + tutorModel.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -213,32 +213,32 @@ namespace Mhotivo.Controllers
          [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
-            var parent = _parentRepository.GetById(id);
-            var parentModel = Mapper.Map<Parent, ParentDisplayModel>(parent);
-            parentModel.MyGender = parent.MyGender.ToString("G");
-            return View("Details", parentModel);
+            var tutor = _tutorRepository.GetById(id);
+            var tutorModel = Mapper.Map<Tutor, TutorDisplayModel>(tutor);
+            tutorModel.MyGender = tutor.MyGender.ToString("G");
+            return View("Details", tutorModel);
         }
 
          [AuthorizeAdmin]
         public ActionResult DetailsEdit(long id)
         {
-            var parent = _parentRepository.GetById(id);
-            var parentModel = Mapper.Map<Parent, ParentEditModel>(parent);
-            parentModel.MyGender = parent.MyGender.ToString("G");
-            return View("DetailsEdit", parentModel);
+            var tutor = _tutorRepository.GetById(id);
+            var tutorModel = Mapper.Map<Tutor, TutorEditModel>(tutor);
+            tutorModel.MyGender = tutor.MyGender.ToString("G");
+            return View("DetailsEdit", tutorModel);
         }
 
         [HttpPost]
         [AuthorizeAdmin]
-        public ActionResult DetailsEdit(ParentEditModel modelParent)
+        public ActionResult DetailsEdit(TutorEditModel modelTutor)
         {
-            var myParent = _parentRepository.GetById(modelParent.Id);
-            Mapper.Map(modelParent, myParent);
-            _parentRepository.Update(myParent);
-            const string title = "Padre o Tutor Actualizado";
-            var content = "El Padre o Tutor " + myParent.FullName + " ha sido actualizado exitosamente.";
+            var myTutor = _tutorRepository.GetById(modelTutor.Id);
+            Mapper.Map(modelTutor, myTutor);
+            _tutorRepository.Update(myTutor);
+            const string title = "Tutor o Tutor Actualizado";
+            var content = "El Tutor o Tutor " + myTutor.FullName + " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Details/" + modelParent.Id);
+            return RedirectToAction("Details/" + modelTutor.Id);
         }
     }
 }
