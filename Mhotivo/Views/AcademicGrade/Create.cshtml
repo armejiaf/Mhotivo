@@ -1,0 +1,79 @@
+﻿@model Mhotivo.Models.AcademicGradeRegisterModel
+
+@{
+    Layout = null;
+}
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<div id="body" class="modal-body" style="max-height: 500px;">
+    @using (Html.BeginForm("Add", "AcademicGrade", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <h2>Agregar Grado Académico</h2>
+
+            @Html.HiddenFor(model => model.AcademicYear)
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Grade)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("Grade", (SelectList)ViewBag.Grades)
+                    @Html.ValidationMessageFor(model => model.Grade)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Section)
+                </div>
+                <div class="controls">
+                    @Html.EditorFor(model => model.Section)
+                    @Html.ValidationMessageFor(model => model.Section)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.ActivePensum)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("ActivePensum", (List<SelectListItem>)ViewBag.Pensums)
+                    @Html.ValidationMessageFor(model => model.ActivePensum)
+                </div>
+            </div>
+
+            <div class="space"></div>
+
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-small">
+                    <i class="icon-remove"></i>
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-small btn-primary">
+                    <i class="icon-ok"></i>
+                    Crear
+                </button>
+            </div>
+        </fieldset>
+    }
+</div>
+<script type="text/javascript">
+    $('#Grade').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("GetPensumsForGrade")',
+            cache: false,
+            type: 'POST',
+            data: $('form').serialize(),
+            datatype: "json",
+            success: function (data) {
+                $('#ActivePensum').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#ActivePensum').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>

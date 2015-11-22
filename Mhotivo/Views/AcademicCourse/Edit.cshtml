@@ -23,7 +23,6 @@
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Schedule)
-                @Html.ValidationMessageFor(model => model.Course)
                 @Html.ValidationMessageFor(model => model.Teacher)
             </p>
 
@@ -32,27 +31,7 @@
                     @Html.DisplayNameFor(model => model.Schedule)
                 </div>
                 <div class="controls">
-                    <script type="text/javascript">
-                        $(document).ready(function () {
-                            $('.date-picker').datepicker().on('changeDate', function () {
-                                $(this).datepicker('hide');
-                            });
-                        });
-                    </script>
-
-                    @Html.TextBoxFor(model => model.Schedule, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
-                    <span class="add-on">
-                        <i class="icon-calendar"></i>
-                    </span>
-                </div>
-            </div>
-            
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.DisplayNameFor(model => model.Course)
-                </div>
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.Course, new SelectList(ViewBag.CourseId, "Value", "Text"), "  -- Curso --")
+                    @Html.EditorFor(model => model.Schedule)
                 </div>
             </div>
             

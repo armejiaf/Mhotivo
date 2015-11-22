@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.Office.Interop.Excel;
 
 namespace Mhotivo.Models
 {
@@ -46,6 +45,11 @@ namespace Mhotivo.Models
 
         [Display(Name = "Pensum a usarse")]
         public long ActivePensum { get; set; }
+    }
+
+    public class AcademicGradeTeacherAssignModel
+    {
+        public long Id { get; set; }
 
         [Display(Name = "Maestro de Grado")]
         public long SectionTeacher { get; set; }

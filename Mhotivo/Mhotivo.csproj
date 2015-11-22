@@ -177,6 +177,7 @@
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicCourseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />
@@ -223,7 +224,6 @@
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.css" />
-    <Content Include="Content\Login\login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\summernote-bs3.css" />
     <Content Include="Content\summernote.css" />
@@ -480,7 +480,6 @@
     <Content Include="Views\Teacher\Edit.cshtml" />
     <Content Include="Views\Enroll\Index.cshtml" />
     <Content Include="Views\Enroll\Create.cshtml" />
-    <Content Include="Views\AcademicYear\SelectNewTeacher.cshtml" />
     <Content Include="Views\Grade\Create.cshtml" />
     <Content Include="Views\Grade\Details.cshtml" />
     <Content Include="Views\Grade\DetailsEdit.cshtml" />
@@ -513,6 +512,12 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\EducationLevel\EditDirector.cshtml" />
     <Content Include="Views\AcademicGrade\Index.cshtml" />
+    <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\Course\Edit.cshtml" />
+    <Content Include="Views\Course\Create.cshtml" />
+    <Content Include="Views\AcademicGrade\Edit.cshtml" />
+    <Content Include="Views\AcademicGrade\Create.cshtml" />
+    <Content Include="Views\AcademicGrade\EditTeacher.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

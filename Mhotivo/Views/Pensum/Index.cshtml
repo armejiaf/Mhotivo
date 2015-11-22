@@ -51,7 +51,7 @@ else
                         <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Pensum/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new {pensumId = item.Id})
+                        @Html.ActionLink("Detalles", "Index", "Course", new {pensumId = item.Id}, null)
                     </td>
                     <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
