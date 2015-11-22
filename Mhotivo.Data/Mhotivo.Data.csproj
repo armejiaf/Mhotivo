@@ -63,7 +63,6 @@
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\ContactInformation.cs" />
     <Compile Include="Entities\Course.cs" />
-    <Compile Include="Entities\Enroll.cs" />
     <Compile Include="Entities\Grade.cs" />
     <Compile Include="Entities\Homework.cs" />
     <Compile Include="Entities\PeopleWithUser.cs" />
@@ -72,7 +71,7 @@
     <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationComment.cs" />
-    <Compile Include="Entities\Parent.cs" />
+    <Compile Include="Entities\Tutor.cs" />
     <Compile Include="Entities\Pensum.cs" />
     <Compile Include="Entities\People.cs" />
     <Compile Include="Entities\Student.cs" />

@@ -142,14 +142,14 @@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.FirstParent, new SelectList(ViewBag.Tutor1Id, "Value", "Text"),"  -- Padre o Tutor --")
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.FirstParent)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.FirstParent)</p>
+        @Html.DropDownListFor(model => model.FirstTutor, new SelectList(ViewBag.Tutor1Id, "Value", "Text"),"  -- Tutor o Tutor --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.FirstTutor)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.FirstTutor)</p>
     </div>
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.SecondParent, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Madre o Tutor --")
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.SecondParent)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.SecondParent)</p>
+        @Html.DropDownListFor(model => model.SecondTutor, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Madre o Tutor --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.SecondTutor)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.SecondTutor)</p>
     </div>
     <br style="clear: left;" />
     <br style="clear: left;" />

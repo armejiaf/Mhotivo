@@ -15,15 +15,15 @@ namespace Mhotivo.Controllers
     public class StudentController : Controller
     {
         private readonly IContactInformationRepository _contactInformationRepository;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
 
-        public StudentController(IStudentRepository studentRepository, IParentRepository parentRepository,
+        public StudentController(IStudentRepository studentRepository, ITutorRepository tutorRepository,
             IContactInformationRepository contactInformationRepository)
         {
             _studentRepository = studentRepository;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _contactInformationRepository = contactInformationRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
@@ -54,12 +54,6 @@ namespace Mhotivo.Controllers
             {
                 case "name_desc":
                     allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.FullName).ToList();
-                    break;
-                case "Date":
-                    allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.StartDate).ToList();
-                    break;
-                case "date_desc":
-                    allStudentDisplaysModel = allStudentDisplaysModel.OrderByDescending(s => s.StartDate).ToList();
                     break;
                 default:  // Name ascending 
                     allStudentDisplaysModel = allStudentDisplaysModel.OrderBy(s => s.FullName).ToList();
@@ -92,16 +86,10 @@ namespace Mhotivo.Controllers
         {
             var student = _studentRepository.GetById(id);
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
-            studentModel.FirstParent = student.Tutor1.Id;
-            if (student.Tutor2 != null)
-                studentModel.SecondParent = student.Tutor2.Id;
-            ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
-                studentModel.Tutor1.Id);
-            if (studentModel.Tutor2 == null)
-                studentModel.Tutor2 = new Parent();
-            ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
-                studentModel.Tutor2.Id);
-            studentModel.MyGender = student.MyGender.ToString("G").Substring(0, 1);
+            ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",
+                studentModel.Tutor1);
+            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",
+                studentModel.Tutor2);
             return View("Edit", studentModel);
         }
 
@@ -134,10 +122,6 @@ namespace Mhotivo.Controllers
                             fileBytes = binaryReader.ReadBytes(modelStudent.FilePicture.ContentLength);
                         }
                     }
-                    if (modelStudent.Tutor1 == null)
-                        modelStudent.Tutor1 = myStudent.Tutor1;
-                    if (modelStudent.Tutor2 == null)
-                        modelStudent.Tutor2 = myStudent.Tutor2;
                     Mapper.Map(modelStudent, myStudent);
                     myStudent.Photo = fileBytes ?? myStudent.Photo;
                     _studentRepository.Update(myStudent);
@@ -148,18 +132,10 @@ namespace Mhotivo.Controllers
                 }
                 catch
                 {
-                    modelStudent.MyGender = myStudent.MyGender.ToString("G").Substring(0, 1);
-                    modelStudent.FirstParent = myStudent.Tutor1.Id;
-                    modelStudent.Tutor1 = myStudent.Tutor1;
-                    modelStudent.Tutor2 = myStudent.Tutor2;
-                    if (myStudent.Tutor2 != null)
-                        modelStudent.SecondParent = myStudent.Tutor2.Id;
-                    ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
-                        modelStudent.Tutor1.Id);
-                    if (modelStudent.Tutor2 == null)
-                        modelStudent.Tutor2 = new Parent();
-                    ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",
-                        modelStudent.Tutor2.Id);
+                    ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",
+                        modelStudent.Tutor1);
+                    ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",
+                        modelStudent.Tutor2);
                     return View(modelStudent);
                 }
         }
@@ -191,8 +167,8 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
-            ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",0);
-            ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",0);
+            ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",0);
+            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",0);
             return View("Create");
         }
 
@@ -201,8 +177,6 @@ namespace Mhotivo.Controllers
         public ActionResult Add(StudentRegisterModel modelStudent)
         {
             var studentModel = Mapper.Map<StudentRegisterModel, Student>(modelStudent);
-            studentModel.Tutor1 = _parentRepository.GetById(modelStudent.FirstParent);
-            studentModel.Tutor2 = _parentRepository.GetById(modelStudent.SecondParent);
             _studentRepository.Create(studentModel);
             const string title = "Estudiante Agregado";
             var content = "El estudiante " + studentModel.FullName + " ha sido agregado exitosamente.";
@@ -232,8 +206,8 @@ namespace Mhotivo.Controllers
         {
             var student = _studentRepository.GetById(id);
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
-            ViewBag.Tutor1Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName",studentModel.Tutor1.Id);
-            ViewBag.Tutor2Id = new SelectList(_parentRepository.Query(x => x), "Id", "FullName", studentModel.Tutor2.Id);
+            ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName",studentModel.Tutor1);
+            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x), "Id", "FullName", studentModel.Tutor2);
             return View("DetailsEdit", studentModel);
         }
 
@@ -242,8 +216,6 @@ namespace Mhotivo.Controllers
         public ActionResult DetailsEdit(StudentEditModel modelStudent)
         {
             var myStudent = _studentRepository.GetById(modelStudent.Id);
-            modelStudent.Tutor1 = _parentRepository.GetById(modelStudent.Tutor1.Id);
-            modelStudent.Tutor2 = _parentRepository.GetById(modelStudent.Tutor2.Id);
             Mapper.Map(modelStudent, myStudent);
             _studentRepository.Update(myStudent);
             const string title = "Estudiante Actualizado";

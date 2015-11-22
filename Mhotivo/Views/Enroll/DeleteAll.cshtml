@@ -13,7 +13,7 @@
                 @Html.DisplayNameFor(model => model.Grade)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.Grade, new SelectList(ViewBag.GradeId, "Value", "Text"), " -- Grado --")
+                @Html.DropDownListFor(model => model.Grade, (SelectList)ViewBag.Grades, " -- Grado --")
             </div>
         </div>
         
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.AcademicGrade)
             </div>
             <div class="controls">
-                @Html.DropDownListFor(model => model.AcademicGrade, (SelectList)ViewBag.Section, "  -- Seccion --")
+                @Html.DropDownListFor(model => model.AcademicGrade, (List<SelectListItem>)ViewBag.Sections, "  -- Seccion --")
             </div>
         </div>
 

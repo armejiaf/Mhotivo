@@ -33,25 +33,28 @@
                 @Html.DropDownList("Id")
             </div>
         </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Grade)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("GradeId")
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.AcademicGrade)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("Section")
-            </div>
-        </div>
+        @{
+            if (Model.Id == -1)
+            {
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.Grade)
+                    </div>
+                    <div class="controls">
+                        @Html.DropDownList("Grades")
+                    </div>
+                </div>
 
+                    <div class="control-group">
+                        <div class="control-label">
+                            @Html.LabelFor(model => model.AcademicGrade)
+                        </div>
+                        <div class="controls">
+                            @Html.DropDownList("Sections")
+                        </div>
+                    </div>
+            }
+        }
         <div class="space"></div>
 
         <div class="modal-footer">
@@ -67,5 +70,4 @@
         </div>
     </fieldset>
 }
-
 </div>

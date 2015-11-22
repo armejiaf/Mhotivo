@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.ImportDataModel
+﻿@model Mhotivo.Models.DataImportModel
 @{
     ViewBag.Title = "Importar Datos";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -27,7 +27,7 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-@using (Html.BeginForm("Index", "ImportData", FormMethod.Post, new {id = "Form", @class = "form-horizontal", @Style = "margin:0;", enctype = "multipart/form-data", method = "post"}))
+@using (Html.BeginForm("Index", "DataImport", FormMethod.Post, new {id = "Form", @class = "form-horizontal", @Style = "margin:0;", enctype = "multipart/form-data", method = "post"}))
 {
     @Html.ValidationSummary(true)
     <h2>Importar Datos</h2>
@@ -45,9 +45,9 @@
     </div>
     <br style="clear: left;" />
     <div style="float: left; width: 250px;" id="gradeList">
-        @Html.DropDownList("GradeImport", new SelectList(ViewBag.GradeId, "Value", "Text"), "  -- Grado --")
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.GradeImport)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.GradeImport)</p>
+        @Html.DropDownList("Grade", (SelectList)ViewBag.GradeId, "  -- Grado --")
+        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Grade)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Grade)</p>
     </div>
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">

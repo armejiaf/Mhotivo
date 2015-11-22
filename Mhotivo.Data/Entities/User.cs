@@ -7,15 +7,6 @@ using System.Text;
 
 namespace Mhotivo.Data.Entities
 {
-    //public enum Roles
-    //{
-    //    Invalid = -1,
-    //    Padre = 1,
-    //    Maestro = 2,
-    //    Director = 3,
-    //    Administrador = 4
-    //}
-
     public class User
     {
         public User()
@@ -23,10 +14,9 @@ namespace Mhotivo.Data.Entities
             Notifications = new HashSet<Notification>();
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, ForeignKey("UserOwner")]
         public long Id { get; set; }
-        public virtual People UserOwner { get; set; }
+        public virtual PeopleWithUser UserOwner { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string DefaultPassword { get; set; }

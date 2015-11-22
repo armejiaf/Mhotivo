@@ -25,14 +25,12 @@ namespace Mhotivo.Data.Entities
         public string LastName { get; set; }
         public string FullName { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Nationality { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string Country { get; set; }
         public string Address { get; set; }
         public Byte[] Photo { get; set; }
         public Gender MyGender { get; set; }
-        public bool Disable { get; set; }
+        public bool IsActive { get; set; }
         public virtual ICollection<ContactInformation> ContactInformation { get; set; }
     }
 }

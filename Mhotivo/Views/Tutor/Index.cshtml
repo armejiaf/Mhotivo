@@ -1,6 +1,6 @@
-﻿@*model IEnumerable<Mhotivo.Models.DisplayParentModel>*@
+﻿@*model IEnumerable<Mhotivo.Models.DisplayTutorModel>*@
 @using System.Web.Mvc.Html
-@model PagedList.IPagedList<Mhotivo.Models.ParentDisplayModel>
+@model PagedList.IPagedList<Mhotivo.Models.TutorDisplayModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -11,11 +11,11 @@
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-<h2>Padres Registrados</h2>
+<h2>Tutores Registrados</h2>
 
-<a class="toAdd" data-toggle="modal" role="button" data-id="Parent/Create"><span class="btn btn-small btn-primary">Agregar Padres y Tutores</span></a>
+<a class="toAdd" data-toggle="modal" role="button" data-id="Tutor/Create"><span class="btn btn-small btn-primary">Agregar Tutores y Tutores</span></a>
 <div class="space"></div>
-    @using (Html.BeginForm("Index", "Parent", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Index", "Tutor", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
     <p>
         Buscar por Nombre: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
@@ -38,10 +38,8 @@ else
 		        <th>@Html.DisplayNameFor(model => model.First().Photo)</th>
                 <th>@Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.ActionLink("Numero de Identidad", "Index", new { sortOrder = ViewBag.IdNumberSortParm }) </th>
-				<th>@Html.DisplayNameFor(model => model.First().Address)</th>
 				<th>@Html.DisplayNameFor(model => model.First().City)</th>
 				<th>@Html.DisplayNameFor(model => model.First().State)</th>
-				<th>@Html.DisplayNameFor(model => model.First().Country)</th>
                 <th></th>
 		    </tr>
 	    </thead>
@@ -49,7 +47,7 @@ else
         
             @foreach (var item in Model) {
                 <tr>
-                    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
+                    <td data-id="Tutor/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">
                             <div id="Photo">
                                 @Html.ValidationSummary(true)
                                 @{
@@ -65,16 +63,14 @@ else
                             <div class="text">
 							</div>
                     </td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.FullName)</td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.IdNumber)</td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Address)</td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.City)</td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.State)</td>
-				    <td data-id="Parent/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">@Html.DisplayFor(modelItem => item.Country)</td>
+				    <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+				    <td>@Html.DisplayFor(modelItem => item.IdNumber)</td>
+				    <td>@Html.DisplayFor(modelItem => item.City)</td>
+				    <td>@Html.DisplayFor(modelItem => item.State)</td>
                     <td>
-                        <a href="~/Parent/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                        <a href="~/Tutor/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         @*<a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>*@
-                        @using (Html.BeginForm("Delete", "Parent", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
+                        @using (Html.BeginForm("Delete", "Tutor", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
                             new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                                value="¿Realmente desea eliminar el registro de @Html.DisplayFor(modelItem => item.FullName)?" />

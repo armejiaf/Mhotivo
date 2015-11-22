@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
@@ -19,17 +18,16 @@ namespace Mhotivo.ParentSite.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
         public static IStudentRepository StudentRepository;
-        public static IEnrollRepository EnrollsRepository;
         private readonly ISessionManagementService _sessionManagementService;
         public static ISecurityService SecurityService;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         public static List<long> StudentsId;
 
         public HomeworkController(IHomeworkRepository homeworkRepository,
             IAcademicCourseRepository academicCourseRepository, IAcademicYearRepository academicYearRepository,
             IGradeRepository gradeRepository, ICourseRepository courseRepository, IStudentRepository studentRepository,
-            IEnrollRepository enrollsRepository, ISessionManagementService sessionManagementService,
-            ISecurityService securityService, IParentRepository parentRepository)
+            ISessionManagementService sessionManagementService,
+            ISecurityService securityService, ITutorRepository tutorRepository)
         {
             _homeworkRepository = homeworkRepository;
             _academicYearRepository = academicYearRepository;
@@ -37,20 +35,19 @@ namespace Mhotivo.ParentSite.Controllers
             _courseRepository = courseRepository;
             _academicCourseRepository = academicCourseRepository;
             StudentRepository = studentRepository;
-            EnrollsRepository = enrollsRepository;
             _sessionManagementService = sessionManagementService;
             SecurityService = securityService;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
         }
 
         public ActionResult Index(string param, string student, string date)
         {
-            var students = GetAllStudents(GetParentId());
+            var students = GetAllStudents(GetTutorId());
             StudentsId = GetAllStudentsId(students);
-            var enrolls = new List<Enroll>();
-            enrolls.AddRange(GetAllEnrolls(StudentsId));
-            if (student != null)
-                enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
+           // var enrolls = new List<Enroll>();
+            //enrolls.AddRange(GetAllEnrolls(StudentsId));
+            //if (student != null)
+            //    enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
             var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
             switch (date)
             {
@@ -71,10 +68,10 @@ namespace Mhotivo.ParentSite.Controllers
 
             var mappedHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
             var allHomeworksModel = new List<HomeworkModel>();
-            foreach (var enroll in enrolls)
-            {
-                allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
-            }
+            //foreach (var enroll in enrolls)
+            //{
+            //    allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
+            //}
 
             if (param != null)
                 allHomeworksModel =
@@ -94,38 +91,19 @@ namespace Mhotivo.ParentSite.Controllers
             return studentsId;
         }
 
-        public static IEnumerable<Student> GetAllStudents(long parentId)
+        public static IEnumerable<Student> GetAllStudents(long tutorId)
         {
             IEnumerable<Student> allStudents =
-                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(parentId));
+                StudentRepository.GetAllStudents().Where(x => x.Tutor1.Id.Equals(tutorId));
             return allStudents;
         }
 
-        public static IEnumerable<Enroll> GetAllEnrolls(long studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.Student.Id == studentId);
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetAllEnrolls(List<long> studentId)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => studentId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
-
-        public static IEnumerable<Enroll> GetEnrollsbyAcademicYear(long academicyear)
-        {
-            IEnumerable<Enroll> allEnrolls =
-                EnrollsRepository.GetAllsEnrolls().Where(x => x.AcademicGrade.AcademicYear.Id == academicyear && StudentsId.Contains(x.Student.Id));
-            return allEnrolls;
-        }
 
         public static List<string> GetStudentName(long academicyearId)
         {
-            var enroll = GetEnrollsbyAcademicYear(academicyearId);
-            return enroll.Select(e => e.Student.FirstName).ToList();
+            //var enroll = GetEnrollsbyAcademicYear(academicyearId);
+            //return enroll.Select(e => e.Student.FirstName).ToList();
+            return null;
         }
 
         public static string GetStudenById(long studentId)
@@ -133,13 +111,13 @@ namespace Mhotivo.ParentSite.Controllers
             return StudentRepository.GetById(studentId).FirstName;
         }
 
-        public static long GetParentId()
+        public static long GetTutorId()
         {
             var people = SecurityService.GetUserLoggedPeoples();
             long id = 0;
             foreach (var p in people)
             {
-                if (p is Parent)
+                if (p is Tutor)
                     id = p.Id;
             }
             return id;

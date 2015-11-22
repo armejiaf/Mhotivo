@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
@@ -27,7 +29,7 @@ namespace Mhotivo
             MapNotificationCommentModels();
             MapPensumModels();
             MapUserModels();
-            MapParentModels();
+            MapTutorModels();
             MapStudentModels();
             MapTeacherModels();
         }
@@ -124,32 +126,7 @@ namespace Mhotivo
 
         private static void MapEnrollModels()
         {
-            //EnrollDeleteModel must not be mapped
-            Mapper.CreateMap<EnrollRegisterModel, Enroll>()
-                .ForMember(p => p.AcademicGrade,
-                    o => o.MapFrom(src => ((IAcademicGradeRepository)DependencyResolver.Current.GetService(
-                        typeof(IAcademicGradeRepository))).GetById(src.AcademicGrade)))
-                .ForMember(p => p.Student,
-                    o => o.MapFrom(src => ((IStudentRepository)DependencyResolver.Current.GetService(
-                        typeof(IStudentRepository))).GetById(src.Student)));
-            Mapper.CreateMap<Enroll, EnrollDisplayModel>()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.Student.FullName))
-                .ForMember(p => p.Photo, o => o.MapFrom(src => src.Student.Photo))
-                .ForMember(p => p.AccountNumber, o => o.MapFrom(src => src.Student.AccountNumber))
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.Student.MyGender.ToString("G")))
-                .ForMember(p => p.Grade, o => o.MapFrom(src => src.AcademicGrade.Grade.Name))
-                .ForMember(p => p.Section, o => o.MapFrom(src => src.AcademicGrade.Section));
-            Mapper.CreateMap<Enroll, EnrollEditModel>()
-                .ForMember(p => p.Grade, o => o.MapFrom(src => src.AcademicGrade.Grade.Id))
-                .ForMember(p => p.AcademicGrade, o => o.MapFrom(src => src.AcademicGrade.Id))
-                .ForMember(p => p.Student, o => o.MapFrom(src => src.Student.Id))
-                .ReverseMap()
-                .ForMember(p => p.AcademicGrade,
-                    o => o.MapFrom(src => ((IAcademicGradeRepository)DependencyResolver.Current.GetService(
-                        typeof(IAcademicGradeRepository))).GetById(src.AcademicGrade)))
-                .ForMember(p => p.Student,
-                    o => o.MapFrom(src => ((IStudentRepository)DependencyResolver.Current.GetService(
-                        typeof(IStudentRepository))).GetById(src.Student)));
+           // Mapper.CreateMap<AcademicGrade, IEnumerable<EnrollDisplayModel>>();
         }
 
         private static void MapGradeModels()
@@ -277,40 +254,34 @@ namespace Mhotivo
         }
 
         //TODO: Not done with the ones below just yet.
-        private static void MapParentModels()
+        private static void MapTutorModels()
         {
-            Mapper.CreateMap<ParentRegisterModel, Parent>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
-            Mapper.CreateMap<Parent, ParentDisplayModel>()
+            Mapper.CreateMap<TutorRegisterModel, Tutor>();
+            Mapper.CreateMap<Tutor, TutorDisplayModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
-            Mapper.CreateMap<Parent, ParentEditModel>()
+            Mapper.CreateMap<Tutor, TutorEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
+                .ReverseMap();
         }
 
         private static void MapStudentModels()
         {
-            Mapper.CreateMap<StudentRegisterModel, Student>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
+            Mapper.CreateMap<StudentRegisterModel, Student>();
             Mapper.CreateMap<Student, StudentDisplayModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
             Mapper.CreateMap<Student, StudentEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
+                .ReverseMap();
         }
 
         private static void MapTeacherModels()
         {
-            Mapper.CreateMap<TeacherRegisterModel, Teacher>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
+            Mapper.CreateMap<TeacherRegisterModel, Teacher>();
             Mapper.CreateMap<Teacher, TeacherDisplayModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
             Mapper.CreateMap<Teacher, TeacherEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => Utilities.DefineGender(src.MyGender)));
+                .ReverseMap();
         }
     }
 }

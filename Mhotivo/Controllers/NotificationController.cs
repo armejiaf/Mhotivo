@@ -22,13 +22,12 @@ namespace Mhotivo.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IPeopleRepository _peopleRepository;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly INotificationRepository _notificationRepository;
-        private readonly IEnrollRepository _enrollRepository;
         private readonly IEducationLevelRepository _areaReporsitory;
         private readonly INotificationHandlerService _notificationHandlerService;
 
@@ -36,8 +35,8 @@ namespace Mhotivo.Controllers
             INotificationRepository notificationRepository, IPeopleRepository peopleRepository,
             ITeacherRepository teacherRepository,
             IAcademicCourseRepository academicCourseRepository, IStudentRepository studentRepository,
-            IParentRepository parentRepository, IGradeRepository gradeRepository,
-            IAcademicYearRepository academicYearRepository, IEnrollRepository enrollRepository,
+            ITutorRepository tutorRepository, IGradeRepository gradeRepository,
+            IAcademicYearRepository academicYearRepository,
             IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicGradeRepository academicGradeRepository)
         {
             _sessionManagement = sessionManagement;
@@ -46,11 +45,10 @@ namespace Mhotivo.Controllers
             _peopleRepository = peopleRepository;
             _teacherRepository = teacherRepository;
             _academicCourseRepository = academicCourseRepository;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
-            _enrollRepository = enrollRepository;
             _areaReporsitory = areaReporsitory;
             _notificationHandlerService = notificationHandlerService;
             _academicGradeRepository = academicGradeRepository;

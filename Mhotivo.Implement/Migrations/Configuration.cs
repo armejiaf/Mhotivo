@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Mhotivo.Implement.Migrations
 {
-    public class Configuration : DbMigrationsConfiguration<MhotivoContext>
+    public sealed class Configuration : DbMigrationsConfiguration<MhotivoContext>
     {
         private IEducationLevelRepository _areaRepository;
         private IGradeRepository _gradeRepository;
@@ -18,9 +18,10 @@ namespace Mhotivo.Implement.Migrations
         private IRoleRepository _roleRepository;
         private IUserRepository _userRepository;
         private ITeacherRepository _teacherRepository;
-        private IParentRepository _parentRepository;
+        private ITutorRepository _tutorRepository;
         private IAcademicGradeRepository _academicGradeRepository;
         private IAcademicCourseRepository _academicCourseRepository;
+        private IPeopleWithUserRepository _peopleWithUserRepository;
 
         public Configuration()
         {
@@ -40,32 +41,31 @@ namespace Mhotivo.Implement.Migrations
             _roleRepository = new RoleRepository(context);
             _userRepository = new UserRepository(context);
             _teacherRepository = new TeacherRepository(context);
-            _parentRepository = new ParentRepository(context);
+            _tutorRepository = new TutorRepository(context);
             _academicGradeRepository = new AcademicGradeRepository(context);
             _academicCourseRepository = new AcademicCourseRepository(context);
+            _peopleWithUserRepository = new PeopleWithUserRepository(context);
 
             _roleRepository.Create(new Role { Name = "Administrador", Id = 0 });
-            _roleRepository.Create(new Role { Name = "Padre", Id = 1 });
+            _roleRepository.Create(new Role { Name = "Tutor", Id = 1 });
             _roleRepository.Create(new Role { Name = "Maestro", Id = 2 });
             _roleRepository.Create(new Role { Name = "Director", Id = 3 });
             _roleRepository.Create(new Role { Name = "Maestro de Seccion", Id = 4 });
-            var adminPeople = new Teacher
+            var adminPeople = new PeopleWithUser
             {
                 Address = "",
                 BirthDate = DateTime.UtcNow,
                 City = "",
-                Country = "",
                 FirstName = "Administrador",
-                Disable = false,
+                IsActive = true,
                 IdNumber = "0000-0000-00000",
                 LastName = "",
                 MyGender = Gender.Masculino,
-                Nationality = "",
                 Photo = null,
                 State = ""
             };
             adminPeople.FullName = adminPeople.FirstName + "" + adminPeople.LastName;
-            adminPeople = _teacherRepository.Create(adminPeople);
+            adminPeople = _peopleWithUserRepository.Create(adminPeople);
             var admin = new User
             {
                 Email = "admin@mhotivo.org",
@@ -76,7 +76,7 @@ namespace Mhotivo.Implement.Migrations
             };
             admin = _userRepository.Create(admin);
             adminPeople.User = admin;
-            _teacherRepository.Update(adminPeople);
+            _peopleWithUserRepository.Update(adminPeople);
             DebuggingSeeder();
         }
 
@@ -122,14 +122,12 @@ namespace Mhotivo.Implement.Migrations
                 Address = "Jardines del Valle, 4 calle, 1 etapa",
                 BirthDate = new DateTime(1993, 3, 8),
                 City = "San Pedro Sula",
-                Country = "Honduras",
-                Disable = false,
+                IsActive = true,
                 FirstName = "Jose",
                 LastName = "Avila",
                 FullName = "Jose Avila",
                 IdNumber = "0501-1993-08405",
                 MyGender = Gender.Masculino,
-                Nationality = "Nacional",
                 State = "Cortes",
             };
             generTeacher = _teacherRepository.Create(generTeacher);
@@ -145,7 +143,7 @@ namespace Mhotivo.Implement.Migrations
             genericTeacher = _userRepository.Create(genericTeacher);
             generTeacher.User = genericTeacher;
             generTeacher = _teacherRepository.Update(generTeacher);
-            var academicYear = new AcademicYear { IsActive = true, Year = 2015 };
+            var academicYear = new AcademicYear { IsActive = true, Year = 2015, EnrollsOpen = true};
             academicYear = _academicYearRepository.Create(academicYear);
             for (int i = 1; i <= 13; i++)
             {
@@ -181,28 +179,59 @@ namespace Mhotivo.Implement.Migrations
                     _academicYearRepository.Update(academicYear);
                 } while (rnd.Next(0, 2) == 0);
             }
-            var generParent = new Parent
+            var generTutor = new Tutor
             {
-                IdNumber = "1234567890",
-                FirstName = "Padre",
+                IdNumber = "0501-1956-03145",
+                FirstName = "Tutor",
                 LastName = "Generico",
-                FullName = "Padre Generico",
-                Disable = false,
+                FullName = "Tutor Generico",
+                IsActive = true,
                 MyGender = Gender.Femenino,
-                BirthDate = new DateTime(1956, 11, 23)
+                BirthDate = new DateTime(1956, 11, 23),
+                Parentage = Parentage.Mother,
+                City = "San Pedro Sula",
+                State = "Cortes",
+                Address = "Jardines del Valle, 4 Calle, 1 Etapa, #9D",
             };
-            generParent = _parentRepository.Create(generParent);
-            var genericParent = new User
+            generTutor = _tutorRepository.Create(generTutor);
+            var genericTutor = new User
             {
-                UserOwner = generParent,
-                Email = "parent@mhotivo.org",
+                UserOwner = generTutor,
+                Email = "tutor@mhotivo.org",
                 Password = "password",
                 IsActive = true,
-                Role = _roleRepository.Filter(x => x.Name == "Padre").FirstOrDefault()
+                Role = _roleRepository.Filter(x => x.Name == "Tutor").FirstOrDefault()
             };
-            genericParent = _userRepository.Create(genericParent);
-            generParent.User = genericParent;
-            _parentRepository.Update(generParent);
+            genericTutor = _userRepository.Create(genericTutor);
+            generTutor.User = genericTutor;
+            _tutorRepository.Update(generTutor);
+
+            var director = new PeopleWithUser
+            {
+                Address = "",
+                BirthDate = DateTime.UtcNow,
+                City = "",
+                FirstName = "Director Generico",
+                IsActive = true,
+                IdNumber = "0000-0000-00000",
+                LastName = "",
+                MyGender = Gender.Masculino,
+                Photo = null,
+                State = "",
+            };
+            director.FullName = director.FirstName + "" + director.LastName;
+            director = _peopleWithUserRepository.Create(director);
+            var dir = new User
+            {
+                Email = "director@mhotivo.org",
+                Password = "password",
+                IsActive = true,
+                UserOwner = director,
+                Role = _roleRepository.Filter(x => x.Name == "Director").FirstOrDefault()
+            };
+            dir = _userRepository.Create(dir);
+            director.User = dir;
+            _peopleWithUserRepository.Update(director);
         }
     }
 }

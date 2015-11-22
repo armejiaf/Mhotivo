@@ -9,8 +9,11 @@ namespace Mhotivo.Models
         [Display(Name = "Año")]
         public int Year { get; set; }
 
-        [Display(Name = "Activo")]
+        [Display(Name = "Activo?")]
         public bool IsActive { get; set; }
+
+        [Display(Name = "Matricula Abierta?")]
+        public bool EnrollsOpen { get; set; }
     }
 
     public class AcademicYearRegisterModel
@@ -30,5 +33,8 @@ namespace Mhotivo.Models
 
         [Display(Name = "Activo")]
         public bool IsActive { get; set; }
+
+        [Display(Name = "Matricula Abierta")]
+        public bool EnrollsOpen { get; set; }
     }
 }

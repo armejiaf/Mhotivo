@@ -11,13 +11,13 @@ namespace Mhotivo.Controllers
     {
         //private readonly ISessionManagement _sessionManagement;
         private readonly ISessionManagementService _sessionManagementService;
-        private readonly IParentRepository _parentRepository;
+        private readonly ITutorRepository _tutorRepository;
         private readonly IUserRepository _userRepository;
 
-        public AccountController(ISessionManagementService sessionManagementService, IParentRepository parentRepository, IUserRepository userRepository)
+        public AccountController(ISessionManagementService sessionManagementService, ITutorRepository tutorRepository, IUserRepository userRepository)
         {
             _sessionManagementService = sessionManagementService;
-            _parentRepository = parentRepository;
+            _tutorRepository = tutorRepository;
             _userRepository = userRepository;
         }
 
@@ -35,8 +35,8 @@ namespace Mhotivo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            var parent = _parentRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
-            if (parent == null)
+            var tutor = _tutorRepository.Filter(y => y.User.Email == model.UserEmail).FirstOrDefault();
+            if (tutor == null)
             {
                 if (_sessionManagementService.LogIn(model.UserEmail, model.Password, model.RememberMe))
                 {

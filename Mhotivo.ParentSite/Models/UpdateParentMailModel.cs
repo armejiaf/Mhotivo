@@ -2,7 +2,7 @@
 
 namespace Mhotivo.ParentSite.Models
 {
-    public class UpdateParentMailModel
+    public class UpdateTutorMailModel
     {
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }

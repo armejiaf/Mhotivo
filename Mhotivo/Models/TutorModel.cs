@@ -1,11 +1,12 @@
-﻿using Mhotivo.Data.Entities;
+﻿using System;
+using Mhotivo.Data.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace Mhotivo.Models
 {
-    public class ParentDisplayModel
+    public class TutorDisplayModel
     {
         public long Id { get; set; }
 
@@ -26,12 +27,6 @@ namespace Mhotivo.Models
         [Display(Name = "Numero de Identidad")]
         public string IdNumber { get; set; }
 
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
-
-        [Display(Name = "País")]
-        public string Country { get; set; }
-
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
@@ -48,7 +43,7 @@ namespace Mhotivo.Models
         public string MyGender { get; set; }
     }
 
-    public class ParentEditModel
+    public class TutorEditModel
     {
         public long Id { get; set; }
 
@@ -76,11 +71,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
-        public string BirthDate { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Nacionalidad")]
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -90,10 +81,6 @@ namespace Mhotivo.Models
         [Display(Name = "Estado")]
         public string State { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar País")]
-        [Display(Name = "País")]
-        public string Country { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Dirección")]
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
@@ -101,10 +88,10 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string MyGender { get; set; }
+        public Gender MyGender { get; set; }
     }
 
-    public class ParentRegisterModel
+    public class TutorRegisterModel
     {
         public string FullName { get; set; }
 
@@ -127,11 +114,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
-        public string BirthDate { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Nacionalidad")]
-        [Display(Name = "Nacionalidad")]
-        public string Nationality { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -142,13 +125,9 @@ namespace Mhotivo.Models
         [Display(Name = "Correo Electronico")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Estado")]
-        [Display(Name = "Estado")]
+        [Required(ErrorMessage = "Debe Ingresar Estado o Departamento")]
+        [Display(Name = "Estado o Departamento")]
         public string State { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar País")]
-        [Display(Name = "País")]
-        public string Country { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Dirección")]
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
@@ -157,6 +136,6 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
-        public string MyGender { get; set; }
+        public Gender MyGender { get; set; }
     }
 }

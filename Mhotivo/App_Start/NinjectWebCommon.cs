@@ -66,10 +66,9 @@ namespace Mhotivo
             kernel.Bind<IContactInformationRepository>().To<ContactInformationRepository>().InRequestScope();
             kernel.Bind<ICourseRepository>().To<CourseRepository>().InRequestScope();
             kernel.Bind<INotificationRepository>().To<NotificationRepository>().InRequestScope();
-            kernel.Bind<IEnrollRepository>().To<EnrollRepository>().InRequestScope();
             kernel.Bind<IGradeRepository>().To<GradeRepository>().InRequestScope();
             kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
-            kernel.Bind<IParentRepository>().To<ParentRepository>().InRequestScope();
+            kernel.Bind<ITutorRepository>().To<TutorRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();

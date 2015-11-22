@@ -9,11 +9,24 @@ namespace Mhotivo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute( // this route must be declared first, before the one below it
+                 "GeneralEnrolls",
+                 "Enrolls/Index/",
+                 new
+                 {
+                     controller = "Enrolls",
+                     action = "Index",
+                 });
+
             routes.MapRoute(
-                name: "AcademicYear_ChangeTeacher",
-                url: "AcademicYear/ChangeTeacher/{id}/{teacherId}",
-                defaults: new { controller = "AcademicYear", action = "ChangeTeacher" }
-            );
+                 "GeneralEnrollsFromAcademicGrades",
+                 "Enrolls/Index/{gradeId}",
+                 new
+                 {
+                     controller = "Enrolls",
+                     action = "GeneralEnrollsFromAcademicGrades",
+                     gradeId = UrlParameter.Optional
+                 });
 
             routes.MapRoute(
                 name: "Default",
