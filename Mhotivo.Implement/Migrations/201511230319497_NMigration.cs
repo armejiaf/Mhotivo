@@ -145,7 +145,7 @@ namespace Mhotivo.Implement.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AcademicYears", t => t.AcademicYear_Id)
-                .ForeignKey("dbo.Users", t => t.NotificationCreator_Id)
+                .ForeignKey("dbo.People", t => t.NotificationCreator_Id)
                 .Index(t => t.AcademicYear_Id)
                 .Index(t => t.NotificationCreator_Id);
             
@@ -164,26 +164,6 @@ namespace Mhotivo.Implement.Migrations
                 .ForeignKey("dbo.Notifications", t => t.Notification_Id)
                 .Index(t => t.Commenter_Id)
                 .Index(t => t.Notification_Id);
-            
-            CreateTable(
-                "dbo.Roles",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
-                        Value = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Privileges",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.People",
@@ -231,6 +211,26 @@ namespace Mhotivo.Implement.Migrations
                 .Index(t => t.People_Id);
             
             CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Name = c.String(),
+                        Value = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Privileges",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.Homework",
                 c => new
                     {
@@ -244,6 +244,19 @@ namespace Mhotivo.Implement.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AcademicCourses", t => t.AcademicCourse_Id)
                 .Index(t => t.AcademicCourse_Id);
+            
+            CreateTable(
+                "dbo.NotificationUsers",
+                c => new
+                    {
+                        Notification_Id = c.Long(nullable: false),
+                        User_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Notification_Id, t.User_Id })
+                .ForeignKey("dbo.Notifications", t => t.Notification_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .Index(t => t.Notification_Id)
+                .Index(t => t.User_Id);
             
             CreateTable(
                 "dbo.PrivilegeRoles",
@@ -271,6 +284,12 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.Grades", "EducationLevel_Id", "dbo.EducationLevels");
             DropForeignKey("dbo.EducationLevels", "Director_Id", "dbo.Users");
             DropForeignKey("dbo.Users", "Id", "dbo.People");
+            DropForeignKey("dbo.Users", "Role_Id", "dbo.Roles");
+            DropForeignKey("dbo.PrivilegeRoles", "Role_Id", "dbo.Roles");
+            DropForeignKey("dbo.PrivilegeRoles", "Privilege_Id", "dbo.Privileges");
+            DropForeignKey("dbo.NotificationUsers", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.NotificationUsers", "Notification_Id", "dbo.Notifications");
+            DropForeignKey("dbo.Notifications", "NotificationCreator_Id", "dbo.People");
             DropForeignKey("dbo.AcademicGrades", "SectionTeacher_Id", "dbo.People");
             DropForeignKey("dbo.AcademicCourses", "Teacher_Id", "dbo.People");
             DropForeignKey("dbo.People", "Tutor2_Id", "dbo.People");
@@ -278,10 +297,6 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.People", "MyGrade_Id", "dbo.AcademicGrades");
             DropForeignKey("dbo.Grades", "Student_Id", "dbo.People");
             DropForeignKey("dbo.ContactInformations", "People_Id", "dbo.People");
-            DropForeignKey("dbo.Users", "Role_Id", "dbo.Roles");
-            DropForeignKey("dbo.PrivilegeRoles", "Role_Id", "dbo.Roles");
-            DropForeignKey("dbo.PrivilegeRoles", "Privilege_Id", "dbo.Privileges");
-            DropForeignKey("dbo.Notifications", "NotificationCreator_Id", "dbo.Users");
             DropForeignKey("dbo.NotificationComments", "Notification_Id", "dbo.Notifications");
             DropForeignKey("dbo.NotificationComments", "Commenter_Id", "dbo.Users");
             DropForeignKey("dbo.Notifications", "AcademicYear_Id", "dbo.AcademicYears");
@@ -289,6 +304,8 @@ namespace Mhotivo.Implement.Migrations
             DropForeignKey("dbo.AcademicGrades", "AcademicYear_Id", "dbo.AcademicYears");
             DropIndex("dbo.PrivilegeRoles", new[] { "Role_Id" });
             DropIndex("dbo.PrivilegeRoles", new[] { "Privilege_Id" });
+            DropIndex("dbo.NotificationUsers", new[] { "User_Id" });
+            DropIndex("dbo.NotificationUsers", new[] { "Notification_Id" });
             DropIndex("dbo.Homework", new[] { "AcademicCourse_Id" });
             DropIndex("dbo.ContactInformations", new[] { "People_Id" });
             DropIndex("dbo.People", new[] { "Tutor2_Id" });
@@ -313,11 +330,12 @@ namespace Mhotivo.Implement.Migrations
             DropIndex("dbo.AcademicCourses", new[] { "AcademicGrade_Id" });
             DropIndex("dbo.AcademicCourses", new[] { "Teacher_Id" });
             DropTable("dbo.PrivilegeRoles");
+            DropTable("dbo.NotificationUsers");
             DropTable("dbo.Homework");
-            DropTable("dbo.ContactInformations");
-            DropTable("dbo.People");
             DropTable("dbo.Privileges");
             DropTable("dbo.Roles");
+            DropTable("dbo.ContactInformations");
+            DropTable("dbo.People");
             DropTable("dbo.NotificationComments");
             DropTable("dbo.Notifications");
             DropTable("dbo.Users");

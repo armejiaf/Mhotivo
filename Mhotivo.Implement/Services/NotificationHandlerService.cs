@@ -105,7 +105,9 @@ namespace Mhotivo.Implement.Services
             {
                 var user = student.Tutor1.User;
                 user.Notifications.Add(notification);
+                notification.RecipientUsers.Add(user);
                 _userRepository.Update(user);
+                _notificationRepository.Update(notification);
                 if (notification.SendEmail)
                     EmailService.SendEmailToUser(student.Tutor1.User, notification);
             }
@@ -113,7 +115,9 @@ namespace Mhotivo.Implement.Services
             {
                 var user = student.Tutor2.User;
                 user.Notifications.Add(notification);
+                notification.RecipientUsers.Add(user);
                 _userRepository.Update(user);
+                _notificationRepository.Update(notification);
                 if (notification.SendEmail)
                     EmailService.SendEmailToUser(student.Tutor2.User, notification);
             }

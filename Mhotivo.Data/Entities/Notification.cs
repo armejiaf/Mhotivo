@@ -27,6 +27,7 @@ namespace Mhotivo.Data.Entities
         public Notification()
         {
             NotificationComments = new HashSet<NotificationComment>();
+            RecipientUsers = new HashSet<User>();
             CreationDate = DateTime.UtcNow;
         }
         [Key]
@@ -36,12 +37,13 @@ namespace Mhotivo.Data.Entities
         public string Message { get; set; }
         public NotificationType NotificationType { get; set; }
         public long DestinationId { get; set; }
-        public virtual User NotificationCreator { get; set; }
+        public virtual PeopleWithUser NotificationCreator { get; set; }
         public DateTime CreationDate { get; set; }
         public bool Approved { get; set; }
         public bool Sent { get; set; }
         public bool SendEmail { get; set; }
         public virtual AcademicYear AcademicYear { get; set; } //used to show only pertinent Notifications
         public virtual ICollection<NotificationComment> NotificationComments { get; set; }
+        public virtual ICollection<User> RecipientUsers { get; set; }
     }
 }

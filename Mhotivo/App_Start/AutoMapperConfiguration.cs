@@ -160,15 +160,15 @@ namespace Mhotivo
         {
             Mapper.CreateMap<NotificationRegisterModel, Notification>()
                 .ForMember(p => p.NotificationCreator,
-                o => o.MapFrom(src => ((IUserRepository)DependencyResolver.Current.GetService(
-                        typeof(IUserRepository))).GetById(src.NotificationCreator)))
+                o => o.MapFrom(src => ((IPeopleWithUserRepository)DependencyResolver.Current.GetService(
+                        typeof(IPeopleWithUserRepository))).GetById(src.NotificationCreator)))
                 .ForMember(p => p.AcademicYear,
                 o => o.MapFrom(src => ((IAcademicYearRepository)DependencyResolver.Current.GetService(
                         typeof(IAcademicYearRepository))).GetById(src.AcademicYear)));
             Mapper.CreateMap<Notification, NotificationDisplayModel>()
                 .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.GetEnumDescription()))
                 .ForMember(p => p.NotificationCreator,
-                    o => o.MapFrom(src => src.NotificationCreator.UserOwner.FirstName))
+                    o => o.MapFrom(src => src.NotificationCreator.FirstName))
                 .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToString()))
                 .ForMember(p => p.DestinationId, o => o.MapFrom(src =>
                     src.NotificationType == NotificationType.General

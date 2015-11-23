@@ -9,7 +9,7 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    class PeopleWithUserRepository : IPeopleWithUserRepository
+    public class PeopleWithUserRepository : IPeopleWithUserRepository
     {
         private readonly MhotivoContext _context;
 
