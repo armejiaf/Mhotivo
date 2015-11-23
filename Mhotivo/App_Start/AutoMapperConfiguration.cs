@@ -32,6 +32,14 @@ namespace Mhotivo
             MapTutorModels();
             MapStudentModels();
             MapTeacherModels();
+            MapAdministrativeModels();
+        }
+
+        private static void MapAdministrativeModels()
+        {
+            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>();
+            Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>();
+            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap();
         }
 
         private static void MapAcademicYearModels()

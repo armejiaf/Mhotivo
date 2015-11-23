@@ -520,6 +520,9 @@
     <Content Include="Views\AcademicGrade\Edit.cshtml" />
     <Content Include="Views\AcademicGrade\Create.cshtml" />
     <Content Include="Views\AcademicGrade\EditTeacher.cshtml" />
+    <Content Include="Views\Administrative\Index.cshtml" />
+    <Content Include="Views\Administrative\Edit.cshtml" />
+    <Content Include="Views\Administrative\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

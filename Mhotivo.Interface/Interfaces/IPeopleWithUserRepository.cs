@@ -12,9 +12,9 @@ namespace Mhotivo.Interface.Interfaces
         PeopleWithUser Create(PeopleWithUser itemToCreate);
         IQueryable<PeopleWithUser> Query(Expression<Func<PeopleWithUser, PeopleWithUser>> expression);
         IQueryable<PeopleWithUser> Filter(Expression<Func<PeopleWithUser, bool>> expression);
-        People Update(PeopleWithUser itemToUpdate);
-        People Delete(long id);
-        People Delete(PeopleWithUser itemToDelete);
+        PeopleWithUser Update(PeopleWithUser itemToUpdate);
+        PeopleWithUser Delete(long id);
+        PeopleWithUser Delete(PeopleWithUser itemToDelete);
         IEnumerable<PeopleWithUser> GetAllPeopleWithUsers();
     }
 }
