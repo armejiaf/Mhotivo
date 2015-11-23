@@ -41,9 +41,9 @@
         <!--sidebar-->
         <div class="grid grid_2">
             <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
-                <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
+                <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
                     <h4 class="white nicdark_margin20">HIJOS</h4>
-                    <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
+                    <i class="fa fa-child nicdark_iconbg center medium white"></i>
                 </div>
 
                 @{
@@ -53,19 +53,13 @@
 
                     @if (@allstudents != null)
                     {
-                        @Html.ActionLink("Todos", "index", new { param = Request.Params["param"], date = Request.Params["date"], student = "" }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                        @Html.ActionLink("Todos", "index", new { param = Request.Params["param"], date = Request.Params["date"], student = -1 }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
                         foreach (var student in @allstudents.ToList())
                         {
-                            @Html.ActionLink(student.FullName, "index", new { param = Request.Params["param"], date = Request.Params["date"], student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                            @Html.ActionLink(student.FullName, "index", new {student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                         }
                     }
-                </div>
-
-                <div class="nicdark_margin10">
-
-
-
 
                     @Html.ActionLink("Todas", "index", new { param = "", date = Request.Params["date"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
@@ -73,15 +67,9 @@
                     {
                         @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id, date = Request.Params["date"], student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     }
-
                 </div>
+
                 @*
-                <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
-                    <h4 class="white nicdark_margin20">Siguientes tareas</h4>
-                    <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
-
-                </div>
-                <br />
                 <div class="nicdark_margin10">
                     @Html.ActionLink("Dia", "index", new { param = Request.Params["param"], date = "Dia", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     @Html.ActionLink("Semana", "index", new { param = Request.Params["param"], date = "Semana", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
@@ -94,36 +82,9 @@
         </div>
         <!--sidebar-->
 
+        
         @*
         <div class="grid grid_8">
-
-
-            @{
-                int var = Convert.ToInt32(Request.Params["param"]);
-                string date = Request.Params["date"];
-            }
-            @if (@var != 0)
-            {
-
-                Models = Model;
-                if (!@date.IsEmpty())
-                {
-                    Models = Model;
-                    if (@date.Equals("Dia"))
-                    {
-                        Models = Model.Where(x => x.DeliverDate <= DateTime.Now.AddDays(1));
-
-                    }
-                    else if (@date.Equals("Semana"))
-                    {
-                        Models = Model.Where(x => x.DeliverDate <= DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 7));
-                    }
-                    else if (@date.Equals("Mes"))
-                    {
-                        Models = Model.Where(x => x.DeliverDate.Month == DateTime.Now.Month);
-                    }
-                }
-
 
                 foreach (var item in Models.Where(x => x.AcademicCourse.Course.Id == @var))
                 {
@@ -233,6 +194,34 @@
                 }
             }
         </div>*@
+
+            @{
+                int var1 = Convert.ToInt32(Request.Params["param"]);
+                string date = Request.Params["date"];
+
+                if (@var1 != 0)
+                {
+
+                    Models = Model;
+                    if (!@date.IsEmpty())
+                    {
+                        Models = Model;
+                        if (@date.Equals("Dia"))
+                        {
+                            Models = Model.Where(x => x.DeliverDate <= DateTime.Now.AddDays(1));
+
+                        }
+                        else if (@date.Equals("Semana"))
+                        {
+                            Models = Model.Where(x => x.DeliverDate <= DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 7));
+                        }
+                        else if (@date.Equals("Mes"))
+                        {
+                            Models = Model.Where(x => x.DeliverDate.Month == DateTime.Now.Month);
+                        }
+                    }
+                }
+            }
         <div class="grid grid_10">
             <div class="ful">
                 <div class="center_block container">
@@ -241,7 +230,7 @@
 
                     <div class="ful max">
                         <div class="fourth column pillers left all_col" id="all">
-                            <div class="ful center_text list_head">Anteriores</div>
+                            <div class="ful center_text list_head">Entregadas</div>
                             <div class="tasks ful"></div>
                         </div>
 
@@ -285,7 +274,7 @@
                         </div>
 
                         <div class="fourth column pillers left complet_col" id="complete">
-                            <div class="ful center_text list_head">Siguientes</div>
+                            <div class="ful center_text list_head">Por Entregar</div>
                             <div class="tasks ful"></div>
                             <div class="nicdark_space10"></div>
                             <div class="nicdark_toogle">
@@ -326,5 +315,4 @@
     </div>
     <!--end nicdark_container-->
 </section>
-
 <div class="nicdark_space50"></div>
