@@ -14,6 +14,7 @@
     Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="~/Content/css/homework.css"/>
+
 <section id="nicdark_parallax_title" class="nicdark_section nicdark_imgparallax nicdark_parallaxx_img7">
     <div class="nicdark_filter greydark">
         <div class="nicdark_container nicdark_clearfix">
@@ -63,7 +64,6 @@
                         foreach (var student in @allstudents.ToList())
                         {
                             @Html.ActionLink(student.FullName, "index", new { param = Request.Params["param"], date = Request.Params["date"], student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-
                         }
                     }
                 </div>
@@ -312,4 +312,4 @@
         </div>
     </div>
 </section>
-<!--end section-->
+<div class="nicdark_space50"></div>
