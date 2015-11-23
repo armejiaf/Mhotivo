@@ -53,19 +53,12 @@
 
                     @if (@allstudents != null)
                     {
-                        @Html.ActionLink("Todos", "index", new { param = Request.Params["param"], date = Request.Params["date"], student = -1 }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                        @Html.ActionLink("Todos", "index", new { student = -1 }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
 
-                        foreach (var student in @allstudents.ToList())
+                        foreach (var thisStudent in @allstudents.ToList())
                         {
-                            @Html.ActionLink(student.FullName, "index", new {student = student.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
+                            @Html.ActionLink(thisStudent.FullName, "index", new {student = thisStudent.Id }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                         }
-                    }
-
-                    @Html.ActionLink("Todas", "index", new { param = "", date = Request.Params["date"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-
-                    @foreach (var item in Model.GroupBy(lo => lo.AcademicCourse.Course).ToList())
-                    {
-                        @Html.ActionLink(@item.Key.Name, "index", new { param = @item.Key.Id, date = Request.Params["date"], student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     }
                 </div>
 

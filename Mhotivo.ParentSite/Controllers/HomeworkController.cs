@@ -41,7 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
             _tutorRepository = tutorRepository;
         }
 
-        public ActionResult Index(long student)
+        public ActionResult Index(long student = -1)
         {
             var students = GetAllStudents(GetTutorId());
             var homeworks = new List<Homework>();
