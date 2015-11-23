@@ -288,8 +288,8 @@ JQUERY UI
 .nicdark_accordion_header.medium{ padding: 10px 20px; }
 .nicdark_accordion_header.big{ padding: 15px 20px; }
 /*icon*/
-.nicdark_accordion .ui-accordion-header-active:before { content: '\e9ff' !important; font-family: 'fontello'; margin-right: 10px; }
-.nicdark_accordion .ui-accordion-header:before { content: '\ea01'; font-family: 'fontello'; margin-right: 10px; }
+.nicdark_accordion .ui-accordion-header-active:before { content: '\f151' !important; font-family: 'FontAwesome' !important; margin-right: 10px; }
+.nicdark_accordion .ui-accordion-header:before { content: '\f150';; font-family: 'FontAwesome' !important; margin-right: 10px; }
 /*END NIKACCORDION*/
 
 
@@ -302,8 +302,8 @@ JQUERY UI
 .nicdark_toogle_header.medium{ padding: 10px 20px; }
 .nicdark_toogle_header.big{ padding: 15px 20px; }
 /*icon*/
-.nicdark_toogle .ui-accordion-header-active:before { content: '\e9ff' !important; font-family: 'fontello'; margin-right: 10px; }
-.nicdark_toogle .ui-accordion-header:before { content: '\ea01'; font-family: 'fontello'; margin-right: 10px; }
+.nicdark_toogle .ui-accordion-header-active:before { content: '\f151' !important; font-family: 'FontAwesome' !important; margin-right: 10px; }
+.nicdark_toogle .ui-accordion-header:before { content: '\f150' ; font-family: 'FontAwesome' !important; margin-right: 10px; }
 /*END NIKTOOGLE*/
 
 

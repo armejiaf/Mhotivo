@@ -319,7 +319,7 @@ textarea:valid ~ .desc {
     top: 20px;
     margin: 20px auto;
     display: block;
-    width: 320px;
+    width: 100%;
     height: auto;   
     line-height: 20px;
     padding-left: 0px;
@@ -379,10 +379,12 @@ textarea:valid ~ .desc {
 p{ 
     text-align: justify;
     margin:10px 40px 0;
+    font-size: 15px;
+    color: black;
 }
 
 h1{
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     margin-top: 5px; 
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
