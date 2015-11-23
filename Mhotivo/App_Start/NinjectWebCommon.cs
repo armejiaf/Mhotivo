@@ -70,6 +70,7 @@ namespace Mhotivo
             kernel.Bind<ITeacherRepository>().To<TeacherRepository>().InRequestScope();
             kernel.Bind<ITutorRepository>().To<TutorRepository>().InRequestScope();
             kernel.Bind<IPeopleRepository>().To<PeopleRepository>().InRequestScope();
+            kernel.Bind<IPeopleWithUserRepository>().To<PeopleWithUserRepository>().InRequestScope();
             kernel.Bind<IStudentRepository>().To<StudentRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IPensumRepository>().To<PensumRepository>().InRequestScope();
