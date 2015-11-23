@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mhotivo.Implement.Repositories;
+using Mhotivo.Interface.Interfaces;
 using Mhotivo.Util;
 
 namespace Mhotivo.Authorizations
@@ -16,7 +17,7 @@ namespace Mhotivo.Authorizations
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var roleRepository =
-                ((RoleRepository) DependencyResolver.Current.GetService(typeof (RoleRepository)));
+                ((IRoleRepository) DependencyResolver.Current.GetService(typeof (IRoleRepository)));
 
             var roleName = (string)HttpContext.Current.Session["loggedUserRole"];
             var role = roleRepository.Filter(r => r.Name == roleName).FirstOrDefault(r => true);

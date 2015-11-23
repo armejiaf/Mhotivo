@@ -15,6 +15,6 @@ namespace Mhotivo.ParentSite.Models
 
         public float Points { get; set; }
 
-        public virtual AcademicCourse AcademicCourse { get; set; }
+        public virtual string AcademicCourse { get; set; }
     }
 }
