@@ -83,7 +83,6 @@ namespace Mhotivo
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
             kernel.Bind<IAcademicGradeRepository>().To<AcademicGradeRepository>().InRequestScope();
             kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
-            kernel.Bind<IPeopleWithUserRepository>().To<PeopleWithUserRepository>().InRequestScope();
         }        
     }
 }
