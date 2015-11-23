@@ -9,9 +9,9 @@ using Mhotivo.Util;
 namespace Mhotivo.Authorizations
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class AuthorizeTeacher : AuthorizeAttribute
+    public class AuthorizeLogin : AuthorizeAttribute
     {
-        private static readonly List<string> RequireAtLeastOnePrivileges = new List<string>{"Maestro","Director"};
+        private static readonly List<string> RequireAtLeastOnePrivileges = new List<string>{"Login"};
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var roleRepository =

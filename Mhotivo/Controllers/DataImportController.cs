@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
@@ -43,17 +45,11 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Index(DataImportModel dataImportModel)
         {
-            var validImageTypes = new []
+            if(!IsFileValid(dataImportModel))
             {
-                "application/vnd.ms-excel"
-            };
-            bool errorExcel;
-            if (dataImportModel.UploadFile != null && dataImportModel.UploadFile.ContentLength > 0)
-                errorExcel = !validImageTypes.Contains(dataImportModel.UploadFile.ContentType);
-            else
-                errorExcel = true;
-            if(errorExcel)
                 ModelState.AddModelError("UploadFile", "Por favor seleccione un archivo de Excel");
+            }
+
             var academicGrade = _academicGradeRepository.Filter(x => x.AcademicYear.Id == dataImportModel.Year
             && x.Grade.Id == dataImportModel.Grade && x.Section.Equals(dataImportModel.Section)).FirstOrDefault();
             if (academicGrade == null)
@@ -89,6 +85,16 @@ namespace Mhotivo.Controllers
                                        );
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
             return RedirectToAction("Index");
+        }
+
+        private static bool IsFileValid(DataImportModel dataImportModel)
+        {
+            if (dataImportModel.UploadFile == null || dataImportModel.UploadFile.ContentLength <= 0)
+            {
+                return false;
+            }
+            var extension = Path.GetExtension(dataImportModel.UploadFile.FileName);
+            return extension != null && Regex.IsMatch(extension, "^*.xls$|^*.xlsx$$");
         }
 
         public JsonResult LoadByGrade(DataImportModel dataImportModel)

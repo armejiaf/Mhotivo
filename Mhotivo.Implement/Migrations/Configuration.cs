@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Context;
 using Mhotivo.Implement.Repositories;
@@ -22,6 +23,7 @@ namespace Mhotivo.Implement.Migrations
         private IAcademicGradeRepository _academicGradeRepository;
         private IAcademicCourseRepository _academicCourseRepository;
         private IPeopleWithUserRepository _peopleWithUserRepository;
+        private IPrivilegeRepository _privilegeRepository;
 
         public Configuration()
         {
@@ -45,12 +47,33 @@ namespace Mhotivo.Implement.Migrations
             _academicGradeRepository = new AcademicGradeRepository(context);
             _academicCourseRepository = new AcademicCourseRepository(context);
             _peopleWithUserRepository = new PeopleWithUserRepository(context);
+            _privilegeRepository = new PrivilegeRepository(context);
 
-            _roleRepository.Create(new Role { Name = "Administrador", Id = 0 });
-            _roleRepository.Create(new Role { Name = "Tutor", Id = 1 });
-            _roleRepository.Create(new Role { Name = "Maestro", Id = 2 });
-            _roleRepository.Create(new Role { Name = "Director", Id = 3 });
-            _roleRepository.Create(new Role { Name = "Maestro de Seccion", Id = 4 });
+
+            var allRoles = new List<Role>();
+            
+            var tRole = _roleRepository.Create(new Role { Name = "Administrador", Id = 0 });
+            _privilegeRepository.Create(new Privilege { Id = 0, Description = "Privilegio de nivel Administrador", Name = "Administrador", Roles = new List<Role> { tRole } });
+            allRoles.Add(tRole);
+
+            tRole = _roleRepository.Create(new Role { Name = "Tutor", Id = 1 });
+            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Padre", Name = "Padre", Roles = new List<Role> { tRole } });
+            allRoles.Add(tRole);
+
+            tRole = _roleRepository.Create(new Role { Name = "Maestro", Id = 2 });
+            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Maestro", Name = "Maestro", Roles = new List<Role> { tRole } });
+            allRoles.Add(tRole);
+
+            tRole = _roleRepository.Create(new Role { Name = "Director", Id = 3 });
+            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Director", Name = "Director", Roles = new List<Role> { tRole } });
+            allRoles.Add(tRole);
+
+            tRole = _roleRepository.Create(new Role { Name = "Maestro de Seccion", Id = 4 });
+            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Maestro de Seccion", Name = "Maestro de Seccion", Roles = new List<Role> { tRole } });
+            allRoles.Add(tRole);
+
+            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de Login", Name = "Login", Roles = allRoles});
+
             var adminPeople = new PeopleWithUser
             {
                 Address = "",

@@ -53,7 +53,7 @@ namespace Mhotivo.Implement.Repositories
         }
 
         public IEnumerable<AcademicCourse> GetAllAcademicYearsDetails(long academicYearId)
-        {
+        {   
             return Query(x => x).ToList();
         }
 
