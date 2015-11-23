@@ -43,12 +43,12 @@
             <p class="text-error">@Html.ValidationMessageFor(model => model.Address)</p>
         </div>
         <br style="clear: left;" />
-        <div style="float: left; width: 200px;">
+        <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.City)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.City)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.City)</p>
         </div>
-        <div style="float: left; width: 100px;">
+        <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.State)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.State)</p>
@@ -74,7 +74,11 @@
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Email)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Email)</p>
         </div>
-
+        <div style="float: left; width: 250px;">
+            @Html.DropDownListFor(model => model.Role, (SelectList)ViewBag.Roles)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Role)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Role)</p>
+        </div>
         <br style="clear: left;" />
         <br style="clear: left;" />
         <div style="float: left; width: 250px;">

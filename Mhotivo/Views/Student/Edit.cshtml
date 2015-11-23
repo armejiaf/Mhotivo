@@ -36,13 +36,9 @@
             @Html.ValidationMessageFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.LastName)
             @Html.ValidationMessageFor(model => model.MyGender)
-            @Html.ValidationMessageFor(model => model.Nationality)
-            @Html.ValidationMessageFor(model => model.Country)
             @Html.ValidationMessageFor(model => model.State)
-            @Html.ValidationMessageFor(model => model.StartDate)
             @Html.ValidationMessageFor(model => model.BloodType)
             @Html.ValidationMessageFor(model => model.AccountNumber)
-            @Html.ValidationMessageFor(model => model.Biography)
             @Html.ValidationMessageFor(model => model.Tutor1)
             @Html.ValidationMessageFor(model => model.Tutor2)
         </p>
@@ -131,15 +127,6 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Nationality)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Nationality)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
                 @Html.LabelFor(model => model.Address)
             </div>
             <div class="controls">
@@ -164,38 +151,6 @@
                 @Html.EditorFor(model => model.State)
             </div>
         </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Country)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Country)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.StartDate)
-            </div>
-            <div class="controls">
-                @*@Html.EditorFor(model => model.StartDate)*@
-
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('.date-picker').datepicker().on('changeDate', function () {
-                            $(this).datepicker('hide');
-                        });
-                    });
-                </script>
-                
-                @Html.TextBoxFor(model => model.StartDate, new { @class="date-picker",@data_date_format="dd-mm-yyyy", @readonly=true})
-                <span class="add-on">
-                    <i class="icon-calendar"></i>
-                </span>
-
-            </div>
-        </div>
         
         <div class="control-group">
             <div class="control-label">
@@ -213,15 +168,6 @@
             </div>
             <div class="controls">
                 @Html.EditorFor(model => model.AccountNumber)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Biography)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Biography)
             </div>
         </div>
 

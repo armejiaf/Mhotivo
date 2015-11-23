@@ -49,11 +49,6 @@
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.State)</p>
     </div>
-    <div style="float: left; width: 200px;">
-        @Html.EditorFor(model => model.Country)
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Country)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.Country)</p>
-    </div>
     <br style="clear: left;" />
 </div>
 
@@ -99,11 +94,6 @@
         <p class="text-error">@Html.ValidationMessageFor(model => model.MyGender)</p>
 
     </div>
-    <div style="float: left; width: 250px;">
-        @Html.EditorFor(model => model.Nationality)
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Nationality)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.Nationality)</p>
-    </div>
     <br style="clear: left;" />
 </div>
 <hr />
@@ -113,14 +103,6 @@
         @Html.EditorFor(model => model.AccountNumber)
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.AccountNumber)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.AccountNumber)</p>
-    </div>
-    <div style="float: left; width: 250px;">
-        @Html.TextBoxFor(model => model.StartDate, new {@class="date-picker",@data_date_format="dd-mm-yyyy", @readonly=true})
-        <span class="add-on">
-            <i class="icon-calendar"></i>
-        </span>
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.StartDate)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.StartDate)</p>
     </div>
     <br style="clear: left;" />
     <br style="clear: left;" />
@@ -132,22 +114,17 @@
     <br style="clear: left;" />
     <br style="clear: left;" />
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.Tutor1.Id, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Tutor o Tutor --")
+        @Html.DropDownListFor(model => model.Tutor1, new SelectList(ViewBag.Tutor1Id, "Value", "Text"), "  -- Tutor o Tutor --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Tutor1)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Tutor1)</p>
     </div>
     <div style="float: left; width: 250px;">
-        @Html.DropDownListFor(model => model.Tutor2.Id, new SelectList(ViewBag.Tutor2Id, "Value", "Text"), "  -- Tutor o Tutor --")
+        @Html.DropDownListFor(model => model.Tutor2, new SelectList(ViewBag.Tutor2Id, "Value", "Text"), "  -- Tutor o Tutor --")
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Tutor2)</span>
         <p class="text-error">@Html.ValidationMessageFor(model => model.Tutor2)</p>
     </div>
     <br style="clear: left;" />
     <br style="clear: left;" />
-    <div style="float: left; width: 500px;">
-        @Html.TextAreaFor(model => model.Biography, new { style = "width: 400px; height: 200px;", @rows = 3 })
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Biography)</span>
-        <p class="text-error">@Html.ValidationMessageFor(model => model.Biography)</p>
-    </div>
     <br style="clear: left;" />
 </div>
 <p>

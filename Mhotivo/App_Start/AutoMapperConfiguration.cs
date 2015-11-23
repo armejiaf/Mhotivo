@@ -37,7 +37,8 @@ namespace Mhotivo
 
         private static void MapAdministrativeModels()
         {
-            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>();
+            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
             Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>();
             Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap();
         }
@@ -276,7 +277,8 @@ namespace Mhotivo
         {
             Mapper.CreateMap<StudentRegisterModel, Student>();
             Mapper.CreateMap<Student, StudentDisplayModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
+                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName));
             Mapper.CreateMap<Student, StudentEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
                 .ReverseMap();

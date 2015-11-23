@@ -141,6 +141,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add()
         {
+            ViewBag.Roles = new SelectList(_roleRepository.Filter(x => x.Name.Equals("Administrador") || x.Name.Equals("Director")), "Id", "Name");
             return View("Create");
         }
 
@@ -148,7 +149,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(AdministrativeRegisterModel modelAmin)
         {
-            var adminModel = Mapper.Map<AdministrativeRegisterModel, Teacher>(modelAmin);
+            var adminModel = Mapper.Map<AdministrativeRegisterModel, PeopleWithUser>(modelAmin);
             if (_peopleWithUserRepository.Filter(x => x.IdNumber == modelAmin.IdNumber).Any())
             {
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe un maestro con ese numero de Identidad", ViewMessageType.ErrorMessage);
@@ -166,7 +167,7 @@ namespace Mhotivo.Controllers
                 Password = _passwordGenerationService.GenerateTemporaryPassword(),
                 IsUsingDefaultPassword = true,
                 IsActive = true,
-                Role = _roleRepository.Filter(x => x.Name == "Maestro").FirstOrDefault(),
+                Role = _roleRepository.GetById(modelAmin.Role),
                 UserOwner = adminModel
             };
             newUser.DefaultPassword = newUser.Password;
