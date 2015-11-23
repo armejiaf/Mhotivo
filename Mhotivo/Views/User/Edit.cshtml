@@ -34,7 +34,7 @@
                 @Html.LabelFor(model => model.Role)
             </div>
             <div class="controls">
-                @Html.DropDownList("RoleId")
+                @Html.DropDownList("Role", (SelectList)ViewBag.RoleId)
             </div>
         </div>
         <div class="control-group">

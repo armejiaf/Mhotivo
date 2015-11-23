@@ -1,6 +1,6 @@
-﻿@model Mhotivo.Models.TeacherEditModel
+﻿@model Mhotivo.Models.AdministrativeEditModel
 @{
-    ViewBag.Title = "Editar Maestro";
+    ViewBag.Title = "Editar Entidad Administrativa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,17 +8,22 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <div id="body" class="modal-body" style="max-height: 500px;">
-    @using (Html.BeginForm("Edit", "Teacher", FormMethod.Post, new {
-                                                                        id = "Form"
-                                                                        ,@class = "form-horizontal"
-                                                                        ,@Style = "margin:0;"
-                                                                        ,enctype = "multipart/form-data"
-                                                                        ,method = "post"
-                                                                   }))
+    @using (Html.BeginForm("Edit", "Administrative", FormMethod.Post, new
+    {
+        id = "Form"
+          ,
+        @class = "form-horizontal"
+          ,
+        @Style = "margin:0;"
+          ,
+        enctype = "multipart/form-data"
+          ,
+        method = "post"
+    }))
     {@Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Editar Maestro</legend>
+            <legend>Editar Entidad Administrativa</legend>
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Address)
@@ -31,22 +36,21 @@
                 @Html.ValidationMessageFor(model => model.MyGender)
                 @Html.ValidationMessageFor(model => model.State)
             </p>
-            
+
             <div id="Photo">
                 @{
-                    var imgSrc = "";
-                    if (Model.Photo != null)
-                    {
-                        var base64 = Convert.ToBase64String(Model.Photo);
-                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-                    }
+        var imgSrc = "";
+        if (Model.Photo != null)
+        {
+            var base64 = Convert.ToBase64String(Model.Photo);
+            imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+        }
                 }
                 <img height="150" width="150" src="@imgSrc" />
             </div>
 
             <div class="controls">
-                @*@Html.EditorFor(model => model.IDNumber)*@
-
+                
                 <script type="text/javascript">
                     $(document).ready(function () {
                         $('.input-mask-idNumber').mask('9999-9999-99999');

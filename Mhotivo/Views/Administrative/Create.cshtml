@@ -1,6 +1,6 @@
-﻿@model Mhotivo.Models.TeacherRegisterModel
+﻿@model Mhotivo.Models.AdministrativeRegisterModel
 @{
-    ViewBag.Title = "Agregar Maestro";
+    ViewBag.Title = "Agregar Entidad Administrativa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,13 +19,13 @@
     </style>
 }
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
-@using (Html.BeginForm("Add", "teacher", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+@using (Html.BeginForm("Add", "Administrative", FormMethod.Post, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
 {
     @Html.ValidationSummary(true)
-    <h2>Agregar Maestro</h2>
+    <h2>Agregar Entidad Administrativa</h2>
 
     <p>
-        <a href="../Teacher/Index" data-dismiss="modal" class="btn btn-small">
+        <a href="../Administrative/Index" data-dismiss="modal" class="btn btn-small">
             <i class="icon-remove"></i>
             Cancelar
         </a>
@@ -43,12 +43,12 @@
             <p class="text-error">@Html.ValidationMessageFor(model => model.Address)</p>
         </div>
         <br style="clear: left;" />
-        <div style="float: left; width: 200px;">
+        <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.City)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.City)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.City)</p>
         </div>
-        <div style="float: left; width: 100px;">
+        <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.State)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.State)</p>
@@ -65,7 +65,7 @@
         </div>
         <div style="float: left; width: 250px;">
             @Html.EditorFor(model => model.LastName)
-            <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.LastName)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.LastName)</p>
         </div>
 
@@ -74,7 +74,11 @@
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Email)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.Email)</p>
         </div>
-
+        <div style="float: left; width: 250px;">
+            @Html.DropDownListFor(model => model.Role, (SelectList)ViewBag.Roles)
+            <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Role)</span>
+            <p class="text-error">@Html.ValidationMessageFor(model => model.Role)</p>
+        </div>
         <br style="clear: left;" />
         <br style="clear: left;" />
         <div style="float: left; width: 250px;">
@@ -86,7 +90,6 @@
                     <p class="text-error">@Html.ValidationMessageFor(model => model.IdNumber)</p>
                 </div>
             </div>
-            @*@Html.EditorFor(model => model.IDNumber)*@
         </div>
         <div style="float: left; width: 250px;">
             @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
@@ -109,7 +112,7 @@
     </div>
 
     <p>
-        <a href="../Teacher/Index" data-dismiss="modal" class="btn btn-small">
+        <a href="../Administrative/Index" data-dismiss="modal" class="btn btn-small">
             <i class="icon-remove"></i>
             Cancelar
         </a>

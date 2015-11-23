@@ -62,7 +62,7 @@ namespace Mhotivo.Controllers
                 _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
             var notifications = _notificationRepository.Query(x => x).ToList();
             if (!_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
-                notifications = notifications.FindAll(x => user != null && x.NotificationCreator == user);
+                notifications = notifications.FindAll(x => user != null && x.NotificationCreator.Id == user.UserOwner.Id);
             if (searchName != null)
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
@@ -91,14 +91,14 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Add(NotificationRegisterModel eventNotification)
         {
-            eventNotification.NotificationCreator = Convert.ToInt64(_sessionManagement.GetUserLoggedId());
+            eventNotification.NotificationCreator = _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId())).UserOwner.Id;
             eventNotification.AcademicYear = _academicYearRepository.GetCurrentAcademicYear().Id;
             var notificationIdentity = Mapper.Map<Notification>(eventNotification);
             notificationIdentity.Approved = _sessionManagement.GetUserLoggedRole().Equals("Administrador");
-            _notificationRepository.Create(notificationIdentity);
+            notificationIdentity = _notificationRepository.Create(notificationIdentity);
             _notificationHandlerService.SendAllPending();
             const string title = "Notificación Agregado";
-            var content = "El evento " + eventNotification.Title + " ha sido agregado exitosamente.";
+            var content = "El evento " + notificationIdentity.Title + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }

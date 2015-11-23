@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using Mhotivo.Data.Entities;
@@ -17,6 +18,8 @@ namespace Mhotivo.Implement.Services
 
         public static void SendEmailToUser(User user, Notification notification)
         {
+            if (String.IsNullOrWhiteSpace(user.Email))
+                return;
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("postmaster@app1561.mailgun.org", "FUNDACION MHOTIVO"),

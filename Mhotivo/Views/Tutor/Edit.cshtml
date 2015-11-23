@@ -34,8 +34,6 @@
             @Html.ValidationMessageFor(model => model.FirstName)
             @Html.ValidationMessageFor(model => model.LastName)
             @Html.ValidationMessageFor(model => model.MyGender)
-            @Html.ValidationMessageFor(model => model.Nationality)
-            @Html.ValidationMessageFor(model => model.Country)
             @Html.ValidationMessageFor(model => model.State)
         </p>
         
@@ -117,15 +115,6 @@
 
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.Nationality)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Nationality)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
                 @Html.LabelFor(model => model.Address)
             </div>
             <div class="controls">
@@ -148,15 +137,6 @@
             </div>
             <div class="controls">
                 @Html.EditorFor(model => model.State)
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Country)
-            </div>
-            <div class="controls">
-                @Html.EditorFor(model => model.Country)
             </div>
         </div>
         

@@ -79,11 +79,7 @@ namespace Mhotivo.Controllers
             User thisUser = _userRepository.GetById(id);
             var user = Mapper.Map<UserEditModel>(thisUser);
             var role = _userRepository.GetUserRole(thisUser.Id);
-            var directions = from Role d in _rolesRepository.GetAll()
-                             where d != null
-                             select new { ID = d.Id, d.Name };
-            user.Role = role.Id;
-            ViewBag.RoleId = new SelectList(directions, "ID", "Name", user.Role);
+            ViewBag.RoleId = new SelectList(_rolesRepository.GetAll(), "Id", "Name", role);
             return View("Edit", user);
         }
 

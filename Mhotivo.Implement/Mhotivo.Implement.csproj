@@ -59,9 +59,9 @@
   <ItemGroup>
     <Compile Include="Attributes\NotEqualToAttribute.cs" />
     <Compile Include="Context\MhotivoContext.cs" />
-    <Compile Include="Migrations\201511220702584_NMigration.cs" />
-    <Compile Include="Migrations\201511220702584_NMigration.Designer.cs">
-      <DependentUpon>201511220702584_NMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201511230319497_NMigration.cs" />
+    <Compile Include="Migrations\201511230319497_NMigration.Designer.cs">
+      <DependentUpon>201511230319497_NMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParseToHonduranDateTime.cs" />
@@ -109,8 +109,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511220702584_NMigration.resx">
-      <DependentUpon>201511220702584_NMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511230319497_NMigration.resx">
+      <DependentUpon>201511230319497_NMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

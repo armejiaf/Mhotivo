@@ -9,7 +9,7 @@ using Mhotivo.Interface.Interfaces;
 
 namespace Mhotivo.Implement.Repositories
 {
-    class PeopleWithUserRepository : IPeopleWithUserRepository
+    public class PeopleWithUserRepository : IPeopleWithUserRepository
     {
         private readonly MhotivoContext _context;
 
@@ -40,14 +40,14 @@ namespace Mhotivo.Implement.Repositories
             return _context.PeopleWithUsers.Where(expression);
         }
 
-        public People Update(PeopleWithUser itemToUpdate)
+        public PeopleWithUser Update(PeopleWithUser itemToUpdate)
         {
             _context.Entry(itemToUpdate).State = EntityState.Modified;
             _context.SaveChanges();
             return itemToUpdate;
         }
 
-        public People Delete(long id)
+        public PeopleWithUser Delete(long id)
         {
             var itemToDelete = GetById(id);
             _context.PeopleWithUsers.Remove(itemToDelete);
@@ -55,7 +55,7 @@ namespace Mhotivo.Implement.Repositories
             return itemToDelete;
         }
 
-        public People Delete(PeopleWithUser itemToDelete)
+        public PeopleWithUser Delete(PeopleWithUser itemToDelete)
         {
             _context.PeopleWithUsers.Remove(itemToDelete);
             _context.SaveChanges();

@@ -64,6 +64,8 @@ namespace Mhotivo.Implement.Services
                     City = dtDatos.Rows[indice][26].ToString(),
                     State = dtDatos.Rows[indice][15].ToString(),
                 };
+                if (!newStudent.IdNumber.Contains('-'))
+                    newStudent.IdNumber = newStudent.IdNumber.Insert(4, "-").Insert(9, "-");
                 newStudent.FullName = (newStudent.FirstName + " " + newStudent.LastName).Trim();
                 var newTutor = new Tutor
                 {
@@ -76,6 +78,8 @@ namespace Mhotivo.Implement.Services
                     State = dtDatos.Rows[indice][25].ToString(),
                     City = dtDatos.Rows[indice][26].ToString()
                 };
+                if (!newTutor.IdNumber.Contains('-'))
+                    newTutor.IdNumber = newTutor.IdNumber.Insert(4, "-").Insert(9, "-");
                 newTutor.FullName = (newTutor.FirstName + " " + newTutor.LastName).Trim();
                 var newContactInformation = new ContactInformation
                 {

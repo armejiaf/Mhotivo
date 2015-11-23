@@ -32,6 +32,15 @@ namespace Mhotivo
             MapTutorModels();
             MapStudentModels();
             MapTeacherModels();
+            MapAdministrativeModels();
+        }
+
+        private static void MapAdministrativeModels()
+        {
+            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+            Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>();
+            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap();
         }
 
         private static void MapAcademicYearModels()
@@ -160,15 +169,15 @@ namespace Mhotivo
         {
             Mapper.CreateMap<NotificationRegisterModel, Notification>()
                 .ForMember(p => p.NotificationCreator,
-                o => o.MapFrom(src => ((IUserRepository)DependencyResolver.Current.GetService(
-                        typeof(IUserRepository))).GetById(src.NotificationCreator)))
+                o => o.MapFrom(src => ((IPeopleWithUserRepository)DependencyResolver.Current.GetService(
+                        typeof(IPeopleWithUserRepository))).GetById(src.NotificationCreator)))
                 .ForMember(p => p.AcademicYear,
                 o => o.MapFrom(src => ((IAcademicYearRepository)DependencyResolver.Current.GetService(
                         typeof(IAcademicYearRepository))).GetById(src.AcademicYear)));
             Mapper.CreateMap<Notification, NotificationDisplayModel>()
                 .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.GetEnumDescription()))
                 .ForMember(p => p.NotificationCreator,
-                    o => o.MapFrom(src => src.NotificationCreator.UserOwner.FirstName))
+                    o => o.MapFrom(src => src.NotificationCreator.FirstName))
                 .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToString()))
                 .ForMember(p => p.DestinationId, o => o.MapFrom(src =>
                     src.NotificationType == NotificationType.General
@@ -268,7 +277,8 @@ namespace Mhotivo
         {
             Mapper.CreateMap<StudentRegisterModel, Student>();
             Mapper.CreateMap<Student, StudentDisplayModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
+                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName));
             Mapper.CreateMap<Student, StudentEditModel>()
                 .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
                 .ReverseMap();
