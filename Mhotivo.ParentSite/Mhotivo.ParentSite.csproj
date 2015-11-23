@@ -219,6 +219,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\fontello.css" />
+    <Content Include="Content\css\homework.css" />
     <Content Include="Content\css\magnific-popup.css" />
     <Content Include="Content\css\nicdark_menu.css" />
     <Content Include="Content\css\nicdark_responsive.css" />
