@@ -1,11 +1,8 @@
 ﻿@using Mhotivo.Data.Entities
 @using Mhotivo.ParentSite.Controllers
 @using Mhotivo.ParentSite.Models
-@model IEnumerable<Mhotivo.ParentSite.Models.HomeworkModel>
+@model HomeworksModel
 
-@functions {
-    public IEnumerable<HomeworkModel> Models { get; set; }
-}
 @{
     ViewBag.Title = "Homework";
     Layout = "~/Views/Shared/_LayoutSmall.cshtml";
@@ -187,40 +184,46 @@
                 }
             }
         </div>*@
-
-            @{
-                int var1 = Convert.ToInt32(Request.Params["param"]);
-                string date = Request.Params["date"];
-
-                if (@var1 != 0)
-                {
-
-                    Models = Model;
-                    if (!@date.IsEmpty())
-                    {
-                        Models = Model;
-                        if (@date.Equals("Dia"))
-                        {
-                            Models = Model.Where(x => x.DeliverDate <= DateTime.Now.AddDays(1));
-
-                        }
-                        else if (@date.Equals("Semana"))
-                        {
-                            Models = Model.Where(x => x.DeliverDate <= DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 7));
-                        }
-                        else if (@date.Equals("Mes"))
-                        {
-                            Models = Model.Where(x => x.DeliverDate.Month == DateTime.Now.Month);
-                        }
-                    }
-                }
-            }
         <div class="grid grid_10">
             <div class="ful">
                 <div class="center_block container">
 
                     <div class="ful center_text container_head">Lista de Tareas</div>
+                    @{
+                        if (!Model.PastHomeworks.Any())
+                        {
 
+                        }
+                        else
+                        {
+                            foreach (var homeworkModel in Model.PastHomeworks)
+                            {
+  
+                            }
+                        }
+                        if (!Model.CurrentHomeworks.Any())
+                        {
+
+                        }
+                        else
+                        {
+                            foreach (var currentHomework in Model.CurrentHomeworks)
+                            {
+                    
+                            }
+                        }
+                        if (!Model.FutureHomeworks.Any())
+                        {
+
+                        }
+                        else
+                        {
+                            foreach (var futureHomework in Model.FutureHomeworks)
+                            {
+  
+                            }
+                        }
+                    }
                     <div class="ful max">
                         <div class="fourth column pillers left all_col" id="all">
                             <div class="ful center_text list_head">Entregadas</div>

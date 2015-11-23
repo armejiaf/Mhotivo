@@ -63,8 +63,23 @@ namespace Mhotivo.ParentSite.Controllers
                     }
                 }
             }
-            var mappedHomeWorksModel = homeworks.Select(Mapper.Map<HomeworkModel>).ToList();
-            return View(mappedHomeWorksModel);
+            var model = new HomeworksModel();
+            foreach (var homework in homeworks)
+            {
+                if (homework.DeliverDate.Date > DateTime.UtcNow.Date)
+                {
+                    model.FutureHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+                else if (homework.DeliverDate.Date == DateTime.UtcNow.Date)
+                {
+                    model.CurrentHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+                else
+                {
+                    model.PastHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+            }
+            return View(model);
         }
 
         private static List<long> GetAllStudentsId(IEnumerable<Student> students)
