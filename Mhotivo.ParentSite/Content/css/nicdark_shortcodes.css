@@ -294,8 +294,8 @@ JQUERY UI
 
 
 /* 15  - START NIKTOOGLE*/
-.nicdark_toogle{ float: left; width: 100%; }
-.nicdark_toogle_content{ padding: 20px; }
+.nicdark_toogle{  width: 100%; }
+.nicdark_toogle_content{ padding: 5px; }
 .nicdark_toogle .nicdark_toogle_header{ outline: 0; cursor: pointer; float: none; width: initial; }
 /*size*/
 .nicdark_toogle_header.small{ padding: 5px 10px; }
