@@ -1,9 +1,6 @@
 ﻿@using Mhotivo.Data.Entities
-@using Mhotivo.Implement.Repositories
-@using Mhotivo.Interface.Interfaces
 @using Mhotivo.ParentSite.Controllers
 @using Mhotivo.ParentSite.Models
-@using Microsoft.Ajax.Utilities
 @model IEnumerable<Mhotivo.ParentSite.Models.HomeworkModel>
 
 @functions {
@@ -40,12 +37,9 @@
     <!--start nicdark_container-->
     <div class="nicdark_container nicdark_clearfix">
 
-        <div class="nicdark_space50"></div>
-
-
-
+        <div class="nicdark_space40"></div>
         <!--sidebar-->
-        <div class="grid grid_4">
+        <div class="grid grid_2">
             <div class="nicdark_archive1 nicdark_bg_grey nicdark_radius nicdark_shadow">
                 <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
                     <h4 class="white nicdark_margin20">HIJOS</h4>
@@ -68,10 +62,6 @@
                     }
                 </div>
 
-                <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius_top">
-                    <h4 class="white nicdark_margin20">TAREAS</h4>
-                    <i class="icon-tags-1 nicdark_iconbg right medium orange"></i>
-                </div>
                 <div class="nicdark_margin10">
 
 
@@ -85,13 +75,12 @@
                     }
 
                 </div>
-
+                @*
                 <div class="nicdark_textevidence nicdark_bg_violet nicdark_radius_top">
                     <h4 class="white nicdark_margin20">Siguientes tareas</h4>
                     <i class="icon-doc-1 nicdark_iconbg right medium violet"></i>
 
                 </div>
-
                 <br />
                 <div class="nicdark_margin10">
                     @Html.ActionLink("Dia", "index", new { param = Request.Params["param"], date = "Dia", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
@@ -99,13 +88,13 @@
                     @Html.ActionLink("Mes", "index", new { param = Request.Params["param"], date = "Mes", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                     @Html.ActionLink("Todas", "index", new { param = Request.Params["param"], date = "", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
                 </div>
-
+                *@
 
             </div>
         </div>
         <!--sidebar-->
 
-
+        @*
         <div class="grid grid_8">
 
 
@@ -243,130 +232,99 @@
 
                 }
             }
+        </div>*@
+        <div class="grid grid_10">
+            <div class="ful">
+                <div class="center_block container">
+
+                    <div class="ful center_text container_head">Lista de Tareas</div>
+
+                    <div class="ful max">
+                        <div class="fourth column pillers left all_col" id="all">
+                            <div class="ful center_text list_head">Anteriores</div>
+                            <div class="tasks ful"></div>
+                        </div>
+
+                        <div class="fourth column pillers left progress_col" id="progress">
+                            <div class="ful center_text list_head">Hoy</div>
+                            <div class="tasks ful">
+                                @*erase*@
+                                <br />
+                                <div class="nicdark_toogle">
+
+                                    <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">EVENT ORGANIZATION</h5>
+                                    <div class="nicdark_toogle_content">
+                                        <div class="paper">
+                                            <div style="margin-left: 11%">
+                                                <i class="fa fa-book" style="color: orangered"></i>  Materia: Ciencias <br />
+                                                <i class="fa fa-calendar" style="color: cornflowerblue"></i> 11/12/15 <br />
+                                                <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: <br />
+                                            </div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+                                            </p>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="nicdark_toogle">
+                                    <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
+                                    <div class="nicdark_toogle_content">
+                                        <div class="paper">
+                                            <h1>Sample Box</h1> <br>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+                                            </p>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                                @*erase*@
+                            </div>
+                        </div>
+
+                        <div class="fourth column pillers left complet_col" id="complete">
+                            <div class="ful center_text list_head">Siguientes</div>
+                            <div class="tasks ful"></div>
+                            <div class="nicdark_space10"></div>
+                            <div class="nicdark_toogle">
+
+                                <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
+                                <div class="nicdark_toogle_content">
+                                    <div class="paper">
+                                        <h1>Sample Box</h1> <br>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+                                        </p>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="nicdark_space10"></div>
+                            <div class="nicdark_toogle">
+                                <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
+                                <div class="nicdark_toogle_content">
+                                    <div class="paper">
+                                        <h1>Sample Box</h1> <br>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
+                                        </p>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
     <!--end nicdark_container-->
 </section>
 
-<section>
-    <div class="ful">
-        <div class="center_block container">
-
-            <div class="ful center_text container_head">Lista de Tareas</div>
-
-            <!-- Columns -->
-            <div class="ful max">
-                <div class="fourth column pillers left all_col" id="all">
-                    <div class="ful center_text list_head">Anteriores</div>
-                    <div class="tasks ful"></div>
-                    <!-- 	Tamplate -->
-                    <div class="left dragable temp hide task-unit ">
-                        <div class="ful info">
-                            <input id="TaskHeading" type="text" class="readonly" readonly placeholder="Title">
-                            <textarea id="task-description" readonly class="readonly" placeholder="Description"></textarea>
-                        </div>
-                        <div class="ful action_bar">
-                            <span class="time"><i class="icon-time"></i><span>&nbsp;</span></span>
-                            <a class="right remove" href="#" title="delete"><i class="icon-remove"></i> </a>
-                            <a class="right edit" href="#" title="edit"><i class="icon-edit"></i></a>
-                        </div>
-                        <div class="progress"></div>
-                    </div>
-
-                    <div class="left temp_box">
-                        <div class="ful center_text temp_head">Temp Box</div>
-                    </div>
-
-                    <!-- add new task -->
-                    <div class="left create_task_box">
-                        <div class="ful info">
-                            <div class="ful relative info_val">
-                                <input id="title" type="text" name="title" required>
-                                <label class="input_label titl" for="title">Title </label>
-                            </div>
-                            <div class="ful relative info_val">
-                                <textarea name="description" id="description" required></textarea>
-                                <label class="input_label desc" for="description">Description</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="fourth column pillers left progress_col" id="progress">
-                    <div class="ful center_text list_head">Hoy</div>
-                    <div class="tasks ful">
-                       @*erase*@
-                        <div class="nicdark_space10"></div>
-                        <div class="nicdark_toogle">
-
-                            <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                            <div class="nicdark_toogle_content">
-                                <div class="paper">
-                                    <div style="margin-left: 11%">
-                                        <i class="fa fa-book" style="color: orangered"></i>  Materia: Ciencias <br />
-                                        <i class="fa fa-calendar" style="color: cornflowerblue"></i> 11/12/15 <br />
-                                        <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: <br />
-                                    </div>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                    </p>
-                                    <br />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="nicdark_space10"></div>
-                        <div class="nicdark_toogle">
-                            <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                            <div class="nicdark_toogle_content">
-                                <div class="paper">
-                                    <h1>Sample Box</h1> <br>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                    </p>
-                                    <br />
-                                </div>
-                            </div>
-                        </div>
-                        @*erase*@
-                    </div>
-                </div>
-
-                <div class="fourth column pillers left complet_col" id="complete">
-                    <div class="ful center_text list_head">Siguientes</div>
-                    <div class="tasks ful"></div>
-                        <div class="nicdark_space10"></div>
-                        <div class="nicdark_toogle">
-                            
-                            <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                            <div class="nicdark_toogle_content">
-                                <div class="paper">
-                                    <h1>Sample Box</h1> <br>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                    </p>
-                                    <br />
-                                </div>
-                            </div>   
-                        </div>    
-
-                        <div class="nicdark_space10"></div>
-                        <div class="nicdark_toogle">
-                            <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                            <div class="nicdark_toogle_content">
-                                <div class="paper">
-                                    <h1>Sample Box</h1> <br>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                    </p>
-                                    <br />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-        </div>
-    </div>
-</section>
 <div class="nicdark_space50"></div>

@@ -48,8 +48,7 @@
 }
 
 .container {
-  width: 80%;
-  margin-top: 50px;
+  width: 100%;
   border-radius: 10px;
 }
 
@@ -381,11 +380,4 @@ p{
     margin:10px 40px 0;
     font-size: 15px;
     color: black;
-}
-
-h1{
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 5px; 
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
