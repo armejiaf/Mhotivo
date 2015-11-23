@@ -1,3 +1,4 @@
+using Mhotivo.Data.Entities;
 using Mhotivo.Implement.Services;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Implement.Repositories;
@@ -82,6 +83,7 @@ namespace Mhotivo
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
             kernel.Bind<IAcademicGradeRepository>().To<AcademicGradeRepository>().InRequestScope();
             kernel.Bind<INotificationHandlerService>().To<NotificationHandlerService>().InRequestScope();
+            kernel.Bind<IPrivilegeRepository>().To<PrivilegeRepository>().InRequestScope();
         }        
     }
 }

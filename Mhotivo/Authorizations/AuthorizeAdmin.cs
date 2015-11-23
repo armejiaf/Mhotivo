@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Http.Controllers;
 using System.Web.Mvc;
-using Mhotivo.Controllers;
+using Mhotivo.Implement.Repositories;
 
 namespace Mhotivo.Authorizations
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeAdmin : AuthorizeAttribute
     {
-        
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var role = (string)HttpContext.Current.Session["loggedUserRole"];
-            
-            return (!string.IsNullOrEmpty(role) && role.Equals("Administrador"));
+            var roleRepository =
+                ((RoleRepository) DependencyResolver.Current.GetService(typeof (RoleRepository)));
+
+            var roleName = (string)HttpContext.Current.Session["loggedUserRole"];
+            var role = roleRepository.Filter(r => r.Name == roleName).FirstOrDefault(r => true);
+
+            return role != null && role.Name.Equals("Administrador");
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext context)

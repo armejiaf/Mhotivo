@@ -7,12 +7,12 @@ using Mhotivo.Implement.Repositories;
 namespace Mhotivo.Authorizations
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class AuthorizeTeacher : AuthorizeAttribute
+    public class AuthorizeLogin : AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var roleRepository =
-              ((RoleRepository)DependencyResolver.Current.GetService(typeof(RoleRepository)));
+                ((RoleRepository)DependencyResolver.Current.GetService(typeof(RoleRepository)));
 
             var roleName = (string)HttpContext.Current.Session["loggedUserRole"];
             var role = roleRepository.Filter(r => r.Name == roleName).FirstOrDefault(r => true);

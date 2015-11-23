@@ -172,6 +172,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authorizations\AuthorizeAdmin.cs" />
+    <Compile Include="Authorizations\AuthorizeLogin.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
     <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
