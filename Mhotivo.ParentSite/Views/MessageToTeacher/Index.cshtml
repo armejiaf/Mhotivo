@@ -30,7 +30,7 @@
                             }
 
                             <!-- Email input-->
-                            <div class="form-group nicdark_zoom">
+                            <div class="form-group ">
                                 <label class="col-md-3 control-label">Para</label>
                                 <div class="col-md-9">
                                     @Html.DropDownListFor(x => x.Item2.To, ViewData["DropDownCategory"] as List<SelectListItem>)
@@ -38,7 +38,7 @@
                             </div>
 
                             <!-- Name input-->
-                            <div class="form-group nicdark_zoom">
+                            <div class="form-group ">
                                 <label class="col-md-3 control-label">Asunto</label>
                                 <div class="col-md-9">
                                     @Html.TextBoxFor(x => x.Item2.Subject, new { @class = "form-control", placeholder = "Asunto", required = "required" })
@@ -47,10 +47,10 @@
                             </div>
 
                             <!-- Message body -->
-                            <div class="form-group active-revslide nicdark_zoom">
+                            <div class="form-group active-revslide ">
                                 <label class="col-md-3 control-label" for="message">Mensaje</label>
-                                <div class="col-md-9">
-                                    @Html.TextAreaFor(x => x.Item2.Message, new { @class = "form-control", placeholder = "Escriba su mensaje aqui", required = "required", rows = "5" })
+                                <div class="col-md-9 resize = none">
+                                    @Html.TextAreaFor(x => x.Item2.Message, new { @class = "form-control",@style="resize: none", placeholder = "Escriba su mensaje aqui", required = "required", rows = "5" })
                                 </div>
                             </div>
 
