@@ -20,17 +20,17 @@
                             </div>
                             <div class="nicdark_space10"></div>
                             <!-- Name input-->
-                            <div class="form-group nicdark_zoom">
+                            <div class="form-group ">
                                 <label class="col-md-3 control-label">Correo</label>
-                                <div class="col-md-9">
+                                <div class="col-md-5 col-md-offset-2">
                                     @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Correo", required = "required" })
 
                                 </div>
                             </div>
 
-                            <div class="form-group nicdark_zoom">
-                                <label class="col-md-3 control-label">Confirmar Correo</label>
-                                <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Confirmar Correo</label>
+                                <div class="col-md-5 col-md-offset-1">
                                     @Html.TextBoxFor(x => x.ConfirmEmail, new { @class = "form-control", placeholder = "Confirmar Correo", required = "required" })
 
                                 </div>
