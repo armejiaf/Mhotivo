@@ -56,11 +56,10 @@
                             <div class="grid grid_6 right">
                                 <div class="nicdark_focus right">
                                     <h6 class="white">
-                                        @if (HttpContext.Current.Session["loggedUserName"]!=null)
+                                        @if (!String.IsNullOrWhiteSpace(@Html.Action("GetUserLoggedName", "Home").ToString()))
                                         {
                                             <i class="icon-user-1"></i>
-                                            <span> BIENVENIDO(A) @HttpContext.Current.Session["loggedUserName"].ToString().ToUpper() </span>
-                                            //Security.GetUserLoggedName().ToUpper();
+                                            <span> BIENVENIDO(A) @Html.Action("GetUserLoggedName", "Home").ToString().ToUpper() </span>
                                             <span class="grey">·</span>
                                             <i class="icon-lock-1"></i>@*
                                             <a class="white">  CERRAR SESIÓN</a>*@

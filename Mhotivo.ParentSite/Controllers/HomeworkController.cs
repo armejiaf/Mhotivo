@@ -45,12 +45,13 @@ namespace Mhotivo.ParentSite.Controllers
         {
             var students = GetAllStudents(GetTutorId());
             var homeworks = new List<Homework>();
-            if (student != -1)
+            if (student == -1)
             {
                 foreach (var academicCourse in students.Select(student1 => student1.MyGrade.CoursesDetails).SelectMany(courses => courses))
                 {
-                    homeworks.AddRange(academicCourse.Homeworks.Distinct());
+                    homeworks.AddRange(academicCourse.Homeworks);
                 }
+                homeworks = homeworks.Distinct().ToList();
             }
             else
             {

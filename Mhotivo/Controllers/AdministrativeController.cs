@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.IO;
@@ -8,6 +9,7 @@ using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
 using Mhotivo.Authorizations;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -32,15 +34,33 @@ namespace Mhotivo.Controllers
         }
 
          [AuthorizeAdmin]
-        public ActionResult Index()
-        {
-            _viewMessageLogic.SetViewMessageIfExist();
-             return
-                 View(
-                     Mapper.Map<IEnumerable<PeopleWithUser>, IEnumerable<AdministrativeDisplayModel>>(
-                         _peopleWithUserRepository.Filter(
-                             x => x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director"))));
-        }
+        public ActionResult Index(string currentFilter, string searchString, int? page)
+         {
+             var admins = _peopleWithUserRepository.Filter(
+                 x => x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director"));
+             if (searchString != null)
+                 page = 1;
+             else
+                 searchString = currentFilter;
+             if (!string.IsNullOrEmpty(searchString))
+             {
+                 try
+                 {
+                     admins = _peopleWithUserRepository.Filter(
+                  x => (x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director")) && (x.FullName.Contains(searchString)));
+                 }
+                 catch (Exception)
+                 {
+                     admins = _peopleWithUserRepository.Filter(
+                  x => x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director"));
+                 }
+             }
+             ViewBag.CurrentFilter = searchString;
+             var model = Mapper.Map<IEnumerable<PeopleWithUser>, IEnumerable<AdministrativeDisplayModel>>(admins);
+             const int pageSize = 10;
+             var pageNumber = (page ?? 1);
+             return View(model.ToPagedList(pageNumber, pageSize));
+         }
 
         [HttpGet]
         [AuthorizeAdmin]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -8,6 +9,7 @@ using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using AutoMapper;
 using Mhotivo.Authorizations;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -32,10 +34,30 @@ namespace Mhotivo.Controllers
         }
 
          [AuthorizeAdmin]
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            return View(Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDisplayModel> >(_teacherRepository.GetAllTeachers()));
+             var teachers = _teacherRepository.GetAllTeachers();
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                try
+                {
+                    teachers = _teacherRepository.Filter(x => x.FullName.Contains(searchString)).ToList();
+                }
+                catch (Exception)
+                {
+                    teachers = _teacherRepository.GetAllTeachers();
+                }
+            }
+            ViewBag.CurrentFilter = searchString;
+            var model = Mapper.Map<IEnumerable<Teacher>, IEnumerable<TeacherDisplayModel>>(teachers);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(model.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
