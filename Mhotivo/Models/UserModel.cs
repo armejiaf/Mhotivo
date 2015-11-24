@@ -24,7 +24,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        [Display(Name = "Correo Electrónico")]
+        [Display(Name = "Correo Electrónico o Numero de Identidad")]
         public string Email { get; set; }
 
         [Display(Name = "Nombre")]

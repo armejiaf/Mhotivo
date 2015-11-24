@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -251,7 +252,8 @@ namespace Mhotivo
                 .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name));
             Mapper.CreateMap<User, NewUserDisplayModel>()
                 .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName))
-                .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name));
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name))
+                .ForMember(p => p.Email, o => o.MapFrom(src => String.IsNullOrWhiteSpace(src.Email) ? src.UserOwner.IdNumber : src.Email));
             Mapper.CreateMap<User, NewUserDefaultPasswordDisplayModel>()
                 .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName));
             Mapper.CreateMap<User, UserEditModel>()

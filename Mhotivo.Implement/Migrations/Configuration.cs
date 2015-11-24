@@ -24,6 +24,7 @@ namespace Mhotivo.Implement.Migrations
         private IAcademicCourseRepository _academicCourseRepository;
         private IPeopleWithUserRepository _peopleWithUserRepository;
         private IPrivilegeRepository _privilegeRepository;
+        private INotificationRepository _notificationRepository;
 
         public Configuration()
         {
@@ -48,7 +49,7 @@ namespace Mhotivo.Implement.Migrations
             _academicCourseRepository = new AcademicCourseRepository(context);
             _peopleWithUserRepository = new PeopleWithUserRepository(context);
             _privilegeRepository = new PrivilegeRepository(context);
-
+            _notificationRepository = new NotificationRepository(context);
 
             var allRoles = new List<Role>();
             
@@ -174,6 +175,8 @@ namespace Mhotivo.Implement.Migrations
                 char section = 'A';
                 do
                 {
+                    if (section == 'K')
+                        break;
                     var grade = _gradeRepository.GetById(i);
                     var newGrade = new AcademicGrade
                     {
@@ -201,6 +204,113 @@ namespace Mhotivo.Implement.Migrations
                     academicYear.Grades.Add(newGrade);
                     _academicYearRepository.Update(academicYear);
                 } while (rnd.Next(0, 2) == 0);
+            }
+
+            var allCourses = _academicCourseRepository.GetAllAcademicYearDetails();
+            foreach (var academicCourse in allCourses)
+            {
+                academicCourse.Homeworks.Add(new Homework
+                {
+                    AcademicCourse = academicCourse,
+                    DeliverDate = DateTime.UtcNow,
+                    Description = "Tarea para " + academicCourse.Course.Name + " para hoy.",
+                    Points = 5,
+                    Title = "Tarea para hoy."
+                });
+                academicCourse.Homeworks.Add(new Homework
+                {
+                    AcademicCourse = academicCourse,
+                    DeliverDate = DateTime.UtcNow.Subtract(new TimeSpan(2, 0, 0, 0)),
+                    Description = "Tarea para " + academicCourse.Course.Name + " para ayer.",
+                    Points = 5,
+                    Title = "Tarea para ayer."
+                });
+                academicCourse.Homeworks.Add(new Homework
+                {
+                    AcademicCourse = academicCourse,
+                    DeliverDate = DateTime.UtcNow.AddDays(2),
+                    Description = "Tarea para " + academicCourse.Course.Name + " para maniana.",
+                    Points = 5,
+                    Title = "Tarea para maniana."
+                });
+                _academicCourseRepository.Update(academicCourse);
+            }
+            _notificationRepository.Create(new Notification
+            {
+                Title = "Notificacion General",
+                AcademicYear = _academicYearRepository.GetCurrentAcademicYear(),
+                Approved = false,
+                Message = "Esta es una notificacion general.",
+                NotificationCreator = _peopleWithUserRepository.GetById(1),
+                NotificationType = NotificationType.General,
+                SendEmail = false,
+                Sent = false,
+                DestinationId = -1
+            });
+            var educationLevels = _areaRepository.GetAllAreas();
+            foreach (var educationLevel in educationLevels)
+            {
+                _notificationRepository.Create(new Notification
+                {
+                    Title = "Notificacion Para " + educationLevel.Name,
+                    AcademicYear = _academicYearRepository.GetCurrentAcademicYear(),
+                    Approved = false,
+                    Message = "Esta es una notificacion de nivel de educacion.",
+                    NotificationCreator = _peopleWithUserRepository.GetById(1),
+                    NotificationType = NotificationType.EducationLevel,
+                    SendEmail = false,
+                    Sent = false,
+                    DestinationId = educationLevel.Id
+                });
+            }
+            var grades = _gradeRepository.GetAllGrade();
+            foreach (var grade in grades)
+            {
+                _notificationRepository.Create(new Notification
+                {
+                    Title = "Notificacion Para " + grade.Name,
+                    AcademicYear = _academicYearRepository.GetCurrentAcademicYear(),
+                    Approved = false,
+                    Message = "Esta es una notificacion de grado.",
+                    NotificationCreator = _peopleWithUserRepository.GetById(1),
+                    NotificationType = NotificationType.Grade,
+                    SendEmail = false,
+                    Sent = false,
+                    DestinationId = grade.Id
+                });
+            }
+            var academicGrades = _academicGradeRepository.GetAllGrades();
+            foreach (var grade in academicGrades)
+            {
+                _notificationRepository.Create(new Notification
+                {
+                    Title = "Notificacion Para " + grade.Grade.Name + " " + grade.Section,
+                    AcademicYear = _academicYearRepository.GetCurrentAcademicYear(),
+                    Approved = false,
+                    Message = "Esta es una notificacion de seccion.",
+                    NotificationCreator = _peopleWithUserRepository.GetById(1),
+                    NotificationType = NotificationType.Section,
+                    SendEmail = false,
+                    Sent = false,
+                    DestinationId = grade.Id
+                });
+            }
+            var academicCourses = _academicCourseRepository.GetAllAcademicYearDetails();
+            foreach (var academicCourse in academicCourses)
+            {
+
+                _notificationRepository.Create(new Notification
+                {
+                    Title = "Notificacion Para " + academicCourse.Course.Name,
+                    AcademicYear = _academicYearRepository.GetCurrentAcademicYear(),
+                    Approved = false,
+                    Message = "Esta es una notificacion de curso.",
+                    NotificationCreator = _peopleWithUserRepository.GetById(1),
+                    NotificationType = NotificationType.Course,
+                    SendEmail = false,
+                    Sent = false,
+                    DestinationId = academicCourse.Id
+                });
             }
             var generTutor = new Tutor
             {
