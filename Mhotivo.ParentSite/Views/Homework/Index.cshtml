@@ -193,19 +193,22 @@
                     @{
                         if (!Model.PastHomeworks.Any())
                         {
-
+                             <div class="fourth column pillers left all_col" id="all">
+                                <div class="ful center_text list_head">Entregadas</div>
+                                <div class="tasks ful">  </div>
+                            </div>
                         }
                         else
                         {
                             <div class="fourth column pillers left all_col" id="all">
                                 <div class="ful center_text list_head">Entregadas</div>
                                 <div class="tasks ful">
-
+                                    
                                     @foreach (var homeworkModel in Model.PastHomeworks)
                                     {
                                         <br />
                                         <div class="nicdark_toogle">
-                                            <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">homeworkModel.Title</h5>
+                                            <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">@Html.DisplayFor(modelItem => homeworkModel.Title) </h5>
                                             <div class="nicdark_toogle_content">
                                                 <div class="paper">
                                                     <div style="margin-left: 11%">
@@ -227,103 +230,83 @@
                         }
                         if (!Model.CurrentHomeworks.Any())
                         {
+                             <div class="fourth column pillers left progress_col" id="progress">
+                                <div class="ful center_text list_head">Hoy</div>
+                                <div class="tasks ful">
 
+                                </div>
+                             </div>
                         }
                         else
-                        {
-                            foreach (var currentHomework in Model.CurrentHomeworks)
-                            {
-
-                            }
+                        {   
+                             <div class="fourth column pillers left progress_col" id="progress">
+                                <div class="ful center_text list_head">Hoy</div>
+                                <div class="tasks ful">
+                                @foreach (var currentHomework in Model.CurrentHomeworks)
+                                {
+                                    <br />
+                                    <div class="nicdark_toogle">
+                                        <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">@Html.DisplayFor(modelItem => currentHomework.Title) </h5>
+                                        <div class="nicdark_toogle_content">
+                                            <div class="paper">
+                                                <div style="margin-left: 11%">
+                                                    <i class="fa fa-book" style="color: orangered"></i>  Materia: @Html.DisplayFor(modelItem => currentHomework.AcademicCourse) <br />
+                                                    <i class="fa fa-calendar" style="color: cornflowerblue"></i> @Html.DisplayFor(modelItem => currentHomework.DeliverDate.Date) <br />
+                                                    <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: @Html.DisplayFor(modelItem => currentHomework.Points)<br />
+                                                </div>
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => currentHomework.Description)
+                                                </p>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                }
+                                </div>
+                             </div>
                         }
                         if (!Model.FutureHomeworks.Any())
                         {
+                            <div class="fourth column pillers left complet_col" id="complete">
+                                <div class="ful center_text list_head">Por Entregar</div>
+                                <div class="tasks ful">
 
+                                </div>
+                            </div>
                         }
                         else
                         {
-                            foreach (var futureHomework in Model.FutureHomeworks)
+                             <div class="fourth column pillers left complet_col" id="complete">
+                                <div class="ful center_text list_head">Por Entregar</div>
+                                <div class="tasks ful">
+                            @foreach (var futureHomework in Model.FutureHomeworks)
                             {
-
+                                <br />
+                                    <div class="nicdark_toogle">
+                                        <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">@Html.DisplayFor(modelItem => futureHomework.Title) </h5>
+                                        <div class="nicdark_toogle_content">
+                                            <div class="paper">
+                                                <div style="margin-left: 11%">
+                                                    <i class="fa fa-book" style="color: orangered"></i>  Materia: @Html.DisplayFor(modelItem => futureHomework.AcademicCourse) <br />
+                                                    <i class="fa fa-calendar" style="color: cornflowerblue"></i> @Html.DisplayFor(modelItem => futureHomework.DeliverDate.Date) <br />
+                                                    <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: @Html.DisplayFor(modelItem => futureHomework.Points)<br />
+                                                </div>
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => futureHomework.Description)
+                                                </p>
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
                             }
+                                </div>
+                            </div>
                         }
                     }
-                  
-                     
 
-                        <div class="fourth column pillers left progress_col" id="progress">
-                            <div class="ful center_text list_head">Hoy</div>
-                            <div class="tasks ful">
-                                @*erase*@
-                                <br />
-                                <div class="nicdark_toogle">
-
-                                    <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">EVENT ORGANIZATION</h5>
-                                    <div class="nicdark_toogle_content">
-                                        <div class="paper">
-                                            <div style="margin-left: 11%">
-                                                <i class="fa fa-book" style="color: orangered"></i>  Materia: Ciencias <br />
-                                                <i class="fa fa-calendar" style="color: cornflowerblue"></i> 11/12/15 <br />
-                                                <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: <br />
-                                            </div>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                            </p>
-                                            <br />
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="nicdark_toogle">
-                                    <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                                    <div class="nicdark_toogle_content">
-                                        <div class="paper">
-                                            <h1>Sample Box</h1> <br>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                            </p>
-                                            <br />
-                                        </div>
-                                    </div>
-                                </div>
-                                @*erase*@
-                            </div>
-                        </div>
-
-                        <div class="fourth column pillers left complet_col" id="complete">
-                            <div class="ful center_text list_head">Por Entregar</div>
-                            <div class="tasks ful"></div>
-                            <div class="nicdark_space10"></div>
-                            <div class="nicdark_toogle">
-
-                                <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                                <div class="nicdark_toogle_content">
-                                    <div class="paper">
-                                        <h1>Sample Box</h1> <br>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                        </p>
-                                        <br />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="nicdark_space10"></div>
-                            <div class="nicdark_toogle">
-                                <h5 class="nicdark_toogle_header small nicdark_bg_grey nicdark_shadow nicdark_radius">EVENT ORGANIZATION</h5>
-                                <div class="nicdark_toogle_content">
-                                    <div class="paper">
-                                        <h1>Sample Box</h1> <br>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus consectetur dolor a porttitor. Curabitur id sem sed ante fringilla pulvinar et id lectus. Nullam justo ipsum, hendrerit ut commodo nec, pellentesque nec erat. Pellentesque pharetra.
-                                        </p>
-                                        <br />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
                 </div>
             </div>
 
