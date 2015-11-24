@@ -189,6 +189,7 @@
                 <div class="center_block container">
 
                     <div class="ful center_text container_head">Lista de Tareas</div>
+                    <div class="ful max">
                     @{
                         if (!Model.PastHomeworks.Any())
                         {
@@ -196,10 +197,33 @@
                         }
                         else
                         {
-                            foreach (var homeworkModel in Model.PastHomeworks)
-                            {
-  
-                            }
+                            <div class="fourth column pillers left all_col" id="all">
+                                <div class="ful center_text list_head">Entregadas</div>
+                                <div class="tasks ful">
+
+                                    @foreach (var homeworkModel in Model.PastHomeworks)
+                                    {
+                                        <br />
+                                        <div class="nicdark_toogle">
+                                            <h5 class="nicdark_toogle_header small nicdark_bg_grey2 nicdark_shadow nicdark_radius" style="width:90% !important; align-content:center !important;">homeworkModel.Title</h5>
+                                            <div class="nicdark_toogle_content">
+                                                <div class="paper">
+                                                    <div style="margin-left: 11%">
+                                                        <i class="fa fa-book" style="color: orangered"></i>  Materia: @Html.DisplayFor(modelItem => homeworkModel.AcademicCourse) <br />
+                                                        <i class="fa fa-calendar" style="color: cornflowerblue"></i> @Html.DisplayFor(modelItem => homeworkModel.DeliverDate.Date) <br />
+                                                        <i class="fa fa-plus-square" style="color: limegreen"></i> Puntaje: @Html.DisplayFor(modelItem => homeworkModel.Points)<br />
+                                                    </div>
+                                                    <p>
+                                                        @Html.DisplayFor(modelItem => homeworkModel.Description)
+                                                    </p>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    }
+                                </div>
+                            </div>
                         }
                         if (!Model.CurrentHomeworks.Any())
                         {
@@ -209,7 +233,7 @@
                         {
                             foreach (var currentHomework in Model.CurrentHomeworks)
                             {
-                    
+
                             }
                         }
                         if (!Model.FutureHomeworks.Any())
@@ -220,15 +244,12 @@
                         {
                             foreach (var futureHomework in Model.FutureHomeworks)
                             {
-  
+
                             }
                         }
                     }
-                    <div class="ful max">
-                        <div class="fourth column pillers left all_col" id="all">
-                            <div class="ful center_text list_head">Entregadas</div>
-                            <div class="tasks ful"></div>
-                        </div>
+                  
+                     
 
                         <div class="fourth column pillers left progress_col" id="progress">
                             <div class="ful center_text list_head">Hoy</div>
