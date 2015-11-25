@@ -47,7 +47,7 @@ namespace Mhotivo.ParentSite.Controllers
             var homeworks = new List<Homework>();
             if (student == -1)
             {
-                foreach (var academicCourse in students.Select(student1 => student1.MyGrade.CoursesDetails).SelectMany(courses => courses))
+                foreach (var academicCourse in students.Where(student1 => student1.MyGrade != null).SelectMany(student1 => student1.MyGrade.CoursesDetails.ToList()))
                 {
                     homeworks.AddRange(academicCourse.Homeworks);
                 }
@@ -56,7 +56,7 @@ namespace Mhotivo.ParentSite.Controllers
             else
             {
                 var student1 = students.FirstOrDefault(x => x.Id == student);
-                if (student1 != null)
+                if (student1 != null && student1.MyGrade != null)
                 {
                     foreach (var academicCourse in student1.MyGrade.CoursesDetails.Select(courses => courses))
                     {
