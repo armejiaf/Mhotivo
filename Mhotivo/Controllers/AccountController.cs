@@ -28,6 +28,12 @@ namespace Mhotivo.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            
+            var loginModelError = TempData["loginModelError"];
+            if(loginModelError!=null)
+            {
+                ModelState.AddModelError("", loginModelError.ToString());
+            }
             return View();
         }
 
@@ -54,23 +60,25 @@ namespace Mhotivo.Controllers
                             var educationLevelRepo = new DependecyFinder<IEducationLevelRepository>().GetDependency();
                             hasEducationLevel = educationLevelRepo.Filter(x => x.Director.Id == user.Id).Include(level => level.Director).Any();
                         }
-                        if (!needsEducationLevel || hasEducationLevel)
+                        if (user.IsActive && (!needsEducationLevel || hasEducationLevel))
                         {
                             return user.IsUsingDefaultPassword 
                                 ? RedirectToAction("ChangePassword") 
+                                : String.IsNullOrWhiteSpace(returnUrl) 
+                                ? RedirectToAction("Index", "Home")
                                 : RedirectToLocal(returnUrl);
-                        }    
+                        }
                     }
+                    _sessionManagementService.LogOut();
+                    TempData["loginModelError"] = "Cuenta no habilitada o no funcional. Para mas informacion, contactar al administrador.";
+                    return RedirectToAction("Login", new{returnUrl});
                 }
-            }
-            else
-            {
-                ModelState.AddModelError("", "El usuario no tiene privilegios para entrar a esta pagina");
+                ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
                 return View(model);
             }
-            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
-            ModelState.AddModelError("", "El nombre de usuario o la contraseña especificados son incorrectos.");
+            ModelState.AddModelError("", "El usuario no tiene privilegios para entrar a esta pagina");
             return View(model);
+            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
         }
 
         // GET: /Account/Logout
