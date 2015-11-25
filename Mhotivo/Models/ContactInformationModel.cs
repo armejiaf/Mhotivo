@@ -12,7 +12,7 @@ namespace Mhotivo.Models
         public People People { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo")]
-        [Display(Name = "Tipo (Telefono Movil, Telefono de Casa, etc.)")]
+        [Display(Name = "Campo (Telefono Movil, Telefono de Casa, etc.)")]
         public string Type { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Valor")]
@@ -27,7 +27,7 @@ namespace Mhotivo.Models
         public string Controller { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Tipo")]
-        [Display(Name = "Tipo")]
+        [Display(Name = "Campo (Telefono Movil, Telefono de Casa, etc.)")]
         public string Type { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Valor")]
