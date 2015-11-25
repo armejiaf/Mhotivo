@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
+using Mhotivo.Util;
 
 namespace Mhotivo.Controllers
 {
@@ -41,12 +43,29 @@ namespace Mhotivo.Controllers
                 if (_sessionManagementService.LogIn(model.UserEmail, model.Password, model.RememberMe))
                 {
                     var user = _userRepository.Filter(x => x.Email == model.UserEmail).FirstOrDefault();
-                    return user.IsUsingDefaultPassword ? RedirectToAction("ChangePassword") : RedirectToLocal(returnUrl);
+                    var needsEducationLevel = false;
+                    var hasEducationLevel = false;
+
+                    if (user != null)
+                    {
+                        if (user.Role.Name == "Director")
+                        {
+                            needsEducationLevel = true;
+                            var educationLevelRepo = new DependecyFinder<IEducationLevelRepository>().GetDependency();
+                            hasEducationLevel = educationLevelRepo.Filter(x => x.Director.Id == user.Id).Include(level => level.Director).Any();
+                        }
+                        if (!needsEducationLevel || hasEducationLevel)
+                        {
+                            return user.IsUsingDefaultPassword 
+                                ? RedirectToAction("ChangePassword") 
+                                : RedirectToLocal(returnUrl);
+                        }    
+                    }
                 }
             }
             else
             {
-                ModelState.AddModelError("", "El usurio no tiene privilegios para entrar a esta pagina");
+                ModelState.AddModelError("", "El usuario no tiene privilegios para entrar a esta pagina");
                 return View(model);
             }
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario

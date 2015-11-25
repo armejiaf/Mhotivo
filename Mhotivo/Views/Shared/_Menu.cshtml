@@ -13,7 +13,7 @@
 @*RolName:
     @rolName*@
 
-@if (rolName == "Administrador")
+@if (rolName == "Administrador" || rolName == "Director")
 {
     <ul class="nav nav-list" id="MainMenu">
         <li id="Accounts">
@@ -21,12 +21,16 @@
             <span class="menu-text">Cuentas y Personas</span>
             <ul class="nav nav-list">
                 <li></li>
+                @if(rolName == "Administrador")
+                {
                 <li>
                     <a href="/Administrative">
                         <i class="icon-blank"></i>
                         <span class="menu-text"> Administrativos </span>
                     </a>
                 </li>
+                }
+                
                 <li>
                     <a href="/Teacher">
                         <i class="icon-blank"></i>
@@ -45,6 +49,8 @@
                         <span class="menu-text"> Estudiantes </span>
                     </a>
                 </li>
+            @if (rolName == "Administrador")
+            {
                 <li>
                     <a href="/User">
                         <i class="icon-blank"></i>
@@ -57,6 +63,7 @@
                         <span class="menu-text"> Usuarios Nuevos</span>
                     </a>
                 </li>
+            }
             </ul>
         </li>
         <li id="EducationScheme">
@@ -64,12 +71,17 @@
             <span class="menu-text">Esquema Educativo</span>
             <ul class="nav nav-list">
                 <li></li>
+                
+            @if (rolName == "Administrador")
+            {
                 <li>
                     <a href="/EducationLevel">
                         <i class="icon-blank"></i>
                         <span class="menu-text"> Niveles de Educacion </span>
                     </a>
                 </li>
+            }
+     
                 <li>
                     <a href="/Grade">
                         <i class="icon-blank"></i>
