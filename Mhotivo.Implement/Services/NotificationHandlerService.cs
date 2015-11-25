@@ -46,6 +46,7 @@ namespace Mhotivo.Implement.Services
                         SendToStudents(grade.Students, notification);
                     }
                     notification.Sent = true;
+                    _notificationRepository.Update(notification);
                     break;
                 case NotificationType.EducationLevel:
                     var gradesForLevel =
@@ -57,6 +58,7 @@ namespace Mhotivo.Implement.Services
                         SendToStudents(grade.Students, notification);
                     }
                     notification.Sent = true;
+                    _notificationRepository.Update(notification);
                     break;
                 case NotificationType.Grade:
                     var grades =
@@ -67,6 +69,7 @@ namespace Mhotivo.Implement.Services
                         SendToStudents(grade.Students, notification);
                     }
                     notification.Sent = true;
+                    _notificationRepository.Update(notification);
                     break;
                 case NotificationType.Section:
                     var singleGrade =
@@ -76,6 +79,7 @@ namespace Mhotivo.Implement.Services
                     {
                         SendToStudents(singleGrade.Students, notification);
                         notification.Sent = true;
+                        _notificationRepository.Update(notification);
                     }
                     break;
                 case NotificationType.Course:
@@ -86,6 +90,7 @@ namespace Mhotivo.Implement.Services
                     {
                         SendToStudents(course.AcademicGrade.Students, notification);
                         notification.Sent = true;
+                        _notificationRepository.Update(notification);
                     }
                     break;
                 case NotificationType.Personal:
@@ -94,6 +99,7 @@ namespace Mhotivo.Implement.Services
                     {
                         SendToStudent(singleStudent, notification);
                         notification.Sent = true;
+                        _notificationRepository.Update(notification);
                     }
                     break;
             }

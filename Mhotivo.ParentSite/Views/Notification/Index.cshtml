@@ -112,7 +112,7 @@
                                            <br />
                                            <div class="nicdark_bg_white" style="border: 1px ridge grey; border-radius: 10px">
                                                <div class="nicdark_space10"></div>
-                                               <h2 class="subtitle nicdark_marginleft10" style="color: black; text-decoration:underline">@item.NotificationName</h2>
+                                               <h2 class="subtitle nicdark_marginleft10" style="color: black; text-decoration:underline">@item.Title</h2>
                                                <div class="nicdark_space20"></div>
                                                <div class="nicdark_marginleft10" style="font-size: 18px; color:white;">
                                                    @Html.Raw(@item.Message)
@@ -172,7 +172,6 @@
                <script src="~/Scripts/jquery-1.9.1.min.js"></script>
                <script type="text/javascript">
                     function AddComment(notificationId) {
-
                         var textBox = document.getElementById("notificationId");
                         textBox.value = notificationId;
                     }
