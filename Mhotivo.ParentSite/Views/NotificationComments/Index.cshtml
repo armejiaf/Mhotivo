@@ -57,13 +57,19 @@
         </div>
     </section>
 
+    <div class="nicdark_space50"></div>
+    <div class="grid grid_4"></div>
+    <div class="grid grid_8">
+        <h3 class="subtitle greydark">@Model.Item1.CommentsAmount COMENTARIO(S)</h3>
+    </div>
+
 @foreach (var item in Model.Item2)
 {
+    <div class="grid grid_4"></div>
     <div class="grid grid_8">
-        <div class="nicdark_space50"></div>
 
-        <h3 class="subtitle greydark">@Model.Item1.CommentsAmount COMENTARIO(S)</h3>
-        <div class="nicdark_space20"></div>
+       
+        <div class="nicdark_space10"></div>
         <div class="nicdark_divider left small"><span class="nicdark_bg_orange nicdark_radius"></span></div>
         <div class="nicdark_space20"></div>
 
@@ -87,10 +93,9 @@
                 </div>
                 <!--comment-->
             </li>
-
         </ul>
 
-        <div class="nicdark_space50"></div>
+        <div class="nicdark_space20"></div>
     </div>
 }
 <div class="nicdark_space50"></div>
