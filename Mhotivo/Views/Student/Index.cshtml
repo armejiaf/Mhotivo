@@ -1,4 +1,5 @@
 ﻿@*@model IEnumerable<Mhotivo.Models.DisplayStudentModel>*@
+@using System.Drawing
 @using System.Web.Mvc.Html
 @model PagedList.IPagedList<Mhotivo.Models.StudentDisplayModel>
 @using PagedList.Mvc;
@@ -12,18 +13,18 @@
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
 <h2>Estudiantes Registrados  </h2>
-
-<a class="toAdd" data-toggle="modal" role="button" data-id="Student/Add"><span class="btn btn-small btn-primary">Agregar Estudiante</span></a>
-<div class="space"></div>
-<!--<a href="Student/Add"><span class="btn btn-small btn-primary">Agregar Estudiante</span></a>-->
-
+<a class="toAdd" data-toggle="modal" role="button" href="~/Student/Add/"><span class="btn btn-small btn-primary">Agregar Estudiante</span></a>
+<div style="float:right">
     @using (Html.BeginForm("Index", "Student", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
-    <p>
-        Buscar por Nombre: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Buscar" />
-    </p>
-     }
+        <p>
+            Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <button class="btn btn-small btn-primary" type="submit">
+                <i class="icon-search"></i>
+            </button>
+        </p>
+    }
+</div>
 
 @if(!Model.Any())
 {
@@ -38,13 +39,12 @@ else
     <table class="table table-striped table-bordered table-hover" id="sample-table-1">
 	    <thead>
 		    <tr>
-		        <th>@Html.DisplayNameFor(model => model.First().UrlPicture)</th>
+		        <th>@Html.DisplayNameFor(model => model.First().Photo)</th>
                 <th>@Html.ActionLink("Nombre Completo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.DisplayNameFor(model => model.First().BloodType)</th>
                 <th>@Html.DisplayNameFor(model => model.First().AccountNumber)</th>
 			    <th>@Html.DisplayNameFor(model => model.First().Tutor1)</th>
-		        <th>Ver Detalles</th>
-                <th>Modificar</th>
+		        <th>Detalles</th>
 		    </tr>
 	    </thead>
         <tbody>
@@ -61,8 +61,16 @@ else
                                     var base64 = Convert.ToBase64String(item.Photo);
                                     imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
                                 }
+                                else
+                                {
+                                    var image = new Bitmap(Mhotivo.Implement.Properties.Resources.default_avatar);
+                                    var defaultAvatar = new MemoryStream();
+                                    image.Save(defaultAvatar, System.Drawing.Imaging.ImageFormat.Png);
+                                    var base64 = Convert.ToBase64String(defaultAvatar.ToArray());
+                                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                                }
                             }
-                            <img alt="150x150" height="150" width="150" src="@imgSrc" />
+                            <img alt="75x75" style="width: 75px; height: 75px;" src="@imgSrc" />
                         </div>
                         <div class="text">
                         </div>
@@ -72,7 +80,7 @@ else
                     <td  >@Html.DisplayFor(modelItem => item.AccountNumber)</td>
 			        <td  >@Html.DisplayFor(modelItem => item.Tutor1)</td>
                     <td>
-                        <a data-id="Student/Details/@Html.DisplayFor(modelItem => item.Id)" class="toDetails">Detalles</a>
+                        <a href="~/Student/Details/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                         @*<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Student/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>*@
                         @*<a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
                         @using (Html.BeginForm("Delete", "Student", new { id = Html.DisplayFor(modelItem => item.Id) }, FormMethod.Post,
@@ -80,7 +88,6 @@ else
                         <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                                value="¿Realmente desea eliminar al alumno @Html.DisplayFor(modelItem => item.FullName)?" />*@
                     </td>
-                    <td><a href="~/Student/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                 </tr>
             }
         </tbody>

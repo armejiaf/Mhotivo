@@ -12,7 +12,7 @@ namespace Mhotivo.ParentSite.Authorization
          protected override bool AuthorizeCore(HttpContextBase httpContext)
          {
              var role = HttpContext.Current.Session["loggedUserEmail"].ToString();
-
+           
              return (!role.Equals(""));
          }
 

@@ -27,6 +27,7 @@ namespace Mhotivo.Implement.Repositories
         public User Create(User itemToCreate)
         {
             itemToCreate.HashPassword();
+            _context.PeopleWithUsers.Attach(itemToCreate.UserOwner);
             var user = _context.Users.Add(itemToCreate);
             _context.SaveChanges();
             return user;

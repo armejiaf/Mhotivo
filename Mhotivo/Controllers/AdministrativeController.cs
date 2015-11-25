@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.IO;
+using Mhotivo.Implement.Utils;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
@@ -21,52 +22,56 @@ namespace Mhotivo.Controllers
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly IRoleRepository _roleRepository;
+        private readonly IEducationLevelRepository _educationLevelRepository;
 
         public AdministrativeController(IContactInformationRepository contactInformationRepository, IUserRepository userRepository, 
-            IRoleRepository roleRepository, IPasswordGenerationService passwordGenerationService, IPeopleWithUserRepository peopleWithUserRepository)
+            IRoleRepository roleRepository, IPasswordGenerationService passwordGenerationService, IPeopleWithUserRepository peopleWithUserRepository, IEducationLevelRepository educationLevelRepository)
         {
             _contactInformationRepository = contactInformationRepository;
             _userRepository = userRepository;
             _passwordGenerationService = passwordGenerationService;
             _peopleWithUserRepository = peopleWithUserRepository;
+            _educationLevelRepository = educationLevelRepository;
             _roleRepository = roleRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdmin]
         public ActionResult Index(string currentFilter, string searchString, int? page)
-         {
-             var admins = _peopleWithUserRepository.Filter(
-                 x => x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director"));
-             if (searchString != null)
-                 page = 1;
-             else
-                 searchString = currentFilter;
-             if (!string.IsNullOrEmpty(searchString))
-             {
-                 try
-                 {
-                     admins = _peopleWithUserRepository.Filter(
-                  x => (x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director")) && (x.FullName.Contains(searchString)));
-                 }
-                 catch (Exception)
-                 {
-                     admins = _peopleWithUserRepository.Filter(
-                  x => x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director"));
-                 }
-             }
-             ViewBag.CurrentFilter = searchString;
-             var model = Mapper.Map<IEnumerable<PeopleWithUser>, IEnumerable<AdministrativeDisplayModel>>(admins);
-             const int pageSize = 10;
-             var pageNumber = (page ?? 1);
-             return View(model.ToPagedList(pageNumber, pageSize));
-         }
+        {
+            _viewMessageLogic.SetViewMessageIfExist();
+            var admins = _peopleWithUserRepository.Filter(
+                x => x.User.IsActive && (x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director")));
+            if (searchString != null)
+                page = 1;
+            else
+                searchString = currentFilter;
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                try
+                {
+                    admins = _peopleWithUserRepository.Filter(
+                 x => x.User.IsActive && (x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director")) &&
+                     (x.FullName.Contains(searchString) || x.User.Role.Name.Contains(searchString) || x.IdNumber.Contains(searchString)));
+                }
+                catch (Exception)
+                {
+                    admins = _peopleWithUserRepository.Filter(
+                x => x.User.IsActive && (x.User.Role.Name.Equals("Administrador") || x.User.Role.Name.Equals("Director")));
+                }
+            }
+            ViewBag.CurrentFilter = searchString;
+            var model = Mapper.Map<IEnumerable<PeopleWithUser>, IEnumerable<AdministrativeDisplayModel>>(admins);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(model.ToPagedList(pageNumber, pageSize));
+        }
 
         [HttpGet]
         [AuthorizeAdmin]
         public ActionResult ContactEdit(long id)
         {
-            ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
+            var thisContactInformation = _contactInformationRepository.GetById(id);
             var contactInformation = new ContactInformationEditModel
             {
                 Type = thisContactInformation.Type,
@@ -84,6 +89,13 @@ namespace Mhotivo.Controllers
         {
             var admin = _peopleWithUserRepository.GetById(id);
             var adminModel = Mapper.Map<PeopleWithUser, AdministrativeEditModel>(admin);
+            var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
+            {
+                Text = c.GetEnumDescription(),
+                Value = c.ToString("D")
+            }).ToList();
+
+            ViewBag.Genders = new List<SelectListItem>(items);
             return View("Edit", adminModel);
         }
 
@@ -107,30 +119,51 @@ namespace Mhotivo.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (
+                    _peopleWithUserRepository.Filter(x => x.IdNumber.Equals(modelAdmin.IdNumber) && x.Id != modelAdmin.Id && !x.User.Role.Name.Equals("Tutor"))
+                        .Any())
+                {
+                    const string title = "Error!";
+                    const string content = "Ya existe un docente o administrativo con ese numero de identidad.";
+                    _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                    return RedirectToAction("Index");
+                }
                 try
                 {
-                    byte[] fileBytes = null;
                     if (modelAdmin.UploadPhoto != null)
                     {
                         using (var binaryReader = new BinaryReader(modelAdmin.UploadPhoto.InputStream))
                         {
-                            fileBytes = binaryReader.ReadBytes(modelAdmin.UploadPhoto.ContentLength);
+                            modelAdmin.Photo = binaryReader.ReadBytes(modelAdmin.UploadPhoto.ContentLength);
                         }
                     }
                     var myAdmin = _peopleWithUserRepository.GetById(modelAdmin.Id);
                     Mapper.Map(modelAdmin, myAdmin);
-                    myAdmin.Photo = fileBytes ?? myAdmin.Photo;
                     _peopleWithUserRepository.Update(myAdmin);
-                    const string title = "Maestro Actualizado";
-                    var content = "El maestro " + myAdmin.FullName + " ha sido actualizado exitosamente.";
-                    _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+                    const string title = "Administrativo Actualizado";
+                    var content = "El administrativo " + myAdmin.FullName + " ha sido actualizado exitosamente.";
+                    _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
                     return RedirectToAction("Index");
                 }
                 catch
                 {
+                    var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
+                    {
+                        Text = c.GetEnumDescription(),
+                        Value = c.ToString("D")
+                    }).ToList();
+
+                    ViewBag.Genders = new List<SelectListItem>(items);
                     return View(modelAdmin);
                 }
             }
+            var items2 = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
+            {
+                Text = c.GetEnumDescription(),
+                Value = c.ToString("D")
+            }).ToList();
+
+            ViewBag.Genders = new List<SelectListItem>(items2);
             return View(modelAdmin);
         }
 
@@ -138,10 +171,17 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Delete(long id)
         {
-            PeopleWithUser admin = _peopleWithUserRepository.Delete(id);
-            const string title = "Maestro Eliminado";
-            var content = "El maestro " + admin.FullName + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            if (_educationLevelRepository.Filter(x => x.Director.Id == id).Any())
+            {
+                const string title2 = "Error";
+                const string content2 = "El director esta asignado a un nivel educativo y no puede borrarse.";
+                _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
+            var admin = _peopleWithUserRepository.Delete(id);
+            const string title = "Administrativo Eliminado";
+            var content = "El administrativo " + admin.FullName + " ha sido eliminado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -150,10 +190,10 @@ namespace Mhotivo.Controllers
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
-                        {
-                            Id = id,
-                            Controller = "Administrative"
-                        };
+            {
+                Id = id,
+                Controller = "Administrative"
+            };
             return View("ContactAdd", model);
         }
 
@@ -162,6 +202,13 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             ViewBag.Roles = new SelectList(_roleRepository.Filter(x => x.Name.Equals("Administrador") || x.Name.Equals("Director")), "Id", "Name");
+            var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
+            {
+                Text = c.GetEnumDescription(),
+                Value = c.ToString("D")
+            }).ToList();
+
+            ViewBag.Genders = new List<SelectListItem>(items);
             return View("Create");
         }
 
@@ -170,9 +217,11 @@ namespace Mhotivo.Controllers
         public ActionResult Add(AdministrativeRegisterModel modelAmin)
         {
             var adminModel = Mapper.Map<AdministrativeRegisterModel, PeopleWithUser>(modelAmin);
-            if (_peopleWithUserRepository.Filter(x => x.IdNumber == modelAmin.IdNumber).Any())
+            if (
+                    _peopleWithUserRepository.Filter(x => x.IdNumber.Equals(modelAmin.IdNumber) && !x.User.Role.Name.Equals("Tutor"))
+                        .Any())
             {
-                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe un maestro con ese numero de Identidad", ViewMessageType.ErrorMessage);
+                _viewMessageLogic.SetNewMessage("Dato Invalido", "Ya existe un administrativo con ese numero de Identidad", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
             if (_peopleWithUserRepository.Filter(x => x.User.Email == modelAmin.Email).Any())
@@ -180,7 +229,7 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage("Dato Invalido", "El Correo Electronico ya esta en uso", ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-
+            _peopleWithUserRepository.Create(adminModel);
             var newUser = new User
             {
                 Email = modelAmin.Email,
@@ -193,9 +242,9 @@ namespace Mhotivo.Controllers
             newUser.DefaultPassword = newUser.Password;
             newUser = _userRepository.Create(newUser);
             adminModel.User = newUser;
-            _peopleWithUserRepository.Create(adminModel);
-            const string title = "Maestro Agregado";
-            var content = "El maestro " + adminModel.FullName + "ha sido agregado exitosamente.";
+            _peopleWithUserRepository.Update(adminModel);
+            const string title = "Administrativo Agregado";
+            var content = "El administrativo " + adminModel.FullName + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
@@ -204,31 +253,10 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
+            _viewMessageLogic.SetViewMessageIfExist();
             var admin = _peopleWithUserRepository.GetById(id);
             var adminModel = Mapper.Map<PeopleWithUser, AdministrativeDisplayModel>(admin);
             return View("Details", adminModel);
-        }
-
-        [HttpGet]
-        [AuthorizeAdmin]
-        public ActionResult DetailsEdit(long id)
-        {
-            var admin = _peopleWithUserRepository.GetById(id);
-            var adminModel = Mapper.Map<PeopleWithUser, AdministrativeEditModel>(admin);
-            return View("DetailsEdit", adminModel);
-        }
-
-        [HttpPost]
-        [AuthorizeAdmin]
-        public ActionResult DetailsEdit(AdministrativeEditModel modelAdmin)
-        {
-            var myAdmin = _peopleWithUserRepository.GetById(modelAdmin.Id);
-            Mapper.Map(modelAdmin, myAdmin);
-            _peopleWithUserRepository.Update(myAdmin);
-            const string title = "Maestro Actualizado";
-            var content = "El maestro " + myAdmin.FullName + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
-            return RedirectToAction("Details/" + modelAdmin.Id);
         }
     }
 }

@@ -101,9 +101,11 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id, long gradeId, long academicGradeId)
         {
             var grade = _academicGradeRepository.GetById(gradeId);
-            ((List<Student>)grade.Students).RemoveAll(x => x.Id == id);
+            (grade.Students.ToList()).RemoveAll(x => x.Id == id);
             var student = _studentRepository.GetById(id);
             student.MyGrade = null;
+            _studentRepository.Update(student);
+            _academicGradeRepository.Update(grade);
             const string title = "Matricula Borrada";
             const string content = "El estudiante ha sido eliminado exitosamente de la lista de matriculados.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -116,11 +118,8 @@ namespace Mhotivo.Controllers
         public ActionResult DeleteAll(long gradeId)
         {
             var grade = _academicGradeRepository.GetById(gradeId);
-            foreach (var student in grade.Students)
-            {
-                student.MyGrade = null;
-            }
             grade.Students.Clear();
+            _academicGradeRepository.Update(grade);
             const string title = "Matricula Borrada";
             const string content = "Todos los estudiantes de esta seccion han sido eliminados exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
@@ -139,11 +138,8 @@ namespace Mhotivo.Controllers
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
                 return RedirectToAction("Index");
             }
-            foreach (var student in grade.Students)
-            {
-                student.MyGrade = null;
-            }
             grade.Students.Clear();
+            _academicGradeRepository.Update(grade);
             const string title2 = "Matricula Borrada";
             const string content2 = "Todos los estudiantes de ese grado y seccion han sido eliminados exitosamente.";
             _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.InformationMessage);
@@ -160,7 +156,7 @@ namespace Mhotivo.Controllers
             ViewBag.Sections = new List<SelectListItem>();
             ((List<SelectListItem>) ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
                 x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
-                .Select(n => new SelectListItem {Value = n.Section, Text = n.Id.ToString()}));
+                .Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Section }));
             return PartialView(model);
         }
 
@@ -176,7 +172,7 @@ namespace Mhotivo.Controllers
             ViewBag.Sections = new List<SelectListItem>();
             ((List<SelectListItem>)ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
                 x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
-                .Select(n => new SelectListItem { Value = n.Section, Text = n.Id.ToString() }));
+                .Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Section }));
             return View("Create", new EnrollRegisterModel{Id = gradeId});
         }
 

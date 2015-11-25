@@ -10,7 +10,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -36,9 +36,6 @@ namespace Mhotivo.Models
         [Display(Name = "Dirección Principal")]
         public string Address { get; set; }
 
-        [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
-
         [Display(Name = "Sexo")]
         public string MyGender { get; set; }
 
@@ -47,9 +44,6 @@ namespace Mhotivo.Models
 
         [Display(Name = "Número de Cuenta")]
         public string AccountNumber { get; set; }
-
-        [Display(Name = "Biografía")]
-        public string Biography { get; set; }
 
         [Display(Name = "Tutor o Padre")]
         public string Tutor1 { get; set; }
@@ -65,9 +59,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
-
-        public string FullName { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -102,8 +94,6 @@ namespace Mhotivo.Models
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
 
-        public string UrlPicture { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
         public Gender MyGender { get; set; }
@@ -121,13 +111,11 @@ namespace Mhotivo.Models
         public long Tutor1 { get; set; }
 
         [Display(Name = "Madre o Segundo Tutor")]
-        public long Tutor2 { get; set; }
+        public long? Tutor2 { get; set; }
     }
 
     public class StudentRegisterModel
     {
-        public string FullName { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -142,7 +130,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
-        public string BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -156,10 +144,6 @@ namespace Mhotivo.Models
         [StringLength(300, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 10)]
         [Display(Name = "Dirección")]
         public string Address { get; set; }
-
-        [Required(ErrorMessage = "Debe Ingresar Foto Perfil")]
-        [Display(Name = "Foto Perfil")]
-        public HttpPostedFileBase FilePicture { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Sexo")]
         [Display(Name = "Sexo")]
@@ -178,6 +162,6 @@ namespace Mhotivo.Models
         public long Tutor1 { get; set; }
 
         [Display(Name = "Madre o Segundo Tutor")]
-        public long Tutor2 { get; set; }
+        public long? Tutor2 { get; set; }
     }
 }

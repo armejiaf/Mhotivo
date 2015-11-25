@@ -74,6 +74,12 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Edit(AcademicYearEditModel modelAcademicYear)
         {
+            if (modelAcademicYear.IsActive &&
+                _academicYearRepository.Filter(x => x.IsActive && x.Id != modelAcademicYear.Id).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Solo puede haber un año académico activo.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
             var myAcademicYear = _academicYearRepository.GetById(modelAcademicYear.Id);
             myAcademicYear = Mapper.Map(modelAcademicYear, myAcademicYear);
             myAcademicYear = _academicYearRepository.Update(myAcademicYear);
@@ -117,6 +123,11 @@ namespace Mhotivo.Controllers
         [AuthorizeAdmin]
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
         {
+            if (_academicYearRepository.Filter(x => x.Year == academicYearModel.Year).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Este año académico ya existe.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index");
+            }
             var toCreate = Mapper.Map<AcademicYear>(academicYearModel);
             toCreate = _academicYearRepository.Create(toCreate);
             const string title = "Año Académico Agregado";

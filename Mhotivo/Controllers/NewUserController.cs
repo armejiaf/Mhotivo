@@ -38,7 +38,7 @@ namespace Mhotivo.Controllers
                 }
             }
             ViewBag.CurrentFilter = searchString;
-            var model = Mapper.Map<IEnumerable<User>, IEnumerable<NewUserDisplayModel>>(newUsers);
+            var model = Mapper.Map<IEnumerable<User>, IEnumerable<NewUserDisplayModel>>(newUsers.OrderBy(x => x.UserOwner.FullName));
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
             return View(model.ToPagedList(pageNumber, pageSize));
