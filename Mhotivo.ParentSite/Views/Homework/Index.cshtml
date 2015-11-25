@@ -59,131 +59,10 @@
                     }
                 </div>
 
-                @*
-                <div class="nicdark_margin10">
-                    @Html.ActionLink("Dia", "index", new { param = Request.Params["param"], date = "Dia", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                    @Html.ActionLink("Semana", "index", new { param = Request.Params["param"], date = "Semana", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                    @Html.ActionLink("Mes", "index", new { param = Request.Params["param"], date = "Mes", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                    @Html.ActionLink("Todas", "index", new { param = Request.Params["param"], date = "", student = Request.Params["student"] }, new { @class = "nicdark_btn nicdark_bg_grey2 small nicdark_shadow nicdark_radius grey subtitle nicdark_margin10" })
-                </div>
-                *@
-
             </div>
         </div>
         <!--sidebar-->
-
         
-        @*
-        <div class="grid grid_8">
-
-                foreach (var item in Models.Where(x => x.AcademicCourse.Course.Id == @var))
-                {
-
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
-
-                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                        <div class="nicdark_size_big">
-                            <p class="white">
-                                <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
-                                <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
-
-                        </div>
-                        <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
-                    </div>
-                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                        <div>
-                            @if (Convert.ToInt32(Request.Params["student"]) == 0)
-                            {
-                                for (int i = 0; i < studentsName.Count; i++)
-                                {
-                                    <i class="align-right nicdark_marginright10">  @studentsName.ElementAt(i)</i>
-                                }
-                            }
-                            else
-                            {
-                                <i class="align-right nicdark_marginright10">  @HomeworkController.GetStudenById(Convert.ToInt32(Request.Params["student"]))</i>
-                            }
-
-
-                        </div>
-                        <i class=" nicdark_iconbg right medium orange"></i>
-                    </div>
-
-                    <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
-                        <div class="nicdark_margin20 nicdark_relative">
-
-                            <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
-                                <h4 class="white center">@item.Title</h4>
-                                <div class="nicdark_space10"></div>
-                                <p class="white infobox-text">@Html.Raw(@item.Description)</p>
-
-                            </div>
-                        </div>
-                        <div class="nicdark_space10"></div>
-
-                    </div>
-
-                    <div class="nicdark_space10"></div>
-
-
-                }
-            }
-            else
-            {
-                foreach (var item in Model)
-                {
-                    var studentsName = @HomeworkController.GetStudentName(item.AcademicCourse.AcademicGrade.AcademicYear.Id);
-                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                        <div class="nicdark_size_big">
-                            <p class="white">
-                                <i class="icon-calendar-1 nicdark_marginright10">Fecha de Entrega: @item.DeliverDate.ToString("dd-MM-yyyy")</i> <span class="nicdark_margin010">·</span>
-                                <i class=" align-right nicdark_marginright10">Materia: @item.AcademicCourse.Course.Name </i> <span class="nicdark_margin010">·</span>
-
-                                <i class="icon-attention-1 align-right nicdark_marginright10">Puntaje: @item.Points %</i>
-
-                        </div>
-                        <i class="icon-info-outline nicdark_iconbg right medium orange"></i>
-                    </div>
-                    <div class="nicdark_textevidence nicdark_bg_orange nicdark_radius nicdark_shadow">
-                        <div>
-                            @if (Convert.ToInt32(Request.Params["student"]) == 0)
-                            {
-                                for (int i = 0; i < studentsName.Count; i++)
-                                {
-                                    <i class="align-right nicdark_marginright10">  @studentsName.ElementAt(i)</i>
-                                }
-                            }
-                            else
-                            {
-                                <i class="align-right nicdark_marginright10">  @HomeworkController.GetStudenById(Convert.ToInt32(Request.Params["student"]))</i>
-                            }
-
-                        </div>
-                        <i class=" nicdark_iconbg right medium orange"></i>
-                    </div>
-
-                    <div class="nicdark_archive1 nav-justified nicdark_bg_yellow nicdark_radius nicdark_shadow ">
-                        <div class="nicdark_margin20 nicdark_relative">
-
-                            <div class="nicdark_activity  nicdark_disable_marginleft_ipadpotr">
-                                <h4 class="white center">@item.Title</h4>
-                                <div class="nicdark_space10"></div>
-                                <p class="white infobox-text">@Html.Raw(@item.Description)</p>
-
-                            </div>
-                        </div>
-                        <div class="nicdark_space10"></div>
-
-
-
-                    </div>
-
-                    <div class="nicdark_space10"></div>
-
-                }
-            }
-        </div>*@
         <div class="grid grid_10">
             <div class="ful">
                 <div class="center_block container">
@@ -195,7 +74,15 @@
                         {
                              <div class="fourth column pillers left all_col" id="all">
                                 <div class="ful center_text list_head">Entregadas</div>
-                                <div class="tasks ful">  </div>
+                                <div class="tasks ful">
+                                    <div class="nicdark_space20"></div>
+                                    <div style="width:80%">
+                                        <div class="nicdark_alerts nicdark_bg_red nicdark_radius nicdark_shadow">
+                                            <p class="white nicdark_size_small"><i class="icon-cancel-circled-outline iconclose"></i>&nbsp;&nbsp;&nbsp;No hay tarea.</p>
+                                            <i class="icon-warning-empty nicdark_iconbg right small red"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         }
                         else
@@ -233,7 +120,13 @@
                              <div class="fourth column pillers left progress_col" id="progress">
                                 <div class="ful center_text list_head">Hoy</div>
                                 <div class="tasks ful">
-
+                                    <div class="nicdark_space20"></div>
+                                    <div style="width:80%">
+                                        <div class="nicdark_alerts nicdark_bg_red nicdark_radius nicdark_shadow">
+                                            <p class="white nicdark_size_small"><i class="icon-cancel-circled-outline iconclose"></i>&nbsp;&nbsp;&nbsp;No hay tarea.</p>
+                                            <i class="icon-warning-empty nicdark_iconbg right small red"></i>
+                                        </div>
+                                    </div>
                                 </div>
                              </div>
                         }
@@ -271,7 +164,13 @@
                             <div class="fourth column pillers left complet_col" id="complete">
                                 <div class="ful center_text list_head">Por Entregar</div>
                                 <div class="tasks ful">
-
+                                    <div class="nicdark_space20"></div>
+                                    <div style="width:80%">
+                                        <div class="nicdark_alerts nicdark_bg_red nicdark_radius nicdark_shadow">
+                                            <p class="white nicdark_size_small"><i class="icon-cancel-circled-outline iconclose"></i>&nbsp;&nbsp;&nbsp;No hay tarea.</p>
+                                            <i class="icon-warning-empty nicdark_iconbg right small red"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         }
