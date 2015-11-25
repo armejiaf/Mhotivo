@@ -16,11 +16,11 @@
 <h2>Detalles de @Html.DisplayFor(model => model.FullName)</h2>
 
 <p>
-    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Student/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="../" class="btn btn-small">
+    <a href="~/Student/Index" class="btn btn-small">
         Regresar
     </a>
 </p>
@@ -32,11 +32,11 @@
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Address)</span>
     </div>
     <br style="clear: left;" />
-    <div style="float: left; width: 200px;">
+    <div style="float: left; width: 250px;">
         <input type="text" value="@Html.DisplayFor(model => model.City)" disabled="disabled" />
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.City)</span>
     </div>
-    <div style="float: left; width: 100px;">
+    <div style="float: left; width: 250px;">
         <input type="text" value="@Html.DisplayFor(model => model.State)" disabled="disabled" />
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
     </div>
@@ -77,8 +77,8 @@
     <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Student/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary">Agregar</span></a>
     <br style="clear: left;" />
     <br style="clear: left;" />
-    @if(Model.Contacts != null){
-        foreach (var item in Model.Contacts)
+    @if(Model.ContactInformation != null){
+        foreach (var item in Model.ContactInformation)
         {
             <div style="float: left; width: 250px;">
                 <input type="text" value="@Html.DisplayFor(modelItem => item.Value)" disabled="disabled" />
@@ -120,19 +120,15 @@
     </div>
     <br style="clear: left;" />
     <br style="clear: left;" />
-    <div style="float: left; width: 500px;">
-        <textarea style="margin: 0px 0px 10px; width: 400px; height: 200px;" disabled="disabled">@Html.DisplayFor(model => model.Biography)</textarea>
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Biography)</span>
-    </div>
     <br style="clear: left;" />
 </div>
 <hr />
 <p>
-    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Student/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="../" class="btn btn-small">
+    <a href="~/Student/Index" class="btn btn-small">
         Regresar
     </a>
 </p>

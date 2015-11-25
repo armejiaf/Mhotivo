@@ -14,14 +14,17 @@
 
 <h2>Usuarios Registrados  </h2>
 
-<div class="space"></div>
+<div style="float:right">
     @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
-    <p>
-        Buscar por Nombre: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Buscar" />
-    </p>
+        <p>
+            Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <button class="btn btn-small btn-primary" type="submit">
+                <i class="icon-search"></i>
+            </button>
+        </p>
     }
+</div>
 @if(!Model.Any())
 {
     <div class="well well-large">

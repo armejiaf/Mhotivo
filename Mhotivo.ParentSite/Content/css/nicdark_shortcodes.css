@@ -84,7 +84,7 @@ JQUERY UI
 /* 1 - START NICDARKBG*/
 .nicdark_bg_white{ background-color: #ffffff; }
 .nicdark_bg_grey{ background-color: #f9f9f9; }
-.nicdark_bg_grey2{ background-color: #f1f1f1; }
+.nicdark_bg_grey2{ background-color: #f1f1f1;}
 .nicdark_bg_greydark{ background-color: #495052;}
 .nicdark_bg_greydark2{ background-color: #404547;}
 .nicdark_bg_green{ background-color: #6fc191; }
@@ -136,7 +136,7 @@ JQUERY UI
 
 /* 3- START NICDARKSHADOW: applica l'ombra in base al colore dato usando la classe nicdark_bg_colore*/
 .nicdark_shadow.nicdark_bg_grey{ box-shadow: 0px 4px 0px 0px #f1f1f1; }
-.nicdark_shadow.nicdark_bg_grey2{ box-shadow: 0px 4px 0px 0px #e5e5e5; }
+.nicdark_shadow.nicdark_bg_grey2{ box-shadow: 1px 2px 1px 1px #898484; }
 .nicdark_shadow.nicdark_bg_greydark{ box-shadow: 0px 4px 0px 0px #404547; }
 .nicdark_shadow.nicdark_bg_greydark2{ box-shadow: 0px 4px 0px 0px #353b3d; }
 .nicdark_shadow.nicdark_bg_green{ box-shadow: 0px 4px 0px 0px #6ab78a; }
@@ -288,22 +288,22 @@ JQUERY UI
 .nicdark_accordion_header.medium{ padding: 10px 20px; }
 .nicdark_accordion_header.big{ padding: 15px 20px; }
 /*icon*/
-.nicdark_accordion .ui-accordion-header-active:before { content: '\e9ff' !important; font-family: 'fontello'; margin-right: 10px; }
-.nicdark_accordion .ui-accordion-header:before { content: '\ea01'; font-family: 'fontello'; margin-right: 10px; }
+.nicdark_accordion .ui-accordion-header-active:before { content: '\f151' !important; font-family: 'FontAwesome' !important; margin-right: 10px; color:black;}
+.nicdark_accordion .ui-accordion-header:before { content: '\f150';; font-family: 'FontAwesome' !important; margin-right: 10px; color:black;}
 /*END NIKACCORDION*/
 
 
 /* 15  - START NIKTOOGLE*/
-.nicdark_toogle{ float: left; width: 100%; }
-.nicdark_toogle_content{ padding: 20px; }
+.nicdark_toogle{  width: 100%; }
+.nicdark_toogle_content{ padding: 5px; }
 .nicdark_toogle .nicdark_toogle_header{ outline: 0; cursor: pointer; float: none; width: initial; }
 /*size*/
 .nicdark_toogle_header.small{ padding: 5px 10px; }
 .nicdark_toogle_header.medium{ padding: 10px 20px; }
 .nicdark_toogle_header.big{ padding: 15px 20px; }
 /*icon*/
-.nicdark_toogle .ui-accordion-header-active:before { content: '\e9ff' !important; font-family: 'fontello'; margin-right: 10px; }
-.nicdark_toogle .ui-accordion-header:before { content: '\ea01'; font-family: 'fontello'; margin-right: 10px; }
+.nicdark_toogle .ui-accordion-header-active:before { content: '\f151' !important; font-family: 'FontAwesome' !important; margin-right: 10px; color:black !important;}
+.nicdark_toogle .ui-accordion-header:before { content: '\f150' ; font-family: 'FontAwesome' !important; margin-right: 10px; color:black !important;}
 /*END NIKTOOGLE*/
 
 
@@ -626,7 +626,7 @@ opacity: 0.8;
 
 
 /* 43 - START NICDARKBGHOVER*/
-.nicdark_bg_grey_hover:hover{ background-color: #f9f9f9 !important; }
+.nicdark_bg_grey_hover:hover{ background-color: #f9f9f9; }
 .nicdark_bg_grey2_hover:hover{ background-color: #f1f1f1 !important; }
 .nicdark_bg_greydark_hover:hover{ background-color: #495052 !important;}
 .nicdark_bg_greydark2_hover:hover{ background-color: #404547 !important;}

@@ -55,7 +55,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index(string searchName)
+        public ActionResult Index(string searchName, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var user =
@@ -63,7 +63,7 @@ namespace Mhotivo.Controllers
             var notifications = _notificationRepository.Query(x => x).ToList();
             if (!_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
                 notifications = notifications.FindAll(x => user != null && x.NotificationCreator.Id == user.UserOwner.Id);
-            if (searchName != null)
+            if (!String.IsNullOrWhiteSpace(searchName))
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
             var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);

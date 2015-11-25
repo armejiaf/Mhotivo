@@ -6,6 +6,7 @@ using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.ParentSite.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace Mhotivo.ParentSite.Controllers
 {
@@ -40,44 +41,46 @@ namespace Mhotivo.ParentSite.Controllers
             _tutorRepository = tutorRepository;
         }
 
-        public ActionResult Index(string param, string student, string date)
+        public ActionResult Index(long student = -1)
         {
             var students = GetAllStudents(GetTutorId());
-            StudentsId = GetAllStudentsId(students);
-           // var enrolls = new List<Enroll>();
-            //enrolls.AddRange(GetAllEnrolls(StudentsId));
-            //if (student != null)
-            //    enrolls = enrolls.FindAll(x => x.Student.Id == Convert.ToInt32(student));
-            var allHomeworks = _homeworkRepository.Filter(x => x.DeliverDate >= DateTime.Today).ToList();
-            switch (date)
+            var homeworks = new List<Homework>();
+            if (student == -1)
             {
-                case "Dia":
-                    allHomeworks =
-                        allHomeworks.FindAll(
-                            x => x.DeliverDate == DateTime.Today.AddDays(1) || x.DeliverDate == DateTime.Today).ToList();
-                    break;
-                case "Semana":
-                    allHomeworks =
-                        allHomeworks.FindAll(
-                            x => x.DeliverDate >= DateTime.Today && x.DeliverDate <= DateTime.Today.AddDays(7)).ToList();
-                    break;
-                case "Mes":
-                    allHomeworks = allHomeworks.FindAll(x => x.DeliverDate.Month == DateTime.Today.Month).ToList();
-                    break;
+                foreach (var academicCourse in students.Where(student1 => student1.MyGrade != null).SelectMany(student1 => student1.MyGrade.CoursesDetails.ToList()))
+                {
+                    homeworks.AddRange(academicCourse.Homeworks);
+                }
+                homeworks = homeworks.Distinct().ToList();
             }
-
-            var mappedHomeWorksModel = allHomeworks.Select(Mapper.Map<HomeworkModel>).ToList();
-            var allHomeworksModel = new List<HomeworkModel>();
-            //foreach (var enroll in enrolls)
-            //{
-            //    allHomeworksModel.AddRange(mappedHomeWorksModel.FindAll(x => x.AcademicCourse.AcademicGrade.Id == enroll.AcademicGrade.AcademicYear.Id));
-            //}
-
-            if (param != null)
-                allHomeworksModel =
-                    allHomeworksModel.FindAll(x => x.AcademicCourse.Course.Id == Convert.ToInt32(param));
-
-            return View(allHomeworksModel);
+            else
+            {
+                var student1 = students.FirstOrDefault(x => x.Id == student);
+                if (student1 != null && student1.MyGrade != null)
+                {
+                    foreach (var academicCourse in student1.MyGrade.CoursesDetails.Select(courses => courses))
+                    {
+                        homeworks.AddRange(academicCourse.Homeworks);
+                    }
+                }
+            }
+            var model = new HomeworksModel();
+            foreach (var homework in homeworks)
+            {
+                if (homework.DeliverDate.Date > DateTime.UtcNow.Date)
+                {
+                    model.FutureHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+                else if (homework.DeliverDate.Date == DateTime.UtcNow.Date)
+                {
+                    model.CurrentHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+                else
+                {
+                    model.PastHomeworks.Add(Mapper.Map<HomeworkModel>(homework));
+                }
+            }
+            return View(model);
         }
 
         private static List<long> GetAllStudentsId(IEnumerable<Student> students)

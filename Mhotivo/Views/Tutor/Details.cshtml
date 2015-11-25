@@ -16,11 +16,11 @@
 <h2>Detalles de @Html.DisplayFor(model => model.FullName)</h2>
 
 <p>
-    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Tutor/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="../" class="btn btn-small">
+    <a href="~/Tutor/Index" class="btn btn-small">
         Regresar
     </a>
 </p>
@@ -39,10 +39,6 @@
     <div style="float: left; width: 100px;">
         <input type="text" value="@Html.DisplayFor(model => model.State)" disabled="disabled" />
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.State)</span>
-    </div>
-    <div style="float: left; width: 200px;">
-        <input type="text" value="@Html.DisplayFor(model => model.Country)" disabled="disabled" />
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Country)</span>
     </div>
     <br style="clear: left;" />
 </div>
@@ -73,10 +69,6 @@
         <input type="text" value="@Html.DisplayFor(model => model.MyGender)" disabled="disabled" />
         <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.MyGender)</span>
     </div>
-    <div style="float: left; width: 250px;">
-        <input type="text" value="@Html.DisplayFor(model => model.Nationality)" disabled="disabled" />
-        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.Nationality)</span>
-    </div>
     <br style="clear: left;" />
 </div>
 <hr />
@@ -85,8 +77,8 @@
     <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Tutor/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary">Agregar</span></a>
     <br style="clear: left;" />
     <br style="clear: left;" />
-    @if(Model.Contacts != null){
-        foreach (var item in Model.Contacts)
+    @if(Model.ContactInformation != null){
+        foreach (var item in Model.ContactInformation)
         {
             <div style="float: left; width: 250px;">
                 <input type="text" value="@Html.DisplayFor(modelItem => item.Value)" disabled="disabled" />
@@ -105,11 +97,11 @@
 </div>
 <hr />
 <p>
-    <a href="../DetailsEdit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Tutor/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="../" class="btn btn-small">
+    <a href="~/Tutor/Index" class="btn btn-small">
         Regresar
     </a>
 </p>

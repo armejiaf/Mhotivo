@@ -10,7 +10,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -47,9 +47,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
-
-        public string FullName { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
@@ -93,13 +91,6 @@ namespace Mhotivo.Models
 
     public class TutorRegisterModel
     {
-        public string FullName { get; set; }
-
-        [Required]
-        [Display(Name = "Foto Perfil")]
-        [DataType(DataType.Upload)]
-        public byte[] FilePicture { get; set; }
-
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }

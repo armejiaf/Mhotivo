@@ -10,7 +10,7 @@ namespace Mhotivo.Models
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Display(Name = "Nombres")]
         public string FirstName { get; set; }
@@ -36,26 +36,24 @@ namespace Mhotivo.Models
         [Display(Name = "Dirección Principal")]
         public string Address { get; set; }
 
-        [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
-
         [Display(Name = "Sexo")]
         public string MyGender { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
+
+        [Display(Name="Rol de Usuario")]
+        public string Role { get; set; }
     }
 
     public class AdministrativeEditModel
     {
         public long Id { get; set; }
 
-        public ICollection<ContactInformation> Contacts { get; set; }
+        public ICollection<ContactInformation> ContactInformation { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
-
-        public string FullName { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]
@@ -90,19 +88,12 @@ namespace Mhotivo.Models
         [Display(Name = "Sexo")]
         public Gender MyGender { get; set; }
 
-        [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
-
         [DataType(DataType.Upload)]
         public HttpPostedFileBase UploadPhoto { get; set; }
     }
 
     public class AdministrativeRegisterModel
     {
-        public string FullName { get; set; }
-
-        [Display(Name = "Foto Perfil")]
-        public string UrlPicture { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Nombres")]
         [Display(Name = "Nombres")]

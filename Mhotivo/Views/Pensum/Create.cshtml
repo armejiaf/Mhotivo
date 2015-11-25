@@ -17,23 +17,23 @@
         <legend>Nuevo Pensum</legend>
         
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.IdCourse)
-            @Html.ValidationMessageFor(model => model.IdGrade)
+            @Html.ValidationMessageFor(model => model.Grade)
+            @Html.ValidationMessageFor(model => model.Name)
         </p>
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.IdCourse)
+                @Html.LabelFor(model => model.Name)
             </div>
             <div class="controls">
-                @Html.DropDownList("IdCourse")
+                @Html.EditorFor(model => model.Name)
             </div>
         </div>
         
         
         <div class="control-group">
             <div class="control-label">
-                @Html.LabelFor(model => model.IdGrade)
+                @Html.LabelFor(model => model.Grade)
             </div>
             <div class="controls">
                 @Html.DropDownList("IdGrade")

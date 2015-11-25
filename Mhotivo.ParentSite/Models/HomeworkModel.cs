@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Mhotivo.Data.Entities;
 
 namespace Mhotivo.ParentSite.Models
@@ -15,6 +16,19 @@ namespace Mhotivo.ParentSite.Models
 
         public float Points { get; set; }
 
-        public virtual AcademicCourse AcademicCourse { get; set; }
+        public virtual string AcademicCourse { get; set; }
+    }
+
+    public class HomeworksModel
+    {
+        public HomeworksModel()
+        {
+            PastHomeworks = new List<HomeworkModel>();
+            CurrentHomeworks = new List<HomeworkModel>();
+            FutureHomeworks = new List<HomeworkModel>();
+        }
+        public List<HomeworkModel> PastHomeworks { get; set; }
+        public List<HomeworkModel> CurrentHomeworks { get; set; }
+        public List<HomeworkModel> FutureHomeworks { get; set; }
     }
 }

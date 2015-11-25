@@ -49,18 +49,17 @@
                             <div class="grid grid_6">
                                 <div class="nicdark_focus">
                                     <h6 class="white">
-                                       <i class="icon-phone-outline"></i>&nbsp;&nbsp;(504)5127-8934
+                                       <i class="icon-phone-outline"></i>&nbsp;&nbsp;(504)2559-2415 ext 2422
                                     </h6>
                                 </div>
                             </div>
                             <div class="grid grid_6 right">
                                 <div class="nicdark_focus right">
                                     <h6 class="white">
-                                        @if (HttpContext.Current.Session["loggedUserName"]!=null)
+                                        @if (!String.IsNullOrWhiteSpace(@Html.Action("GetUserLoggedName", "Home").ToString()))
                                         {
                                             <i class="icon-user-1"></i>
-                                            <span> BIENVENIDO(A) @HttpContext.Current.Session["loggedUserName"].ToString().ToUpper() </span>
-                                            //Security.GetUserLoggedName().ToUpper();
+                                            <span> BIENVENIDO(A) @Html.Action("GetUserLoggedName", "Home").ToString().ToUpper() </span>
                                             <span class="grey">·</span>
                                             <i class="icon-lock-1"></i>@*
                                             <a class="white">  CERRAR SESIÓN</a>*@
@@ -92,16 +91,13 @@
                                     <ul class="nicdark_menu nicdark_margin010 nicdark_padding50">
 
                                         <li class="orange">
-                                            <a href="#">CUENTA</a>
-                                            <ul class="sub-menu">
-                                                <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Account")</li>
-                                            </ul>
+                                            @Html.ActionLink("CAMBIAR CONTRASEÑA", "ChangePassword", "Account")
+                                        </li>
+                                        <li class="blue">
+                                            @Html.ActionLink("CONFIRMAR CORREO", "UpdateEmail", "Account")
                                         </li>
                                         <li class="red">
-                                            <a href="#">MENSAJES</a>
-                                            <ul class="sub-menu">
-                                                <li>@Html.ActionLink("Enviar Mensaje", "Index", "MessageToTeacher")</li>
-                                            </ul>
+                                            @Html.ActionLink("ENVIAR MENSAJE", "Index", "MessageToTeacher")
                                         </li>
                                     </ul>
                                 </nav>
@@ -127,13 +123,13 @@
 
                         <ul>
                             <!--start first-->
-                            <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on" data-title="FRIENDS">
-                                <img src="~/Content/img/slide/img3.jpg" alt="" data-lazyload="Content/img/slide/img3.jpg" data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on">
+                                <img src="~/Content/img/slide/img4.jpg" alt="" data-lazyload="Content/img/slide/img4.jpg" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
                             </li>
                             <!--end first-->
                             <!--start second-->
-                            <li data-transition="fade" data-slotamount="7" data-masterspeed="1000" data-saveperformance="on" data-title="LESSON">
-                                <img src="~/Content/img/slide/img8.jpg" alt="" data-lazyload="Content/img/slide/img8.jpg" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <li data-transition="fade" data-slotamount="7" data-masterspeed="1000" data-saveperformance="on">
+                                <img src="~/Content/img/slide/img0.jpg" alt="" data-lazyload="Content/img/slide/img0.jpg" data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat">
                             </li>
                             <!--end second-->
                         </ul>

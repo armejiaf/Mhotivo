@@ -1,42 +1,52 @@
 ﻿@model Mhotivo.ParentSite.Models.UpdateTutorMailModel
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "EmailConfirmation";
+    Layout = "~/Views/Shared/_LayoutSmall.cshtml";
 }
-<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css">
+<div class="nicdark_space100"></div>
+<div class="nicdark_space100"></div>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="well well-sm">
+            <section class ="nicdark_section">
                 @using (Html.BeginForm("UpdateEmail", "Account", null, FormMethod.Post, new { @class = "form-horizontal" }))
                 {
                     <fieldset>
-                        <legend class="text-center">Porfavor Ingrese Correo</legend>
-
-                        <!-- Name input-->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Correo</label>
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(x => x.Email, new {@class = "form-control", placeholder = "Correo", required = "required"})
-
+                        <div class="grid nicdark_border_grey nicdark_shadow ">
+                            <div class="nicdark_textevidence nicdark_bg_blue nicdark_radius_top">
+                                <h4 class="nicdark_margin1820" style="color:white; font-size:20px; font-weight:bold">CONFIRMAR CORREO</h4>
+                                <i class="icon-check nicdark_iconbg right nicdark_marginright20 medium white"></i>
                             </div>
-                        </div>
+                            <div class="nicdark_space10"></div>
+                            <!-- Name input-->
+                            <div class="form-group ">
+                                <label class="col-md-3 control-label">Correo</label>
+                                <div class="col-md-5 col-md-offset-2">
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Correo", required = "required" })
 
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Confirmar Correo</label>
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(x => x.ConfirmEmail, new { @class = "form-control", placeholder = "Confirmar Correo", required = "required" })
-
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Form actions -->
-                        <div class="form-group">
-                            <div class="col-md-12 text-right">
-                                <button type="submit" class="btn btn-primary btn-lg">Actualizar</button>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Confirmar Correo</label>
+                                <div class="col-md-5 col-md-offset-1">
+                                    @Html.TextBoxFor(x => x.ConfirmEmail, new { @class = "form-control", placeholder = "Confirmar Correo", required = "required" })
+
+                                </div>
+                            </div>
+
+                            <!-- Form actions -->
+                            <div class="form-group size">
+                                <div class="col-md-12 text-right">
+                                    <input class="nicdark_btn nicdark_bg_blue    small nicdark_shadow nicdark_radius white nicdark_press" type="submit" value="CONFIRMAR">
+                                </div>
                             </div>
                         </div>
                     </fieldset>
+                    <div class="nicdark_space100"></div>
+                    <div class="nicdark_space70"></div>
+
                 }
 
                 @{
@@ -48,7 +58,7 @@
                     }
                 }
 
-            </div>
-        </div>
+                </section>
+</div>
     </div>
 </div>
