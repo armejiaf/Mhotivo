@@ -62,12 +62,13 @@ namespace Mhotivo.ParentSite.Controllers
             return View("EmailConfirmation");
         }
 
+        [HttpPost]
         public ActionResult UpdateEmail(UpdateTutorMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
             var tutorUser = _tutorRepository.Filter(x => x.User.Id == userId).Include(x => x.User).FirstOrDefault();
             
-            if (tutorUser == null)
+            if (tutorUser != null)
             {
                 var user = tutorUser.User;
                 user.Email = model.Email;
