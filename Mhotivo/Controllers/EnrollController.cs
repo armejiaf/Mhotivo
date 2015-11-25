@@ -8,6 +8,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Microsoft.Ajax.Utilities;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -29,11 +30,13 @@ namespace Mhotivo.Controllers
 
         [AuthorizeAdmin]
         [ActionName("GeneralEnrollsFromAcademicGrades")]
-        public ActionResult Index(long gradeId)
+        public ActionResult Index(long gradeId, int? page)
         {
             ViewBag.GradeId = gradeId;
             _viewMessageLogic.SetViewMessageIfExist();
             var grade = _academicGradeRepository.GetById(gradeId);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
             return grade == null ? View("Index") : View("Index", grade.Students.Select(n => new EnrollDisplayModel
             {
                 AcademicGradeId = grade.Id,
@@ -44,11 +47,11 @@ namespace Mhotivo.Controllers
                 AccountNumber = n.AccountNumber,
                 Grade = grade.Grade.Name,
                 Section = grade.Section
-            }));
+            }).ToPagedList(pageNumber, pageSize));
         }
 
         [AuthorizeAdmin]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             ViewBag.GradeId = -1;
             _viewMessageLogic.SetViewMessageIfExist();
@@ -70,16 +73,20 @@ namespace Mhotivo.Controllers
                     Section = academicGrade.Section
                 }));
             }
-            return View(model);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(model.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
         [AuthorizeAdmin]
-        public ActionResult Search(string searchString, long gradeId)
+        public ActionResult Search(string searchString, long gradeId, int? page)
         {
             if (searchString.IsNullOrWhiteSpace())
                 return gradeId == -1 ? RedirectToAction("Index") : RedirectToAction("Index", new {gradeId});
             _viewMessageLogic.SetViewMessageIfExist();
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
             if (gradeId == -1)
             {
                 var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
@@ -90,10 +97,11 @@ namespace Mhotivo.Controllers
                 {
                     toReturn.AddRange(Mapper.Map<IEnumerable<EnrollDisplayModel>>(academicGrade));
                 }
-                return View("Index",toReturn.Where(x => x.FullName.Contains(searchString)));
+                
+                return View("Index", toReturn.Where(x => x.FullName.Contains(searchString)).ToPagedList(pageNumber, pageSize));
             }
             var grade = _academicGradeRepository.GetById(gradeId);
-            return grade == null ? View("Index") : View("Index", Mapper.Map<IEnumerable<EnrollDisplayModel>>(grade).Where(x => x.FullName.Contains(searchString)));
+            return grade == null ? View("Index") : View("Index", Mapper.Map<IEnumerable<EnrollDisplayModel>>(grade).Where(x => x.FullName.Contains(searchString)).ToPagedList(pageNumber, pageSize));
         }
 
         [HttpPost]

@@ -10,6 +10,7 @@ using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
+using PagedList;
 
 
 namespace Mhotivo.Controllers
@@ -67,7 +68,9 @@ namespace Mhotivo.Controllers
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
             var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
-            return View(notificationsModel);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(notificationsModel.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
@@ -157,15 +160,16 @@ namespace Mhotivo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Approve()
+        public ActionResult Approve(int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var notifications = _notificationRepository.Query(x => x)
                 .Where(x => x.Approved == false)
-                .OrderByDescending(i => i.CreationDate)
-                .Take(10);
+                .OrderByDescending(i => i.CreationDate);
             var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
-            return View("Approve", notificationsModel);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View("Approve", notificationsModel.ToPagedList(pageNumber,pageSize));
         }
 
         [HttpPost]

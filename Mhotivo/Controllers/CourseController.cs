@@ -5,6 +5,7 @@ using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
+using PagedList;
 
 namespace Mhotivo.Controllers
 {
@@ -19,13 +20,15 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        public ActionResult Index(long pensumId)
+        public ActionResult Index(long pensumId, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
             ViewBag.PensumId = pensumId;
             var list =
                 _courseRepository.Filter(x => x.Pensum.Id == pensumId).ToList().Select(Mapper.Map<CourseDisplayModel>);
-            return View(list);
+            const int pageSize = 10;
+            var pageNumber = (page ?? 1);
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Add(long pensumId)
         {
