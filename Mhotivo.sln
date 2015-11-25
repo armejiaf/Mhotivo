@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo", "Mhotivo\Mhotivo.csproj", "{6CF65A55-1CAE-4101-9A9F-81F91ED1F4F2}"
 EndProject
@@ -14,6 +12,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.Implement", "Mhotivo.Implement\Mhotivo.Implement.csproj", "{60F95856-177F-4D03-A555-EB23E73BFCD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhotivo.ParentSite", "Mhotivo.ParentSite\Mhotivo.ParentSite.csproj", "{70EA44D9-84FE-42D1-915F-1CDB25271929}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AFF6CE53-6BC6-4255-88AE-DAE8A17FFB45}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
