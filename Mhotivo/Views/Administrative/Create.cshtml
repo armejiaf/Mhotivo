@@ -24,17 +24,6 @@
     @Html.ValidationSummary(true)
     <h2>Agregar Entidad Administrativa</h2>
 
-    <p>
-        <a href="../Administrative/Index" data-dismiss="modal" class="btn btn-small">
-            <i class="icon-remove"></i>
-            Cancelar
-        </a>
-        <button type="submit" class="btn btn-small btn-primary">
-            <i class="icon-ok"></i>
-            Agregar
-        </button>
-    </p>
-
     <div id="address" style="width: 500px;">
         <h3>Dirección</h3>
         <div id="mainAddress">
@@ -92,7 +81,7 @@
             </div>
         </div>
         <div style="float: left; width: 250px;">
-            @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
+            @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "mm-dd-yyyy", @readonly = true })
             <span class="add-on">
                 <i class="icon-calendar"></i>
             </span>
@@ -103,7 +92,7 @@
         <br style="clear: left;" />
 
         <div style="float: left; width: 250px;">
-            @Html.DropDownListFor(model => model.MyGender, new SelectList(new[] { "Masculino", "Femenino" }, new[] { true, false }))
+            @Html.DropDownListFor(model => model.MyGender, (List<SelectListItem>)ViewBag.Genders)
             <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.MyGender)</span>
             <p class="text-error">@Html.ValidationMessageFor(model => model.MyGender)</p>
         </div>
@@ -112,7 +101,7 @@
     </div>
 
     <p>
-        <a href="../Administrative/Index" data-dismiss="modal" class="btn btn-small">
+        <a href="~/Administrative/Index" data-dismiss="modal" class="btn btn-small">
             <i class="icon-remove"></i>
             Cancelar
         </a>

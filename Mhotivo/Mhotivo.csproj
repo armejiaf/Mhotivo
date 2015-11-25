@@ -192,7 +192,7 @@
     <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\ParentController.cs" />
+    <Compile Include="Controllers\TutorController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -467,7 +467,6 @@
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
-    <Content Include="Views\Student\DetailsEdit.cshtml" />
     <Content Include="Views\Student\Edit.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Shared\ContactAdd.cshtml" />
@@ -475,12 +474,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Tutor\Create.cshtml" />
     <Content Include="Views\Tutor\Details.cshtml" />
-    <Content Include="Views\Tutor\DetailsEdit.cshtml" />
     <Content Include="Views\Tutor\Edit.cshtml" />
     <Content Include="Views\Tutor\Index.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Teacher\Create.cshtml" />
-    <Content Include="Views\Teacher\DetailsEdit.cshtml" />
     <Content Include="Views\Teacher\Details.cshtml" />
     <Content Include="Views\Teacher\Edit.cshtml" />
     <Content Include="Views\Enroll\Index.cshtml" />
@@ -526,6 +523,7 @@
     <Content Include="Views\Administrative\Index.cshtml" />
     <Content Include="Views\Administrative\Edit.cshtml" />
     <Content Include="Views\Administrative\Create.cshtml" />
+    <Content Include="Views\Administrative\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

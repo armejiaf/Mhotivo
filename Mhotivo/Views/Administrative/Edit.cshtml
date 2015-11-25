@@ -10,17 +10,14 @@
 <div id="body" class="modal-body" style="max-height: 500px;">
     @using (Html.BeginForm("Edit", "Administrative", FormMethod.Post, new
     {
-        id = "Form"
-          ,
-        @class = "form-horizontal"
-          ,
-        @Style = "margin:0;"
-          ,
-        enctype = "multipart/form-data"
-          ,
+        id = "Form",
+        @class = "form-horizontal",
+        @Style = "margin:0;",
+        enctype = "multipart/form-data",
         method = "post"
     }))
-    {@Html.ValidationSummary(true)
+    {
+        @Html.ValidationSummary(true)
 
         <fieldset>
             <legend>Editar Entidad Administrativa</legend>
@@ -30,7 +27,6 @@
                 @Html.ValidationMessageFor(model => model.IdNumber)
                 @Html.ValidationMessageFor(model => model.BirthDate)
                 @Html.ValidationMessageFor(model => model.City)
-                @Html.ValidationMessageFor(model => model.UrlPicture)
                 @Html.ValidationMessageFor(model => model.FirstName)
                 @Html.ValidationMessageFor(model => model.LastName)
                 @Html.ValidationMessageFor(model => model.MyGender)
@@ -39,13 +35,14 @@
 
             <div id="Photo">
                 @{
-        var imgSrc = "";
-        if (Model.Photo != null)
-        {
-            var base64 = Convert.ToBase64String(Model.Photo);
-            imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-        }
+                    var imgSrc = "";
+                    if (Model.Photo != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.Photo);
+                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                    }
                 }
+                @Html.HiddenFor(model => model.Photo)
                 <img height="150" width="150" src="@imgSrc" />
             </div>
 
@@ -96,7 +93,7 @@
                             });
                         });
                     </script>
-                    @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "dd-mm-yyyy", @readonly = true })
+                    @Html.TextBoxFor(model => model.BirthDate, new { @class = "date-picker", @data_date_format = "mm-dd-yyyy", @readonly = true })
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
@@ -107,7 +104,7 @@
                     @Html.LabelFor(model => model.MyGender)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("MyGender", new List<SelectListItem> { new SelectListItem { Value = "M", Text = "Masculino" }, new SelectListItem { Value = "F", Text = "Femenino" } })
+                    @Html.DropDownListFor(x => x.MyGender, (List<SelectListItem>)ViewBag.Genders)
                 </div>
             </div>
             <div class="control-group">
@@ -146,10 +143,10 @@
 
             <div class="space"></div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-small">
+                <a href="~/Administrative/Index" data-dismiss="modal" class="btn btn-small">
                     <i class="icon-remove"></i>
-                    Cancel
-                </button>
+                    Cancelar
+                </a>
                 <button type="submit" class="btn btn-small btn-primary">
                     <i class="icon-ok"></i>
                     Actualizar

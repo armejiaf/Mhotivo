@@ -84,7 +84,7 @@ else
                             if (ViewBag.GradeId == -1)
                             {
                                 <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.StudentId)_Val"><i class="icon-trash bigger-120"></i></a>
-                                using (Html.BeginForm("Delete", "Enroll", new {id = item.StudentId, gradeId = item.AcademicGradeId}, FormMethod.Post,
+                                using (Html.BeginForm("Delete", "Enroll", new {id = item.StudentId, gradeId = item.AcademicGradeId, academicGradeId = -1}, FormMethod.Post,
                                      new {id = "Form_" + Html.DisplayFor(modelItem => item.StudentId) + "_Val", style = "display: none"}))
                                  {
                                  }

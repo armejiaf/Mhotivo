@@ -30,7 +30,7 @@
                 @Html.LabelFor(model => model.Student)
             </div>
             <div class="controls">
-                @Html.DropDownList("Id")
+                @Html.DropDownListFor(model => model.Student, (SelectList)ViewBag.Id)
             </div>
         </div>
         @{
@@ -41,7 +41,7 @@
                         @Html.LabelFor(model => model.Grade)
                     </div>
                     <div class="controls">
-                        @Html.DropDownList("Grades")
+                        @Html.DropDownListFor(model => model.Grade, (SelectList)ViewBag.Grades)
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                             @Html.LabelFor(model => model.AcademicGrade)
                         </div>
                         <div class="controls">
-                            @Html.DropDownList("Sections")
+                            @Html.DropDownListFor(model => model.AcademicGrade, (List<SelectListItem>)ViewBag.Sections)
                         </div>
                     </div>
             }

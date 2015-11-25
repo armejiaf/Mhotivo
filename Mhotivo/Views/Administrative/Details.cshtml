@@ -1,4 +1,4 @@
-﻿@model Mhotivo.Models.TeacherDisplayModel
+﻿@model Mhotivo.Models.AdministrativeDisplayModel
 
 @{
     ViewBag.Title = "Detalles - " + @Html.DisplayFor(model => model.FullName);
@@ -16,11 +16,11 @@
 <h2>Detalles de @Html.DisplayFor(model => model.FullName)</h2>
 
 <p>
-    <a href="~/Teacher/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Administrative/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="~/Teacher/Index" class="btn btn-small">
+    <a href="~/Administrative/Index" class="btn btn-small">
         Regresar
     </a>
 </p>
@@ -74,19 +74,19 @@
 <hr />
 <div id="contactInformation" style="width: 500px;">
     <h3>Información de Contacto</h3>
-    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Teacher/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary">Agregar</span></a>
+    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Administrative/ContactAdd/@Html.DisplayFor(model => model.Id)"><span class="btn btn-small btn-primary">Agregar</span></a>
     <br style="clear: left;" />
     <br style="clear: left;" />
-    @if(Model.ContactInformation != null)
+    @if (Model.ContactInformation != null)
     {
         foreach (var item in Model.ContactInformation)
         {
             <div style="float: left; width: 250px;">
                 <input type="text" value="@Html.DisplayFor(modelItem => item.Value)" disabled="disabled" />
                 <br />
-                <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Teacher/ContactEdit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
+                <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Administrative/ContactEdit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a>
                 <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>
-                @using (Html.BeginForm("Delete", "ContactInformation", new { id = Html.DisplayFor(modelItem => item.Id), @control="Teacher" }, FormMethod.Post,
+                @using (Html.BeginForm("Delete", "ContactInformation", new { id = Html.DisplayFor(modelItem => item.Id), @control = "Administrative" }, FormMethod.Post,
                     new { id = "Form_" + Html.DisplayFor(modelItem => item.Id) + "_Val", style = "display: none" })) { }
                 <input type="hidden" id="@Html.DisplayFor(modelItem => item.Id)_Val_Message"
                        value="¿Realmente desea eliminar el @Html.DisplayFor(modelItem => item.Type)?" />
@@ -98,11 +98,11 @@
 </div>
 <hr />
 <p>
-    <a href="~/Teacher/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
+    <a href="~/Administrative/Edit/@Html.DisplayFor(model => model.Id)" data-dismiss="modal" class="btn btn-small btn-primary">
         Editar
     </a>
 
-    <a href="~/Teacher/Index" class="btn btn-small">
+    <a href="~/Administrative/Index" class="btn btn-small">
         Regresar
     </a>
 </p>
@@ -110,6 +110,6 @@
 <!-- Modal -->
 <div tabindex="-1" class="modal hide fade" id="EditModal" style="display: none;" aria-hidden="true">
     <div id="body" class="modal-body">
-        
+
     </div>
 </div>

@@ -52,9 +52,9 @@ namespace Mhotivo.Controllers
         public ActionResult Add(long id)
         {
             var model = new ContactInformationRegisterModel
-                        {
-                            Id = id
-                        };
+            {
+                Id = id
+            };
             return View("ContactAdd", model);
         }
 
@@ -63,11 +63,11 @@ namespace Mhotivo.Controllers
         public ActionResult Add(ContactInformationRegisterModel modelContactInformation)
         {
             var myContactInformation = new ContactInformation
-                                       {
-                                           Type = modelContactInformation.Type,
-                                           Value = modelContactInformation.Value,
-                                           People = _peopleRepository.GetById(modelContactInformation.Id)
-                                       };
+            {
+                Type = modelContactInformation.Type,
+                Value = modelContactInformation.Value,
+                People = _peopleRepository.GetById(modelContactInformation.Id)
+            };
             ContactInformation contactInformation = _contactInformationRepository.Create(myContactInformation);
             const string title = "Informacion Agregada";
             _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.SuccessMessage);

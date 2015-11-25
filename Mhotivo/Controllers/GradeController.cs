@@ -36,6 +36,7 @@ namespace Mhotivo.Controllers
             var grades = _gradeRepository.GetAllGrade();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.EducationLevelSortParam = sortOrder == "education_asc" ? "education_desc" : "education_asc";
             if (searchString != null)
             {
                 page = 1;
@@ -52,6 +53,12 @@ namespace Mhotivo.Controllers
             ViewBag.CurrentFilter = searchString;
             switch (sortOrder)
             {
+                case "education_desc":
+                    displayGradeModels = displayGradeModels.OrderByDescending(s => s.EducationLevel).ToList();
+                    break;
+                case "education_asc":
+                    displayGradeModels = displayGradeModels.OrderBy(s => s.EducationLevel).ToList();
+                    break;
                 case "name_desc":
                     displayGradeModels = displayGradeModels.OrderByDescending(s => s.Name).ToList();
                     break;

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
-using Mhotivo.Implement;
 using Mhotivo.Implement.Utils;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
@@ -34,14 +31,6 @@ namespace Mhotivo
             MapStudentModels();
             MapTeacherModels();
             MapAdministrativeModels();
-        }
-
-        private static void MapAdministrativeModels()
-        {
-            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
-            Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>();
-            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap();
         }
 
         private static void MapAcademicYearModels()
@@ -267,33 +256,52 @@ namespace Mhotivo
         //TODO: Not done with the ones below just yet.
         private static void MapTutorModels()
         {
-            Mapper.CreateMap<TutorRegisterModel, Tutor>();
-            Mapper.CreateMap<Tutor, TutorDisplayModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
+            Mapper.CreateMap<TutorRegisterModel, Tutor>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+            Mapper.CreateMap<Tutor, TutorDisplayModel>();
             Mapper.CreateMap<Tutor, TutorEditModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
         }
 
         private static void MapStudentModels()
         {
-            Mapper.CreateMap<StudentRegisterModel, Student>();
+            Mapper.CreateMap<StudentRegisterModel, Student>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
+                        typeof(ITutorRepository))).GetById(src.Tutor1)))
+                .ForMember(p => p.Tutor2, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
+                        typeof(ITutorRepository))).GetById(src.Tutor2 ?? -1)));
             Mapper.CreateMap<Student, StudentDisplayModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName));
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName))
+                .ForMember(p => p.Tutor2, o => o.MapFrom(src => src.Tutor2 != null ? src.Tutor2.FullName : ""));
             Mapper.CreateMap<Student, StudentEditModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
+                        typeof(ITutorRepository))).GetById(src.Tutor1)))
+                .ForMember(p => p.Tutor2, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
+                        typeof(ITutorRepository))).GetById(src.Tutor2 ?? -1)));
         }
 
         private static void MapTeacherModels()
         {
-            Mapper.CreateMap<TeacherRegisterModel, Teacher>();
-            Mapper.CreateMap<Teacher, TeacherDisplayModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")));
+            Mapper.CreateMap<TeacherRegisterModel, Teacher>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+            Mapper.CreateMap<Teacher, TeacherDisplayModel>();
             Mapper.CreateMap<Teacher, TeacherEditModel>()
-                .ForMember(p => p.MyGender, o => o.MapFrom(src => src.MyGender.ToString("G")))
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+        }
+
+        private static void MapAdministrativeModels()
+        {
+            Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+            Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>()
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.User.Role.Name));
+            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
         }
     }
 }
