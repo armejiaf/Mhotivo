@@ -34,6 +34,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]
         [Display(Name = "Día de entrega")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DeliverDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
@@ -57,6 +58,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]
         [Display(Name = "Dia de entrega")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DeliverDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
