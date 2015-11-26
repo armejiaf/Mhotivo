@@ -29,7 +29,7 @@ namespace Mhotivo.Controllers
         }
 
         /// GET: /Grade/
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -73,7 +73,7 @@ namespace Mhotivo.Controllers
 
         /// GET: /Grade/Add
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add()
         {
             var list = _educationLevelRepository.GetAllAreas();
@@ -83,7 +83,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Grade/Add
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(GradeRegisterModel modelGrade)
         {
             string title;
@@ -108,7 +108,7 @@ namespace Mhotivo.Controllers
 
         /// POST: /Grade/Delete/5
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             if (!_academicGradeRepository.Filter(x => x.Grade.Id == id).Any())
@@ -130,7 +130,7 @@ namespace Mhotivo.Controllers
         
         /// GET: /Grade/Edit/5
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var grade = _gradeRepository.GetById(id);
@@ -142,7 +142,7 @@ namespace Mhotivo.Controllers
 
         ///  POST: /Grade/Edit/5
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(GradeEditModel modelGrade)
         {
             if (!_gradeRepository.Filter(x => x.Id != modelGrade.Id && x.Name == modelGrade.Name).Any())
@@ -161,6 +161,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Details(long id)
         {
             var pensums = _pensumRepository.Filter(x => x.Grade.Id == id).Select(Mapper.Map<PensumDisplayModel>);

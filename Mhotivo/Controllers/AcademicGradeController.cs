@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -34,6 +35,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Index(long yearId, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -62,6 +64,7 @@ namespace Mhotivo.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Add(long yearId)
         {
             ViewBag.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
@@ -70,6 +73,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Add(AcademicGradeRegisterModel model)
         {
             string title;
@@ -99,6 +103,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index", new { yearId = model.AcademicYear });
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult EditTeacher(long id)
         {
             var item = _academicGradeRepository.GetById(id);
@@ -108,6 +113,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult EditTeacher(AcademicGradeTeacherAssignModel model)
         {
             var grade = _academicGradeRepository.GetById(model.Id);
@@ -119,6 +125,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index", new{yearId = grade.AcademicYear.Id});
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var item = _academicGradeRepository.GetById(id);
@@ -129,6 +136,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(AcademicGradeEditModel model)
         {
             var item = _academicGradeRepository.GetById(model.Id);
@@ -176,6 +184,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             var item = _academicGradeRepository.GetById(id);
@@ -193,6 +202,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index", new { yearId });
         }
 
+        [AuthorizeAdminDirector]
         public JsonResult GetPensumsForGrade(AcademicGradeRegisterModel model)
         {
             var sList = _pensumRepository.Filter(

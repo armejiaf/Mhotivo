@@ -23,7 +23,7 @@ namespace Mhotivo.Controllers
 
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(ContactInformationEditModel modelContactInformation)
         {
             ContactInformation myContactInformation = _contactInformationRepository.GetById(modelContactInformation.Id);
@@ -36,7 +36,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id, string control)
         {
             ContactInformation myContactInformation = _contactInformationRepository.GetById(id);
@@ -48,7 +48,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -59,7 +59,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(ContactInformationRegisterModel modelContactInformation)
         {
             var myContactInformation = new ContactInformation

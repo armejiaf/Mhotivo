@@ -28,7 +28,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         [ActionName("GeneralEnrollsFromAcademicGrades")]
         public ActionResult Index(long gradeId, int? page)
         {
@@ -50,7 +50,7 @@ namespace Mhotivo.Controllers
             }).ToPagedList(pageNumber, pageSize));
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(int? page)
         {
             ViewBag.GradeId = -1;
@@ -79,7 +79,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Search(string searchString, long gradeId, int? page)
         {
             if (searchString.IsNullOrWhiteSpace())
@@ -105,7 +105,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id, long gradeId, long academicGradeId)
         {
             var grade = _academicGradeRepository.GetById(gradeId);
@@ -121,7 +121,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         [ActionName("DeleteAllFromCurrentAcademicGrade")]
         public ActionResult DeleteAll(long gradeId)
         {
@@ -135,7 +135,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult DeleteAll(EnrollDeleteModel model)
         {
             var grade = _academicGradeRepository.GetById(model.AcademicGrade);
@@ -154,7 +154,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult DeleteAll()
         {
             var model = new EnrollDeleteModel();
@@ -169,7 +169,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(long gradeId)
         {
             var availableStudents = _studentRepository.Filter(x => x.MyGrade == null);
@@ -185,7 +185,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(EnrollRegisterModel modelEnroll)
         {
             var student = _studentRepository.GetById(modelEnroll.Student);

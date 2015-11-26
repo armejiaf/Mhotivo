@@ -40,7 +40,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-         [AuthorizeAdminDirector]
+        [AuthorizeAdminDirector]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -82,7 +82,7 @@ namespace Mhotivo.Controllers
             return View(allTutorDisplaysModel.ToPagedList(pageNumber, pageSize));
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -97,7 +97,7 @@ namespace Mhotivo.Controllers
             return View("ContactEdit", contactInformation);
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var tutor = _tutorRepository.GetById(id);
@@ -113,7 +113,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(TutorEditModel modelTutor)
         {
             var validImageTypes = new []
@@ -181,7 +181,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             if (_studentRepository.Filter(x => x.Tutor1.Id == id || x.Tutor2.Id == id).Any())
@@ -198,7 +198,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -209,7 +209,7 @@ namespace Mhotivo.Controllers
             return View("ContactAdd", model);
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Create()
         {
             var modelRegister = new TutorRegisterModel();
@@ -224,7 +224,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Create(TutorRegisterModel modelTutor)
         {
             var tutorModel = Mapper.Map<TutorRegisterModel, Tutor>(modelTutor);
@@ -258,7 +258,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Details(long id)
         {
             _viewMessageLogic.SetViewMessageIfExist();

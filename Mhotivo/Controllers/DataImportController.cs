@@ -30,7 +30,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
         
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index()
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -42,7 +42,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(DataImportModel dataImportModel)
         {
             if(!IsFileValid(dataImportModel))
@@ -87,6 +87,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeAdminDirector]
         private static bool IsFileValid(DataImportModel dataImportModel)
         {
             if (dataImportModel.UploadFile == null || dataImportModel.UploadFile.ContentLength <= 0)
@@ -97,6 +98,7 @@ namespace Mhotivo.Controllers
             return extension != null && Regex.IsMatch(extension, "^*.xls$|^*.xlsx$$");
         }
 
+        [AuthorizeAdminDirector]
         public JsonResult LoadByGrade(DataImportModel dataImportModel)
         {
             if (dataImportModel.Year == 0)

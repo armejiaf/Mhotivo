@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
@@ -20,6 +21,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Index(long pensumId, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -30,12 +32,16 @@ namespace Mhotivo.Controllers
             var pageNumber = (page ?? 1);
             return View(list.ToPagedList(pageNumber, pageSize));
         }
+
+        [AuthorizeAdminDirector]
         public ActionResult Add(long pensumId)
         {
             return View("Create", new CourseRegisterModel{Pensum = pensumId});
         }
 
+
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Add(CourseRegisterModel model)
         {
             string title;
@@ -56,6 +62,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index", new{pensumId = model.Pensum});
         }
 
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var item = _courseRepository.GetById(id);
@@ -64,6 +71,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(CourseEditModel model)
         {
             var item = _courseRepository.GetById(model.Id);
@@ -89,6 +97,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             var item = _courseRepository.GetById(id);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Implement.Utils;
 using Mhotivo.Logic.ViewMessage;
 using Mhotivo.Models;
@@ -159,7 +160,7 @@ namespace Mhotivo.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [AuthorizeAdminDirector]
         public ActionResult Approve(int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -173,6 +174,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdminDirector]
         public ActionResult Approve(long id)
         {
             try

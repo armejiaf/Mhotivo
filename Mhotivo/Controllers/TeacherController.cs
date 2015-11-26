@@ -36,7 +36,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-         [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -64,7 +64,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
@@ -80,7 +80,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var teacher = _teacherRepository.GetById(id);
@@ -96,7 +96,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(TeacherEditModel modelTeacher)
         {
             var validImageTypes = new []
@@ -164,7 +164,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             var teacher = _teacherRepository.GetById(id);
@@ -182,7 +182,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult ContactAdd(long id)
         {
             var model = new ContactInformationRegisterModel
@@ -194,7 +194,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add()
         {
             var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
@@ -208,7 +208,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(TeacherRegisterModel modelTeacher)
         {
             var teacherModel = Mapper.Map<TeacherRegisterModel, Teacher>(modelTeacher);
@@ -245,7 +245,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Details(long id)
         {
             _viewMessageLogic.SetViewMessageIfExist();

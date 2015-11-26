@@ -27,7 +27,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(long id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -71,7 +71,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var academicYearDetails = _academicCourseRepository.GetById(id);
@@ -81,7 +81,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(AcademicCourseEditModel academicCourseModel)
         {
             var toEdit = _academicCourseRepository.GetById(academicCourseModel.Id);

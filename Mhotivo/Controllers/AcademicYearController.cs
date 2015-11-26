@@ -22,7 +22,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -62,7 +62,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             var academicYear = _academicYearRepository.GetById(id);
@@ -71,7 +71,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(AcademicYearEditModel modelAcademicYear)
         {
             if (modelAcademicYear.IsActive &&
@@ -90,7 +90,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             //TODO: Extra validations when deleting.
@@ -113,14 +113,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add()
         {
             return View("Create", new AcademicYearRegisterModel());
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
         {
             if (_academicYearRepository.Filter(x => x.Year == academicYearModel.Year).Any())

@@ -146,6 +146,7 @@ namespace Mhotivo.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeAdmin]
         public ActionResult EditDirector(int id)
         {
             var model = Mapper.Map<EducationLevelDirectorAssignModel>(_areaReposity.GetById(id));
@@ -156,6 +157,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
         public ActionResult EditDirector(EducationLevelDirectorAssignModel model)
         {
             if (_areaReposity.Filter(x => x.Director.Id == model.Director).Any())

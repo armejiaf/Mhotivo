@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
@@ -19,6 +20,7 @@ namespace Mhotivo.Controllers
             _userRepository = userRepository;
         }
 
+        [AuthorizeAdmin]
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
             var newUsers = _userRepository.Filter(x => x.IsUsingDefaultPassword);
@@ -44,6 +46,7 @@ namespace Mhotivo.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
+        [AuthorizeAdmin]
         public ActionResult Details(long id)
         {
             var toReturn = Mapper.Map<User, NewUserDefaultPasswordDisplayModel>(_userRepository.Filter(x => x.Id == id).FirstOrDefault());

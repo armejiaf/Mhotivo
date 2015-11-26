@@ -28,7 +28,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int gradeId)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -52,7 +52,7 @@ namespace Mhotivo.Controllers
 
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(long id)
         {
             Pensum thisPensum = _pensumRepository.GetById(id);
@@ -62,7 +62,7 @@ namespace Mhotivo.Controllers
 
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Edit(PensumEditModel modelPensum)
         {
             Pensum myPensum = _pensumRepository.GetById(modelPensum.Id);
@@ -76,7 +76,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
             Pensum pensum = _pensumRepository.Delete(id);
@@ -87,14 +87,14 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add()
         {
             return View("Create");
         }
 
         [HttpPost]
-        [AuthorizeAdmin]
+        [AuthorizeAdminDirector]
         public ActionResult Add(PensumRegisterModel modelPensum)
         {
             var myPensum = Mapper.Map<Pensum>(modelPensum);
