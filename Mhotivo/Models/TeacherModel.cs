@@ -66,6 +66,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
@@ -105,6 +106,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
         [Display(Name = "Fecha de Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
