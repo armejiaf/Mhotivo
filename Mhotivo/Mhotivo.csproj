@@ -29,6 +29,7 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -178,6 +179,7 @@
     <Compile Include="Authorizations\AuthorizeDirector.cs" />
     <Compile Include="Authorizations\AuthorizeLogin.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
+    <Compile Include="Binder\DateTimeModelBinder.cs" />
     <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
     <Compile Include="Controllers\AcademicCourseController.cs" />
