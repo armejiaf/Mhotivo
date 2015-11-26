@@ -97,7 +97,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(long id)
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
-            var homework = Mapper.Map<HomeworkRegisterModel>(thisHomework);
+            var homework = Mapper.Map<HomeworkEditModel>(thisHomework);
             ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
             return View("Edit", homework);
         }

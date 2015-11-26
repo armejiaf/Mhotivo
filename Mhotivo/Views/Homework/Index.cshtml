@@ -9,6 +9,7 @@
 
 <h2>Tareas Creadas</h2>
 <a class="toAdd" data-toggle="modal" role="button" data-id="Homework/Create"><span class="btn btn-small btn-primary">Agregar Tareas</span></a>
+<div class="space"></div>
 @if (!Model.Any())
 {
     <div class="well well-large">
@@ -36,10 +37,11 @@ else
             {
                 <tr>
 
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Title)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.Raw(@item.Description)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.DeliverDate)</td>
-                    <td data-id="Homework/Details/@Html.DisplayFor(modelItem => item.Id)" class="">@Html.DisplayFor(modelItem => item.Points)</td>>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.Raw(@item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DeliverDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Points)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AcademicCourse)</td>
                     <td><a href="/Homework/Edit/@Html.DisplayFor(modelItem => item.Id)"><i class="icon-edit bigger-120"></i></a></td>
                     <td>
                         <a class="toDelete" role="button" id="@Html.DisplayFor(modelItem => item.Id)_Val"><i class="icon-trash bigger-120"></i></a>

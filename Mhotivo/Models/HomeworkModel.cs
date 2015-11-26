@@ -19,6 +19,9 @@ namespace Mhotivo.Models
 
         [Display(Name = "Puntaje")]
         public string Points { get; set; }
+
+        [Display(Name = "Materia")]
+        public string AcademicCourse { get; set; }
     }
 
     public class HomeworkRegisterModel

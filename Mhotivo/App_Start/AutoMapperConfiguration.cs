@@ -151,7 +151,8 @@ namespace Mhotivo
                     o => o.MapFrom(src => ((IAcademicCourseRepository)DependencyResolver.Current.GetService(
                         typeof(IAcademicCourseRepository))).GetById(src.AcademicCourse)));
             Mapper.CreateMap<Homework, HomeworkDisplayModel>()
-                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => src.DeliverDate.ToString()));
+                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => src.DeliverDate.ToString()))
+                .ForMember(p => p.AcademicCourse, o => o.MapFrom(src => src.AcademicCourse.Course.Name));
             Mapper.CreateMap<Homework, HomeworkEditModel>().ReverseMap();
         }
 
