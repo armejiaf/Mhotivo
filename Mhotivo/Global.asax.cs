@@ -5,6 +5,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Mhotivo.Implement.Context;
 using Mhotivo.Binder;
+using System;
 
 namespace Mhotivo
 {
@@ -19,8 +20,8 @@ namespace Mhotivo
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfiguration.Configure();
             var binder = new DateTimeModelBinder("MM/dd/yyyy");
-            ModelBinders.Binders.Add(typeof(System.DateTime), binder);
-            ModelBinders.Binders.Add(typeof(System.DateTime?), binder);
+            ModelBinders.Binders.Add(typeof(DateTime), binder);
+            ModelBinders.Binders.Add(typeof(DateTime?), binder);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MhotivoContext, Implement.Migrations.Configuration>());
             using (var context = new MhotivoContext())
             {
