@@ -102,7 +102,7 @@
                                                    <p class="font22" style="color: black">
                                                        <i class="icon-md icon-calendar" style="color:orange"></i> @item.Created.ToShortDateString() <span class="nicdark_margin020">·</span>
                                                        <i class="icon-md icon-user" style="color: cornflowerblue"></i> @item.NotificationCreator <span class="nicdark_margin020">·</span>
-                                                       <a href="NotificationComments?notificationId=@item.Id" class="notify">
+                                                       <a href="~/NotificationComments?notificationId=@item.Id" class="notify">
                                                            <span class="notification-label notification-label-red">@item.CommentsAmount</span>
                                                            <i class="icon-chat" style="color:tan"></i>
                                                        </a>
@@ -121,7 +121,7 @@
                                                <br />
                                                <div class="nicdark_space10"></div>
                                            </div>
-                                           <a onclick="addcomment(@item.Id); " href="#AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
+                                           <a onclick="AddComment(@item.Id); " href="#AddComment" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white right nicdark_mpopup_window"><i class="icon-reply-outline"></i>Comentar</a>
                                            <div class="nicdark_space20"></div>
 
                                    </div>
@@ -157,12 +157,11 @@
                                    @using (@Html.BeginForm("AddCommentToNotification", "Notification", FormMethod.Post))
                                    {
                                        <textarea rows="3" class="nicdark_bg_grey2 nicdark_radius nicdark_shadow greydark responsive" placeholder="COMENTARIO" id="commentText" name="commentText" style="max-height: 80px; max-width: 315px; min-width: 30px; min-height: 30px; width: 315px; height: 80px"></textarea>
-
                                        <div class="nicdark_space20"></div>
                                        <input type="submit" class="nicdark_btn nicdark_bg_red small nicdark_shadow nicdark_radius white right" value="Enviar" />
-                                       <div class="nicdark_space50"></div>
+                                       <div class="nicdark_space30"></div>
 
-                                       <input type="text" class="mfp-hide" id="notificationId" name="notificationId" value="" />
+                                       <input type="text" class="mfp-hide" id="notificationId" name="notificationId" value= "" />
                                    }
                                </div>
                            </div>
