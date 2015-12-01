@@ -21,6 +21,7 @@ namespace Mhotivo.ParentSite.Controllers
         }
 
         // GET: /Account/
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
