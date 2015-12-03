@@ -16,7 +16,8 @@ namespace Mhotivo.Authorizations
         public AuthorizeWithParameter(string privilegeString)
         {
             var privileges = privilegeString.Split(',');
-            this._requireAtLeastOnePrivileges = privileges.ToList();
+            this._requireAtLeastOnePrivileges = privileges
+                .Select(privilege => privilege.Trim()).ToList();
         }
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
