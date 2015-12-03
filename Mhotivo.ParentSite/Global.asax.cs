@@ -9,6 +9,7 @@ namespace Mhotivo.ParentSite
     {
         protected void Application_Start()
         {
+           
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -16,5 +17,8 @@ namespace Mhotivo.ParentSite
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfiguration.Configure();
         }
+
+        
+        
     }
 }
