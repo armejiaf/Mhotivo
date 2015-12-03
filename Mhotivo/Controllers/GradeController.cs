@@ -18,13 +18,17 @@ namespace Mhotivo.Controllers
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly IPensumRepository _pensumRepository;
         private readonly IEducationLevelRepository _educationLevelRepository;
+        private readonly ISessionManagementService _sessionManagementService;
+        private readonly IUserRepository _userRepository;
 
-        public GradeController(IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository)
+        public GradeController(IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IPensumRepository pensumRepository, IEducationLevelRepository educationLevelRepository, ISessionManagementService sessionManagementService, IUserRepository userRepository)
         {
             _gradeRepository = gradeRepository;
             _academicGradeRepository = academicGradeRepository;
             _pensumRepository = pensumRepository;
             _educationLevelRepository = educationLevelRepository;
+            _sessionManagementService = sessionManagementService;
+            _userRepository = userRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -33,9 +37,14 @@ namespace Mhotivo.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var grades = _gradeRepository.GetAllGrade();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            var grades = (bool)ViewBag.IsDirector
+                ? _gradeRepository.Filter(
+                    x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id)
+                : _gradeRepository.GetAllGrade();
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.EducationLevelSortParam = sortOrder == "education_asc" ? "education_desc" : "education_asc";
             if (searchString != null)
             {
@@ -47,7 +56,10 @@ namespace Mhotivo.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                grades = _gradeRepository.Filter(x => x.Name.Contains(searchString)).ToList();
+                grades = ((bool)ViewBag.IsDirector
+                ? _gradeRepository.Filter(
+                    x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id)
+                : _gradeRepository.GetAllGrade()).Where(x => x.Name.Contains(searchString)).ToList();
             }
             var displayGradeModels = grades.Select(Mapper.Map<Grade, GradeDisplayModel>).ToList();
             ViewBag.CurrentFilter = searchString;
@@ -76,6 +88,15 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Add()
         {
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            if (isDirector)
+            {
+                var firstOrDefault = _educationLevelRepository.Filter(x => x.Director != null && x.Director.Id == user.Id)
+                    .FirstOrDefault();
+                if (firstOrDefault != null)
+                    return View("Create", new GradeRegisterModel {EducationLevel = firstOrDefault.Id});
+            }
             var list = _educationLevelRepository.GetAllAreas();
             ViewBag.EducationLevels = new SelectList(list, "Id", "Name");
             return View("Create");
