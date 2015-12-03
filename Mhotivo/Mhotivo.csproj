@@ -179,6 +179,7 @@
     <Compile Include="Authorizations\AuthorizeDirector.cs" />
     <Compile Include="Authorizations\AuthorizeLogin.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
+    <Compile Include="Authorizations\AuthorizeWithParameter.cs" />
     <Compile Include="Binder\DateTimeModelBinder.cs" />
     <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />

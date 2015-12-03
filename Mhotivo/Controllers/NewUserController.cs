@@ -20,7 +20,7 @@ namespace Mhotivo.Controllers
             _userRepository = userRepository;
         }
 
-        [AuthorizeAdmin]
+        [AuthorizeWithParameter("Administrador")]
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
             var newUsers = _userRepository.Filter(x => x.IsUsingDefaultPassword);
