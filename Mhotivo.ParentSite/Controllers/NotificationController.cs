@@ -37,7 +37,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         // GET: /Notification/
         [HttpGet]
-        public ActionResult Index(string filter)
+        public ActionResult Index(string filter = "ALL")
         {
             var loggedUserEmail = _securityService.GetUserLoggedEmail();
             _loggedTutor = _tutorRepository.Filter(y => y.User.Email == loggedUserEmail).FirstOrDefault();
@@ -48,6 +48,12 @@ namespace Mhotivo.ParentSite.Controllers
 
             switch (filter)
             {
+                case "ALL":
+                    notifications =
+                        _loggedTutor
+                            .User.Notifications.Where(x=>x.AcademicYear.IsActive)
+                            .ToList();
+                    break;
                 case "NDE":
                     notifications =
                         _loggedTutor
