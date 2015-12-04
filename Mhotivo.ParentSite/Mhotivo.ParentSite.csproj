@@ -14,7 +14,7 @@
     <RootNamespace>Mhotivo.ParentSite</RootNamespace>
     <AssemblyName>Mhotivo.ParentSite</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
