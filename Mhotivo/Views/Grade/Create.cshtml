@@ -18,7 +18,10 @@
 
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.EducationLevel)
+                @if ((bool) ViewBag.IsDirector)
+                {
+                    Html.ValidationMessageFor(model => model.EducationLevel);
+                }
             </p>
 
             <div class="control-group">
