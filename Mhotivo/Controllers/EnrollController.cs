@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -18,13 +19,17 @@ namespace Mhotivo.Controllers
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
         public EnrollController(IStudentRepository studentRepository,
-            IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository)
+            IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
             _academicGradeRepository = academicGradeRepository;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -55,7 +60,14 @@ namespace Mhotivo.Controllers
         {
             ViewBag.GradeId = -1;
             _viewMessageLogic.SetViewMessageIfExist();
-            var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var grades = isDirector
+                ? _academicGradeRepository.Filter(
+                    x =>
+                        x.AcademicYear.IsActive && x.Grade.EducationLevel.Director != null &&
+                        x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                : _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
             if (!grades.Any())
                 return View();
             var model = new List<EnrollDisplayModel>();

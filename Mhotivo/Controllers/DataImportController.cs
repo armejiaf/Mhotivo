@@ -18,15 +18,19 @@ namespace Mhotivo.Controllers
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly IAcademicGradeRepository _academicGradeRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
         public DataImportController(IDataImportService dataImportService
                                     ,IGradeRepository gradeRepository
-                                    ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository)
+                                    ,IAcademicYearRepository academicYearRepository, IAcademicGradeRepository academicGradeRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _dataImportService = dataImportService;
             _gradeRepository = gradeRepository;
             _academicYearRepository = academicYearRepository;
             _academicGradeRepository = academicGradeRepository;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
         
@@ -35,7 +39,11 @@ namespace Mhotivo.Controllers
         {
             _viewMessageLogic.SetViewMessageIfExist();
             var importModel = new DataImportModel();
-            ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            ViewBag.GradeId = isDirector
+                ? new SelectList(_gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList(), "Id", "Name", 0)
+                : new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
             ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.EnrollsOpen), "Id", "Year");
             ViewBag.Section = new List<SelectListItem>();
             return View(importModel);
@@ -56,12 +64,13 @@ namespace Mhotivo.Controllers
                 ModelState.AddModelError("Year", "No existe ese grado academico");
             else if(academicGrade.Students.Any())
                 ModelState.AddModelError("Year", "Ya hay alumos en este grado, borrelos e ingreselos de nuevo.");
-            ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
-            ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => !x.IsActive), "Id", "Year");
-            ViewBag.Section = new List<SelectListItem>();
             if (!ModelState.IsValid)
             {
-                ViewBag.GradeId = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
+                var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+                var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+                ViewBag.GradeId = isDirector
+                    ? new SelectList(_gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList(), "Id", "Name", 0)
+                    : new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", 0);
                 ViewBag.Year = new SelectList(_academicYearRepository.Filter(x => x.EnrollsOpen), "Id", "Year");
                 ViewBag.Section = new List<SelectListItem>();
                 return View(dataImportModel);
