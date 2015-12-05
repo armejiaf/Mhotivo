@@ -14,7 +14,7 @@
     <RootNamespace>Mhotivo</RootNamespace>
     <AssemblyName>Mhotivo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -180,6 +180,7 @@
     <Compile Include="Authorizations\AuthorizeLogin.cs" />
     <Compile Include="Authorizations\AuthorizeNewUser.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
+    <Compile Include="Authorizations\AuthorizeWithParameter.cs" />
     <Compile Include="Binder\DateTimeModelBinder.cs" />
     <Compile Include="Controllers\AcademicGradeController.cs" />
     <Compile Include="Controllers\AcademicYearController.cs" />
@@ -501,7 +502,6 @@
     <Content Include="Views\AcademicYear\Create.cshtml" />
     <Content Include="Views\AcademicYear\Edit.cshtml" />
     <Content Include="Views\AcademicYear\Index.cshtml" />
-    <Content Include="Views\AcademicCourse\Create.cshtml" />
     <Content Include="Views\AcademicCourse\Edit.cshtml" />
     <Content Include="Views\AcademicCourse\Index.cshtml" />
     <Content Include="Views\EducationLevel\Create.cshtml" />

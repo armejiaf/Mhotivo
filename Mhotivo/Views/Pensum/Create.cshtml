@@ -15,9 +15,8 @@
 
     <fieldset>
         <legend>Nuevo Pensum</legend>
-        
+        @Html.HiddenFor(model => model.Grade)
         <p class="text-error">
-            @Html.ValidationMessageFor(model => model.Grade)
             @Html.ValidationMessageFor(model => model.Name)
         </p>
         
@@ -27,16 +26,6 @@
             </div>
             <div class="controls">
                 @Html.EditorFor(model => model.Name)
-            </div>
-        </div>
-        
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Grade)
-            </div>
-            <div class="controls">
-                @Html.DropDownList("IdGrade")
             </div>
         </div>
 
