@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.ParentSite.Authorization;
 using Mhotivo.ParentSite.Models;
 
 namespace Mhotivo.ParentSite.Controllers
@@ -37,6 +38,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         // GET: /Notification/
         [HttpGet]
+        [AuthorizeNewUser]
         public ActionResult Index(string filter)
         {
             var loggedUserEmail = _securityService.GetUserLoggedEmail();
@@ -118,7 +120,7 @@ namespace Mhotivo.ParentSite.Controllers
             }
             return id;
         }
-
+        [AuthorizeNewUser]
         public ActionResult AddCommentToNotification(int notificationId, string commentText)
         {
             var loggedUserEmail = System.Web.HttpContext.Current.Session["loggedUserEmail"].ToString();
