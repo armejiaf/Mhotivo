@@ -1,5 +1,9 @@
 ﻿
-<style type="text/css">.nav-listchild {background-color: #333 }</style>
+<style type="text/css">
+    .nav-listchild {
+        background-color: #333;
+    }
+</style>
 <script type="text/javascript" src="~/Scripts/listCollapse.js"></script>
 @{
     var valSession = HttpContext.Current.Session["loggedUserRole"];
@@ -21,16 +25,16 @@
             <span class="menu-text">Cuentas y Personas</span>
             <ul class="nav nav-list">
                 <li></li>
-                @if(rolName == "Administrador")
+                @if (rolName == "Administrador")
                 {
-                <li>
-                    <a href="/Administrative">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Administrativos </span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="/Administrative">
+                            <i class="icon-blank"></i>
+                            <span class="menu-text"> Administrativos </span>
+                        </a>
+                    </li>
                 }
-                
+
                 <li>
                     <a href="/Teacher">
                         <i class="icon-blank"></i>
@@ -49,21 +53,21 @@
                         <span class="menu-text"> Estudiantes </span>
                     </a>
                 </li>
-            @if (rolName == "Administrador")
-            {
-                <li>
-                    <a href="/User">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Usuarios </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/NewUser">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Usuarios Nuevos</span>
-                    </a>
-                </li>
-            }
+                @if (rolName == "Administrador")
+                {
+                    <li>
+                        <a href="/User">
+                            <i class="icon-blank"></i>
+                            <span class="menu-text"> Usuarios </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/NewUser">
+                            <i class="icon-blank"></i>
+                            <span class="menu-text"> Usuarios Nuevos</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </li>
         <li id="EducationScheme">
@@ -71,17 +75,17 @@
             <span class="menu-text">Esquema Educativo</span>
             <ul class="nav nav-list">
                 <li></li>
-                
-            @if (rolName == "Administrador")
-            {
-                <li>
-                    <a href="/EducationLevel">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Niveles de Educacion </span>
-                    </a>
-                </li>
-            }
-     
+
+                @if (rolName == "Administrador")
+                {
+                    <li>
+                        <a href="/EducationLevel">
+                            <i class="icon-blank"></i>
+                            <span class="menu-text"> Niveles de Educacion </span>
+                        </a>
+                    </li>
+                }
+
                 <li>
                     <a href="/Grade">
                         <i class="icon-blank"></i>
@@ -107,12 +111,7 @@
                         <span class="menu-text"> Matricula </span>
                     </a>
                 </li>
-                <!--/<li>
-                    <a href="/Enroll">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Promociones </span>
-                    </a>
-                </li>-->
+
             </ul>
         </li>
         <li id="Notifications">
@@ -120,12 +119,7 @@
             <span class="menu-text">Notificaciones</span>
             <ul class="nav nav-list">
                 <li></li>
-                <!--/<li>
-                    <a href="/Notification">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text"> Inbox </span>
-                    </a>
-                </li>-->
+
                 <li>
                     <a href="/Notification">
                         <i class="icon-blank"></i>
@@ -140,18 +134,18 @@
                 </li>
             </ul>
         </li>
-        
+
         <li id="DataImport">
             <i class="icon-archive"></i>
             <span class="menu-text">Importador de Datos</span>
             <ul class="nav nav-list">
                 <li></li>
                 @*<li>
-                    <a href="/DataImport">
-                        <i class="icon-blank"></i>
-                        <span class="menu-text">Configuracion </span>
-                    </a>
-                </li>*@
+                        <a href="/DataImport">
+                            <i class="icon-blank"></i>
+                            <span class="menu-text">Configuracion </span>
+                        </a>
+                    </li>*@
                 <li>
                     <a href="/DataImport">
                         <i class="icon-blank"></i>
@@ -164,6 +158,17 @@
 }
 else
 {
+    if (rolName == "Maestro")
+    {
+        <ul class="nav nav-list" id="MainMenu">
+            <li id="Accounts">
+            <i class="icon-group"></i>
+            <span class="menu-text">Cuentas y Personas</span>
+            <ul class="nav nav-list">
+                <li></li>
+            </ul>
+        </ul>
+    }
     <ul class="nav nav-list">
         <li>
             <a href="~/Notification/">
@@ -180,15 +185,15 @@ else
     </ul>
 }
 <script type="text/javascript">
-window.onload = function () {
+    window.onload = function () {
 
-  //choose one of these options
+        //choose one of these options
 
-  //option 1 - no auto-child-collapse
-  //compactMenu('someID',false,'&plusmn; ');
+        //option 1 - no auto-child-collapse
+        //compactMenu('someID',false,'&plusmn; ');
 
-    //option 2 - auto-child-collapse
-    compactMenu('MainMenu', true, '');
-    
-}
+        //option 2 - auto-child-collapse
+        compactMenu('MainMenu', true, '');
+
+    }
 </script>
