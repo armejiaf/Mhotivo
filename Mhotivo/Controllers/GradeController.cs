@@ -156,6 +156,9 @@ namespace Mhotivo.Controllers
         {
             var grade = _gradeRepository.GetById(id);
             var gradeModel = Mapper.Map<Grade, GradeEditModel>(grade);
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            if (isDirector) return View("Edit", gradeModel);
             var list = _educationLevelRepository.GetAllAreas();
             ViewBag.EducationLevels = new SelectList(list, "Id", "Name", gradeModel.EducationLevel);
             return View("Edit", gradeModel);

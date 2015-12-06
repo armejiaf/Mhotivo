@@ -10,8 +10,11 @@
 
     @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
 
-    <h2>Años Académicos Registrados  </h2>
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Add/"><span class="btn btn-small btn-primary">Agregar Año Académico</span></a>
+<h2>Años Académicos Registrados </h2>
+@if (!(bool)ViewBag.IsDirector)
+{
+    <a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/AcademicYear/Add/"><span class="btn btn-small btn-primary">Agregar Año Académico</span></a>
+}
 <div class="space"></div>
     @using (Html.BeginForm("Index", "AcademicYear", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {

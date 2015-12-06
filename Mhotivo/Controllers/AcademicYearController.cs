@@ -15,10 +15,14 @@ namespace Mhotivo.Controllers
     {
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
-        public AcademicYearController(IAcademicYearRepository academicYearRepository)
+        public AcademicYearController(IAcademicYearRepository academicYearRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _academicYearRepository = academicYearRepository;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -26,6 +30,8 @@ namespace Mhotivo.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            ViewBag.IsDirector = user.Role.Name.Equals("Director");
             var allAcademicYears = _academicYearRepository.GetAllAcademicYears();
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "year_desc" : "";
