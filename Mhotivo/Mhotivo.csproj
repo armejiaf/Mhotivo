@@ -195,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\DataImportController.cs" />
+    <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\NewUserController.cs" />
     <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Models\AcademicCourseModel.cs" />
     <Compile Include="Models\AcademicGradeModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
+    <Compile Include="Models\AccountEditModel.cs" />
     <Compile Include="Models\AdministrativeModel.cs" />
     <Compile Include="Models\EducationLevelModel.cs" />
     <Compile Include="Models\ContactInformationModel.cs" />
@@ -531,6 +533,7 @@
     <Content Include="Views\Administrative\Edit.cshtml" />
     <Content Include="Views\Administrative\Create.cshtml" />
     <Content Include="Views\Administrative\Details.cshtml" />
+    <Content Include="Views\MyAccount\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">
