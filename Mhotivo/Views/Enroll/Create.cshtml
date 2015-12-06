@@ -36,25 +36,31 @@
         @{
             if (Model.Id == -1)
             {
-                <div class="control-group">
+                <div class="control-group" id="gradeList">
                     <div class="control-label">
-                        @Html.LabelFor(model => model.Grade)
+                        @Html.DisplayNameFor(model => model.Grade)
                     </div>
                     <div class="controls">
-                        @Html.DropDownListFor(model => model.Grade, (SelectList)ViewBag.Grades)
+                        @Html.DropDownListFor(model => model.Grade, (SelectList) ViewBag.Grades, " -- Grado --")
                     </div>
                 </div>
 
-                    <div class="control-group">
-                        <div class="control-label">
-                            @Html.LabelFor(model => model.AcademicGrade)
-                        </div>
-                        <div class="controls">
-                            @Html.DropDownListFor(model => model.AcademicGrade, (List<SelectListItem>)ViewBag.Sections)
-                        </div>
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.DisplayNameFor(model => model.AcademicGrade)
                     </div>
+                    <div class="controls">
+                        @Html.DropDownList("AcademicGrade", (List<SelectListItem>) ViewBag.Sections, "  -- Seccion --")
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Grade)
+                @Html.HiddenFor(model => model.AcademicGrade)
             }
         }
+        @Html.HiddenFor(model => model.Id)
         <div class="space"></div>
 
         <div class="modal-footer">
@@ -71,3 +77,21 @@
     </fieldset>
 }
 </div>
+<script type="text/javascript">
+    $('#gradeList').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("LoadByGrade")',
+            cache: false,
+            type: 'POST',
+            data: 'gradeId='+$('#gradeList option:selected').val(),
+            datatype: "json",
+            success: function (data) {
+                $('#AcademicGrade').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#AcademicGrade').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>
