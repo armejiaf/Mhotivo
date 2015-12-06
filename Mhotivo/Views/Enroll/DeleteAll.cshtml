@@ -5,39 +5,58 @@
 <div id="body" class="modal-body" style="max-height: 500px;">
     @using (Html.BeginForm())
     {
-    <fieldset>
-        <legend>Borrar matriculas por seccion</legend>
+        <fieldset>
+            <legend>Borrar matriculas por seccion</legend>
 
-        <div class="control-group">
-            <div class="control-label">
-                @Html.DisplayNameFor(model => model.Grade)
+            <div class="control-group" id="gradeList">
+                <div class="control-label">
+                    @Html.DisplayNameFor(model => model.Grade)
+                </div>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Grade, (SelectList) ViewBag.Grades, " -- Grado --")
+                </div>
             </div>
-            <div class="controls">
-                @Html.DropDownListFor(model => model.Grade, (SelectList)ViewBag.Grades, " -- Grado --")
+
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.DisplayNameFor(model => model.AcademicGrade)
+                </div>
+                <div class="controls">
+                    @Html.DropDownList("AcademicGrade", (List<SelectListItem>) ViewBag.Sections, "  -- Seccion --")
+                </div>
             </div>
+
+        </fieldset>
+        @Html.AntiForgeryToken()
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-small">
+                <i class="icon-remove"></i>
+                Regresar
+            </button>
+
+            <button type="submit" class="btn btn-small btn-primary">
+                <i class="icon-ok"></i>
+                Eliminar
+            </button>
         </div>
-        
-        <div class="control-group">
-            <div class="control-label">
-                @Html.DisplayNameFor(model => model.AcademicGrade)
-            </div>
-            <div class="controls">
-                @Html.DropDownListFor(model => model.AcademicGrade, (List<SelectListItem>)ViewBag.Sections, "  -- Seccion --")
-            </div>
-        </div>
-
-    </fieldset>
-    @Html.AntiForgeryToken()
-    <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-small">
-            <i class="icon-remove"></i>
-            Regresar
-        </button>
-
-        <button type="submit" class="btn btn-small btn-primary">
-            <i class="icon-ok"></i>
-            Eliminar
-        </button>
-    </div>
     }
 </div>
+
+<script type="text/javascript">
+    $('#gradeList').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("LoadByGrade")',
+            cache: false,
+            type: 'POST',
+            data: 'gradeId='+$('#gradeList option:selected').val(),
+            datatype: "json",
+            success: function (data) {
+                $('#AcademicGrade').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#AcademicGrade').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>

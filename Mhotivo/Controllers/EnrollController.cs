@@ -181,7 +181,7 @@ namespace Mhotivo.Controllers
             ((List<SelectListItem>)ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
                 x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
                 .Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Section }));
-            return View("Create", new EnrollRegisterModel{Id = gradeId});
+            return View("Create", gradeId != -1 ? new EnrollRegisterModel { Id = gradeId, AcademicGrade = gradeId, Grade = _academicGradeRepository.GetById(gradeId).Grade.Id} : new EnrollRegisterModel{Id = gradeId});
         }
 
         [HttpPost]
@@ -206,7 +206,17 @@ namespace Mhotivo.Controllers
                 const string content = "El estudiante ha sido matriculado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             }
-            return (academicGrade.Id != -1) ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = modelEnroll.Id });
+            return (modelEnroll.Id == -1) ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = modelEnroll.Id });
+        }
+
+        public JsonResult LoadByGrade(long gradeId)
+        {
+            var sList = _academicGradeRepository.Filter(
+                    x => x.Grade.Id == gradeId && x.AcademicYear.EnrollsOpen).ToList();
+            var toReturn =
+                new SelectList(
+                    sList, "Id", "Section");
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
         }
     }
 }
