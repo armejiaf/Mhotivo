@@ -16,6 +16,7 @@ using PagedList;
 
 namespace Mhotivo.Controllers
 {
+    [AuthorizeNewUser]
     public class NotificationController : Controller
     {
         private readonly ViewMessageLogic _viewMessageLogic;
@@ -56,7 +57,7 @@ namespace Mhotivo.Controllers
             _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-
+        [AuthorizeNewUser]
         public ActionResult Index(string searchName, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
@@ -75,6 +76,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpGet]
+        [AuthorizeNewUser]
         public ActionResult Add()
         {
             var notification = new NotificationRegisterModel();
@@ -93,6 +95,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeNewUser]
         public ActionResult Add(NotificationRegisterModel eventNotification)
         {
             eventNotification.NotificationCreator = _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId())).UserOwner.Id;
@@ -106,7 +109,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
-
+        [AuthorizeNewUser]
         public ActionResult Edit(long id)
         {
             var toEdit =
@@ -126,6 +129,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeNewUser]
         public ActionResult Edit(long id, NotificationEditModel eventNotificationEdit)
         {
             try
@@ -146,6 +150,7 @@ namespace Mhotivo.Controllers
         }
 
         [HttpPost]
+        [AuthorizeNewUser]
         public ActionResult Delete(long id)
         {
             try

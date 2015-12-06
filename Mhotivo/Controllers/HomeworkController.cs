@@ -66,7 +66,7 @@ namespace Mhotivo.Controllers
         {
             var teacherId = GetTeacherId();
             var detalleAnhosAcademicosActivos = _academicCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicGrade.AcademicYear.IsActive);
-            var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher.Id == teacherId);
+            var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher != null && x.Teacher.Id == teacherId);
             var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
             ViewBag.course = new SelectList(query, "Id", "Name");
             var modelRegister = new HomeworkRegisterModel();
@@ -76,7 +76,7 @@ namespace Mhotivo.Controllers
         private IEnumerable<AcademicCourse> GetAllAcademicYearsDetail(long id)
         {
             IEnumerable<AcademicCourse> allAcademicYearsDetail =
-                _academicCourseRepository.GetAllAcademicYearDetails().Where(x => x.Teacher.Id.Equals(id));
+                _academicCourseRepository.GetAllAcademicYearDetails().Where(x => x.Teacher != null && x.Teacher.Id.Equals(id));
             return allAcademicYearsDetail;
         }
 

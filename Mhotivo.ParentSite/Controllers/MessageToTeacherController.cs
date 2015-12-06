@@ -39,7 +39,7 @@ namespace Mhotivo.ParentSite.Controllers
             }
             return View(new Tuple<IEnumerable<TeacherModel>, MessageToTeacherModel>(allTeachersModel,null));
         }
-
+        [AuthorizeNewUser]
         public ActionResult SendNewMessage([Bind(Prefix = "Item2")] MessageToTeacherModel model)
         {
             if (HttpContext.Session != null)

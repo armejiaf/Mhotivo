@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AutoMapper;
+using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Models;
 
@@ -21,7 +22,7 @@ namespace Mhotivo.Controllers
             _notificationCommentRepository = notificationCommentRepository;
         }
 
-        
+        [AuthorizeNewUser]
         public ActionResult Index(long notificationId)
         {
             var notification = _notificationRepository.GetById(notificationId);
@@ -29,7 +30,7 @@ namespace Mhotivo.Controllers
             ViewBag.NotificationId = notificationId;
             return View(commentsForNotifications);
         }
-
+        [AuthorizeNewUser]
         public ActionResult Delete(long notificationId, long commentId)
         {
             var comments = _notificationCommentRepository.GetById(commentId);

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Data.Entities;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.ParentSite.Authorization;
 using Mhotivo.ParentSite.Models;
 using Microsoft.Ajax.Utilities;
 
@@ -40,7 +41,7 @@ namespace Mhotivo.ParentSite.Controllers
             SecurityService = securityService;
             _tutorRepository = tutorRepository;
         }
-
+        [AuthorizeNewUser]
         public ActionResult Index(long student = -1)
         {
             var students = GetAllStudents(GetTutorId());

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.ParentSite.Authorization;
 using Mhotivo.ParentSite.Models;
 
 namespace Mhotivo.ParentSite.Controllers
@@ -19,6 +20,7 @@ namespace Mhotivo.ParentSite.Controllers
 
         // GET: /NotificationComments/
         [HttpGet]
+        [AuthorizeNewUser]
         public ActionResult Index(int notificationId)
         {
             var selectedNotification = _notificationRepository.GetById(notificationId);
