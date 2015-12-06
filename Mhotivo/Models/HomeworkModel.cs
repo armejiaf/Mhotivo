@@ -33,6 +33,7 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar una descripción.")]
 
         [Display(Name = "Descripción")]
+        [AllowHtml]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]
@@ -57,6 +58,7 @@ namespace Mhotivo.Models
         [Required(ErrorMessage = "Debe Ingresar una descripción.")]
 
         [Display(Name = "Descripcion")]
+        [AllowHtml]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar fecha de entrega.")]

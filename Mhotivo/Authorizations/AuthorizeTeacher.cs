@@ -12,7 +12,7 @@ namespace Mhotivo.Authorizations
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeTeacher : AuthorizeAttribute
     {
-        private static readonly List<string> RequireAtLeastOnePrivileges = new List<string>{"Maestro","Director"};
+        private static readonly List<string> RequireAtLeastOnePrivileges = new List<string>{"Maestro"};
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var roleRepository =
