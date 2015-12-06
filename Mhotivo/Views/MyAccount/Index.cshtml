@@ -21,7 +21,7 @@
         @Html.ValidationSummary(true)
 
         <fieldset>
-            <legend>Editar Maestro</legend>
+            <legend>Editar Perfil</legend>
             @Html.HiddenFor(model => model.Id)
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Email)
@@ -67,7 +67,7 @@
                     @Html.LabelFor(model => model.OldPassword)
                 </div>
                 <div class="controls">
-                    @Html.TextBoxFor(model => model.OldPassword)
+                    @Html.PasswordFor(model => model.OldPassword)
                 </div>
             </div>
             <div class="control-group">
@@ -75,7 +75,7 @@
                     @Html.LabelFor(model => model.NewPassword)
                 </div>
                 <div class="controls">
-                    @Html.TextBoxFor(model => model.NewPassword)
+                    @Html.PasswordFor(model => model.NewPassword)
                 </div>
             </div>
             <div class="control-group">
@@ -83,7 +83,7 @@
                     @Html.LabelFor(model => model.ConfirmPassword)
                 </div>
                 <div class="controls">
-                    @Html.TextBoxFor(model => model.ConfirmPassword)
+                    @Html.PasswordFor(model => model.ConfirmPassword)
                 </div>
             </div>
             <div class="control-group">
