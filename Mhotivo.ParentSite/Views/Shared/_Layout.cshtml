@@ -65,7 +65,7 @@
                                             <a class="white">  CERRAR SESIÓN</a>*@
                                             @Html.ActionLink(" CERRAR SESIÓN", "LogOut", "Account", null, new {@class = "white"});
                                         }
-                                        
+
                                         @*<i class="icon-lock-1"></i>&nbsp;&nbsp;@Html.ActionLink("Iniciar Sesion", "LogIn", "Account", new { area = "" }, new {@class="white nicdark_mpopup_window"})*@
 
                                     </h6>
@@ -84,25 +84,38 @@
 
                                 <div class="nicdark_logo nicdark_marginleft10">
                                     @*<a href="index-2.html"><img alt="" src="~/Content/img/logo.png"></a>*@
-                                    @Html.ActionLink("MHOTIVO", "Index", "Home", null, new { @style ="font-size: 30px;"})
+                                   
+                                        @Html.ActionLink("MHOTIVO", "Index", "Home", null, new {@style = "font-size: 30px;"})
+                                   
                                 </div>
-
+                                  
                                 <nav>
                                     <ul class="nicdark_menu nicdark_margin010 nicdark_padding50">
 
-                                        <li class="green">
-                                            @Html.ActionLink("LOGIN", "Login", "Account")
-                                        </li>
-                                        <li class="orange">
-                                            @Html.ActionLink("CAMBIAR CONTRASEÑA", "ChangePassword", "Account")
-                                        </li>
-                                        <li class="blue">
-                                            @Html.ActionLink("CONFIRMAR CORREO", "UpdateEmail", "Account")
-                                        </li>
-                                        <li class="red">
-                                            @Html.ActionLink("ENVIAR MENSAJE", "Index", "MessageToTeacher")
-                                        </li>
-                                        
+                                       
+                                       
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="orange">
+                                                @Html.ActionLink("CAMBIAR CONTRASEÑA", "ChangePassword", "Account")
+                                            </li>
+                                            <li class="blue">
+                                                @Html.ActionLink("CONFIRMAR CORREO", "UpdateEmail", "Account")
+                                            </li>
+                                            <li class="red">
+                                                @Html.ActionLink("ENVIAR MENSAJE", "Index", "MessageToTeacher")
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="green">
+                                                @Html.ActionLink("LOGIN", "Login", "Account")
+                                            </li>
+                                 
+                                        }
+
+
                                     </ul>
                                 </nav>
 
