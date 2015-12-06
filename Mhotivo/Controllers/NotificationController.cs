@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
 using Mhotivo.Authorizations;
@@ -32,6 +30,7 @@ namespace Mhotivo.Controllers
         private readonly INotificationRepository _notificationRepository;
         private readonly IEducationLevelRepository _areaReporsitory;
         private readonly INotificationHandlerService _notificationHandlerService;
+        private readonly IEducationLevelRepository _educationLevelRepository;
 
         public NotificationController(ISessionManagementService sessionManagement, IUserRepository userRepository,
             INotificationRepository notificationRepository, IPeopleRepository peopleRepository,
@@ -39,7 +38,7 @@ namespace Mhotivo.Controllers
             IAcademicCourseRepository academicCourseRepository, IStudentRepository studentRepository,
             ITutorRepository tutorRepository, IGradeRepository gradeRepository,
             IAcademicYearRepository academicYearRepository,
-            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicGradeRepository academicGradeRepository)
+            IEducationLevelRepository areaReporsitory, INotificationHandlerService notificationHandlerService, IAcademicGradeRepository academicGradeRepository, IEducationLevelRepository educationLevelRepository)
         {
             _sessionManagement = sessionManagement;
             _userRepository = userRepository;
@@ -54,6 +53,7 @@ namespace Mhotivo.Controllers
             _areaReporsitory = areaReporsitory;
             _notificationHandlerService = notificationHandlerService;
             _academicGradeRepository = academicGradeRepository;
+            _educationLevelRepository = educationLevelRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -62,10 +62,40 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             var user =
                 _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
-            var notifications = _notificationRepository.Query(x => x).ToList();
-            if (!_sessionManagement.GetUserLoggedRole().Equals("Administrador"))
-                notifications = notifications.FindAll(x => user != null && x.NotificationCreator.Id == user.UserOwner.Id);
-            if (!String.IsNullOrWhiteSpace(searchName))
+            var isDirector = user.Role.Name.Equals("Director");
+            var isAdmin = user.Role.Name.Equals("Administrador");
+            var notifications = new List<Notification>();
+            if (isAdmin)
+            {
+                notifications = _notificationRepository.GetAllNotifications().ToList();
+            }
+            else if (isDirector)
+            {
+                notifications.AddRange(
+                    _notificationRepository.Filter(x => x.NotificationType == NotificationType.General));
+                var educationLevel = _educationLevelRepository.Filter(x => x.Director != null && x.Director.Id == user.Id).FirstOrDefault();
+                if (educationLevel != null)
+                {
+                    notifications.AddRange(
+                    _notificationRepository.Filter(
+                        x =>
+                            x.NotificationType == NotificationType.EducationLevel &&
+                            x.DestinationId == educationLevel.Id));
+                    var gradeIds = educationLevel.Grades.Select(x => x.Id);
+                    notifications.AddRange(_notificationRepository.Filter(x => x.NotificationType == NotificationType.Grade && gradeIds.Contains(x.DestinationId)));
+                    var academicGradeIds =
+                        _academicGradeRepository.Filter(x => gradeIds.Contains(x.Grade.Id)).Select(x => x.Id);
+                    notifications.AddRange(_notificationRepository.Filter(x => x.NotificationType == NotificationType.Section && academicGradeIds.Contains(x.DestinationId)));
+                    var courseIds = _academicCourseRepository.Filter(x => academicGradeIds.Contains(x.AcademicGrade.Id)).Select(x => x.Id);
+                    notifications.AddRange(_notificationRepository.Filter(x => x.NotificationType == NotificationType.Course && courseIds.Contains(x.DestinationId)));
+                    var tutorIds =
+                        _studentRepository.Filter(x => x.MyGrade != null && academicGradeIds.Contains(x.MyGrade.Id))
+                            .Select(x => x.Tutor1.Id);
+                    notifications.AddRange(_notificationRepository.Filter(x => x.NotificationType == NotificationType.Personal && tutorIds.Contains(x.DestinationId)));
+                }
+            }else
+                notifications = _notificationRepository.Filter(x => x.NotificationCreator.Id == user.UserOwner.Id).ToList();
+            if (!string.IsNullOrWhiteSpace(searchName))
                 notifications = notifications.ToList().FindAll(x => x.Title == searchName);
 
             var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
@@ -148,26 +178,69 @@ namespace Mhotivo.Controllers
         [HttpPost]
         public ActionResult Delete(long id)
         {
-            try
-            {
-                _notificationRepository.Delete(id);
-                IQueryable<long> notifications = _notificationRepository.Query(x => x).Select(x => x.Id);
-                return RedirectToAction("Index", notifications);
-            }
-            catch
-            {
-                return View("Index");
-            }
+            _notificationRepository.Delete(id);
+            return RedirectToAction("Index");
         }
 
         [AuthorizeAdminDirector]
         public ActionResult Approve(int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var notifications = _notificationRepository.Query(x => x)
-                .Where(x => x.Approved == false)
-                .OrderByDescending(i => i.CreationDate);
-            var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var notifications = new List<Notification>();
+            if (isDirector)
+            {
+                notifications.AddRange(
+                    _notificationRepository.Filter(x => x.NotificationType == NotificationType.General && !x.Approved));
+                var educationLevel =
+                    _educationLevelRepository.Filter(x => x.Director != null && x.Director.Id == user.Id)
+                        .FirstOrDefault();
+                if (educationLevel != null)
+                {
+                    notifications.AddRange(
+                        _notificationRepository.Filter(
+                            x =>
+                                x.NotificationType == NotificationType.EducationLevel &&
+                                x.DestinationId == educationLevel.Id && !x.Approved));
+                    var gradeIds = educationLevel.Grades.Select(x => x.Id);
+                    notifications.AddRange(
+                        _notificationRepository.Filter(
+                            x =>
+                                x.NotificationType == NotificationType.Grade && gradeIds.Contains(x.DestinationId) &&
+                                !x.Approved));
+                    var academicGradeIds =
+                        _academicGradeRepository.Filter(x => gradeIds.Contains(x.Grade.Id)).Select(x => x.Id);
+                    notifications.AddRange(
+                        _notificationRepository.Filter(
+                            x =>
+                                x.NotificationType == NotificationType.Section &&
+                                academicGradeIds.Contains(x.DestinationId) && !x.Approved));
+                    var courseIds =
+                        _academicCourseRepository.Filter(x => academicGradeIds.Contains(x.AcademicGrade.Id))
+                            .Select(x => x.Id);
+                    notifications.AddRange(
+                        _notificationRepository.Filter(
+                            x =>
+                                x.NotificationType == NotificationType.Course && courseIds.Contains(x.DestinationId) &&
+                                !x.Approved));
+                    var tutorIds =
+                        _studentRepository.Filter(x => x.MyGrade != null && academicGradeIds.Contains(x.MyGrade.Id))
+                            .Select(x => x.Tutor1.Id);
+                    notifications.AddRange(
+                        _notificationRepository.Filter(
+                            x =>
+                                x.NotificationType == NotificationType.Personal && tutorIds.Contains(x.DestinationId) &&
+                                !x.Approved));
+                }
+            }
+            else
+            {
+                notifications = _notificationRepository
+                .Filter(x => x.Approved == false).ToList();
+            }
+            var notificationsModel = notifications.OrderByDescending(i => i.CreationDate).Select(Mapper.Map<NotificationDisplayModel>);
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
             return View("Approve", notificationsModel.ToPagedList(pageNumber,pageSize));
@@ -201,20 +274,37 @@ namespace Mhotivo.Controllers
 
         private NotificationSelectListsModel LoadEducationLevels(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            toReturn.EducationLevels = new SelectList(_areaReporsitory.GetAllAreas(), "Id", "Name");
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            toReturn.EducationLevels = new SelectList(isDirector ? _areaReporsitory.Filter(x => x.Director != null && x.Director.Id == user.Id) : _areaReporsitory.GetAllAreas(), "Id", "Name");
             return toReturn;
         }
 
         private NotificationSelectListsModel LoadGrades(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
-            toReturn.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            toReturn.Grades =
+                new SelectList(
+                    isDirector
+                        ? _gradeRepository.Filter(
+                            x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id)
+                        : _gradeRepository.GetAllGrade(), "Id", "Name");
             return toReturn;
         }
 
         private NotificationSelectListsModel LoadAcademicGrades(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var items = _gradeRepository.GetAllGrade().ToList();
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var items = isDirector
+                        ? _gradeRepository.Filter(
+                            x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList()
+                        : _gradeRepository.GetAllGrade().ToList();
             toReturn.Grades = new SelectList(items, "Id", "Name");
             if (items.Any())
             {
@@ -235,7 +325,13 @@ namespace Mhotivo.Controllers
         private NotificationSelectListsModel LoadAcademicCourses(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var items = _gradeRepository.GetAllGrade().ToList();
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var items = isDirector
+                        ? _gradeRepository.Filter(
+                            x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList()
+                        : _gradeRepository.GetAllGrade().ToList();
             toReturn.Grades = new SelectList(items, "Id", "Name");
             if (items.Any())
             {
@@ -268,7 +364,13 @@ namespace Mhotivo.Controllers
         private NotificationSelectListsModel LoadStudents(NotificationRegisterModel model, NotificationSelectListsModel toReturn)
         {
             var list = new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "N/A" } };
-            var items = _gradeRepository.GetAllGrade().ToList();
+            var user =
+                _userRepository.GetById(Convert.ToInt64(_sessionManagement.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var items = isDirector
+                        ? _gradeRepository.Filter(
+                            x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList()
+                        : _gradeRepository.GetAllGrade().ToList();
             toReturn.Grades = new SelectList(items, "Id", "Name");
             if (items.Any())
             {
