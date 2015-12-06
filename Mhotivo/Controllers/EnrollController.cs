@@ -101,7 +101,14 @@ namespace Mhotivo.Controllers
             var pageNumber = (page ?? 1);
             if (gradeId == -1)
             {
-                var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+                var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+                var isDirector = user.Role.Name.Equals("Director");
+                var grades = isDirector
+                    ? _academicGradeRepository.Filter(
+                        x =>
+                            x.AcademicYear.IsActive && x.Grade.EducationLevel.Director != null &&
+                            x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                    : _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
                 if (!grades.Any())
                     return View("Index");
                 var toReturn = new List<EnrollDisplayModel>();
@@ -121,7 +128,7 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id, long gradeId, long academicGradeId)
         {
             var grade = _academicGradeRepository.GetById(gradeId);
-            (grade.Students.ToList()).RemoveAll(x => x.Id == id);
+            grade.Students.ToList().RemoveAll(x => x.Id == id);
             var student = _studentRepository.GetById(id);
             student.MyGrade = null;
             _studentRepository.Update(student);
@@ -169,8 +176,10 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult DeleteAll()
         {
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
             var model = new EnrollDeleteModel();
-            var grades = _gradeRepository.GetAllGrade().ToList();
+            var grades = isDirector ? _gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList() : _gradeRepository.GetAllGrade().ToList();
             ViewBag.Grades = new SelectList(grades, "Id", "Name");
             var firstGradeId = grades.First().Id;
             ViewBag.Sections = new List<SelectListItem>();
@@ -184,9 +193,11 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Add(long gradeId)
         {
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
             var availableStudents = _studentRepository.Filter(x => x.MyGrade == null);
             ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
-            var grades = _gradeRepository.GetAllGrade().ToList();
+            var grades = isDirector? _gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList() : _gradeRepository.GetAllGrade().ToList();
             ViewBag.Grades = new SelectList(grades, "Id", "Name");
             var firstGradeId = grades.First().Id;
             ViewBag.Sections = new List<SelectListItem>();
