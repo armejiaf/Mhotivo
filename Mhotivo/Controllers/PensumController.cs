@@ -19,27 +19,30 @@ namespace Mhotivo.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
 
-        public PensumController(IPensumRepository pensumRepository, IGradeRepository gradeRepository, ICourseRepository courseRepository)
+        public PensumController(IPensumRepository pensumRepository, IGradeRepository gradeRepository, ICourseRepository courseRepository, IAcademicGradeRepository academicGradeRepository)
         {
             _pensumRepository = pensumRepository;
             _gradeRepository = gradeRepository;
             _courseRepository = courseRepository;
+            _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
         [AuthorizeAdminDirector]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int gradeId)
         {
+            ViewBag.gradeId = gradeId;
             _viewMessageLogic.SetViewMessageIfExist();
             var temp = _pensumRepository.Filter(x => x.Grade.Id == gradeId).ToList();
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.CourseSortParm = String.IsNullOrEmpty(sortOrder) ? "course_desc" : "";
+            ViewBag.CourseSortParm = string.IsNullOrEmpty(sortOrder) ? "course_desc" : "";
             if (searchString != null)
                 page = 1;
             else
                 searchString = currentFilter;
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 temp = _pensumRepository.Filter(x => x.Name.Contains(searchString)).ToList();
             }
@@ -66,43 +69,60 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(PensumEditModel modelPensum)
         {
             Pensum myPensum = _pensumRepository.GetById(modelPensum.Id);
+            if (_pensumRepository.Filter(x => x.Grade.Id == myPensum.Grade.Id && x.Id != modelPensum.Id && x.Name.Equals(modelPensum.Name)).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Ya existe un pensum con ese nombre.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { gradeId = myPensum.Grade.Id });
+            }
             myPensum = Mapper.Map(modelPensum, myPensum);
             Pensum pensum = _pensumRepository.Update(myPensum);
             const string title = "Pensum Actualizado";
             string content = "El Pensum " + pensum.Name +
                              " ha sido actualizado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { gradeId= myPensum.Grade.Id });
         }
 
         [HttpPost]
         [AuthorizeAdminDirector]
         public ActionResult Delete(long id)
         {
-            Pensum pensum = _pensumRepository.Delete(id);
+            Pensum pensum = _pensumRepository.GetById(id);
+            var gradeId = pensum.Grade.Id;
+            if (_academicGradeRepository.Filter(x => x.ActivePensum.Id == id).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "El pensum esta siendo usado por un grado academico y no puede eliminarse.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { gradeId });
+            }
+            pensum = _pensumRepository.Delete(pensum);
             const string title = "Pensum Eliminado";
             string content = "El Pesum " + pensum.Name + " ha sido eliminado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {gradeId});
         }
 
         [HttpGet]
         [AuthorizeAdminDirector]
-        public ActionResult Add()
+        public ActionResult Add(long gradeId)
         {
-            return View("Create");
+            return View("Create", new PensumRegisterModel {Grade = gradeId});
         }
 
         [HttpPost]
         [AuthorizeAdminDirector]
         public ActionResult Add(PensumRegisterModel modelPensum)
         {
+            if (_pensumRepository.Filter(x => x.Grade.Id == modelPensum.Grade && x.Name.Equals(modelPensum.Name)).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "Ya existe un pensum con ese nombre.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { gradeId = modelPensum.Grade });
+            }
             var myPensum = Mapper.Map<Pensum>(modelPensum);
             myPensum = _pensumRepository.Create(myPensum);
             const string title = "Pensum Agregado";
             string content = "El pensum " + myPensum.Name +  " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {gradeId = modelPensum.Grade});
         }
 
         /*[HttpGet]

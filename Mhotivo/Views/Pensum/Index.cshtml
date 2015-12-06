@@ -13,7 +13,7 @@
 
 <h2>Pensums Registrados  </h2>
 
-<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="/Pensum/Add/"><span class="btn btn-small btn-primary">Agregar Pensum</span></a>
+<a class="toEdit" data-toggle="modal" role="button" data-target="#EditModal" id="~/Pensum/Add?gradeId=@ViewBag.gradeId"><span class="btn btn-small btn-primary">Agregar Pensum</span></a>
 <div class="space"></div>
     @using (Html.BeginForm("Index", "Pensum", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {

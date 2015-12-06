@@ -14,10 +14,12 @@ namespace Mhotivo.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
 
-        public CourseController(ICourseRepository courseRepository)
+        public CourseController(ICourseRepository courseRepository, IAcademicGradeRepository academicGradeRepository)
         {
             _courseRepository = courseRepository;
+            _academicGradeRepository = academicGradeRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -56,6 +58,12 @@ namespace Mhotivo.Controllers
                 return RedirectToAction("Index", new { pensumId = model.Pensum });
             }
             toCreate = _courseRepository.Create(toCreate);
+            var academicGrades = _academicGradeRepository.Filter(x => x.ActivePensum.Id == toCreate.Pensum.Id);
+            foreach (var academicGrade in academicGrades.ToList())
+            {
+                academicGrade.CoursesDetails.Add(new AcademicCourse {AcademicGrade = academicGrade, Course = toCreate});
+                _academicGradeRepository.Update(academicGrade);
+            }
             title = "Curso Agregado";
             content = "El pensum " + toCreate.Name + " ha sido guardado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
@@ -102,6 +110,11 @@ namespace Mhotivo.Controllers
         {
             var item = _courseRepository.GetById(id);
             var pensumId = item.Pensum.Id;
+            if (_academicGradeRepository.Filter(x => x.ActivePensum.Id == item.Pensum.Id).Any())
+            {
+                _viewMessageLogic.SetNewMessage("Error", "No pueden removerse cursos de pensums que estan en uso.", ViewMessageType.ErrorMessage);
+                return RedirectToAction("Index", new { pensumId });
+            }
             item = _courseRepository.Delete(item);
             const string title = "Curso Eliminado!";
             var content = "El Curso " + item.Name + " fue eliminado exitosamente.";
