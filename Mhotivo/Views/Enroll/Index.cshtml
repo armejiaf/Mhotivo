@@ -26,8 +26,9 @@
 }
 
 <div style="float:right">
-    @using (Html.BeginForm("Search", "Enroll", new { gradeId = ViewBag.GradeId }, FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    @using (Html.BeginForm("Search", "Enroll", new { gradeId = ViewBag.GradeId ?? -1 }, FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
     {
+        @Html.Hidden("gradeId", ((long)ViewBag.GradeId))
         <p>
             Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
             <button class="btn btn-small btn-primary" type="submit">

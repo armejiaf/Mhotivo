@@ -96,10 +96,11 @@ namespace Mhotivo.Controllers
         public ActionResult Search(string searchString, long gradeId, int? page)
         {
             if (searchString.IsNullOrWhiteSpace())
-                return gradeId == -1 ? RedirectToAction("Index") : RedirectToAction("Index", new {gradeId});
+                return gradeId == -1 ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new {gradeId});
             _viewMessageLogic.SetViewMessageIfExist();
             const int pageSize = 10;
             var pageNumber = (page ?? 1);
+            ViewBag.GradeId = gradeId;
             if (gradeId == -1)
             {
                 var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
@@ -115,13 +116,36 @@ namespace Mhotivo.Controllers
                 var toReturn = new List<EnrollDisplayModel>();
                 foreach (var academicGrade in grades)
                 {
-                    toReturn.AddRange(Mapper.Map<IEnumerable<EnrollDisplayModel>>(academicGrade));
+                    toReturn.AddRange(academicGrade.Students.Select(n => new EnrollDisplayModel
+                    {
+                        AcademicGradeId = academicGrade.Id,
+                        StudentId = n.Id,
+                        FullName = n.FullName,
+                        Photo = n.Photo,
+                        MyGender = n.MyGender.ToString("G"),
+                        AccountNumber = n.AccountNumber,
+                        Grade = academicGrade.Grade.Name,
+                        Section = academicGrade.Section
+                    }));
                 }
-                
                 return View("Index", toReturn.Where(x => x.FullName.Contains(searchString)).ToPagedList(pageNumber, pageSize));
             }
             var grade = _academicGradeRepository.GetById(gradeId);
-            return grade == null ? View("Index") : View("Index", Mapper.Map<IEnumerable<EnrollDisplayModel>>(grade).Where(x => x.FullName.Contains(searchString)).ToPagedList(pageNumber, pageSize));
+            if (grade == null)
+                return View("Index");
+            var toReturn2 = new List<EnrollDisplayModel>();
+            toReturn2.AddRange(grade.Students.Select(n => new EnrollDisplayModel
+            {
+                AcademicGradeId = grade.Id,
+                StudentId = n.Id,
+                FullName = n.FullName,
+                Photo = n.Photo,
+                MyGender = n.MyGender.ToString("G"),
+                AccountNumber = n.AccountNumber,
+                Grade = grade.Grade.Name,
+                Section = grade.Section
+            }));
+            return View("Index", toReturn2.Where(x => x.FullName.Contains(searchString)).ToPagedList(pageNumber, pageSize));
         }
 
         [HttpPost]
