@@ -33,6 +33,7 @@ namespace Mhotivo.Controllers
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
+
         [AuthorizeAdminDirector]
         [ActionName("GeneralEnrollsFromAcademicGrades")]
         public ActionResult Index(long gradeId, int? page)
