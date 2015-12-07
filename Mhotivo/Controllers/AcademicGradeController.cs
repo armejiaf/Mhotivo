@@ -22,8 +22,10 @@ namespace Mhotivo.Controllers
         private readonly IPensumRepository _pensumRepository;
         private readonly IAcademicCourseRepository _academicCourseRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
-        public AcademicGradeController(IAcademicGradeRepository academicGradeRepository, IAcademicYearRepository academicYearRepository, ITeacherRepository teacherRepository, IGradeRepository gradeRepository, IPensumRepository pensumRepository, IAcademicCourseRepository academicCourseRepository, ICourseRepository courseRepository)
+        public AcademicGradeController(IAcademicGradeRepository academicGradeRepository, IAcademicYearRepository academicYearRepository, ITeacherRepository teacherRepository, IGradeRepository gradeRepository, IPensumRepository pensumRepository, IAcademicCourseRepository academicCourseRepository, ICourseRepository courseRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _academicGradeRepository = academicGradeRepository;
             _academicYearRepository = academicYearRepository;
@@ -32,6 +34,8 @@ namespace Mhotivo.Controllers
             _pensumRepository = pensumRepository;
             _academicCourseRepository = academicCourseRepository;
             _courseRepository = courseRepository;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -39,7 +43,14 @@ namespace Mhotivo.Controllers
         public ActionResult Index(long yearId, string currentFilter, string searchString, int? page)
         {
             _viewMessageLogic.SetViewMessageIfExist();
-            var grades = _academicGradeRepository.Filter(x => x.AcademicYear.Id == yearId).ToList();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = ViewBag.IsDirector = user.Role.Name.Equals("Director");
+            var grades = isDirector
+                ? _academicGradeRepository.Filter(
+                    x =>
+                        x.AcademicYear.Id == yearId && x.Grade.EducationLevel.Director != null &&
+                        x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                : _academicGradeRepository.Filter(x => x.AcademicYear.Id == yearId).ToList();
             ViewBag.IdAcademicYear = yearId;
             ViewBag.Year = _academicYearRepository.GetById(yearId).Year;
             if (searchString != null)
@@ -50,11 +61,25 @@ namespace Mhotivo.Controllers
             {
                 try
                 {
-                    grades = _academicGradeRepository.Filter(x => x.AcademicYear.Id == yearId && (x.Section.Equals(searchString) || x.Grade.Name.Contains(searchString))).ToList();
+                    grades = isDirector
+                        ? _academicGradeRepository.Filter(
+                            x =>
+                                x.AcademicYear.Id == yearId && x.Grade.EducationLevel.Director != null &&
+                                x.Grade.EducationLevel.Director.Id == user.Id &&
+                                (x.Section.Equals(searchString) || x.Grade.Name.Contains(searchString))).ToList()
+                        : _academicGradeRepository.Filter(
+                            x =>
+                                x.AcademicYear.Id == yearId &&
+                                (x.Section.Equals(searchString) || x.Grade.Name.Contains(searchString))).ToList();
                 }
                 catch (Exception)
                 {
-                    grades = _academicGradeRepository.Filter(x => x.AcademicYear.Id == yearId).ToList();
+                    grades = isDirector
+                        ? _academicGradeRepository.Filter(
+                            x =>
+                                x.AcademicYear.Id == yearId && x.Grade.EducationLevel.Director != null &&
+                                x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                        : _academicGradeRepository.Filter(x => x.AcademicYear.Id == yearId).ToList();
                 }
             }
             ViewBag.CurrentFilter = searchString;
@@ -67,7 +92,13 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Add(long yearId)
         {
-            ViewBag.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            ViewBag.Grades = isDirector
+                ? new SelectList(
+                    _gradeRepository.Filter(
+                        x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id), "Id", "Name")
+                : new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name");
             ViewBag.Pensums = new List<SelectListItem>();
             return View("Create",new AcademicGradeRegisterModel {AcademicYear = yearId});
         }
@@ -130,7 +161,13 @@ namespace Mhotivo.Controllers
         {
             var item = _academicGradeRepository.GetById(id);
             var toReturn = Mapper.Map<AcademicGradeEditModel>(item);
-            ViewBag.Grades = new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", item.Grade);
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            ViewBag.Grades = isDirector
+                ? new SelectList(
+                    _gradeRepository.Filter(
+                        x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id), "Id", "Name", item.Grade)
+                : new SelectList(_gradeRepository.GetAllGrade(), "Id", "Name", item.Grade);
             ViewBag.Pensums = new SelectList(_pensumRepository.Filter(x => x.Grade.Id == item.Grade.Id), "Id", "Name", item.ActivePensum).ToList();
             return View(toReturn);
         }

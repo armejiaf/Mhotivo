@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Logic.ViewMessage;
 
@@ -14,7 +15,7 @@ namespace Mhotivo.Controllers
             _securityService = securityService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
-
+        [AuthorizeNewUser]
         public ActionResult Index()
         {
             ViewBag.Message = "Modifique esta plantilla para poner en marcha su aplicación ASP.NET MVC.";

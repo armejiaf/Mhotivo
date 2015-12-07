@@ -178,6 +178,7 @@
     <Compile Include="Authorizations\AuthorizeAdminDirector.cs" />
     <Compile Include="Authorizations\AuthorizeDirector.cs" />
     <Compile Include="Authorizations\AuthorizeLogin.cs" />
+    <Compile Include="Authorizations\AuthorizeNewUser.cs" />
     <Compile Include="Authorizations\AuthorizeTeacher.cs" />
     <Compile Include="Authorizations\AuthorizeWithParameter.cs" />
     <Compile Include="Binder\DateTimeModelBinder.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
     <Compile Include="Controllers\DataImportController.cs" />
+    <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\NewUserController.cs" />
     <Compile Include="Controllers\NotificationCommentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="Models\AcademicCourseModel.cs" />
     <Compile Include="Models\AcademicGradeModel.cs" />
     <Compile Include="Models\AcademicYearModel.cs" />
+    <Compile Include="Models\AccountEditModel.cs" />
     <Compile Include="Models\AdministrativeModel.cs" />
     <Compile Include="Models\EducationLevelModel.cs" />
     <Compile Include="Models\ContactInformationModel.cs" />
@@ -533,6 +536,7 @@
     <Content Include="Views\Administrative\Create.cshtml" />
     <Content Include="Views\Administrative\Details.cshtml" />
     <None Include="Views\CustomError\Index.cshtml" />
+    <Content Include="Views\MyAccount\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mhotivo.Data\Mhotivo.Data.csproj">

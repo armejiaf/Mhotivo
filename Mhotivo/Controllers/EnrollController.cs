@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -18,13 +19,17 @@ namespace Mhotivo.Controllers
         private readonly IStudentRepository _studentRepository;
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ISessionManagementService _sessionManagementService;
 
         public EnrollController(IStudentRepository studentRepository,
-            IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository)
+            IGradeRepository gradeRepository, IAcademicGradeRepository academicGradeRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
         {
             _studentRepository = studentRepository;
             _gradeRepository = gradeRepository;
             _academicGradeRepository = academicGradeRepository;
+            _userRepository = userRepository;
+            _sessionManagementService = sessionManagementService;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -55,7 +60,14 @@ namespace Mhotivo.Controllers
         {
             ViewBag.GradeId = -1;
             _viewMessageLogic.SetViewMessageIfExist();
-            var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
+            var grades = isDirector
+                ? _academicGradeRepository.Filter(
+                    x =>
+                        x.AcademicYear.IsActive && x.Grade.EducationLevel.Director != null &&
+                        x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                : _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
             if (!grades.Any())
                 return View();
             var model = new List<EnrollDisplayModel>();
@@ -89,7 +101,14 @@ namespace Mhotivo.Controllers
             var pageNumber = (page ?? 1);
             if (gradeId == -1)
             {
-                var grades = _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
+                var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+                var isDirector = user.Role.Name.Equals("Director");
+                var grades = isDirector
+                    ? _academicGradeRepository.Filter(
+                        x =>
+                            x.AcademicYear.IsActive && x.Grade.EducationLevel.Director != null &&
+                            x.Grade.EducationLevel.Director.Id == user.Id).ToList()
+                    : _academicGradeRepository.Filter(x => x.AcademicYear.IsActive).ToList();
                 if (!grades.Any())
                     return View("Index");
                 var toReturn = new List<EnrollDisplayModel>();
@@ -109,7 +128,7 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id, long gradeId, long academicGradeId)
         {
             var grade = _academicGradeRepository.GetById(gradeId);
-            (grade.Students.ToList()).RemoveAll(x => x.Id == id);
+            grade.Students.ToList().RemoveAll(x => x.Id == id);
             var student = _studentRepository.GetById(id);
             student.MyGrade = null;
             _studentRepository.Update(student);
@@ -157,8 +176,10 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult DeleteAll()
         {
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
             var model = new EnrollDeleteModel();
-            var grades = _gradeRepository.GetAllGrade().ToList();
+            var grades = isDirector ? _gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList() : _gradeRepository.GetAllGrade().ToList();
             ViewBag.Grades = new SelectList(grades, "Id", "Name");
             var firstGradeId = grades.First().Id;
             ViewBag.Sections = new List<SelectListItem>();
@@ -172,16 +193,18 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Add(long gradeId)
         {
+            var user = _userRepository.GetById(Convert.ToInt64(_sessionManagementService.GetUserLoggedId()));
+            var isDirector = user.Role.Name.Equals("Director");
             var availableStudents = _studentRepository.Filter(x => x.MyGrade == null);
             ViewBag.Id = new SelectList(availableStudents, "Id", "FullName");
-            var grades = _gradeRepository.GetAllGrade().ToList();
+            var grades = isDirector? _gradeRepository.Filter(x => x.EducationLevel.Director != null && x.EducationLevel.Director.Id == user.Id).ToList() : _gradeRepository.GetAllGrade().ToList();
             ViewBag.Grades = new SelectList(grades, "Id", "Name");
             var firstGradeId = grades.First().Id;
             ViewBag.Sections = new List<SelectListItem>();
             ((List<SelectListItem>)ViewBag.Sections).AddRange(_academicGradeRepository.Filter(
                 x => x.AcademicYear.IsActive && x.Grade.Id == firstGradeId)
                 .Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Section }));
-            return View("Create", new EnrollRegisterModel{Id = gradeId});
+            return View("Create", gradeId != -1 ? new EnrollRegisterModel { Id = gradeId, AcademicGrade = gradeId, Grade = _academicGradeRepository.GetById(gradeId).Grade.Id} : new EnrollRegisterModel{Id = gradeId});
         }
 
         [HttpPost]
@@ -206,7 +229,17 @@ namespace Mhotivo.Controllers
                 const string content = "El estudiante ha sido matriculado exitosamente.";
                 _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             }
-            return (academicGrade.Id != -1) ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = modelEnroll.Id });
+            return (modelEnroll.Id == -1) ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = modelEnroll.Id });
+        }
+
+        public JsonResult LoadByGrade(long gradeId)
+        {
+            var sList = _academicGradeRepository.Filter(
+                    x => x.Grade.Id == gradeId && x.AcademicYear.EnrollsOpen).ToList();
+            var toReturn =
+                new SelectList(
+                    sList, "Id", "Section");
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
         }
     }
 }

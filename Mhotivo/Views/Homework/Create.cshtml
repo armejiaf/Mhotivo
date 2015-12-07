@@ -55,7 +55,7 @@
                     @Html.LabelFor(model => model.AcademicCourse)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("course")
+                    @Html.DropDownList("AcademicCourse", (SelectList)ViewBag.course)
                 </div>
             </div>
 

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using Mhotivo.Interface.Interfaces;
+using Mhotivo.ParentSite.Authorization;
 using Mhotivo.ParentSite.Models;
 
 namespace Mhotivo.ParentSite.Controllers
@@ -57,13 +58,14 @@ namespace Mhotivo.ParentSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous]
+        [AuthorizeNewUser]
         public ActionResult ConfirmEmail()
         {
             return View("EmailConfirmation");
         }
 
         [HttpPost]
+        [AuthorizeNewUser]
         public ActionResult UpdateEmail(UpdateTutorMailModel model)
         {
             var userId = Convert.ToInt64(_sessionManagementService.GetUserLoggedId());
@@ -89,7 +91,7 @@ namespace Mhotivo.ParentSite.Controllers
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(model);
             var userId = Convert.ToInt32(_sessionManagementService.GetUserLoggedId());
             var user = _userRepository.GetById(userId);
             user.Password = model.NewPassword;

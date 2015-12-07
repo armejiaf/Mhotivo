@@ -18,7 +18,7 @@
 
             <p class="text-error">
                 @Html.ValidationMessageFor(model => model.Name)
-                @if ((bool) ViewBag.IsDirector)
+                @if (!(bool) ViewBag.IsDirector)
                 {
                     Html.ValidationMessageFor(model => model.EducationLevel);
                 }
@@ -32,16 +32,21 @@
                     @Html.EditorFor(model => model.Name)
                 </div>
             </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    @Html.LabelFor(model => model.EducationLevel)
+            @if ((bool)ViewBag.IsDirector)
+            {
+                Html.HiddenFor(model => model.EducationLevel);
+            }
+            else
+            {
+                <div class="control-group">
+                    <div class="control-label">
+                        @Html.LabelFor(model => model.EducationLevel)
+                    </div>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.EducationLevel, (SelectList)ViewBag.EducationLevels)
+                    </div>
                 </div>
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.EducationLevel, (SelectList)ViewBag.EducationLevels)
-                </div>
-            </div>
-
+            }
 
             <div class="space"></div>
 
