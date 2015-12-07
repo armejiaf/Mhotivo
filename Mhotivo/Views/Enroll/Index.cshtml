@@ -24,6 +24,20 @@
                value="¿Realmente desea eliminar todas las matriculas de esta seccion?" />
     }
 }
+
+<div style="float:right">
+    @using (Html.BeginForm("Search", "Enroll", new { gradeId = ViewBag.GradeId ?? -1 }, FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+    {
+        @Html.Hidden("gradeId", ((long)ViewBag.GradeId))
+        <p>
+            Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <button class="btn btn-small btn-primary" type="submit">
+                <i class="icon-search"></i>
+            </button>
+        </p>
+    }
+</div>
+
 <div class="space"></div>
 @if(!Model.Any())
 {
