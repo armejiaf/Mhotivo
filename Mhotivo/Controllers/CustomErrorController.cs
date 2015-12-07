@@ -2,7 +2,7 @@
 
 namespace Mhotivo.Controllers
 {
-    public class CustomError : Controller
+    public class CustomErrorController : Controller
     {
         //
         // GET: /Default1/

@@ -187,7 +187,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrativeController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
-    <Compile Include="Controllers\CustomError.cs" />
+    <Compile Include="Controllers\CustomErrorController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />
@@ -406,6 +406,7 @@
     <Content Include="Scripts\selectize.js" />
     <Content Include="Scripts\summernote.min.js" />
     <Content Include="Scripts\typeahead.js" />
+    <Content Include="Views\Error.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
