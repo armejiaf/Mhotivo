@@ -196,6 +196,7 @@
     <Compile Include="Authorization\AuthorizeNewUser.cs" />
     <Compile Include="Authorization\VerifyEmail.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomErrorController.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworkController.cs" />
@@ -367,6 +368,7 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Views\Error.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -406,6 +408,7 @@
     <Content Include="Views\Account\EmailConfirmation.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_LayoutSmall.cshtml" />
+    <Content Include="Views\CustomError\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
