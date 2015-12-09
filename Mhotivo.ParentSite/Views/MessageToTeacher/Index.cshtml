@@ -6,11 +6,11 @@
 <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
 <div class="nicdark_space100"></div>
 <div class="nicdark_space60"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+<div class="">
+    <div class="">
+        <div class="">
             <section class="nicdark_section">
-                @using (Html.BeginForm("SendNewMessage", "MessageToTeacher", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                @using (Html.BeginForm("SendNewMessage", "MessageToTeacher", null, FormMethod.Post))
                 {
                     <fieldset>
                         <div class="grid nicdark_border_grey nicdark_shadow ">
@@ -30,32 +30,32 @@
                             }
 
                             <!-- Email input-->
-                            <div class="form-group ">
-                                <label class="col-md-3 control-label">Para</label>
+                            <div class=" ">
+                                <label class="">Para</label>
                                 <div class="col-md-9">
                                     @Html.DropDownListFor(x => x.Item2.To, ViewData["DropDownCategory"] as List<SelectListItem>)
                                 </div>
                             </div>
 
                             <!-- Name input-->
-                            <div class="form-group ">
-                                <label class="col-md-3 control-label">Asunto</label>
-                                <div class="col-md-9">
-                                    @Html.TextBoxFor(x => x.Item2.Subject, new { @class = "form-control", placeholder = "Asunto", required = "required" })
+                            <div class=" ">
+                                <label class="">Asunto</label>
+                                <div class="">
+                                    @Html.TextBoxFor(x => x.Item2.Subject, new {  placeholder = "Asunto", required = "required" })
 
                                 </div>
                             </div>
 
                             <!-- Message body -->
-                            <div class="form-group active-revslide ">
-                                <label class="col-md-3 control-label" for="message">Mensaje</label>
+                            <div class=" ">
+                                <label class="" for="message">Mensaje</label>
                                 <div class="col-md-9 resize = none">
-                                    @Html.TextAreaFor(x => x.Item2.Message, new { @class = "form-control",@style="resize: none", placeholder = "Escriba su mensaje aqui", required = "required", rows = "5" })
+                                    @Html.TextAreaFor(x => x.Item2.Message, new {  placeholder = "Escriba su mensaje aqui", required = "required", rows = "5" })
                                 </div>
                             </div>
 
                             <!-- Form actions -->
-                            <div class="form-group ">
+                            <div class="">
                                 <div class="col-md-12 text-right">
                                     <input class="nicdark_btn nicdark_bg_red small nicdark_shadow nicdark_radius white nicdark_press" type="submit" value="ENVIAR">
                                 </div>

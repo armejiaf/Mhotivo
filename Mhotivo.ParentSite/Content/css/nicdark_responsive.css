@@ -35,7 +35,7 @@
 }
 /*ipad potr*/
 @media only screen and (min-width: 768px) and (max-width: 959px) {
-	.nicdark_container {width:744px;}
+	.nicdark_container {width:544px;}
 	.grid_1 {width:42px;}.grid_2 {width:104px;}.grid_3 {width:166px;}.grid_4 {width:228px;}.grid_5 {width:290px;}.grid_6 {width:352px;}.grid_7 {width:414px;}.grid_8 {width:476px;}.grid_9 {width:538px;}.grid_10 {width:600px;}.grid_11 {width:662px;}.grid_12 {width:724px;}
 
 	/*some class*/
