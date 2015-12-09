@@ -125,6 +125,13 @@ namespace Mhotivo.Controllers
             return View("Create", new AcademicYearRegisterModel());
         }
 
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult AutoGeneration()
+        {
+            return View("AutoGeneration", new AcademicYearRegisterModel());
+        }
+
         [HttpPost]
         [AuthorizeAdminDirector]
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
