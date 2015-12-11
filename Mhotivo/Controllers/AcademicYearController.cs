@@ -125,6 +125,13 @@ namespace Mhotivo.Controllers
             return View("Create", new AcademicYearRegisterModel());
         }
 
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult AutoGeneration()
+        {
+            return View("AutoGeneration", new { });
+        }
+
         [HttpPost]
         [AuthorizeAdminDirector]
         public ActionResult Add(AcademicYearRegisterModel academicYearModel)
@@ -139,7 +146,7 @@ namespace Mhotivo.Controllers
             const string title = "Año Académico Agregado";
             var content = "El año académico " + toCreate.Year + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return RedirectToAction("Index");
+            return RedirectToAction("AutoGeneration");
         }
     }
 }
