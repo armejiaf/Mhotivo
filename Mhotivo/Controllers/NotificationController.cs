@@ -134,8 +134,8 @@ namespace Mhotivo.Controllers
             notificationIdentity.Approved = _sessionManagement.GetUserLoggedRole().Equals("Administrador");
             notificationIdentity = _notificationRepository.Create(notificationIdentity);
             _notificationHandlerService.SendAllPending();
-            const string title = "Notificación Agregado";
-            var content = "El evento " + notificationIdentity.Title + " ha sido agregado exitosamente.";
+            const string title = "Notificación Agregada";
+            var content = "La notificacion " + notificationIdentity.Title + " ha sido agregada exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }

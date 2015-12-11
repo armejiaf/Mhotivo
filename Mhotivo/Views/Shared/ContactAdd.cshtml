@@ -13,7 +13,7 @@
 @using (Html.BeginForm("Add", "contactInformation", FormMethod.Post, new { id = "Form", @class="form-horizontal", @Style="margin:0;"}))
 {
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.People)
     @Html.HiddenFor(model => model.Controller)
     <fieldset>
         <legend>Nueva Informacion de Contacto</legend>

@@ -71,14 +71,8 @@ namespace Mhotivo.Controllers
         public ActionResult ContactEdit(long id)
         {
             var thisContactInformation = _contactInformationRepository.GetById(id);
-            var contactInformation = new ContactInformationEditModel
-            {
-                Type = thisContactInformation.Type,
-                Value = thisContactInformation.Value,
-                Id = thisContactInformation.Id,
-                People = thisContactInformation.People,
-                Controller = "Student"
-            };
+            var contactInformation = Mapper.Map<ContactInformationEditModel>(thisContactInformation);
+            contactInformation.Controller = "Student";
             return View("ContactEdit", contactInformation);
         }
 
@@ -90,8 +84,6 @@ namespace Mhotivo.Controllers
             var studentModel = Mapper.Map<Student, StudentEditModel>(student);
             ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
                 studentModel.Tutor1);
-            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
-                studentModel.Tutor2);
             var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
             {
                 Text = c.GetEnumDescription(),
@@ -99,6 +91,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
             return View("Edit", studentModel);
         }
 
@@ -152,8 +147,6 @@ namespace Mhotivo.Controllers
                 {
                     ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
                         modelStudent.Tutor1);
-                    ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
-                        modelStudent.Tutor2);
                     var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
                     {
                         Text = c.GetEnumDescription(),
@@ -161,13 +154,14 @@ namespace Mhotivo.Controllers
                     }).ToList();
 
                     ViewBag.Genders = new List<SelectListItem>(items);
+                    ViewBag.Years = DateTimeController.GetYears();
+                    ViewBag.Months = DateTimeController.GetMonths();
+                    ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
                     return View(modelStudent);
                 }
             }
             ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
                 modelStudent.Tutor1);
-            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName",
-                modelStudent.Tutor2);
             var items2 = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
             {
                 Text = c.GetEnumDescription(),
@@ -175,6 +169,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items2);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
             return View(modelStudent);
         }
 
@@ -203,7 +200,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
             {
-                Id = id,
+                People = id,
                 Controller = "Student"
             };
             return View("ContactAdd", model);
@@ -214,7 +211,6 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             ViewBag.Tutor1Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName");
-            ViewBag.Tutor2Id = new SelectList(_tutorRepository.Query(x => x).OrderBy(x => x.FullName), "Id", "FullName");
             var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
             {
                 Text = c.GetEnumDescription(),
@@ -222,6 +218,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
             return View("Create");
         }
 

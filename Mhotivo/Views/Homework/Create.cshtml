@@ -60,20 +60,23 @@
             </div>
 
             <div class="control-label">
-                @Html.LabelFor(model => model.DeliverDate)
+                Fecha de Entrega
             </div>
             <div class="control-group">
                 <div class="control-group" style="float: left; margin-left: 20px">
-                    <div class="row-fluid input-append">
-                        @Html.TextBoxFor(model => model.DeliverDate, new { @class = "date-picker", @data_date_format = "mm/dd/yyyy", @readonly = false })
-                        <span class="add-on">
-                            <i class="icon-calendar"></i>
-                        </span>
-                        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.DeliverDate)</span>
-                        <p class="text-error">@Html.ValidationMessageFor(model => model.DeliverDate)</p>
+                    <div id="Days" style="float: left; width: 75px;">
+                        @Html.DropDownListFor(model => model.Day, (SelectList)ViewBag.Days, new { style = "width:75px" })
+                    </div>
+                    <div id="Months" style="float: left; width: 75px;">
+                        @Html.DropDownListFor(model => model.Month, (SelectList)ViewBag.Months, new { style = "width:75px" })
+                    </div>
+                    <div id="Years" style="float: left; width: 75px;">
+                        @Html.DropDownListFor(model => model.Year, (SelectList) ViewBag.Years, new {style = "width:75px"})
+                    </div>
+                    <div id="Hour" style="float: left; width: 75px;">
+                        @Html.EditorFor(model => model.Hour)
                     </div>
                 </div>
-
             </div>
 
             <div class="control-group">

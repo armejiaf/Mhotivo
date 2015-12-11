@@ -77,7 +77,7 @@ namespace Mhotivo.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 const string title = "Error!";
                 const string content = "Formato de Imagen Incorrecto";

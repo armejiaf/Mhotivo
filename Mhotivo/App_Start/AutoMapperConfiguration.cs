@@ -94,7 +94,11 @@ namespace Mhotivo
 
         private static void MapContactInformationModels()
         {
-            //TODO: Finish this.
+            Mapper.CreateMap<ContactInformationRegisterModel, ContactInformation>()
+                .ForMember(p => p.People,
+                    o => o.MapFrom( src => ((IPeopleRepository) DependencyResolver.Current.GetService(
+                        typeof (IPeopleRepository))).GetById(src.People)));
+            Mapper.CreateMap<ContactInformation, ContactInformationEditModel>().ReverseMap();
         }
 
         private static void MapCourseModels()
@@ -149,11 +153,18 @@ namespace Mhotivo
             Mapper.CreateMap<HomeworkRegisterModel, Homework>()
                 .ForMember(p => p.AcademicCourse,
                     o => o.MapFrom(src => ((IAcademicCourseRepository)DependencyResolver.Current.GetService(
-                        typeof(IAcademicCourseRepository))).GetById(src.AcademicCourse)));
+                        typeof(IAcademicCourseRepository))).GetById(src.AcademicCourse)))
+                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day, src.Hour.Hours, src.Hour.Minutes, src.Hour.Seconds)));
             Mapper.CreateMap<Homework, HomeworkDisplayModel>()
                 .ForMember(p => p.DeliverDate, o => o.MapFrom(src => src.DeliverDate.ToString()))
                 .ForMember(p => p.AcademicCourse, o => o.MapFrom(src => src.AcademicCourse.Course.Name));
-            Mapper.CreateMap<Homework, HomeworkEditModel>().ReverseMap();
+            Mapper.CreateMap<Homework, HomeworkEditModel>()
+                .ForMember(p => p.Year, o => o.MapFrom(src => src.DeliverDate.Year))
+                .ForMember(p => p.Month, o => o.MapFrom(src => src.DeliverDate.Month))
+                .ForMember(p => p.Day, o => o.MapFrom(src => src.DeliverDate.Day))
+                .ForMember(p => p.Hour, o => o.MapFrom(src => src.DeliverDate.TimeOfDay))
+                .ReverseMap()
+                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day, src.Hour.Hours, src.Hour.Minutes, src.Hour.Seconds)));
         }
 
         private static void MapNotificationModels()
@@ -243,7 +254,7 @@ namespace Mhotivo
             Mapper.CreateMap<User, NewUserDisplayModel>()
                 .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName))
                 .ForMember(p => p.Role, o => o.MapFrom(src => src.Role.Name))
-                .ForMember(p => p.Email, o => o.MapFrom(src => String.IsNullOrWhiteSpace(src.Email) ? src.UserOwner.IdNumber : src.Email));
+                .ForMember(p => p.Email, o => o.MapFrom(src => string.IsNullOrWhiteSpace(src.Email) ? src.UserOwner.IdNumber : src.Email));
             Mapper.CreateMap<User, NewUserDefaultPasswordDisplayModel>()
                 .ForMember(p => p.UserOwner, o => o.MapFrom(src => src.UserOwner.FullName));
             Mapper.CreateMap<User, UserEditModel>()
@@ -258,11 +269,16 @@ namespace Mhotivo
         private static void MapTutorModels()
         {
             Mapper.CreateMap<TutorRegisterModel, Tutor>()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<Tutor, TutorDisplayModel>();
             Mapper.CreateMap<Tutor, TutorEditModel>()
+                .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
+                .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
+                .ForMember(p => p.Day, o => o.MapFrom(src => src.BirthDate.Day))
                 .ReverseMap()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
         }
 
         private static void MapStudentModels()
@@ -271,38 +287,49 @@ namespace Mhotivo
                 .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
                 .ForMember(p => p.Tutor1, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
                         typeof(ITutorRepository))).GetById(src.Tutor1)))
-                .ForMember(p => p.Tutor2, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
-                        typeof(ITutorRepository))).GetById(src.Tutor2 ?? -1)));
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<Student, StudentDisplayModel>()
-                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName))
-                .ForMember(p => p.Tutor2, o => o.MapFrom(src => src.Tutor2 != null ? src.Tutor2.FullName : ""));
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName));
             Mapper.CreateMap<Student, StudentEditModel>()
+                .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
+                .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
+                .ForMember(p => p.Day, o => o.MapFrom(src => src.BirthDate.Day))
                 .ReverseMap()
                 .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
                 .ForMember(p => p.Tutor1, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
                         typeof(ITutorRepository))).GetById(src.Tutor1)))
-                .ForMember(p => p.Tutor2, o => o.MapFrom(src => ((ITutorRepository)DependencyResolver.Current.GetService(
-                        typeof(ITutorRepository))).GetById(src.Tutor2 ?? -1)));
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
         }
 
         private static void MapTeacherModels()
         {
             Mapper.CreateMap<TeacherRegisterModel, Teacher>()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<Teacher, TeacherDisplayModel>();
             Mapper.CreateMap<Teacher, TeacherEditModel>()
+                .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
+                .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
+                .ForMember(p => p.Day, o => o.MapFrom(src => src.BirthDate.Day))
                 .ReverseMap()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
         }
 
         private static void MapAdministrativeModels()
         {
             Mapper.CreateMap<AdministrativeRegisterModel, PeopleWithUser>()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>()
                 .ForMember(p => p.Role, o => o.MapFrom(src => src.User.Role.Name));
-            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>().ReverseMap()
-                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName));
+            Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>()
+                .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
+                .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
+                .ForMember(p => p.Day, o => o.MapFrom(src => src.BirthDate.Day))
+                .ReverseMap()
+                .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
         }
     }
 }
