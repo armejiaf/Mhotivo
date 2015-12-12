@@ -186,21 +186,25 @@ footer a, footer a:link {
 </head>
 <body>
 <div class="wrapper">
-   
 
+
+    <h1>MHOTIVO | Sitio de Tutores</h1>
     <div class="login">
+        
         @using (@Html.BeginForm("LogIn", "Account", FormMethod.Post))
         {
-            @Html.ValidationSummary(true)
 
-             <p class="title">Log in</p>
-             <input id="email" type="text" name="Email"  placeholder="Correo" autofocus  />
-             <i class="fa fa-user"></i>
-            <input id="pass" type="password" name="Password" placeholder="Contraseña" required />
+
+            <p class="title">Log in</p>
+            <input id="email" type="text" name="Email" placeholder="Correo" autofocus/>
+            <i class="fa fa-user"></i>
+            <input id="pass" type="password" name="Password" placeholder="Contraseña" required/>
             <i class="fa fa-key"></i>
             <button>
                 <span class="state">Log in</span>
             </button>
+
+            @Html.ValidationSummary(true)
         }
 
     </div>
