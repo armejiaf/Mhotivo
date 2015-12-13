@@ -4,7 +4,7 @@ namespace Mhotivo.Models
 {
     public class NotificationCommentDisplayModel
     {
-        public long CommentId { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Usuario")]
         public string Commenter { get; set; }
@@ -30,7 +30,7 @@ namespace Mhotivo.Models
 
     public class NotificationCommentEditModel
     {
-        public long CommentId { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Comentario")]
         public string CommentText { get; set; }
