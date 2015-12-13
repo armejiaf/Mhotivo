@@ -34,5 +34,13 @@ namespace Mhotivo.Implement.Utils
             return enumerationValue.ToString();
 
         }
+
+        public static string ToAmPm(this TimeSpan timespan)
+        {
+            var timespan2 = new TimeSpan(timespan.Days, timespan.Hours > 12 ? timespan.Hours % 12 : timespan.Hours, timespan.Minutes, timespan.Seconds);
+            var time = timespan2.ToString(@"hh\:mm");
+            time += timespan.Hours >= 12 ? " PM" : " AM";
+            return time;
+        }
     }
 }

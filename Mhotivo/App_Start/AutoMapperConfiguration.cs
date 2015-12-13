@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -83,7 +84,7 @@ namespace Mhotivo
             Mapper.CreateMap<AcademicCourse, AcademicCourseDisplayModel>()
                 .ForMember(p => p.Course, o => o.MapFrom(src => src.Course.Name))
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.FullName))
-                .ForMember(p => p.Schedule, o => o.MapFrom(src => src.Schedule.ToString()));
+                .ForMember(p => p.Schedule, o => o.MapFrom(src => src.Schedule.ToAmPm()));
             Mapper.CreateMap<AcademicCourse, AcademicCourseEditModel>()
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.Id))
                 .ReverseMap()
@@ -156,7 +157,7 @@ namespace Mhotivo
                         typeof(IAcademicCourseRepository))).GetById(src.AcademicCourse)))
                 .ForMember(p => p.DeliverDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day, src.Hour.Hours, src.Hour.Minutes, src.Hour.Seconds)));
             Mapper.CreateMap<Homework, HomeworkDisplayModel>()
-                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => src.DeliverDate.ToString()))
+                .ForMember(p => p.DeliverDate, o => o.MapFrom(src => src.DeliverDate))
                 .ForMember(p => p.AcademicCourse, o => o.MapFrom(src => src.AcademicCourse.Course.Name));
             Mapper.CreateMap<Homework, HomeworkEditModel>()
                 .ForMember(p => p.Year, o => o.MapFrom(src => src.DeliverDate.Year))
@@ -271,7 +272,8 @@ namespace Mhotivo
             Mapper.CreateMap<TutorRegisterModel, Tutor>()
                 .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
                 .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
-            Mapper.CreateMap<Tutor, TutorDisplayModel>();
+            Mapper.CreateMap<Tutor, TutorDisplayModel>()
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => src.BirthDate.ToString("MMMM dd, yyyy", new CultureInfo("es-HN"))));
             Mapper.CreateMap<Tutor, TutorEditModel>()
                 .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
                 .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
@@ -289,7 +291,8 @@ namespace Mhotivo
                         typeof(ITutorRepository))).GetById(src.Tutor1)))
                 .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<Student, StudentDisplayModel>()
-                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName));
+                .ForMember(p => p.Tutor1, o => o.MapFrom(src => src.Tutor1.FullName))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => src.BirthDate.ToString("MMMM dd, yyyy", new CultureInfo("es-HN"))));
             Mapper.CreateMap<Student, StudentEditModel>()
                 .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
                 .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
@@ -306,7 +309,8 @@ namespace Mhotivo
             Mapper.CreateMap<TeacherRegisterModel, Teacher>()
                 .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
                 .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
-            Mapper.CreateMap<Teacher, TeacherDisplayModel>();
+            Mapper.CreateMap<Teacher, TeacherDisplayModel>()
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => src.BirthDate.ToString("MMMM dd, yyyy", new CultureInfo("es-HN"))));
             Mapper.CreateMap<Teacher, TeacherEditModel>()
                 .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
                 .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))
@@ -322,7 +326,8 @@ namespace Mhotivo
                 .ForMember(p => p.FullName, o => o.MapFrom(src => src.FirstName + " " + src.LastName))
                 .ForMember(p => p.BirthDate, o => o.MapFrom(src => new DateTime(src.Year, src.Month, src.Day)));
             Mapper.CreateMap<PeopleWithUser, AdministrativeDisplayModel>()
-                .ForMember(p => p.Role, o => o.MapFrom(src => src.User.Role.Name));
+                .ForMember(p => p.Role, o => o.MapFrom(src => src.User.Role.Name))
+                .ForMember(p => p.BirthDate, o => o.MapFrom(src => src.BirthDate.ToString("MMMM dd, yyyy", new CultureInfo("es-HN"))));
             Mapper.CreateMap<PeopleWithUser, AdministrativeEditModel>()
                 .ForMember(p => p.Year, o => o.MapFrom(src => src.BirthDate.Year))
                 .ForMember(p => p.Month, o => o.MapFrom(src => src.BirthDate.Month))

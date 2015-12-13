@@ -8,6 +8,7 @@ namespace Mhotivo.Models
         public long Id { get; set; }
 
         [Display(Name = "Horario")]
+        [DataType(DataType.Time)]
         public string Schedule { get; set; }
 
         [Display(Name = "Curso")]
@@ -23,6 +24,7 @@ namespace Mhotivo.Models
 
         [Required(ErrorMessage = "Debe Ingresar un Horario")]
         [Display(Name = "Horario")]
+        [DataType(DataType.Time)]
         public TimeSpan Schedule { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar una Maestro")]

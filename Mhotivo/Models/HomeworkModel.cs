@@ -43,6 +43,7 @@ namespace Mhotivo.Models
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
+        [DataType(DataType.Time)]
         public TimeSpan Hour { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
@@ -72,6 +73,7 @@ namespace Mhotivo.Models
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
+        [DataType(DataType.Time)]
         public TimeSpan Hour { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar puntaje.")]
