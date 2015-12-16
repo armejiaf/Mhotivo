@@ -35,7 +35,7 @@ namespace Mhotivo.Controllers
         {
             var comments = _notificationCommentRepository.GetById(commentId);
             _notificationCommentRepository.Delete(comments);
-            return RedirectToAction("Index",notificationId);
+            return RedirectToAction("Index",new { notificationId });
         }
 
     }
