@@ -45,11 +45,8 @@ namespace Mhotivo.Models
         [Display(Name = "Número de Cuenta")]
         public string AccountNumber { get; set; }
 
-        [Display(Name = "Tutor o Padre")]
+        [Display(Name = "Tutor")]
         public string Tutor1 { get; set; }
-
-        [Display(Name = "Segundo Tutor o Madre")]
-        public string Tutor2 { get; set; }
 
         [Display(Name = "Foto Perfil")]
         public byte[] Photo { get; set; }
@@ -73,9 +70,12 @@ namespace Mhotivo.Models
         [Display(Name = "Apellidos")]
         public string LastName { get; set; }
 
-        [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BirthDate { get; set; }
+        //[Display(Name = "Fecha de Nacimiento")]
+        //[DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        //public DateTime BirthDate { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -107,12 +107,9 @@ namespace Mhotivo.Models
         [Display(Name = "Número de Cuenta")]
         public string AccountNumber { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Tutor o Tutor")]
-        [Display(Name = "Padre o Tutor")]
+        [Required(ErrorMessage = "Debe Ingresar Tutor")]
+        [Display(Name = "Tutor")]
         public long Tutor1 { get; set; }
-
-        [Display(Name = "Madre o Segundo Tutor")]
-        public long? Tutor2 { get; set; }
     }
 
     public class StudentRegisterModel
@@ -129,10 +126,13 @@ namespace Mhotivo.Models
         [Display(Name = "Apellidos")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
-        [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BirthDate { get; set; }
+        //[Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
+        //[Display(Name = "Fecha de Nacimiento")]
+        //[DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        //public DateTime BirthDate { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -159,11 +159,8 @@ namespace Mhotivo.Models
         [Display(Name = "Número de Cuenta")]
         public string AccountNumber { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Tutor o Tutor")]
-        [Display(Name = "Padre o Tutor")]
+        [Required(ErrorMessage = "Debe Ingresar Tutor")]
+        [Display(Name = "Tutor")]
         public long Tutor1 { get; set; }
-
-        [Display(Name = "Madre o Segundo Tutor")]
-        public long? Tutor2 { get; set; }
     }
 }

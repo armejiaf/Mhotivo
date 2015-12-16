@@ -22,7 +22,7 @@ namespace Mhotivo.Models
 
     public class ContactInformationRegisterModel
     {
-        public long Id { get; set; }
+        public long People { get; set; }
 
         public string Controller { get; set; }
 

@@ -189,6 +189,7 @@
     <Compile Include="Controllers\AdministrativeController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\CustomErrorController.cs" />
+    <Compile Include="Controllers\DateTimeController.cs" />
     <Compile Include="Controllers\EducationLevelController.cs" />
     <Compile Include="Controllers\ContactInformationController.cs" />
     <Compile Include="Controllers\EnrollController.cs" />

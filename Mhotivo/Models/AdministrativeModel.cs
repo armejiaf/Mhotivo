@@ -67,10 +67,13 @@ namespace Mhotivo.Models
         [Display(Name = "Apellidos")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
-        [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BirthDate { get; set; }
+        //[Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
+        //[Display(Name = "Fecha de Nacimiento")]
+        //[DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        //public DateTime BirthDate { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]
@@ -108,10 +111,13 @@ namespace Mhotivo.Models
         [Display(Name = "Apellidos")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
-        [Display(Name = "Fecha de Nacimiento")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime BirthDate { get; set; }
+        //[Required(ErrorMessage = "Debe Ingresar Fecha de Nacimiento")]
+        //[Display(Name = "Fecha de Nacimiento")]
+        //[DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        //public DateTime BirthDate { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
         [Required(ErrorMessage = "Debe Ingresar Ciudad")]
         [Display(Name = "Ciudad")]

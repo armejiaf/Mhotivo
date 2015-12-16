@@ -68,14 +68,8 @@ namespace Mhotivo.Controllers
         public ActionResult ContactEdit(long id)
         {
             ContactInformation thisContactInformation = _contactInformationRepository.GetById(id);
-            var contactInformation = new ContactInformationEditModel
-            {
-                Type = thisContactInformation.Type,
-                Value = thisContactInformation.Value,
-                Id = thisContactInformation.Id,
-                People = thisContactInformation.People,
-                Controller = "Teacher"
-            };
+            var contactInformation = Mapper.Map<ContactInformationEditModel>(thisContactInformation);
+            contactInformation.Controller = "Teacher";
             return View("ContactEdit", contactInformation);
         }
 
@@ -92,6 +86,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Edit", teacherModel);
         }
 
@@ -150,6 +147,9 @@ namespace Mhotivo.Controllers
                     }).ToList();
 
                     ViewBag.Genders = new List<SelectListItem>(items);
+                    ViewBag.Years = DateTimeController.GetYears();
+                    ViewBag.Months = DateTimeController.GetMonths();
+                    ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
                     return View(modelTeacher);
                 }
             }
@@ -160,6 +160,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items2);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View(modelTeacher);
         }
 
@@ -187,7 +190,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
             {
-                Id = id,
+                People = id,
                 Controller = "Teacher"
             };
             return View("ContactAdd", model);
@@ -204,6 +207,9 @@ namespace Mhotivo.Controllers
             }).ToList();
 
             ViewBag.Genders = new List<SelectListItem>(items);
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Create");
         }
 

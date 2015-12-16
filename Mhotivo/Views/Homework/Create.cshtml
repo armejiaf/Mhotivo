@@ -55,25 +55,28 @@
                     @Html.LabelFor(model => model.AcademicCourse)
                 </div>
                 <div class="controls">
-                    @Html.DropDownList("AcademicCourse", (SelectList)ViewBag.course)
+                    @Html.DropDownList("AcademicCourse", (SelectList) ViewBag.course)
                 </div>
             </div>
 
-            <div class="control-label">
-                @Html.LabelFor(model => model.DeliverDate)
-            </div>
             <div class="control-group">
-                <div class="control-group" style="float: left; margin-left: 20px">
-                    <div class="row-fluid input-append">
-                        @Html.TextBoxFor(model => model.DeliverDate, new { @class = "date-picker", @data_date_format = "mm/dd/yyyy", @readonly = false })
-                        <span class="add-on">
-                            <i class="icon-calendar"></i>
-                        </span>
-                        <br /><span class="InputLabel">@Html.DisplayNameFor(model => model.DeliverDate)</span>
-                        <p class="text-error">@Html.ValidationMessageFor(model => model.DeliverDate)</p>
+                <div class="control-label">
+                    Fecha de Entrega
+                </div>
+                <div class="controls">
+                    <div id="Days" style="float: left; width: 75px; margin-right: 5px">
+                        @Html.DropDownList("Day", (SelectList) ViewBag.Days, new {style = "width:75px"})
+                    </div>
+                    <div id="Months" style="float: left; width: 75px; margin-right: 5px">
+                        @Html.DropDownListFor(model => model.Month, (SelectList) ViewBag.Months, new {style = "width:75px"})
+                    </div>
+                    <div id="Years" style="float: left; width: 75px; margin-right: 5px">
+                        @Html.DropDownListFor(model => model.Year, (SelectList) ViewBag.Years, new {style = "width:75px"})
+                    </div>
+                    <div id="Hour" style="float: left; width: 100px;">
+                        @Html.EditorFor(model => model.Hour)
                     </div>
                 </div>
-
             </div>
 
             <div class="control-group">
@@ -109,15 +112,36 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#htmlMessage').summernote();
     });
 
 
-    $("#Form").submit(function (event) {
+    $("#Form").submit(function(event) {
         var sHTML = $('#htmlMessage').code();
         $('#Description').val(sHTML);
 
     });
 
+</script>
+
+<script type="text/javascript">
+    $('#Months').change(updateSections);
+    $('#Years').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("GetDaysForMonthAndYear", "DateTime")',
+            cache: false,
+            type: 'POST',
+            data: 'month='+parseInt($('#Months option:selected').val())+'&year='+parseInt($('#Years option:selected').val()),
+            datatype: "json",
+            success: function (data) {
+                debugger;
+                $('#Day').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#Day').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
 </script>
