@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Mhotivo.Data.Entities;
 
 namespace Mhotivo.Models
 {
@@ -36,5 +37,13 @@ namespace Mhotivo.Models
 
         [Display(Name = "Matricula Abierta")]
         public bool EnrollsOpen { get; set; }
+    }
+
+    public class NewAcademicYearGradeSpecModel
+    {
+        public long Grade { get; set; }
+        public Grade Reference { get; set; }
+        public int Sections { get; set; }
+        public long SelectedPensum { get; set; }
     }
 }
