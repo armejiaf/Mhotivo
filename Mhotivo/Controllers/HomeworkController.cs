@@ -39,12 +39,8 @@ namespace Mhotivo.Controllers
             _viewMessageLogic.SetViewMessageIfExist();
             TeacherId = GetTeacherId();
             var allAcademicYearsDetails = GetAllAcademicYearsDetail(TeacherId);
-            var academicY = new List<long>();
             var academicYearsDetails = allAcademicYearsDetails as AcademicCourse[] ?? allAcademicYearsDetails.ToArray();
-            for (int a = 0; a < academicYearsDetails.Count(); a++)
-            {
-                academicY.Add(academicYearsDetails.ElementAt(a).Id);
-            }
+            var academicY = academicYearsDetails.Select((t, a) => academicYearsDetails.ElementAt(a).Id).ToList();
             IEnumerable<Homework> allHomeworks = _homeworkRepository.GetAllHomeworks().Where(x => academicY.Contains(x.AcademicCourse.Id));
             IEnumerable<HomeworkDisplayModel> allHomeworkDisplaysModel =
                 allHomeworks.Select(Mapper.Map<Homework, HomeworkDisplayModel>).ToList();
@@ -69,6 +65,9 @@ namespace Mhotivo.Controllers
             var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher != null && x.Teacher.Id == teacherId);
             var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
             ViewBag.course = new SelectList(query, "Id", "Name");
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             var modelRegister = new HomeworkRegisterModel();
             return View(modelRegister);
         }
@@ -98,7 +97,14 @@ namespace Mhotivo.Controllers
         {
             Homework thisHomework = _homeworkRepository.GetById(id);
             var homework = Mapper.Map<HomeworkEditModel>(thisHomework);
-            ViewBag.CourseId = new SelectList(_courseRepository.Query(x => x), "Id", "Name");
+            var teacherId = GetTeacherId();
+            var detalleAnhosAcademicosActivos = _academicCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicGrade.AcademicYear.IsActive);
+            var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher != null && x.Teacher.Id == teacherId);
+            var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
+            ViewBag.course = new SelectList(query, "Id", "Name");
+            ViewBag.Years = DateTimeController.GetYears();
+            ViewBag.Months = DateTimeController.GetMonths();
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Edit", homework);
         }
 

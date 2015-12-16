@@ -69,10 +69,6 @@ namespace Mhotivo.Implement.Migrations
             _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Director", Name = "Director", Roles = new List<Role> { tRole } });
             allRoles.Add(tRole);
 
-            tRole = _roleRepository.Create(new Role { Name = "Maestro de Seccion", Id = 4 });
-            _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de nivel Maestro de Seccion", Name = "Maestro de Seccion", Roles = new List<Role> { tRole } });
-            allRoles.Add(tRole);
-
             _privilegeRepository.Create(new Privilege { Id = 1, Description = "Privilegio de Login", Name = "Login", Roles = allRoles});
 
             var adminPeople = new PeopleWithUser
@@ -101,7 +97,7 @@ namespace Mhotivo.Implement.Migrations
             admin = _userRepository.Create(admin);
             adminPeople.User = admin;
             _peopleWithUserRepository.Update(adminPeople);
-            DebuggingSeeder();
+            DebuggingSeeder(); //MAKE SURE TO COMMENT THIS LINE BEFORE DEPLOYING.
         }
 
         private void DebuggingSeeder()
@@ -195,7 +191,7 @@ namespace Mhotivo.Implement.Migrations
                             Schedule = newGrade.CoursesDetails.Any() ? 
                             newGrade.CoursesDetails.Last().Schedule.Duration().Add(new TimeSpan(0, 40, 0)) : 
                             new TimeSpan(7, 0, 0),
-                            Teacher = generTeacher //TODO: Create more teachers to randomize this a little bit more?
+                            Teacher = generTeacher
                         };
                         academicCourse = _academicCourseRepository.Create(academicCourse);
                         newGrade.CoursesDetails.Add(academicCourse);

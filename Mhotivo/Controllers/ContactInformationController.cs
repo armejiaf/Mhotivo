@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
 using Mhotivo.Authorizations;
 using Mhotivo.Interface.Interfaces;
 using Mhotivo.Data.Entities;
@@ -27,8 +28,7 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(ContactInformationEditModel modelContactInformation)
         {
             ContactInformation myContactInformation = _contactInformationRepository.GetById(modelContactInformation.Id);
-            myContactInformation.Type = modelContactInformation.Type;
-            myContactInformation.Value = modelContactInformation.Value;
+            myContactInformation = Mapper.Map(modelContactInformation, myContactInformation);
             ContactInformation contactInformation = _contactInformationRepository.Update(myContactInformation);
             const string title = "Contacto Actualizado";
             _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.InformationMessage);
@@ -53,7 +53,7 @@ namespace Mhotivo.Controllers
         {
             var model = new ContactInformationRegisterModel
             {
-                Id = id
+                People = id
             };
             return View("ContactAdd", model);
         }
@@ -62,12 +62,7 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Add(ContactInformationRegisterModel modelContactInformation)
         {
-            var myContactInformation = new ContactInformation
-            {
-                Type = modelContactInformation.Type,
-                Value = modelContactInformation.Value,
-                People = _peopleRepository.GetById(modelContactInformation.Id)
-            };
+            var myContactInformation = Mapper.Map<ContactInformation>(modelContactInformation);
             ContactInformation contactInformation = _contactInformationRepository.Create(myContactInformation);
             const string title = "Informacion Agregada";
             _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.SuccessMessage);
