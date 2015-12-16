@@ -229,6 +229,7 @@
     <Content Include="Content\css\nicdark_responsive.css" />
     <Content Include="Content\css\nicdark_shortcodes.css" />
     <Content Include="Content\css\nicdark_style.css" />
+    <Content Include="Content\css\normalize.css" />
     <Content Include="Content\css\notification.css" />
     <Content Include="Content\css\revslider\settings.css" />
     <Content Include="Content\font-awesome.css" />
@@ -250,6 +251,7 @@
     <Content Include="Content\img\team\img2.jpg" />
     <Content Include="Content\img\team\img3.jpg" />
     <Content Include="Content\img\team\img4.jpg" />
+    <Content Include="Content\js\index.js" />
     <Content Include="Content\js\main\excanvas.js" />
     <Content Include="Content\js\main\jquery-ui.js" />
     <Content Include="Content\js\main\jquery.jscroll.js" />
