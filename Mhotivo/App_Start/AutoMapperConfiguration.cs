@@ -130,7 +130,7 @@ namespace Mhotivo
 
         private static void MapEnrollModels()
         {
-           // Mapper.CreateMap<AcademicGrade, IEnumerable<EnrollDisplayModel>>();
+           //TODO: see if enroll models can be mapped. If not, delete this method.
         }
 
         private static void MapGradeModels()
@@ -181,7 +181,7 @@ namespace Mhotivo
                 .ForMember(p => p.NotificationType, o => o.MapFrom(src => src.NotificationType.GetEnumDescription()))
                 .ForMember(p => p.NotificationCreator,
                     o => o.MapFrom(src => src.NotificationCreator.FirstName))
-                .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToString()))
+                .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToLocalTime().ToString()))
                 .ForMember(p => p.DestinationId, o => o.MapFrom(src =>
                     src.NotificationType == NotificationType.General
                         ? "General"
@@ -229,7 +229,7 @@ namespace Mhotivo
                         typeof (INotificationRepository))).GetById(src.Notification)));
             Mapper.CreateMap<NotificationComment, NotificationCommentDisplayModel>()
                 .ForMember(p => p.Commenter, o => o.MapFrom(src => src.Commenter.UserOwner.FullName))
-                .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToString()));
+                .ForMember(p => p.CreationDate, o => o.MapFrom(src => src.CreationDate.ToLocalTime().ToString()));
             Mapper.CreateMap<NotificationComment, NotificationCommentEditModel>().ReverseMap();
         }
 
@@ -266,7 +266,6 @@ namespace Mhotivo
                         typeof(IRoleRepository))).GetById(src.Role)));
         }
 
-        //TODO: Not done with the ones below just yet.
         private static void MapTutorModels()
         {
             Mapper.CreateMap<TutorRegisterModel, Tutor>()

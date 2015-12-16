@@ -25,16 +25,16 @@ namespace Mhotivo.Controllers
                 {11, 30},
                 {12, 31}
             };
-            var days = new List<int>();
+            var days = new Dictionary<int, int>();
             for (var i = 1; i <= daysForMonth[month]; i++)
             {
-                days.Add(i);
+                days.Add(i, i);
             }
             if (year%4 == 0)
             {
-                days.Add(days.Last()+1);
+                days.Add(days.Last().Key + 1, days.Last().Value + 1);
             }
-            return Json(new SelectList(days), JsonRequestBehavior.AllowGet);
+            return Json(new SelectList(days, "Key", "Value"), JsonRequestBehavior.AllowGet);
         }
         public static SelectList GetDaysForMonthAndYearStatic(int month, int year = 2001)
         {
@@ -54,16 +54,16 @@ namespace Mhotivo.Controllers
                 {11, 30},
                 {12, 31}
             };
-            var days = new List<int>();
+            var days = new Dictionary<int, int>();
             for (var i = 1; i <= daysForMonth[month]; i++)
             {
-                days.Add(i);
+                days.Add(i, i);
             }
             if (year % 4 == 0)
             {
-                days.Add(days.Last() + 1);
+                days.Add(days.Last().Key + 1, days.Last().Value + 1);
             }
-            return new SelectList(days);
+            return new SelectList(days, "Key", "Value");
         }
         public static SelectList GetMonths()
         {
@@ -82,17 +82,17 @@ namespace Mhotivo.Controllers
                 {11, "Nov"},
                 {12, "Dic"}
             };
-            return new SelectList(monthsDictionary.ToList(), "key", "value");
+            return new SelectList(monthsDictionary.ToList(), "Key", "Value");
         }
 
         public static SelectList GetYears()
         {
-            var years = new List<int>();
+            var years = new Dictionary<int, int>();
             for (var i = 1900; i< 2100; i++)
             {
-                years.Add(i);
+                years.Add(i, i);
             }
-            return new SelectList(years, DateTime.Now.Year);
+            return new SelectList(years, "Key", "Value", DateTime.UtcNow.Year);
         }
     }
 }

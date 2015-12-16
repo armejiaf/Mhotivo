@@ -93,7 +93,7 @@ namespace Mhotivo.Controllers
             ViewBag.Genders = new List<SelectListItem>(items);
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
-            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Edit", studentModel);
         }
 
@@ -156,7 +156,7 @@ namespace Mhotivo.Controllers
                     ViewBag.Genders = new List<SelectListItem>(items);
                     ViewBag.Years = DateTimeController.GetYears();
                     ViewBag.Months = DateTimeController.GetMonths();
-                    ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+                    ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
                     return View(modelStudent);
                 }
             }
@@ -171,7 +171,7 @@ namespace Mhotivo.Controllers
             ViewBag.Genders = new List<SelectListItem>(items2);
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
-            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View(modelStudent);
         }
 
@@ -220,7 +220,7 @@ namespace Mhotivo.Controllers
             ViewBag.Genders = new List<SelectListItem>(items);
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
-            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Create");
         }
 

@@ -86,7 +86,7 @@
                 </div>
                 <div class="controls">
                     <div id="Days" style="float: left; width: 75px;">
-                        @Html.DropDownListFor(model => model.Day, (SelectList)ViewBag.Days, new { style = "width:75px" })
+                        @Html.DropDownList("Day", (SelectList)ViewBag.Days, new { style = "width:75px" })
                     </div>
                     <div id="Months" style="float: left; width: 75px;">
                         @Html.DropDownListFor(model => model.Month, (SelectList)ViewBag.Months, new { style = "width:75px" })
@@ -152,3 +152,22 @@
         </fieldset>
     }
 </div>
+<script type="text/javascript">
+    $('#Months').change(updateSections);
+    $('#Years').change(updateSections);
+    function updateSections() {
+        $.ajax({
+            url: '@Url.Action("GetDaysForMonthAndYear", "DateTime")',
+            cache: false,
+            type: 'POST',
+            data: 'month='+parseInt($('#Months option:selected').val())+'&year='+parseInt($('#Years option:selected').val()),
+            datatype: "json",
+            success: function (data) {
+                $('#Day').empty();
+                $.each($(data), function (i, optionavailable) {
+                    $('#Day').append("<option value='" + optionavailable.Value + "'>" + optionavailable.Text + "</option>");
+                });
+            }
+        });
+    }
+</script>

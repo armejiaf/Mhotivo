@@ -135,7 +135,6 @@ namespace Mhotivo.ParentSite.Controllers
             selectedNotification.NotificationComments.Add(new NotificationComment
             {
                 CommentText = commentText,
-                CreationDate = DateTime.Now,
                 Commenter = _loggedTutor.User
             });
             _notificationRepository.Update(selectedNotification);

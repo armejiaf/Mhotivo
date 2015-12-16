@@ -67,7 +67,7 @@ namespace Mhotivo.Controllers
             ViewBag.course = new SelectList(query, "Id", "Name");
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
-            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             var modelRegister = new HomeworkRegisterModel();
             return View(modelRegister);
         }
@@ -104,7 +104,7 @@ namespace Mhotivo.Controllers
             ViewBag.course = new SelectList(query, "Id", "Name");
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
-            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.Now.Year);
+            ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
             return View("Edit", homework);
         }
 
