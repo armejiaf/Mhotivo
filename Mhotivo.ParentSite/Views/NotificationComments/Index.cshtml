@@ -55,55 +55,57 @@
             <div class="nicdark_divider left big"><span class="nicdark_bg_yellow nicdark_radius"></span></div>
             <div class="nicdark_space10"></div>
             <p><span class="white nicdark_dropcap nicdark_bg_yellow nicdark_radius nicdark_shadow">></span>@Html.Raw(@Model.Item1.Message)</p>
+        
+            <div class="nicdark_space50"></div>
+            <div class="grid grid_4"></div>
+            <div class="grid grid_8">
+                <h3 class="subtitle greydark">@Model.Item1.CommentsAmount COMENTARIO(S)</h3>
+            </div>
+
+            @foreach (var item in Model.Item2)
+            {
+                <div class="grid grid_4"></div>
+                <div class="grid grid_8">
+
+
+                    <div class="nicdark_space10"></div>
+                    <div class="nicdark_divider left small"><span class="nicdark_bg_orange nicdark_radius"></span></div>
+                    <div class="nicdark_space20"></div>
+                    @{
+                        var imgSrc = "";
+                        var image = new Bitmap(Mhotivo.Implement.Properties.Resources.default_avatar);
+                        var defaultAvatar = new MemoryStream();
+                        image.Save(defaultAvatar, System.Drawing.Imaging.ImageFormat.Png);
+                        var base64 = Convert.ToBase64String(defaultAvatar.ToArray());
+                        imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                    }
+                    <ul class="nicdark_list border">
+
+                        <li class="nicdark_border_grey">
+                            <!--comment-->
+                            <div class="nicdark_archive1 nicdark_relative">
+                                <div class="nicdark_margin100 nicdark_relative">
+                                    <img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src=@imgSrc.ToString()>
+                                    <div class="nicdark_activity nicdark_marginleft70 nicdark_disable_marginleft_ipadpotr">
+                                        <div class="nicdark_space20"></div>
+                                        <h4 class="subtitle greydark">@item.Tutor: @item.CreationDate.ToShortDateString() a las @item.CreationDate.ToShortTimeString()</h4>
+                                        <div class="nicdark_space20"></div>
+                                    </div>
+                                </div>
+                                <p>@item.CommentText</p>
+                                <div class="nicdark_space20"></div>
+
+                            </div>
+                            <!--comment-->
+                        </li>
+                    </ul>
+
+                    <div class="nicdark_space20"></div>
+                </div>
+                        }
+            <div class="nicdark_space50"></div>
+        
         </div>
     </section>
 
-    <div class="nicdark_space50"></div>
-    <div class="grid grid_4"></div>
-    <div class="grid grid_8">
-        <h3 class="subtitle greydark">@Model.Item1.CommentsAmount COMENTARIO(S)</h3>
-    </div>
-
-@foreach (var item in Model.Item2)
-{
-    <div class="grid grid_4"></div>
-    <div class="grid grid_8">
-
-       
-        <div class="nicdark_space10"></div>
-        <div class="nicdark_divider left small"><span class="nicdark_bg_orange nicdark_radius"></span></div>
-        <div class="nicdark_space20"></div>
-        @{
-            var imgSrc = "";
-            var image = new Bitmap(Mhotivo.Implement.Properties.Resources.default_avatar);
-            var defaultAvatar = new MemoryStream();
-            image.Save(defaultAvatar, System.Drawing.Imaging.ImageFormat.Png);
-            var base64 = Convert.ToBase64String(defaultAvatar.ToArray());
-            imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-        }
-        <ul class="nicdark_list border">
-
-            <li class="nicdark_border_grey">
-                <!--comment-->
-                <div class="nicdark_archive1 nicdark_relative">
-                    <div class="nicdark_margin100 nicdark_relative">
-                        <img alt="" class="nicdark_displaynone_ipadpotr nicdark_radius_circle nicdark_absolute" style="width:50px;" src = @imgSrc.ToString()>
-                        <div class="nicdark_activity nicdark_marginleft70 nicdark_disable_marginleft_ipadpotr">
-                            <div class="nicdark_space20"></div>
-                            <h4 class="subtitle greydark">@item.Tutor: @item.CreationDate.ToShortDateString() a las @item.CreationDate.ToShortTimeString()</h4>
-                            <div class="nicdark_space20"></div>
-                        </div>
-                    </div>
-                    <p>@item.CommentText</p>
-                    <div class="nicdark_space20"></div>
-                    <a href="#" class="nicdark_btn nicdark_bg_orange small nicdark_shadow nicdark_radius white"><i class="icon-reply-outline"></i>&nbsp;&nbsp;&nbsp;REPLY</a>
-                    <div class="nicdark_space20"></div>
-                </div>
-                <!--comment-->
-            </li>
-        </ul>
-
-        <div class="nicdark_space20"></div>
-    </div>
-}
-<div class="nicdark_space50"></div>
+    
