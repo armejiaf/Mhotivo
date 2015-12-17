@@ -18,13 +18,17 @@ namespace Mhotivo.Controllers
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IPasswordGenerationService _passwordGenerationService;
         private readonly IRoleRepository _rolesRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IEducationLevelRepository _educationLevelRepository;
 
         public UserController(IUserRepository userRepository, IPasswordGenerationService passwordGenerationService,
-            IRoleRepository rolesRepository)
+            IRoleRepository rolesRepository, IRoleRepository roleRepository, IEducationLevelRepository educationLevelRepository)
         {
             _userRepository = userRepository;
             _passwordGenerationService = passwordGenerationService;
             _rolesRepository = rolesRepository;
+            _roleRepository = roleRepository;
+            _educationLevelRepository = educationLevelRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -88,6 +92,20 @@ namespace Mhotivo.Controllers
         public ActionResult Edit(UserEditModel modelUser)
         {
             User myUser = _userRepository.GetById(modelUser.Id);
+            var directorRole = _roleRepository.Filter(x => x.Name.Equals("Director")).FirstOrDefault();
+            if (directorRole != null && myUser.Role.Id == directorRole.Id)
+            {
+                if (modelUser.Role != myUser.Role.Id)
+                {
+                    if (_educationLevelRepository.Filter(x => x.Director != null && x.Director.Id == myUser.Id).Any())
+                    {
+                        const string title2 = "Error";
+                        var content2 = "Directores no pueden ser promovidos a administradores mientras tienen un nivel de educacion asignado.";
+                        _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.ErrorMessage);
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
             Mapper.Map(modelUser, myUser);
             _userRepository.Update(myUser);
             const string title = "Usuario Actualizado";
