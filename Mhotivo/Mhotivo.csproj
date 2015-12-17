@@ -536,6 +536,8 @@
     <Content Include="Views\Administrative\Edit.cshtml" />
     <Content Include="Views\Administrative\Create.cshtml" />
     <Content Include="Views\Administrative\Details.cshtml" />
+    <Content Include="Views\AcademicYear\AutoGeneration.cshtml" />
+    <Content Include="Views\AcademicYear\EditorTemplates\NewAcademicYearGradeSpecModel.cshtml" />
     <None Include="Views\CustomError\Index.cshtml" />
     <Content Include="Views\MyAccount\Index.cshtml" />
   </ItemGroup>

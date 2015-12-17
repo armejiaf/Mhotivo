@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -17,12 +18,20 @@ namespace Mhotivo.Controllers
         private readonly ViewMessageLogic _viewMessageLogic;
         private readonly IUserRepository _userRepository;
         private readonly ISessionManagementService _sessionManagementService;
+        private readonly IGradeRepository _gradeRepository;
+        private readonly IPensumRepository _pensumRepository;
+        private readonly IAcademicGradeRepository _academicGradeRepository;
+        private readonly IAcademicCourseRepository _academicCourseRepository;
 
-        public AcademicYearController(IAcademicYearRepository academicYearRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService)
+        public AcademicYearController(IAcademicYearRepository academicYearRepository, IUserRepository userRepository, ISessionManagementService sessionManagementService, IGradeRepository gradeRepository, IPensumRepository pensumRepository, IAcademicGradeRepository academicGradeRepository, IAcademicCourseRepository academicCourseRepository)
         {
             _academicYearRepository = academicYearRepository;
             _userRepository = userRepository;
             _sessionManagementService = sessionManagementService;
+            _gradeRepository = gradeRepository;
+            _pensumRepository = pensumRepository;
+            _academicGradeRepository = academicGradeRepository;
+            _academicCourseRepository = academicCourseRepository;
             _viewMessageLogic = new ViewMessageLogic(this);
         }
 
@@ -113,7 +122,7 @@ namespace Mhotivo.Controllers
                 academicYear = _academicYearRepository.Delete(academicYear);
                 const string title = "Año Académico Eliminado";
                 var content = "El año académico " + academicYear.Year + " ha sido eliminado exitosamente.";
-                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.ErrorMessage);
+                _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
                 return RedirectToAction("Index");
             }
         }
@@ -123,6 +132,57 @@ namespace Mhotivo.Controllers
         public ActionResult Add()
         {
             return View("Create", new AcademicYearRegisterModel());
+        }
+
+        [HttpGet]
+        [AuthorizeAdminDirector]
+        public ActionResult AutoGeneration(long yearId)
+        {
+            _viewMessageLogic.SetViewMessageIfExist();
+            var model = _gradeRepository.GetAllGrade().Select(n => new NewAcademicYearGradeSpecModel {Grade = n.Id, Reference = n});
+            ViewBag.YearId = yearId;
+            return View("AutoGeneration", model);
+        }
+
+        [HttpPost]
+        [AuthorizeAdminDirector]
+        public ActionResult AutoGeneration(IEnumerable<NewAcademicYearGradeSpecModel> model, long yearId)
+        {
+            var year = _academicYearRepository.GetById(yearId);
+            foreach (var newAcademicYeardGradeSpecModel in model)
+            {
+                char section = 'A';
+                var grade = _gradeRepository.GetById(newAcademicYeardGradeSpecModel.Grade);
+                var pensum = _pensumRepository.GetById(newAcademicYeardGradeSpecModel.SelectedPensum);
+                for (int i = 0; i < newAcademicYeardGradeSpecModel.Sections; i++)
+                {
+                    var newGrade = new AcademicGrade
+                    {
+                        Grade = grade,
+                        AcademicYear = year,
+                        Section = section++ + "",
+                        ActivePensum = pensum
+                    };
+                    newGrade = _academicGradeRepository.Create(newGrade);
+                    foreach (var course in newGrade.ActivePensum.Courses)
+                    {
+                        var academicCourse = new AcademicCourse
+                        {
+                            Course = course,
+                            AcademicGrade = newGrade
+                        };
+                        academicCourse = _academicCourseRepository.Create(academicCourse);
+                        newGrade.CoursesDetails.Add(academicCourse);
+                        newGrade = _academicGradeRepository.Update(newGrade);
+                    }
+                    year.Grades.Add(newGrade);
+                    _academicYearRepository.Update(year);
+                }
+            }
+            const string title = "Año Académico Agregado";
+            var content = "El año académico " + year.Year + " ha sido agregado exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
+            return RedirectToAction("Index", "AcademicGrade", new {yearId});
         }
 
         [HttpPost]
@@ -137,9 +197,11 @@ namespace Mhotivo.Controllers
             var toCreate = Mapper.Map<AcademicYear>(academicYearModel);
             toCreate = _academicYearRepository.Create(toCreate);
             const string title = "Año Académico Agregado";
-            var content = "El año académico " + toCreate.Year + " ha sido agregado exitosamente.";
+            bool v = _gradeRepository.GetAllGrade().Any();
+            var content = v ? "Elija la cantidad de secciones a crearse y el pensum a usarse para cada grado." 
+                : "El año académico " + toCreate.Year + " ha sido agregado exitosamente.";
             _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
-            return RedirectToAction("Index");
+            return v ? RedirectToAction("AutoGeneration", new {yearId = toCreate.Id}) : RedirectToAction("Index", "AcademicGrade", new { toCreate.Id });
         }
     }
 }

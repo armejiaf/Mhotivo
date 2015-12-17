@@ -1,0 +1,20 @@
+﻿@model Mhotivo.Models.NewAcademicYearGradeSpecModel
+
+<div style="width: 500px;">
+    @Html.HiddenFor(model => model.Grade)
+    <div>
+        <h4>@Html.DisplayFor(model => model.Reference.Name)</h4>
+    </div>
+    <br style="clear: left;"/>
+    <div style="float: left; width: 250px;">
+        @Html.EditorFor(model => model.Sections)
+        <br/><span class="InputLabel">@Html.DisplayNameFor(model => model.Sections)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.Sections)</p>
+    </div>
+    <div style="float: left; width: 250px;">
+        @Html.DropDownListFor(model => model.SelectedPensum, new SelectList(@Model.Reference.Pensums, "Id", "Name"))
+        <br/><span class="InputLabel">@Html.DisplayNameFor(modelItem => modelItem.SelectedPensum)</span>
+        <p class="text-error">@Html.ValidationMessageFor(model => model.SelectedPensum)</p>
+    </div>
+    <br style="clear: left;"/>
+</div>

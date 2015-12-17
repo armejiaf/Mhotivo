@@ -83,6 +83,7 @@ namespace Mhotivo
         {
             Mapper.CreateMap<AcademicCourse, AcademicCourseDisplayModel>()
                 .ForMember(p => p.Course, o => o.MapFrom(src => src.Course.Name))
+                .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher != null ? src.Teacher.FullName : "Maestro No Asignado"))
                 .ForMember(p => p.Teacher, o => o.MapFrom(src => src.Teacher.FullName))
                 .ForMember(p => p.Schedule, o => o.MapFrom(src => src.Schedule.ToAmPm()));
             Mapper.CreateMap<AcademicCourse, AcademicCourseEditModel>()
