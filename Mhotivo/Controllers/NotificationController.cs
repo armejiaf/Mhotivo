@@ -97,7 +97,7 @@ namespace Mhotivo.Controllers
             }else
                 notifications = _notificationRepository.Filter(x => x.NotificationCreator.Id == user.UserOwner.Id).ToList();
             if (!string.IsNullOrWhiteSpace(searchName))
-                notifications = notifications.ToList().FindAll(x => x.Title == searchName);
+                notifications = notifications.ToList().FindAll(x => x.Title.Contains(searchName));
 
             var notificationsModel = notifications.Select(Mapper.Map<NotificationDisplayModel>);
             const int pageSize = 10;

@@ -9,7 +9,7 @@ namespace Mhotivo.Controllers
     {
         public JsonResult GetDaysForMonthAndYear(int month, int year = 2001)
         {
-            month = month%12;
+            month = month > 12 ? month % 12 : month;
             var daysForMonth = new Dictionary<int, int>
             {
                 {1, 31},
@@ -38,7 +38,7 @@ namespace Mhotivo.Controllers
         }
         public static SelectList GetDaysForMonthAndYearStatic(int month, int year = 2001)
         {
-            month = month % 12;
+            month = month > 12 ? month % 12 : month;
             var daysForMonth = new Dictionary<int, int>
             {
                 {1, 31},
