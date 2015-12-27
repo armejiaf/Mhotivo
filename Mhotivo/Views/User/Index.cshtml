@@ -11,20 +11,24 @@
 }
 
 @Html.Partial("~/Views/Shared/_MessageArea.cshtml")
+<div style="clear: both">
+    <div style="float: left">
+        <h2>Usuarios Registrados </h2>
+    </div>
 
-<h2>Usuarios Registrados  </h2>
-
-<div style="float:right">
-    @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
-    {
-        <p>
-            Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-            <button class="btn btn-small btn-primary" type="submit">
-                <i class="icon-search"></i>
-            </button>
-        </p>
-    }
+    <div style="float: right; margin-top: 15px">
+        @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "Form", @class = "form-horizontal", @Style = "margin:0;" }))
+        {
+            <p>
+                Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                <button class="btn btn-small btn-primary" type="submit">
+                    <i class="icon-search"></i>
+                </button>
+            </p>
+        }
+    </div>
 </div>
+
 @if(!Model.Any())
 {
     <div class="well well-large">

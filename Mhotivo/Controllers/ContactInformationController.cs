@@ -31,7 +31,7 @@ namespace Mhotivo.Controllers
             myContactInformation = Mapper.Map(modelContactInformation, myContactInformation);
             ContactInformation contactInformation = _contactInformationRepository.Update(myContactInformation);
             const string title = "Contacto Actualizado";
-            _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.SuccessMessage);
             return RedirectToAction("Details/" + contactInformation.People.Id, modelContactInformation.Controller);
         }
 
@@ -43,7 +43,7 @@ namespace Mhotivo.Controllers
             long ID = myContactInformation.People.Id;
             _contactInformationRepository.Delete(id);
             const string title = "Informacion Eliminada";
-            _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, "", ViewMessageType.SuccessMessage);
             return RedirectToAction("Details/" + ID, control);
         }
 

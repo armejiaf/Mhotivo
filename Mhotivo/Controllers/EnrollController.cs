@@ -160,7 +160,7 @@ namespace Mhotivo.Controllers
             _academicGradeRepository.Update(grade);
             const string title = "Matricula Borrada";
             const string content = "El estudiante ha sido eliminado exitosamente de la lista de matriculados.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return academicGradeId == -1 ? RedirectToAction("Index") : RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId = academicGradeId });
         }
 
@@ -174,7 +174,7 @@ namespace Mhotivo.Controllers
             _academicGradeRepository.Update(grade);
             const string title = "Matricula Borrada";
             const string content = "Todos los estudiantes de esta seccion han sido eliminados exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("GeneralEnrollsFromAcademicGrades", new { gradeId });
         }
 
@@ -194,7 +194,7 @@ namespace Mhotivo.Controllers
             _academicGradeRepository.Update(grade);
             const string title2 = "Matricula Borrada";
             const string content2 = "Todos los estudiantes de ese grado y seccion han sido eliminados exitosamente.";
-            _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title2, content2, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 

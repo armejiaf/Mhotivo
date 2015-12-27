@@ -215,7 +215,6 @@ namespace Mhotivo.Controllers
         [AuthorizeAdminDirector]
         public ActionResult Create()
         {
-            var modelRegister = new TutorRegisterModel();
             var items = ((Gender[])Enum.GetValues(typeof(Gender))).Select(c => new SelectListItem
             {
                 Text = c.GetEnumDescription(),
@@ -226,7 +225,7 @@ namespace Mhotivo.Controllers
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
             ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
-            return View(modelRegister);
+            return View(new TutorRegisterModel { Year = ((KeyValuePair<int, int>)((SelectList)ViewBag.Years).SelectedValue).Value });
         }
 
         [HttpPost]

@@ -92,7 +92,7 @@ namespace Mhotivo.Controllers
                                         , academicGrade.Grade.Name // 1
                                         , dataImportModel.Section // 2
                                        );
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 

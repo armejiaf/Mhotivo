@@ -92,7 +92,7 @@ namespace Mhotivo.Controllers
             {
                 years.Add(i, i);
             }
-            return new SelectList(years, "Key", "Value", DateTime.UtcNow.Year);
+            return new SelectList(years, "Key", "Value", new KeyValuePair<int, int>(DateTime.UtcNow.Year, DateTime.UtcNow.Year));
         }
     }
 }

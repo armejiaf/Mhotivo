@@ -29,14 +29,17 @@
                 @Html.EditorFor(model => model.Email)
             </div>
         </div>
-        <div class="control-group">
-            <div class="control-label">
-                @Html.LabelFor(model => model.Role)
+        @if (ViewBag.Role.ToString().Equals("Director") || ViewBag.Role.ToString().Equals("Administrador"))
+        {
+            <div class="control-group">
+                <div class="control-label">
+                    @Html.LabelFor(model => model.Role)
+                </div>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Role, (SelectList)ViewBag.RoleId)
+                </div>
             </div>
-            <div class="controls">
-                @Html.DropDownList("Role", (SelectList)ViewBag.RoleId)
-            </div>
-        </div>
+        }
         <div class="control-group">
             <div class="controls">
                 <div class="control-label" style=" width: 60px;  padding-top: 0;">

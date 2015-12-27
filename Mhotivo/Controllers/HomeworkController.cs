@@ -61,15 +61,16 @@ namespace Mhotivo.Controllers
         public ActionResult Create()
         {
             var teacherId = GetTeacherId();
-            var detalleAnhosAcademicosActivos = _academicCourseRepository.GetAllAcademicYearDetails().ToList().FindAll(x => x.AcademicGrade.AcademicYear.IsActive);
-            var detallesFilteredByTeacher = detalleAnhosAcademicosActivos.FindAll(x => x.Teacher != null && x.Teacher.Id == teacherId);
-            var query = detallesFilteredByTeacher.Select(detail => detail.Course).ToList();
-            ViewBag.course = new SelectList(query, "Id", "Name");
+            var courses =
+                _academicCourseRepository.Filter(
+                    x => x.AcademicGrade.AcademicYear.IsActive && x.Teacher != null && x.Teacher.Id == teacherId)
+                    .Select(x => x.Course);
+            ViewBag.course = new SelectList(courses, "Id", "Name");
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
             ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
-            var modelRegister = new HomeworkRegisterModel();
-            return View(modelRegister);
+            var modelRegister = new HomeworkRegisterModel { Year = ((KeyValuePair<int, int>)((SelectList)ViewBag.Years).SelectedValue).Value };
+            return View(modelRegister);;
         }
 
         private IEnumerable<AcademicCourse> GetAllAcademicYearsDetail(long id)
@@ -117,8 +118,8 @@ namespace Mhotivo.Controllers
             Mapper.Map(modelHomework, myStudent);
             _homeworkRepository.Update(myStudent);
             const string title = "Tarea Actualizada";
-            var content = "La tarea " + modelHomework.Title + " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            var content = "La tarea " + modelHomework.Title + " ha sido actualizada exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -127,9 +128,9 @@ namespace Mhotivo.Controllers
         public ActionResult Delete(long id)
         {
             Homework homework = _homeworkRepository.Delete(id);
-            const string title = "Tarea Eliminado";
-            string content = "La tarea: " + homework.Title + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            const string title = "Tarea Eliminada";
+            string content = "La tarea: " + homework.Title + " ha sido eliminada exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -140,8 +141,8 @@ namespace Mhotivo.Controllers
         {
             var homework = _homeworkRepository.Delete(id);
             const string title = "Tarea Eliminada";
-            string content = "La tarea: " + homework.Title + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            string content = "La tarea: " + homework.Title + " ha sido eliminada exitosamente.";
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
     }

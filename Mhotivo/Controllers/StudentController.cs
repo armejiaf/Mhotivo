@@ -221,7 +221,7 @@ namespace Mhotivo.Controllers
             ViewBag.Years = DateTimeController.GetYears();
             ViewBag.Months = DateTimeController.GetMonths();
             ViewBag.Days = DateTimeController.GetDaysForMonthAndYearStatic(1, DateTime.UtcNow.Year);
-            return View("Create");
+            return View("Create", new StudentRegisterModel { Year = ((KeyValuePair<int, int>)((SelectList)ViewBag.Years).SelectedValue).Value });
         }
 
         [HttpPost]

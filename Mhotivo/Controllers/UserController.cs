@@ -83,7 +83,8 @@ namespace Mhotivo.Controllers
             User thisUser = _userRepository.GetById(id);
             var user = Mapper.Map<UserEditModel>(thisUser);
             var role = _userRepository.GetUserRole(thisUser.Id);
-            ViewBag.RoleId = new SelectList(_rolesRepository.GetAll(), "Id", "Name", role);
+            ViewBag.Role = role.Name;
+            ViewBag.Roleid = new SelectList(_roleRepository.Filter(x => x.Name.Equals("Administrador") || x.Name.Equals("Director")), "Id", "Name", role);
             return View("Edit", user);
         }
 
@@ -111,7 +112,7 @@ namespace Mhotivo.Controllers
             const string title = "Usuario Actualizado";
             var content = "El usuario " + myUser.UserOwner.FirstName + " - " + myUser.Email +
                              " ha sido actualizado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
@@ -122,7 +123,7 @@ namespace Mhotivo.Controllers
             var user = _userRepository.Delete(id);
             const string title = "Usuario Eliminado";
             var content = "El usuario " + user.UserOwner.FirstName + " - " + user.Email + " ha sido eliminado exitosamente.";
-            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.InformationMessage);
+            _viewMessageLogic.SetNewMessage(title, content, ViewMessageType.SuccessMessage);
             return RedirectToAction("Index");
         }
 
